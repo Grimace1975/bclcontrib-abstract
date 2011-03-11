@@ -96,6 +96,8 @@
     <Compile Include="Abstract\AService.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\MemoryAggregateRootSnapshotStore.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\MemoryEventStore.cs" />
+    <Compile Include="Contoso.Abstract+Impl\MicroServiceLocator.cs" />
+    <Compile Include="Contoso.Abstract+Impl\MicroServiceRegistrar.cs" />
     <Compile Include="Local.Designer.cs">
       <DependentUpon>Local.resx</DependentUpon>
       <AutoGen>True</AutoGen>
