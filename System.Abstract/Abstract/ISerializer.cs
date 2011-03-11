@@ -25,6 +25,7 @@ THE SOFTWARE.
 #endregion
 using System.IO;
 using System.Text;
+using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
@@ -34,7 +35,11 @@ namespace System.Abstract
     {
         T ReadObject<T>(Type type, Stream s)
             where T : class;
+        IEnumerable<T> ReadObjects<T>(Type type, Stream s)
+            where T : class;
         void WriteObject<T>(Type type, Stream s, T graph)
+            where T : class;
+        void WriteObjects<T>(Type type, Stream s, IEnumerable<T> graph)
             where T : class;
     }
 

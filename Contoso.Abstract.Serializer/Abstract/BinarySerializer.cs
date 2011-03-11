@@ -25,14 +25,16 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.IO;
-using System.Text;
+using System.Linq;
 using System.Abstract;
-using System.Runtime.Serialization.Json;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections.Generic;
 namespace Contoso.Abstract
 {
-    public class JsonSerializer : ISerializer
+    public class BinarySerializer : ISerializer
     {
+        private readonly BinaryFormatter _binaryFormatter = new BinaryFormatter();
+
         public T ReadObject<T>(Type type, Stream s)
             where T : class
         {
@@ -40,8 +42,7 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("type");
             if (s == null)
                 throw new ArgumentNullException("s");
-            var serializer = new DataContractJsonSerializer(type);
-            return (serializer.ReadObject(s) as T);
+            return (_binaryFormatter.Deserialize(s) as T);
         }
 
         public IEnumerable<T> ReadObjects<T>(Type type, Stream s)
@@ -51,8 +52,10 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("type");
             if (s == null)
                 throw new ArgumentNullException("s");
-            var serializer = new DataContractJsonSerializer(type);
-            return (serializer.ReadObject(s) as IEnumerable<T>);
+            var graphs = (_binaryFormatter.Deserialize(s) as List<object>);
+            if (graphs == null)
+                return null;
+            return graphs.Cast<T>();
         }
 
         public void WriteObject<T>(Type type, Stream s, T graph)
@@ -64,8 +67,7 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("s");
             if (graph == null)
                 throw new ArgumentNullException("graph");
-            var serializer = new DataContractJsonSerializer(type);
-            serializer.WriteObject(s, graph);
+            _binaryFormatter.Serialize(s, graph);
         }
 
         public void WriteObjects<T>(Type type, Stream s, IEnumerable<T> graphs)
@@ -77,8 +79,8 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("s");
             if (graphs == null)
                 throw new ArgumentNullException("graphs");
-            var serializer = new DataContractJsonSerializer(type);
-            serializer.WriteObject(s, graphs);
+            var x = new List<object>(graphs.ToArray());
+            _binaryFormatter.Serialize(s, x);
         }
     }
 }
