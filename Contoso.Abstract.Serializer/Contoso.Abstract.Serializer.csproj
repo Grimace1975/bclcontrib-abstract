@@ -37,6 +37,8 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Abstract\BinarySerializer.cs" />
+    <Compile Include="Abstract\XmlSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Abstract\WcfSerializer.cs" />
     <Compile Include="Abstract\JsonSerializer.cs" />
