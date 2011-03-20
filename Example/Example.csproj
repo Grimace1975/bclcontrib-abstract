@@ -47,6 +47,10 @@
       <Project>{7F717114-B597-4B43-931A-529F696A549A}</Project>
       <Name>Contoso.Abstract.ApplicationBus</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.Sql\Contoso.Abstract.Sql.csproj">
+      <Project>{530515EF-6DFC-4A59-BCF2-F0F998DC6D89}</Project>
+      <Name>Contoso.Abstract.Sql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Contoso.Abstract.Unity\Contoso.Abstract.Unity.csproj">
       <Project>{21FCE5EA-3C6D-43D7-9984-1278307AB77E}</Project>
       <Name>Contoso.Abstract.Unity</Name>
