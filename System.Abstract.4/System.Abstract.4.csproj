@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>System.Abstract</RootNamespace>
+    <AssemblyName>System.Abstract</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\+FromCoreEx\Linq\Expressions\ExpressionEx.cs">
+      <Link>+FromCoreEx\Linq\Expressions\ExpressionEx.cs</Link>
+    </Compile>
+    <Compile Include="..\+FromCoreEx\Reflection\AssemblyExtensions.cs">
+      <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing+Impl\RegistryEventDispatcher.cs">
+      <Link>Abstract+EventSourcing\EventSourcing+Impl\RegistryEventDispatcher.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\AggregateRoot.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\AggregateRoot.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\AggregateRootOfflineSnapshotService.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\AggregateRootOfflineSnapshotService.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\AggregateRootOptions.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\AggregateRootOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\AggregateRootQueryOptions.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\AggregateRootQueryOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\AggregateRootRepository.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\AggregateRootRepository.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\AggregateRootSnapshot.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\AggregateRootSnapshot.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\AggregateTuple.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\AggregateTuple.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\AggregateTuple2.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\AggregateTuple2.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\Event.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\Event.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\Event2.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\Event2.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\IAccessAggregateRootState.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\IAccessAggregateRootState.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\IAggregateRootEventDispatcher.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\IAggregateRootEventDispatcher.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\IAggregateRootSnapshotStore.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\IAggregateRootSnapshotStore.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\IBatchedAggregateRootSnapshotStore.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\IBatchedAggregateRootSnapshotStore.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\IBatchedEventStore.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\IBatchedEventStore.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\ICanAggregateRootSnapshot.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\ICanAggregateRootSnapshot.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\IEventStore.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\IEventStore.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\IOfflineSnaphotQuery.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\IOfflineSnaphotQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus+Impl\ServiceBus.cs">
+      <Link>Abstract+ServiceBus+Impl\ServiceBus.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus+Impl\ServiceBusGrapher.cs">
+      <Link>Abstract+ServiceBus+Impl\ServiceBusGrapher.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus+Impl\ServiceBusManager.cs">
+      <Link>Abstract+ServiceBus+Impl\ServiceBusManager.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\IPublishingServiceBus.cs">
+      <Link>Abstract+ServiceBus\IPublishingServiceBus.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBus.cs">
+      <Link>Abstract+ServiceBus\IServiceBus.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusCallback.cs">
+      <Link>Abstract+ServiceBus\IServiceBusCallback.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusGrapher.cs">
+      <Link>Abstract+ServiceBus\IServiceBusGrapher.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusLocation.cs">
+      <Link>Abstract+ServiceBus\IServiceBusLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceMessage.cs">
+      <Link>Abstract+ServiceBus\IServiceMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceMessageHandler.cs">
+      <Link>Abstract+ServiceBus\IServiceMessageHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceMessageHandlerFactory.cs">
+      <Link>Abstract+ServiceBus\IServiceMessageHandlerFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\ServiceBusException.cs">
+      <Link>Abstract+ServiceBus\ServiceBusException.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\ServiceBusLiteralLocation.cs">
+      <Link>Abstract+ServiceBus\ServiceBusLiteralLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceLocator.cs">
+      <Link>Abstract+ServiceLocator+Impl\ServiceLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceLocatorGrapher.cs">
+      <Link>Abstract+ServiceLocator+Impl\ServiceLocatorGrapher.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceLocatorManager.cs">
+      <Link>Abstract+ServiceLocator+Impl\ServiceLocatorManager.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceLocator.cs">
+      <Link>Abstract+ServiceLocator\IServiceLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceLocatorGrapher.cs">
+      <Link>Abstract+ServiceLocator\IServiceLocatorGrapher.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceRegistrar.cs">
+      <Link>Abstract+ServiceLocator\IServiceRegistrar.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceRegistration.cs">
+      <Link>Abstract+ServiceLocator\IServiceRegistration.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IWantToSkipServiceLocator.cs">
+      <Link>Abstract+ServiceLocator\IWantToSkipServiceLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceDependencyAttribute.cs">
+      <Link>Abstract+ServiceLocator\ServiceDependencyAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceResolutionException.cs">
+      <Link>Abstract+ServiceLocator\ServiceResolutionException.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract\AService.cs">
+      <Link>Abstract\AService.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract\AssemblyTypeCatalog.cs">
+      <Link>Abstract\AssemblyTypeCatalog.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract\ISerializer.cs">
+      <Link>Abstract\ISerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract\ITypeCatalog.cs">
+      <Link>Abstract\ITypeCatalog.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\EventSourcing\MemoryAggregateRootSnapshotStore.cs">
+      <Link>Contoso.Abstract+Impl\EventSourcing\MemoryAggregateRootSnapshotStore.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\EventSourcing\MemoryEventStore.cs">
+      <Link>Contoso.Abstract+Impl\EventSourcing\MemoryEventStore.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Local.Designer.cs">
+      <Link>Local.Designer.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BclContrib.snk" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
