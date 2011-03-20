@@ -191,6 +191,12 @@
     <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\EventSourcing\MemoryEventStore.cs">
       <Link>Contoso.Abstract+Impl\EventSourcing\MemoryEventStore.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\MicroServiceLocator.cs">
+      <Link>Contoso.Abstract+Impl\MicroServiceLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\MicroServiceRegistrar.cs">
+      <Link>Contoso.Abstract+Impl\MicroServiceRegistrar.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Local.Designer.cs">
       <Link>Local.Designer.cs</Link>
     </Compile>
