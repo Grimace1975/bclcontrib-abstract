@@ -53,6 +53,8 @@
     <Compile Include="..\+FromCoreEx\Reflection\AssemblyExtensions.cs">
       <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
     </Compile>
+    <Compile Include="Abstract+EventSourcing\EventSourcing+Impl\FileAggregateRootSnapshotStore.cs" />
+    <Compile Include="Abstract+EventSourcing\EventSourcing+Impl\FileEventStore.cs" />
     <Compile Include="Abstract+EventSourcing\EventSourcing\AggregateRoot.cs" />
     <Compile Include="Abstract+EventSourcing\EventSourcing\AggregateRootQueryOptions.cs" />
     <Compile Include="Abstract+EventSourcing\EventSourcing\AggregateRootOptions.cs" />
@@ -72,10 +74,10 @@
     <Compile Include="Abstract+EventSourcing\EventSourcing\Event.cs" />
     <Compile Include="Abstract+EventSourcing\EventSourcing\IEventStore.cs" />
     <Compile Include="Abstract+EventSourcing\EventSourcing\IAccessAggregateRootState.cs" />
-    <Compile Include="Abstract+ServiceBus+Impl\ServiceBusGrapher.cs" />
-    <Compile Include="Abstract+ServiceBus\IServiceBusGrapher.cs" />
+    <Compile Include="Abstract+ServiceBus\AggregateServiceMessage.cs" />
+    <Compile Include="Abstract+ServiceBus\IServiceBusSetup.cs" />
     <Compile Include="Abstract+ServiceBus\IServiceMessageHandlerFactory.cs" />
-    <Compile Include="Abstract+ServiceBus\ServiceBusLiteralLocation.cs" />
+    <Compile Include="Abstract+ServiceBus\LiteralServiceBusLocation.cs" />
     <Compile Include="Abstract+ServiceBus+Impl\ServiceBus.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -90,8 +92,8 @@
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocatorGrapher.cs" />
-    <Compile Include="Abstract+ServiceLocator\IServiceLocatorGrapher.cs" />
+    <Compile Include="Abstract+ServiceLocator\Assembly.cs" />
+    <Compile Include="Abstract+ServiceLocator\IServiceLocatorSetup.cs" />
     <Compile Include="Abstract+ServiceLocator\IWantToSkipServiceLocator.cs" />
     <Compile Include="Abstract\AService.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\MemoryAggregateRootSnapshotStore.cs" />

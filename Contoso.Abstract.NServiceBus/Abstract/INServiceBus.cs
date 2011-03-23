@@ -33,10 +33,17 @@ namespace Contoso.Abstract
     /// </summary>
     public interface INServiceBus : IPublishingServiceBus
     {
-        void Reply<TMessage>(Action<TMessage> messageBuilder)
-            where TMessage : IServiceMessage;
         void Reply(params IServiceMessage[] messages);
         void Return<T>(T value);
         IBus Bus { get; }
+    }
+
+    /// <summary>
+    /// INServiceBusExtensions
+    /// </summary>
+    public static class INServiceBusExtensions
+    {
+        public static void Reply<TMessage>(this INServiceBus serviceBus, Action<TMessage> messageBuilder)
+            where TMessage : IServiceMessage { serviceBus.Reply(IServiceBusExtensions.CreateInstance(messageBuilder)); }
     }
 }

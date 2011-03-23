@@ -27,10 +27,11 @@ using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
-    /// ServiceBusLiteralLocation
+    /// LiteralServiceBusLocation
     /// </summary>
-    public class ServiceBusLiteralLocation : IServiceBusLocation
+    public class LiteralServiceBusLocation : IServiceBusLocation
     {
-        public ServiceBusLiteralLocation(string literal) { }
+        public LiteralServiceBusLocation(string literal) { Value = literal; }
+        public string Value { get; private set; }
     }
 }

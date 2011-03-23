@@ -24,14 +24,21 @@ THE SOFTWARE.
 */
 #endregion
 using System.Collections.Generic;
-namespace System.Abstract
+namespace System.Abstract.EventSourcing
 {
     /// <summary>
-    /// ServiceBus
+    /// FileEventStore
     /// </summary>
-    public static class ServiceBus
+    public class FileEventStore : IEventStore
     {
-        public readonly static IServiceBusLocation Self = new LiteralServiceBusLocation("#self");
-        public static IServiceBusCallback Send(params IServiceMessage[] messages) { return ServiceBusManager.Current.Send(messages); }
+        public IEnumerable<Event> GetEventsById(object aggregateId, int startSequence)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveEvents(object aggregateId, IEnumerable<Event> events)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

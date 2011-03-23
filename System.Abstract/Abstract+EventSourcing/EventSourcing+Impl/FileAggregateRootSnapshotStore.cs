@@ -23,15 +23,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Collections.Generic;
-namespace System.Abstract
+namespace System.Abstract.EventSourcing
 {
     /// <summary>
-    /// ServiceBus
+    /// FileAggregateRootSnapshotStore
     /// </summary>
-    public static class ServiceBus
+    public class FileAggregateRootSnapshotStore : IAggregateRootSnapshotStore
     {
-        public readonly static IServiceBusLocation Self = new LiteralServiceBusLocation("#self");
-        public static IServiceBusCallback Send(params IServiceMessage[] messages) { return ServiceBusManager.Current.Send(messages); }
+        public Func<IAggregateRootRepository, AggregateRoot, bool> InlineSnapshotPredicate
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public AggregateRootSnapshot GetLatestSnapshot<TAggregateRoot>(object aggregateId) where TAggregateRoot : AggregateRoot
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveSnapshot(Type aggregateType, AggregateRootSnapshot snapshot)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
