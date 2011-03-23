@@ -23,20 +23,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
+using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
-    /// IServiceBusGrapher
+    /// AggregateServiceMessage
     /// </summary>
-    public interface IServiceBusGrapher
+    public class AggregateServiceMessage : IServiceMessage
     {
-        IServiceBusGrapher Do(Action<IServiceBus> action);
-        void Finally(IServiceBus bus);
+        public AggregateServiceMessage(params IServiceMessage[] messages) { Messages = messages; }
+        public IServiceMessage[] Messages { get; private set; }
     }
-
-    ///// <summary>
-    ///// IServiceBusGrapherExtensions
-    ///// </summary>
-    //public static class IServiceBusGrapherExtensions { }
 }

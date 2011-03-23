@@ -23,29 +23,30 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
     /// ServiceBusManager
     /// </summary>
-    public static class ServiceBusManager
+    public class ServiceBusManager : IServiceBusSetup
     {
         private static readonly object _lock = new object();
         private static Func<IServiceBus> _provider;
         private static Func<IServiceLocator> _locator;
         private static IServiceBus _serviceBus;
 
-        public static IServiceBusGrapher SetBusProvider(Func<IServiceBus> provider) { return SetBusProvider(provider, GetDefaultServiceServiceLocator, new ServiceBusGrapher()); }
-        public static IServiceBusGrapher SetBusProvider(Func<IServiceBus> provider, IServiceBusGrapher grapher) { return SetBusProvider(provider, GetDefaultServiceServiceLocator, grapher); }
-        public static IServiceBusGrapher SetBusProvider(Func<IServiceBus> provider, Func<IServiceLocator> locator) { return SetBusProvider(provider, locator, new ServiceBusGrapher()); }
-        public static IServiceBusGrapher SetBusProvider(Func<IServiceBus> provider, Func<IServiceLocator> locator, IServiceBusGrapher grapher)
+        public static IServiceBusSetup SetBusProvider(Func<IServiceBus> provider) { return SetBusProvider(provider, GetDefaultServiceServiceLocator, new ServiceBusManager()); }
+        public static IServiceBusSetup SetBusProvider(Func<IServiceBus> provider, IServiceBusSetup setup) { return SetBusProvider(provider, GetDefaultServiceServiceLocator, setup); }
+        public static IServiceBusSetup SetBusProvider(Func<IServiceBus> provider, Func<IServiceLocator> locator) { return SetBusProvider(provider, locator, new ServiceBusManager()); }
+        public static IServiceBusSetup SetBusProvider(Func<IServiceBus> provider, Func<IServiceLocator> locator, IServiceBusSetup setup)
         {
             _provider = provider;
             _locator = locator;
-            return (Grapher = grapher);
+            return (Setup = setup);
         }
 
-        public static IServiceBusGrapher Grapher { get; private set; }
+        public static IServiceBusSetup Setup { get; private set; }
 
         public static IServiceBus Current
         {
@@ -66,8 +67,8 @@ namespace System.Abstract
                                 var registrar = locator.GetRegistrar();
                                 RegisterSelfInLocator(registrar, _serviceBus);
                             }
-                            if (Grapher != null)
-                                Grapher.Finally(_serviceBus);
+                            if (Setup != null)
+                                Setup.Finally(_serviceBus);
                         }
                 return _serviceBus;
             }
@@ -86,5 +87,24 @@ namespace System.Abstract
             try { return ServiceLocatorManager.Current; }
             catch (InvalidOperationException) { throw new InvalidOperationException(Local.InvalidServiceBusDefaultServiceLocator); }
         }
+
+
+        #region IServiceBusSetup
+
+        private List<Action<IServiceBus>> _actions = new List<Action<IServiceBus>>();
+
+        IServiceBusSetup IServiceBusSetup.Do(Action<IServiceBus> action)
+        {
+            _actions.Add(action);
+            return this;
+        }
+
+        void IServiceBusSetup.Finally(IServiceBus bus)
+        {
+            foreach (var action in _actions)
+                action(bus);
+        }
+
+        #endregion
     }
 }

@@ -30,13 +30,29 @@ namespace System.Abstract
     /// </summary>
     public interface IPublishingServiceBus : IServiceBus
     {
-        void Publish<TMessage>(Action<TMessage> messageBuilder) where TMessage : IServiceMessage;
-        void Publish<TMessage>(params TMessage[] messages) where TMessage : IServiceMessage;
-        void Subscribe<TMessage>() where TMessage : IServiceMessage;
-        void Subscribe<TMessage>(Predicate<TMessage> condition) where TMessage : IServiceMessage;
-        void Subscribe(Type messageType);
+        void Publish(params IServiceMessage[] messages);
         void Subscribe(Type messageType, Predicate<IServiceMessage> condition);
-        void Unsubscribe<TMessage>() where TMessage : IServiceMessage;
         void Unsubscribe(Type messageType);
+    }
+
+    /// <summary>
+    /// IPublishingServiceBusExtensions
+    /// </summary>
+    public static class IPublishingServiceBusExtensions
+    {
+        public static void Publish<TMessage>(this IPublishingServiceBus serviceBus, Action<TMessage> messageBuilder)
+            where TMessage : IServiceMessage { serviceBus.Publish(IServiceBusExtensions.CreateInstance<TMessage>(messageBuilder)); }
+        //
+        public static void Subscribe<TMessage>(this IPublishingServiceBus serviceBus)
+            where TMessage : IServiceMessage { serviceBus.Subscribe(typeof(TMessage), null); }
+        public static void Subscribe<TMessage>(this IPublishingServiceBus serviceBus, Predicate<TMessage> condition)
+            where TMessage : IServiceMessage
+        {
+            var p = new Predicate<IServiceMessage>(m => (m is TMessage ? condition((TMessage)m) : true));
+            serviceBus.Subscribe(typeof(TMessage), p);
+        }
+        public static void Subscribe(this IPublishingServiceBus serviceBus, Type messageType) { }
+        public static void Unsubscribe<TMessage>(this IPublishingServiceBus serviceBus)
+            where TMessage : IServiceMessage { }
     }
 }

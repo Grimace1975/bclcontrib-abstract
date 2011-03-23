@@ -23,26 +23,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
     /// ServiceLocatorManager
     /// </summary>
-    public static class ServiceLocatorManager
+    public class ServiceLocatorManager : IServiceLocatorSetup
     {
         private static readonly Type s_wantToSkipServiceLocatorType = typeof(IWantToSkipServiceLocator);
         private static readonly object _lock = new object();
         private static Func<IServiceLocator> _provider;
         private static IServiceLocator _locator;
 
-        public static IServiceLocatorGrapher SetLocatorProvider(Func<IServiceLocator> provider) { return SetLocatorProvider(provider, new ServiceLocatorGrapher()); }
-        public static IServiceLocatorGrapher SetLocatorProvider(Func<IServiceLocator> provider, IServiceLocatorGrapher grapher)
+        public static IServiceLocatorSetup SetLocatorProvider(Func<IServiceLocator> provider) { return SetLocatorProvider(provider, new ServiceLocatorManager()); }
+        public static IServiceLocatorSetup SetLocatorProvider(Func<IServiceLocator> provider, IServiceLocatorSetup setup)
         {
             _provider = provider;
-            return (Grapher = grapher);
+            return (Setup = setup);
         }
 
-        public static IServiceLocatorGrapher Grapher { get; private set; }
+        public static IServiceLocatorSetup Setup { get; private set; }
 
         public static IServiceLocator Current
         {
@@ -59,8 +60,8 @@ namespace System.Abstract
                                 throw new InvalidOperationException();
                             var registrar = _locator.GetRegistrar();
                             RegisterSelfInLocator(registrar, _locator);
-                            if (Grapher != null)
-                                Grapher.Finally(registrar, _locator);
+                            if (Setup != null)
+                                Setup.Finally(registrar, _locator);
                         }
                 return _locator;
             }
@@ -77,5 +78,23 @@ namespace System.Abstract
         {
             return ((type == null) || (s_wantToSkipServiceLocatorType.IsAssignableFrom(type)));
         }
+
+        #region IServiceLocatorSetup
+
+        private List<Action<IServiceRegistrar, IServiceLocator>> _actions = new List<Action<IServiceRegistrar, IServiceLocator>>();
+
+        IServiceLocatorSetup IServiceLocatorSetup.Do(Action<IServiceRegistrar, IServiceLocator> action)
+        {
+            _actions.Add(action);
+            return this;
+        }
+
+        void IServiceLocatorSetup.Finally(IServiceRegistrar registrar, IServiceLocator locator)
+        {
+            foreach (var action in _actions)
+                action(registrar, locator);
+        }
+
+        #endregion
     }
 }

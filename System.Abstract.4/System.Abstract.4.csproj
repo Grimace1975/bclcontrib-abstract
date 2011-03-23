@@ -107,11 +107,11 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceBus+Impl\ServiceBus.cs">
       <Link>Abstract+ServiceBus+Impl\ServiceBus.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceBus+Impl\ServiceBusGrapher.cs">
-      <Link>Abstract+ServiceBus+Impl\ServiceBusGrapher.cs</Link>
-    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus+Impl\ServiceBusManager.cs">
       <Link>Abstract+ServiceBus+Impl\ServiceBusManager.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\AggregateServiceMessage.cs">
+      <Link>Abstract+ServiceBus\AggregateServiceMessage.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\IPublishingServiceBus.cs">
       <Link>Abstract+ServiceBus\IPublishingServiceBus.cs</Link>
@@ -122,11 +122,11 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusCallback.cs">
       <Link>Abstract+ServiceBus\IServiceBusCallback.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusGrapher.cs">
-      <Link>Abstract+ServiceBus\IServiceBusGrapher.cs</Link>
-    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusLocation.cs">
       <Link>Abstract+ServiceBus\IServiceBusLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusSetup.cs">
+      <Link>Abstract+ServiceBus\IServiceBusSetup.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceMessage.cs">
       <Link>Abstract+ServiceBus\IServiceMessage.cs</Link>
@@ -137,17 +137,14 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceMessageHandlerFactory.cs">
       <Link>Abstract+ServiceBus\IServiceMessageHandlerFactory.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\LiteralServiceBusLocation.cs">
+      <Link>Abstract+ServiceBus\LiteralServiceBusLocation.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\ServiceBusException.cs">
       <Link>Abstract+ServiceBus\ServiceBusException.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceBus\ServiceBusLiteralLocation.cs">
-      <Link>Abstract+ServiceBus\ServiceBusLiteralLocation.cs</Link>
-    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceLocator.cs">
       <Link>Abstract+ServiceLocator+Impl\ServiceLocator.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceLocatorGrapher.cs">
-      <Link>Abstract+ServiceLocator+Impl\ServiceLocatorGrapher.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceLocatorManager.cs">
       <Link>Abstract+ServiceLocator+Impl\ServiceLocatorManager.cs</Link>
@@ -155,8 +152,8 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceLocator.cs">
       <Link>Abstract+ServiceLocator\IServiceLocator.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceLocatorGrapher.cs">
-      <Link>Abstract+ServiceLocator\IServiceLocatorGrapher.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceLocatorSetup.cs">
+      <Link>Abstract+ServiceLocator\IServiceLocatorSetup.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceRegistrar.cs">
       <Link>Abstract+ServiceLocator\IServiceRegistrar.cs</Link>
