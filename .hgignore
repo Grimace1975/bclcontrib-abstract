@@ -2,8 +2,12 @@ relre:^TestResults/.*
 glob:*.suo
 glob:*.user
 glob:*/bin/*
+glob:*/lib/*
 glob:*/obj/*
 glob:*/Bin/*
 glob:Bin/*
 glob:_ReSharper.*/*
 glob:*/_ReSharper.*/*
+glob:nuget/*.suo
+glob:packages/*
+glob:*/packages/*

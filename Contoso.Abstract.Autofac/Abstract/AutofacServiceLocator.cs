@@ -83,7 +83,7 @@ namespace Contoso.Abstract
         public TService Resolve<TService>(string id)
             where TService : class
         {
-            try { return Container.Resolve<TService>(id); }
+            try { return Container.ResolveKeyed<TService>(id); }
             catch (Exception ex) { throw new ServiceResolutionException(typeof(TService), ex); }
         }
         public object Resolve(Type serviceType)
