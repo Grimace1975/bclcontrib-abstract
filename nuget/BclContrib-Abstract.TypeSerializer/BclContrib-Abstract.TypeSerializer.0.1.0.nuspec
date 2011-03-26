@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<package> 
+  <metadata> 
+    <id>BclContrib-Abstract.TypeSerializer</id> 
+    <version>0.1.0</version> 
+    <authors>Sky Morey</authors> 
+    <owners>Sky Morey</owners>
+    <description>This package contains TypeSerializer implementations of the abstract TypeSerializer.</description> 
+    <projectUrl>http://code.google.com/p/bclcontrib-abstract/</projectUrl>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <tags>serialize .net20 .net35 .net40 bclcontrib</tags>
+    <language>en-US</language> 
+  </metadata> 
+</package>
+
