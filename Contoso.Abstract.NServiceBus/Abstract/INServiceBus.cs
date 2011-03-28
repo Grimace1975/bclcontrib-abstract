@@ -44,6 +44,6 @@ namespace Contoso.Abstract
     public static class INServiceBusExtensions
     {
         public static void Reply<TMessage>(this INServiceBus serviceBus, Action<TMessage> messageBuilder)
-            where TMessage : IServiceMessage { serviceBus.Reply(IServiceBusExtensions.CreateInstance(messageBuilder)); }
+            where TMessage : IServiceMessage { serviceBus.Reply(serviceBus.CreateMessage(messageBuilder)); }
     }
 }

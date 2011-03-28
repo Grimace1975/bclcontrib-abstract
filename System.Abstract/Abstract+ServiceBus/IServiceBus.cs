@@ -30,6 +30,7 @@ namespace System.Abstract
     /// </summary>
     public interface IServiceBus
     {
+        TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder) where TMessage : IServiceMessage;
         IServiceBusCallback Send(IServiceBusLocation destination, params IServiceMessage[] messages);
     }
 
@@ -39,17 +40,11 @@ namespace System.Abstract
     public static class IServiceBusExtensions
     {
         public static IServiceBusCallback Send<TMessage>(this IServiceBus serviceBus, IServiceBusLocation destination, Action<TMessage> messageBuilder)
-            where TMessage : IServiceMessage { return serviceBus.Send(destination, CreateInstance<TMessage>(messageBuilder)); }
+            where TMessage : IServiceMessage { return serviceBus.Send(destination, serviceBus.CreateMessage<TMessage>(messageBuilder)); }
         public static IServiceBusCallback Send<TMessage>(this IServiceBus serviceBus, Action<TMessage> messageBuilder)
-            where TMessage : IServiceMessage { return serviceBus.Send(null, CreateInstance<TMessage>(messageBuilder)); }
+            where TMessage : IServiceMessage { return serviceBus.Send(null, serviceBus.CreateMessage<TMessage>(messageBuilder)); }
         public static IServiceBusCallback Send<TMessage>(this IServiceBus serviceBus, string destination, Action<TMessage> messageBuilder)
-            where TMessage : IServiceMessage { return serviceBus.Send(new LiteralServiceBusLocation(destination), CreateInstance<TMessage>(messageBuilder)); }
-        //
-        public static IServiceMessage[] CreateInstance<TMessage>(Action<TMessage> messageBuilder)
-            where TMessage : IServiceMessage
-        {
-            throw new NotImplementedException();
-        }
+            where TMessage : IServiceMessage { return serviceBus.Send(new LiteralServiceBusLocation(destination), serviceBus.CreateMessage<TMessage>(messageBuilder)); }
         // send
         public static IServiceBusCallback Send(this IServiceBus serviceBus, params IServiceMessage[] messages) { return serviceBus.Send(null, messages); }
         public static IServiceBusCallback Send(this IServiceBus serviceBus, string destination, params IServiceMessage[] messages) { return serviceBus.Send(new LiteralServiceBusLocation(destination), messages); }

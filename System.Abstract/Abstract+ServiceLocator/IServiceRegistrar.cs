@@ -35,24 +35,29 @@ namespace System.Abstract
         TServiceLocator GetLocator<TServiceLocator>()
             where TServiceLocator : class, IServiceLocator;
 
+        // register type
+        void Register(Type serviceType);
+        void Register(Type serviceType, string name);
+
         // register implementation
         void Register<TService, TImplementation>()
             where TImplementation : class, TService;
-        void Register<TService, TImplementation>(string id)
+        void Register<TService, TImplementation>(string name)
             where TImplementation : class, TService;
         void Register<TService>(Type implementationType)
             where TService : class;
-        void Register<TService>(Type implementationType, string id)
+        void Register<TService>(Type implementationType, string name)
             where TService : class;
         void Register(Type serviceType, Type implementationType);
-        void Register(Type serviceType, Type implementationType, string id);
-
-        // register id
-        void Register(Type serviceType, string id);
+        void Register(Type serviceType, Type implementationType, string name);
 
         // register instance
-        void Register<TService>(TService instance)
+        void RegisterInstance<TService>(TService instance)
             where TService : class;
+        void RegisterInstance<TService>(TService instance, string name)
+            where TService : class;
+
+        // register method
         void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class;
     }

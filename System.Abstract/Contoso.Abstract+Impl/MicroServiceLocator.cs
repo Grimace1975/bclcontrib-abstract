@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Abstract;
 using System.Collections.Generic;
 using System.Reflection;
@@ -9,7 +10,7 @@ namespace Contoso.Abstract
     /// </summary>
     public interface IMicroServiceLocator : IServiceLocator
     {
-        IDictionary<Type, Type> Container { get; }
+        IDictionary<string, IDictionary<Type, Type>> Container { get; }
     }
 
     /// <summary>
@@ -17,12 +18,20 @@ namespace Contoso.Abstract
     /// </summary>
     public class MicroServiceLocator : IMicroServiceLocator
     {
-        private IDictionary<Type, Type> _container;
+        private IDictionary<string, IDictionary<Type, Type>> _container;
         private MicroServiceRegistrar _registrar;
 
         public MicroServiceLocator()
             : this(new Dictionary<Type, Type>()) { }
         public MicroServiceLocator(IDictionary<Type, Type> container)
+        {
+            if (container == null)
+                throw new ArgumentNullException("container");
+            Container = new Dictionary<string, IDictionary<Type, Type>> { 
+                {string.Empty, container}
+            };
+        }
+        public MicroServiceLocator(IDictionary<string, IDictionary<Type, Type>> container)
         {
             if (container == null)
                 throw new ArgumentNullException("container");
@@ -36,35 +45,40 @@ namespace Contoso.Abstract
 
         // resolve
         public TService Resolve<TService>()
-            where TService : class { return (TService)Resolve(typeof(TService)); }
-        public TService Resolve<TService>(string id)
-            where TService : class { throw new NotSupportedException(); }
-        public object Resolve(Type serviceType)
+            where TService : class { return (TService)Resolve(typeof(TService), string.Empty); }
+        public TService Resolve<TService>(string name)
+            where TService : class { return (TService)Resolve(typeof(TService), name); }
+        public object Resolve(Type serviceType) { return Resolve(serviceType, string.Empty); }
+        public object Resolve(Type serviceType, string name)
         {
             try
             {
+                IDictionary<Type, Type> container;
+                if (!_container.TryGetValue(name, out container))
+                    throw new ArgumentOutOfRangeException(string.Format("Could not resolve implementation for [{0}-{1}]", name, serviceType.ToString()));
                 Type concreteType;
-                if (!_container.TryGetValue(serviceType, out concreteType))
-                    throw new ArgumentOutOfRangeException(string.Format("Could not resolve implementation for [{0}]", serviceType.ToString()));
-                //
-                var constructors = concreteType.GetConstructors();
-                ConstructorInfo constructorInformation = null;
-                int maxParameters = 0;
-                foreach (var constructor in constructors)
-                    if (constructor.GetParameters().Length > maxParameters)
-                        constructorInformation = constructor;
-                if (constructorInformation == null)
+                if (!container.TryGetValue(serviceType, out concreteType))
+                    return Activator.CreateInstance(serviceType);
+                var constructorInfo = concreteType.GetConstructors()
+                    .FirstOrDefault(constructor => constructor.GetParameters().Length > 0);
+                if (constructorInfo == null)
                     return Activator.CreateInstance(concreteType);
-                var parameters = new List<object>();
-                foreach (var parameter in constructorInformation.GetParameters())
-                    parameters.Add(Resolve(parameter.ParameterType));
-                return Activator.CreateInstance(concreteType, parameters.ToArray());
+                var args = constructorInfo.GetParameters()
+                    .Select(arg => Resolve(arg.ParameterType))
+                    .ToArray();
+                return Activator.CreateInstance(concreteType, args);
             }
-            catch (Exception ex) { throw new ServiceResolutionException(serviceType, ex); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
-        public IEnumerable<object> ResolveAll(Type serviceType) { throw new NotSupportedException(); }
+        //
         public IEnumerable<TService> ResolveAll<TService>()
-            where TService : class { throw new NotSupportedException(); }
+            where TService : class { return ResolveAll(typeof(TService)).Cast<TService>(); }
+        public IEnumerable<object> ResolveAll(Type serviceType)
+        {
+            return _container.SelectMany(x => x.Value, (a, b) => new { Name = a.Key, Services = b })
+                .Where(x => x.Services.Key == serviceType)
+                .Select(x => Resolve(x.Services.Value, x.Name));
+        }
 
         // inject
         public TService Inject<TService>(TService instance)
@@ -78,7 +92,7 @@ namespace Contoso.Abstract
 
         #region Domain specific
 
-        public IDictionary<Type, Type> Container
+        public IDictionary<string, IDictionary<Type, Type>> Container
         {
             get { return _container; }
             private set

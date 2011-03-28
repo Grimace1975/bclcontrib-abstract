@@ -11,8 +11,8 @@
     <tags>autofac servicelocator .net20 .net35 .net40 bclcontrib</tags>
     <language>en-US</language>
     <dependencies>
-      <dependency id="bclcontrib-abstract" version="0.1.0" />
-      <dependency id="autofac" version="2.4.5" />
+      <dependency id="BclContrib-Abstract" version="0.1.0" />
+      <dependency id="Autofac" version="2.4.5.725" />
     </dependencies>
   </metadata>
 </package>

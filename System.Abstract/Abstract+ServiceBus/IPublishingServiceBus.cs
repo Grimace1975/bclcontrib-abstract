@@ -41,7 +41,7 @@ namespace System.Abstract
     public static class IPublishingServiceBusExtensions
     {
         public static void Publish<TMessage>(this IPublishingServiceBus serviceBus, Action<TMessage> messageBuilder)
-            where TMessage : IServiceMessage { serviceBus.Publish(IServiceBusExtensions.CreateInstance<TMessage>(messageBuilder)); }
+            where TMessage : IServiceMessage { serviceBus.Publish(serviceBus.CreateMessage<TMessage>(messageBuilder)); }
         //
         public static void Subscribe<TMessage>(this IPublishingServiceBus serviceBus)
             where TMessage : IServiceMessage { serviceBus.Subscribe(typeof(TMessage), null); }

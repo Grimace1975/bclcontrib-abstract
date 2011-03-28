@@ -54,24 +54,29 @@ namespace Contoso.Abstract
         public TServiceLocator GetLocator<TServiceLocator>()
             where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
+        // register type
+        public void Register(Type serviceType) { _container.RegisterType(serviceType, new InjectionMember[0]); }
+        public void Register(Type serviceType, string name) { _container.RegisterType(serviceType, name, new InjectionMember[0]); }
+
         // register implementation
         public void Register<TService, TImplementation>()
             where TImplementation : class, TService { _container.RegisterType<TService, TImplementation>(new InjectionMember[0]); }
-        public void Register<TService, TImplementation>(string id)
-            where TImplementation : class, TService { _container.RegisterType<TService, TImplementation>(id, new InjectionMember[0]); }
+        public void Register<TService, TImplementation>(string name)
+            where TImplementation : class, TService { _container.RegisterType<TService, TImplementation>(name, new InjectionMember[0]); }
         public void Register<TService>(Type implementationType)
            where TService : class { _container.RegisterType(typeof(TService), implementationType, new InjectionMember[0]); }
-        public void Register<TService>(Type implementationType, string id)
-           where TService : class { _container.RegisterType(typeof(TService), implementationType, id, new InjectionMember[0]); }
+        public void Register<TService>(Type implementationType, string name)
+           where TService : class { _container.RegisterType(typeof(TService), implementationType, name, new InjectionMember[0]); }
         public void Register(Type serviceType, Type implementationType) { _container.RegisterType(serviceType, implementationType, new InjectionMember[0]); }
-        public void Register(Type serviceType, Type implementationType, string id) { _container.RegisterType(serviceType, implementationType, id, new InjectionMember[0]); }
-
-        // register id
-        public void Register(Type serviceType, string id) { _container.RegisterType(serviceType, id, new InjectionMember[0]); }
+        public void Register(Type serviceType, Type implementationType, string name) { _container.RegisterType(serviceType, implementationType, name, new InjectionMember[0]); }
 
         // register instance
-        public void Register<TService>(TService instance)
+        public void RegisterInstance<TService>(TService instance)
             where TService : class { _container.RegisterInstance<TService>(instance); }
+        public void RegisterInstance<TService>(TService instance, string name)
+            where TService : class { _container.RegisterInstance<TService>(name, instance); }
+
+        // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { _container.RegisterType<TService>(new InjectionFactory(c => factoryMethod(_parent))); }
 

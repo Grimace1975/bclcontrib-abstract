@@ -40,6 +40,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\+FromCoreEx\Linq\Expressions\ExpressionEx.cs">
@@ -141,8 +142,8 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\LiteralServiceBusLocation.cs">
       <Link>Abstract+ServiceBus\LiteralServiceBusLocation.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceBus\ServiceBusException.cs">
-      <Link>Abstract+ServiceBus\ServiceBusException.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\ServiceBusMessageException.cs">
+      <Link>Abstract+ServiceBus\ServiceBusMessageException.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceLocator.cs">
       <Link>Abstract+ServiceLocator+Impl\ServiceLocator.cs</Link>
@@ -168,8 +169,17 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceDependencyAttribute.cs">
       <Link>Abstract+ServiceLocator\ServiceDependencyAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceResolutionException.cs">
-      <Link>Abstract+ServiceLocator\ServiceResolutionException.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceLocatorResolutionException.cs">
+      <Link>Abstract+ServiceLocator\ServiceLocatorResolutionException.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+TypeGrapher\IBuildManager.cs">
+      <Link>Abstract+TypeGrapher\IBuildManager.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+TypeGrapher\TypeCacheManager.cs">
+      <Link>Abstract+TypeGrapher\TypeCacheManager.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+TypeGrapher\TypeCacheSerializer.cs">
+      <Link>Abstract+TypeGrapher\TypeCacheSerializer.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract\AService.cs">
       <Link>Abstract\AService.cs</Link>
@@ -202,6 +212,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BclContrib.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Abstract+TypeGrapher+Impl\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

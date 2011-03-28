@@ -38,16 +38,24 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <HintPath>..\Library_\nservicebus\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <HintPath>..\packages\nservicebus.2.5.0.1446\lib\net40\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="NServiceBus">
-      <HintPath>..\Library_\nservicebus\NServiceBus.dll</HintPath>
+    <Reference Include="NServiceBus, Version=2.5.0.1446, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\nservicebus.2.5.0.1446\lib\net40\NServiceBus.dll</HintPath>
     </Reference>
-    <Reference Include="NServiceBus.Core">
-      <HintPath>..\Library_\nservicebus\NServiceBus.Core.dll</HintPath>
+    <Reference Include="NServiceBus.Core, Version=2.5.0.1446, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\nservicebus.2.5.0.1446\lib\net40\NServiceBus.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus.Testing">
+      <HintPath>..\packages\nservicebus.2.5.0.1446\lib\net40\NServiceBus.Testing.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data.SQLite">
+      <HintPath>..\packages\nservicebus.2.5.0.1446\lib\net40\System.Data.SQLite.DLL</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\INServiceBus.cs">
@@ -59,6 +67,21 @@
     <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\INServiceMessageHandler.cs">
       <Link>Abstract\INServiceMessageHandler.cs</Link>
     </Compile>
+    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\Internal\BusWrapper.cs">
+      <Link>Abstract\Internal\BusWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\Internal\MessageCaster.cs">
+      <Link>Abstract\Internal\MessageCaster.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\Internal\MessageCaster2.cs">
+      <Link>Abstract\Internal\MessageCaster2.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\Internal\TransportMessage.cs">
+      <Link>Abstract\Internal\TransportMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\Internal\TransportMessageHandler.cs">
+      <Link>Abstract\Internal\TransportMessageHandler.cs</Link>
+    </Compile>
     <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\NServiceBusAbstractor.cs">
       <Link>Abstract\NServiceBusAbstractor.cs</Link>
     </Compile>
@@ -66,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BclContrib.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\System.Abstract.4\System.Abstract.4.csproj">
@@ -73,6 +97,7 @@
       <Name>System.Abstract.4</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

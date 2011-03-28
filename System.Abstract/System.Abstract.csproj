@@ -46,6 +46,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\+FromCoreEx\Linq\Expressions\ExpressionEx.cs">
@@ -89,14 +90,17 @@
     <Compile Include="Abstract+ServiceBus\IServiceBusCallback.cs" />
     <Compile Include="Abstract+ServiceBus\IServiceMessage.cs" />
     <Compile Include="Abstract+ServiceBus\IPublishingServiceBus.cs" />
-    <Compile Include="Abstract+ServiceBus\ServiceBusException.cs" />
+    <Compile Include="Abstract+ServiceBus\ServiceBusMessageException.cs" />
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocator.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Abstract+ServiceLocator\Assembly.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceLocatorSetup.cs" />
     <Compile Include="Abstract+ServiceLocator\IWantToSkipServiceLocator.cs" />
+    <Compile Include="Abstract+TypeGrapher\TypeCacheSerializer.cs" />
+    <Compile Include="Abstract+TypeGrapher\TypeCacheManager.cs" />
     <Compile Include="Abstract\AService.cs" />
+    <Compile Include="Abstract+TypeGrapher\IBuildManager.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\MemoryAggregateRootSnapshotStore.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\MemoryEventStore.cs" />
     <Compile Include="Contoso.Abstract+Impl\MicroServiceLocator.cs" />
@@ -111,7 +115,7 @@
     <Compile Include="Abstract+ServiceLocator\IServiceLocator.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceRegistrar.cs" />
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocatorManager.cs" />
-    <Compile Include="Abstract+ServiceLocator\ServiceResolutionException.cs" />
+    <Compile Include="Abstract+ServiceLocator\ServiceLocatorResolutionException.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceRegistration.cs" />
     <Compile Include="Abstract\AssemblyTypeCatalog.cs" />
     <Compile Include="Abstract\ISerializer.cs" />
@@ -126,7 +130,9 @@
   <ItemGroup>
     <None Include="BclContrib.snk" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Abstract+TypeGrapher+Impl\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
