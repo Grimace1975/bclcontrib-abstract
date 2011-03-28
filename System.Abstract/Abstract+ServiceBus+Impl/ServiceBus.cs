@@ -33,5 +33,7 @@ namespace System.Abstract
     {
         public readonly static IServiceBusLocation Self = new LiteralServiceBusLocation("#self");
         public static IServiceBusCallback Send(params IServiceMessage[] messages) { return ServiceBusManager.Current.Send(messages); }
+        public static IServiceBusCallback Send<TMessage>(Action<TMessage> messageBuilder)
+            where TMessage : IServiceMessage { return ServiceBusManager.Current.Send<TMessage>(messageBuilder); }
     }
 }

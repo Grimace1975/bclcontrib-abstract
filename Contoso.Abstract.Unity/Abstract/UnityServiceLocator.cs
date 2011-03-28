@@ -76,29 +76,35 @@ namespace Contoso.Abstract
             where TService : class
         {
             try { return _container.Resolve<TService>(); }
-            catch (Exception ex) { throw new ServiceResolutionException(typeof(TService), ex); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
-        public TService Resolve<TService>(string id)
+        public TService Resolve<TService>(string name)
             where TService : class
         {
-            try { return _container.Resolve<TService>(id); }
-            catch (Exception ex) { throw new ServiceResolutionException(typeof(TService), ex); }
+            try { return _container.Resolve<TService>(name); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
         public object Resolve(Type serviceType)
         {
             try { return _container.Resolve(serviceType); }
-            catch (Exception ex) { throw new ServiceResolutionException(serviceType, ex); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
-        public IEnumerable<object> ResolveAll(Type serviceType)
+        public object Resolve(Type serviceType, string name)
         {
-            try { return new List<object>(_container.ResolveAll(serviceType)); }
-            catch (Exception ex) { throw new ServiceResolutionException(serviceType, ex); }
+            try { return _container.Resolve(serviceType, name); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
+        //
         public IEnumerable<TService> ResolveAll<TService>()
             where TService : class
         {
             try { return new List<TService>(_container.ResolveAll<TService>()); }
-            catch (Exception ex) { throw new ServiceResolutionException(typeof(TService), ex); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
+        }
+        public IEnumerable<object> ResolveAll(Type serviceType)
+        {
+            try { return new List<object>(_container.ResolveAll(serviceType)); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
 
         // inject

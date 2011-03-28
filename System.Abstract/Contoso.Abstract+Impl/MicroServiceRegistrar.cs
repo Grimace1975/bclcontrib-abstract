@@ -15,9 +15,9 @@ namespace Contoso.Abstract
     internal class MicroServiceRegistrar : IMicroServiceRegistrar
     {
         private MicroServiceLocator _parent;
-        private IDictionary<Type, Type> _container;
+        private IDictionary<string, IDictionary<Type, Type>> _container;
 
-        public MicroServiceRegistrar(MicroServiceLocator parent, IDictionary<Type, Type> container)
+        public MicroServiceRegistrar(MicroServiceLocator parent, IDictionary<string, IDictionary<Type, Type>> container)
         {
             _parent = parent;
             _container = container;
@@ -28,30 +28,35 @@ namespace Contoso.Abstract
         public TServiceLocator GetLocator<TServiceLocator>()
             where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
+        // register type
+        public void Register(Type serviceType) { Register(serviceType, serviceType, string.Empty); }
+        public void Register(Type serviceType, string name) { Register(serviceType, serviceType, name); }
+
         // register implementation
         public void Register<TService, TImplementation>()
-            where TImplementation : class, TService { Register(typeof(TService), typeof(TImplementation)); }
-        public void Register<TService, TImplementation>(string id)
-            where TImplementation : class, TService { throw new NotSupportedException(); }
+            where TImplementation : class, TService { Register(typeof(TService), typeof(TImplementation), string.Empty); }
+        public void Register<TService, TImplementation>(string name)
+            where TImplementation : class, TService { Register(typeof(TService), typeof(TImplementation), name); }
         public void Register<TService>(Type implementationType)
-           where TService : class { Register(typeof(TService), implementationType); }
-        public void Register<TService>(Type implementationType, string id)
-           where TService : class { throw new NotSupportedException(); }
-        public void Register(Type serviceType, Type implementationType)
+           where TService : class { Register(typeof(TService), implementationType, string.Empty); }
+        public void Register<TService>(Type implementationType, string name)
+           where TService : class { Register(typeof(TService), implementationType, name); }
+        public void Register(Type serviceType, Type implementationType) { Register(serviceType, implementationType, string.Empty); }
+        public void Register(Type serviceType, Type implementationType, string name)
         {
-            if (_container.ContainsKey(serviceType))
-                _container[serviceType] = implementationType;
-            else
-                _container.Add(serviceType, implementationType);
+            IDictionary<Type, Type> singleContainer;
+            if (!_container.TryGetValue(name, out singleContainer))
+                _container[name] = singleContainer = new Dictionary<Type, Type>();
+            singleContainer[serviceType] = implementationType;
         }
-        public void Register(Type serviceType, Type implementationType, string id) { throw new NotSupportedException(); }
-
-        // register id
-        public void Register(Type serviceType, string id) { throw new NotSupportedException(); }
 
         // register instance
-        public void Register<TService>(TService instance)
+        public void RegisterInstance<TService>(TService instance)
             where TService : class { throw new NotSupportedException(); }
+        public void RegisterInstance<TService>(TService instance, string name)
+            where TService : class { throw new NotSupportedException(); }
+
+        // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { throw new NotSupportedException(); }
     }

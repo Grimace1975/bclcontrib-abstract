@@ -78,26 +78,32 @@ namespace Contoso.Abstract
             where TService : class
         {
             try { return Container.Resolve<TService>(); }
-            catch (Exception ex) { throw new ServiceResolutionException(typeof(TService), ex); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
-        public TService Resolve<TService>(string id)
+        public TService Resolve<TService>(string name)
             where TService : class
         {
-            try { return Container.ResolveKeyed<TService>(id); }
-            catch (Exception ex) { throw new ServiceResolutionException(typeof(TService), ex); }
+            try { return Container.ResolveNamed<TService>(name); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
         public object Resolve(Type serviceType)
         {
             try { return Container.Resolve(serviceType); }
-            catch (Exception ex) { throw new ServiceResolutionException(serviceType, ex); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
-        public IEnumerable<object> ResolveAll(Type serviceType) { throw new NotSupportedException(); }
+        public object Resolve(Type serviceType, string name)
+        {
+            try { return Container.ResolveNamed(name, serviceType); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
+        }
+        //
         public IEnumerable<TService> ResolveAll<TService>()
             where TService : class
         {
             try { return new List<TService>(Container.Resolve<IEnumerable<TService>>()); }
-            catch (Exception ex) { throw new ServiceResolutionException(typeof(TService), ex); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
+        public IEnumerable<object> ResolveAll(Type serviceType) { throw new NotSupportedException(); }
 
         // inject
         public TService Inject<TService>(TService instance)

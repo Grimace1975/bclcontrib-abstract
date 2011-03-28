@@ -76,26 +76,32 @@ namespace Contoso.Abstract
             where TService : class
         {
             try { return _container.GetInstance<TService>(); }
-            catch (Exception ex) { throw new ServiceResolutionException(typeof(TService), ex); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
-        public TService Resolve<TService>(string key)
+        public TService Resolve<TService>(string name)
             where TService : class
         {
-            try { return _container.GetInstance<TService>(key); }
-            catch (Exception ex) { throw new ServiceResolutionException(typeof(TService), ex); }
+            try { return _container.GetInstance<TService>(name); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
         public object Resolve(Type serviceType)
         {
             try { return _container.GetInstance(serviceType); }
-            catch (Exception ex) { throw new ServiceResolutionException(serviceType, ex); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
+        public object Resolve(Type serviceType, string name)
+        {
+            try { return _container.GetInstance(serviceType, name); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
+        }
+        //
+        public IEnumerable<TService> ResolveAll<TService>()
+            where TService : class { return _container.GetAllInstances<TService>(); }
         public IEnumerable<object> ResolveAll(Type serviceType)
         {
             try { return _container.GetAllInstances(serviceType).Cast<object>(); }
-            catch (Exception ex) { throw new ServiceResolutionException(serviceType, ex); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
-        public IEnumerable<TService> ResolveAll<TService>()
-            where TService : class { return _container.GetAllInstances<TService>(); }
 
         // inject
         public TService Inject<TService>(TService instance)

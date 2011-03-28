@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.StructureM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.Unity", "Contoso.Abstract.Unity\Contoso.Abstract.Unity.csproj", "{21FCE5EA-3C6D-43D7-9984-1278307AB77E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.Windsor", "Contoso.Abstract.Windsor\Contoso.Abstract.Windsor.csproj", "{C03A8167-F65E-4271-978C-E72914C9C311}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.CastleWindsor", "Contoso.Abstract.CastleWindsor\Contoso.Abstract.CastleWindsor.csproj", "{C03A8167-F65E-4271-978C-E72914C9C311}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.Msmq", "Contoso.Abstract.Msmq\Contoso.Abstract.Msmq.csproj", "{329592DA-BAC3-41D0-9197-EC1186A28560}"
 EndProject
@@ -57,7 +57,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.StructureM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.Unity.4", "Contoso.Abstract.Unity.4\Contoso.Abstract.Unity.4.csproj", "{D8273634-E428-474A-98EB-4D9374F782A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.Windsor.4", "Contoso.Abstract.Windsor.4\Contoso.Abstract.Windsor.4.csproj", "{BBF59724-E4CC-4243-9E43-9860B39EAB69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.CastleWindsor.4", "Contoso.Abstract.CastleWindsor.4\Contoso.Abstract.CastleWindsor.4.csproj", "{BBF59724-E4CC-4243-9E43-9860B39EAB69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -122,6 +122,7 @@ Global
 		{BF36681D-4869-48B6-B2E9-F78430206F62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BF36681D-4869-48B6-B2E9-F78430206F62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF36681D-4869-48B6-B2E9-F78430206F62}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BF36681D-4869-48B6-B2E9-F78430206F62}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{BF36681D-4869-48B6-B2E9-F78430206F62}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{BF36681D-4869-48B6-B2E9-F78430206F62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF36681D-4869-48B6-B2E9-F78430206F62}.Release|Any CPU.Build.0 = Release|Any CPU

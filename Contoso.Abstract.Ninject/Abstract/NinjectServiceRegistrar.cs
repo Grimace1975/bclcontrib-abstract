@@ -52,24 +52,29 @@ namespace Contoso.Abstract
         public TServiceLocator GetLocator<TServiceLocator>()
             where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
+        // register type
+        public void Register(Type serviceType) { Bind(serviceType).ToSelf(); }
+        public void Register(Type serviceType, string name) { Bind(serviceType).ToSelf().Named(name); }
+
         // register implementation
         public void Register<TService, TImplementation>()
             where TImplementation : class, TService { Bind<TService>().To<TImplementation>(); }
-        public void Register<TService, TImplementation>(string id)
-            where TImplementation : class, TService { Bind<TService>().To(typeof(TImplementation)).Named(id); }
+        public void Register<TService, TImplementation>(string name)
+            where TImplementation : class, TService { Bind<TService>().To(typeof(TImplementation)).Named(name); }
         public void Register<TService>(Type implementationType)
             where TService : class { Bind<TService>().To(implementationType); }
-        public void Register<TService>(Type implementationType, string id)
-            where TService : class { Bind<TService>().To(implementationType).Named(id); }
+        public void Register<TService>(Type implementationType, string name)
+            where TService : class { Bind<TService>().To(implementationType).Named(name); }
         public void Register(Type serviceType, Type implementationType) { Bind(serviceType).To(implementationType); }
-        public void Register(Type serviceType, Type implementationType, string id) { Bind(serviceType).To(implementationType).Named(id); }
-
-        // register id
-        public void Register(Type serviceType, string id) { Bind(serviceType).ToSelf().Named(id); }
+        public void Register(Type serviceType, Type implementationType, string name) { Bind(serviceType).To(implementationType).Named(name); }
 
         // register instance
-        public void Register<TService>(TService instance)
+        public void RegisterInstance<TService>(TService instance)
             where TService : class { Bind<TService>().ToConstant(instance); }
+        public void RegisterInstance<TService>(TService instance, string name)
+            where TService : class { Bind<TService>().ToConstant(instance).Named(name); }
+
+        // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { Bind<TService>().ToMethod(x => factoryMethod(_parent)); }
 

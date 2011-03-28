@@ -59,6 +59,22 @@ namespace Contoso.Abstract
         public TServiceLocator GetLocator<TServiceLocator>()
             where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
+        // register type
+        public void Register(Type serviceType)
+        {
+            if (_container != null)
+                throw new NotSupportedException();
+            else
+                _builder.RegisterType(serviceType);
+        }
+        public void Register(Type serviceType, string name)
+        {
+            if (_container != null)
+                throw new NotSupportedException();
+            else
+                _builder.RegisterType(serviceType).Named(name, serviceType);
+        }
+
         // register implementation
         public void Register<TService, TImplementation>()
             where TImplementation : class, TService
@@ -68,13 +84,13 @@ namespace Contoso.Abstract
             else
                 _builder.RegisterType<TImplementation>().As<TService>();
         }
-        public void Register<TService, TImplementation>(string id)
+        public void Register<TService, TImplementation>(string name)
             where TImplementation : class, TService
         {
             if (_container != null)
-                _container.ComponentRegistry.Register(RegistrationBuilder.ForType<TImplementation>().Named<TService>(id).CreateRegistration());
+                _container.ComponentRegistry.Register(RegistrationBuilder.ForType<TImplementation>().Named<TService>(name).CreateRegistration());
             else
-                _builder.RegisterType<TImplementation>().Named<TService>(id);
+                _builder.RegisterType<TImplementation>().Named<TService>(name);
         }
         public void Register<TService>(Type implementationType)
              where TService : class
@@ -84,13 +100,13 @@ namespace Contoso.Abstract
             else
                 _builder.RegisterType(implementationType).As<TService>();
         }
-        public void Register<TService>(Type implementationType, string id)
+        public void Register<TService>(Type implementationType, string name)
              where TService : class
         {
             if (_container != null)
-                _container.ComponentRegistry.Register(RegistrationBuilder.ForType(implementationType).Named<TService>(id).CreateRegistration());
+                _container.ComponentRegistry.Register(RegistrationBuilder.ForType(implementationType).Named<TService>(name).CreateRegistration());
             else
-                _builder.RegisterType(implementationType).Named<TService>(id);
+                _builder.RegisterType(implementationType).Named<TService>(name);
         }
         public void Register(Type serviceType, Type implementationType)
         {
@@ -99,25 +115,16 @@ namespace Contoso.Abstract
             else
                 _builder.RegisterType(implementationType).As(serviceType);
         }
-        public void Register(Type serviceType, Type implementationType, string id)
+        public void Register(Type serviceType, Type implementationType, string name)
         {
             if (_container != null)
-                _container.ComponentRegistry.Register(RegistrationBuilder.ForType(implementationType).Named(id, serviceType).CreateRegistration());
+                _container.ComponentRegistry.Register(RegistrationBuilder.ForType(implementationType).Named(name, serviceType).CreateRegistration());
             else
-                _builder.RegisterType(implementationType).Named(id, serviceType);
-        }
-
-        // register id
-        public void Register(Type serviceType, string id)
-        {
-            if (_container != null)
-                throw new NotSupportedException();
-            else
-                _builder.RegisterType(serviceType).Named(id, serviceType);
+                _builder.RegisterType(implementationType).Named(name, serviceType);
         }
 
         // register instance
-        public void Register<TService>(TService instance)
+        public void RegisterInstance<TService>(TService instance)
             where TService : class
         {
             if (_container != null)
@@ -125,6 +132,16 @@ namespace Contoso.Abstract
             else
                 _builder.RegisterInstance(instance);
         }
+        public void RegisterInstance<TService>(TService instance, string name)
+            where TService : class
+        {
+            if (_container != null)
+                throw new NotSupportedException();
+            else
+                _builder.RegisterInstance(instance).Named(name, typeof(TService));
+        }
+
+        // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class
         {

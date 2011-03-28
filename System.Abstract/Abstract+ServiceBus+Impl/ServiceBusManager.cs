@@ -76,10 +76,10 @@ namespace System.Abstract
 
         private static void RegisterSelfInLocator(IServiceRegistrar registrar, IServiceBus serviceBus)
         {
-            registrar.Register<IServiceBus>(serviceBus);
+            registrar.RegisterInstance<IServiceBus>(serviceBus);
             var publishingServiceBus = (serviceBus as IPublishingServiceBus);
             if (publishingServiceBus != null)
-                registrar.Register<IPublishingServiceBus>(publishingServiceBus);
+                registrar.RegisterInstance<IPublishingServiceBus>(publishingServiceBus);
         }
 
         private static IServiceLocator GetDefaultServiceServiceLocator()

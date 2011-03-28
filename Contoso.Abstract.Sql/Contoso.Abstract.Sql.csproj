@@ -58,7 +58,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Contoso.Abstract.TypeSerializer\Contoso.Abstract.TypeSerializer.csproj">
       <Project>{45479754-BA8C-46CE-B42A-1432EC8CEE6B}</Project>
-      <Name>Contoso.Abstract.Serializer</Name>
+      <Name>Contoso.Abstract.TypeSerializer</Name>
     </ProjectReference>
     <ProjectReference Include="..\System.Abstract\System.Abstract.csproj">
       <Project>{A44E9D89-BFF2-41A4-AADC-3C2BDFDAEEB1}</Project>

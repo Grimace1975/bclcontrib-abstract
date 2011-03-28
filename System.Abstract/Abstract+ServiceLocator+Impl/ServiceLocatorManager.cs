@@ -69,7 +69,7 @@ namespace System.Abstract
 
         private static void RegisterSelfInLocator(IServiceRegistrar registrar, IServiceLocator locator)
         {
-            registrar.Register<IServiceLocator>(locator);
+            registrar.RegisterInstance<IServiceLocator>(locator);
         }
 
         public static bool GetWantsToSkipLocator(object instance) { return ((instance == null) || (GetWantsToSkipLocator(instance.GetType()))); }

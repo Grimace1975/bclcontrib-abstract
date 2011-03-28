@@ -78,39 +78,44 @@ namespace Contoso.Abstract
         {
             try { return _container.Get<TService>(new IParameter[0]); }
             catch (ActivationException activationEx) { return (ResolveAsFirstBinding(activationEx, typeof(TService)) as TService); }
-            catch (Exception ex) { throw new ServiceResolutionException(typeof(TService), ex); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
-        public TService Resolve<TService>(string id)
+        public TService Resolve<TService>(string name)
             where TService : class
         {
             try
             {
-                var value = _container.Get<TService>(id, new IParameter[0]);
+                var value = _container.Get<TService>(name, new IParameter[0]);
                 if (value == null)
-                    throw new ServiceResolutionException(typeof(TService));
+                    throw new ServiceLocatorResolutionException(typeof(TService));
                 return value;
             }
-            catch (ActivationException activationEx) { return (ResolveAsFirstBinding(activationEx, typeof(TService)) as TService); }
-            catch (Exception ex) { throw new ServiceResolutionException(typeof(TService), ex); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
         public object Resolve(Type serviceType)
         {
             try { return _container.Get(serviceType, new IParameter[0]); }
             catch (ActivationException activationEx) { return ResolveAsFirstBinding(activationEx, serviceType); }
-            catch (Exception ex) { throw new ServiceResolutionException(serviceType, ex); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
+        }
+        public object Resolve(Type serviceType, string name)
+        {
+            try { return _container.Get(serviceType, name, new IParameter[0]); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
+        }
+//
+        public IEnumerable<TService> ResolveAll<TService>()
+              where TService : class
+        {
+            try { return new List<TService>(_container.GetAll<TService>(new IParameter[0])); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
         public IEnumerable<object> ResolveAll(Type serviceType)
         {
             try { return new List<object>(_container.GetAll(serviceType, new IParameter[0])); }
-            catch (Exception ex) { throw new ServiceResolutionException(serviceType, ex); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
-        public IEnumerable<TService> ResolveAll<TService>()
-            where TService : class
-        {
-            try { return new List<TService>(_container.GetAll<TService>(new IParameter[0])); }
-            catch (Exception ex) { throw new ServiceResolutionException(typeof(TService), ex); }
-        }
-
+  
         // inject
         public TService Inject<TService>(TService instance)
             where TService : class
@@ -148,7 +153,7 @@ namespace Contoso.Abstract
                 .FirstOrDefault();
             if (firstBinding != null)
                 return Container.Get(serviceType, firstBinding.Metadata.Name);
-            throw new ServiceResolutionException(serviceType, ex);
+            throw new ServiceLocatorResolutionException(serviceType, ex);
         }
 
         #endregion

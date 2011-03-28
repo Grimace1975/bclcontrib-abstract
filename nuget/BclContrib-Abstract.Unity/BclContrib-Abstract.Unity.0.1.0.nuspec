@@ -1,15 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?> 
-<package> 
-  <metadata> 
-    <id>BclContrib-Abstract.Unity</id> 
-    <version>0.1.0</version> 
-    <authors>Sky Morey</authors> 
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>BclContrib-Abstract.Unity</id>
+    <version>0.1.0</version>
+    <authors>Sky Morey</authors>
     <owners>Sky Morey</owners>
-    <description>This package contains a Unity implementation of the abstract ServiceLocator.</description> 
+    <description>This package contains a Unity implementation of the abstract ServiceLocator.</description>
     <projectUrl>http://code.google.com/p/bclcontrib-abstract/</projectUrl>
     <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
     <tags>unity servicelocator .net20 .net35 .net40 bclcontrib</tags>
-    <language>en-US</language> 
-  </metadata> 
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="BclContrib-Abstract" version="0.1.0" />
+      <dependency id="Unity" version="2.0" />
+    </dependencies>
+  </metadata>
 </package>
-

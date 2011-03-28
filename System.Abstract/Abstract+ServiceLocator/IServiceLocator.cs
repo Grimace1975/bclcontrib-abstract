@@ -40,12 +40,14 @@ namespace System.Abstract
         // resolve
         TService Resolve<TService>()
             where TService : class;
-        TService Resolve<TService>(string id)
+        TService Resolve<TService>(string name)
             where TService : class;
         object Resolve(Type serviceType);
-        IEnumerable<object> ResolveAll(Type serviceType);
+        object Resolve(Type serviceType, string name);
+        //
         IEnumerable<TService> ResolveAll<TService>()
             where TService : class;
+        IEnumerable<object> ResolveAll(Type serviceType);
 
         // inject
         TService Inject<TService>(TService instance)

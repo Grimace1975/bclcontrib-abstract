@@ -31,19 +31,31 @@ namespace Example
         }
     }
 
+    // example event
     public class MyEvent : Event { }
+
+    // example aggregate-root
     public class MyAggregate : AggregateRoot
     {
+        // method exposed to the domain
         public void DoMethod() { ApplyEvent(new MyEvent()); }
-        public void Handle(MyEvent e) { }
+        // apply the event
+        private void Handle(MyEvent e) { }
     }
 
     public class MyClass
     {
         public MyClass(IServiceBus bus)
         {
+            // sending from an instance
             ServiceBus.Send(new MyService { Value = "Value" });
+            // sending from a builder
+            ServiceBus.Send<MyService>(x => { x.Value = "Value"; });
+
+            // sending from an instance
             bus.Send(new MyService { Value = "Value" });
+            // sending from a builder
+            bus.Send<MyService>(x => { x.Value = "Value"; });
         }
 
         public MyClass(IServiceLocator locator)
@@ -56,7 +68,7 @@ namespace Example
             // register as a type mapping
             registrar.Register<IMyService, MyService>();
             // register as a single instance
-            registrar.Register<IMyService>(new MyService { Value = "Value" });
+            registrar.RegisterInstance<IMyService>(new MyService { Value = "Value" });
             // register as a delegate
             registrar.Register<IMyService>(locator => new MyService { Value = "Value" });
         }

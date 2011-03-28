@@ -42,9 +42,9 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ninject, Version=2.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+    <Reference Include="Ninject, Version=2.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Library_\ninject\Ninject.dll</HintPath>
+      <HintPath>..\packages\Ninject.2.2.1.0\lib\.NetFramework 3.5\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BclContrib.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\System.Abstract\System.Abstract.csproj">

@@ -172,24 +172,16 @@
 
 //        private static List<string> GetBaseTypes(IMessage[] messages, IMessageMapper mapper)
 //        {
-//            List<string> result = new List<string>();
+//            var result = new List<string>();
 //            foreach (IMessage m in messages)
 //            {
-//                Type t = mapper.GetMappedTypeFor(m.GetType());
-//                for (Type baseType = t.BaseType; (baseType != typeof(object)) && (baseType != null); baseType = baseType.BaseType)
-//                {
+//                var t = mapper.GetMappedTypeFor(m.GetType());
+//                for (var baseType = t.BaseType; (baseType != typeof(object)) && (baseType != null); baseType = baseType.BaseType)
 //                    if (typeof(IMessage).IsAssignableFrom(baseType) && !result.Contains(baseType.FullName))
-//                    {
 //                        result.Add(baseType.FullName);
-//                    }
-//                }
-//                foreach (Type i in t.GetInterfaces())
-//                {
+//                foreach (var i in t.GetInterfaces())
 //                    if (((i != typeof(IMessage)) && typeof(IMessage).IsAssignableFrom(i)) && !result.Contains(i.FullName))
-//                    {
 //                        result.Add(i.FullName);
-//                    }
-//                }
 //            }
 //            return result;
 //        }
@@ -199,15 +191,9 @@
 //            IEnumerable<FieldInfo> fields;
 //            typeToFields.TryGetValue(t, out fields);
 //            if (fields != null)
-//            {
 //                foreach (FieldInfo f in fields)
-//                {
 //                    if (f.Name == name)
-//                    {
 //                        return f;
-//                    }
-//                }
-//            }
 //            return null;
 //        }
 
@@ -215,9 +201,7 @@
 //        {
 //            string n = name;
 //            if (name.Contains(":"))
-//            {
 //                n = name.Substring(name.IndexOf(":") + 1, (name.Length - name.IndexOf(":")) - 1);
-//            }
 //            return n;
 //        }
 
@@ -228,9 +212,7 @@
 //            {
 //                string ns = mapper.GetMappedTypeFor(m.GetType()).Namespace;
 //                if (!result.Contains(ns))
-//                {
 //                    result.Add(ns);
-//                }
 //            }
 //            return result;
 //        }
@@ -239,67 +221,55 @@
 //    {
 //        // This item is obfuscated and can not be translated.
 //        if (t.IsSimpleType() || (t == typeof(Uri)))
-//        {
 //            return this.GetPropertyValue(t, node);
-//        }
-//        if (t == typeof(WireEncryptedString))
-//        {
-//            if (this.EncryptionService != null)
-//            {
-//                EncryptedValue encrypted = this.GetObjectOfTypeFromNode(typeof(EncryptedValue), node) as EncryptedValue;
-//                string s = this.EncryptionService.Decrypt(encrypted);
-//                WireEncryptedString <>g__initLocal1 = new WireEncryptedString();
-//                <>g__initLocal1.Value = s;
-//                return <>g__initLocal1;
-//            }
-//            foreach (XmlNode n in node.ChildNodes)
-//            {
-//                if (n.Name.ToLower() == "encryptedbase64value")
-//                {
-//                    WireEncryptedString wes = new WireEncryptedString();
-//                    wes.Value = this.GetPropertyValue(typeof(string), n) as string;
-//                    return wes;
-//                }
-//            }
-//        }
+//        //if (t == typeof(WireEncryptedString))
+//        //{
+//        //    if (this.EncryptionService != null)
+//        //    {
+//        //        EncryptedValue encrypted = this.GetObjectOfTypeFromNode(typeof(EncryptedValue), node) as EncryptedValue;
+//        //        string s = EncryptionService.Decrypt(encrypted);
+//        //        WireEncryptedString <>g__initLocal1 = new WireEncryptedString();
+//        //        <>g__initLocal1.Value = s;
+//        //        return <>g__initLocal1;
+//        //    }
+//        //    foreach (XmlNode n in node.ChildNodes)
+//        //    {
+//        //        if (n.Name.ToLower() == "encryptedbase64value")
+//        //        {
+//        //            WireEncryptedString wes = new WireEncryptedString();
+//        //            wes.Value = this.GetPropertyValue(typeof(string), n) as string;
+//        //            return wes;
+//        //        }
+//        //    }
+//        //}
 //        if (typeof(IEnumerable).IsAssignableFrom(t))
-//        {
 //            return this.GetPropertyValue(t, node);
-//        }
 //        object result = this.MessageMapper.CreateInstance(t);
 //        foreach (XmlNode n in node.ChildNodes)
 //        {
 //            Type type = null;
 //            if (n.Name.Contains(":"))
-//            {
 //                type = Type.GetType("System." + n.Name.Substring(0, n.Name.IndexOf(":")), false, true);
-//            }
-//            PropertyInfo prop = GetProperty(t, n.Name);
+//            var prop = GetProperty(t, n.Name);
 //            if (prop != null)
 //            {
 //                if (type != null)
-//                {
 //                    goto Label_01CA;
-//                }
-//                object val = this.GetPropertyValue(prop.PropertyType, n);
+//                var val = GetPropertyValue(prop.PropertyType, n);
 //                if (val != null)
 //                {
 //                    propertyInfoToLateBoundPropertySet[prop](result, val);
 //                    continue;
 //                }
 //            }
-//            FieldInfo field = this.GetField(t, n.Name);
+//            var field = GetField(t, n.Name);
 //            if (field != null)
 //            {
 //                if (type != null)
-//                {
 //                    goto Label_0222;
-//                }
-//                object val = this.GetPropertyValue(field.FieldType, n);
+//                var val = GetPropertyValue(field.FieldType, n);
 //                if (val != null)
-//                {
 //                    fieldInfoToLateBoundFieldSet[field](result, val);
-//                }
 //            }
 //        }
 //        return result;

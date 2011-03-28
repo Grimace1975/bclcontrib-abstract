@@ -54,6 +54,11 @@ namespace Contoso.Abstract
             _messageHandlerFactory = messageHandlerFactory;
         }
 
+        public TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder) where TMessage : IServiceMessage
+        {
+            throw new NotImplementedException();
+        }
+
         public IApplicationServiceBus Add<TMessageHandler>()
             where TMessageHandler : IApplicationServiceMessageHandler<IApplicationServiceMessage> { return Add(typeof(TMessageHandler)); }
         public IApplicationServiceBus Add(Type messageHandlerType)
@@ -67,6 +72,16 @@ namespace Contoso.Abstract
                 MessageType = messageType,
             });
             return this;
+        }
+
+        public IServiceBusCallback Send(IServiceBusLocation destination, params IServiceMessage[] messages)
+        {
+            if (messages == null)
+                throw new ArgumentNullException("messages");
+            foreach (var message in messages)
+                foreach (var type in GetTypesOfMessageHandlers(message.GetType()))
+                    HandleTheMessage(type, (IApplicationServiceMessage)message);
+            return null;
         }
 
         private void HandleTheMessage(Type type, IApplicationServiceMessage message)
@@ -88,22 +103,6 @@ namespace Contoso.Abstract
                 .Select(h => h.GetGenericArguments()[0])
                 .Where(m => m.GetInterfaces().Any(x => (x == typeof(IApplicationServiceMessage))))
                 .SingleOrDefault();
-        }
-
-        public IServiceBusCallback Send<TMessage>(IServiceBusLocation destination, Action<TMessage> messageBuilder)
-            where TMessage : IServiceMessage
-        {
-            throw new NotSupportedException();
-        }
-
-        public IServiceBusCallback Send(IServiceBusLocation destination, params IServiceMessage[] messages)
-        {
-            if (messages == null)
-                throw new ArgumentNullException("messages");
-            foreach (var message in messages)
-                foreach (var type in GetTypesOfMessageHandlers(message.GetType()))
-                    HandleTheMessage(type, (IApplicationServiceMessage)message);
-            return null;
         }
     }
 }

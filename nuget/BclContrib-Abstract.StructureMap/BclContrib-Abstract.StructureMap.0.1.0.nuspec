@@ -1,15 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?> 
-<package> 
-  <metadata> 
-    <id>BclContrib-Abstract.StructureMap</id> 
-    <version>0.1.0</version> 
-    <authors>Sky Morey</authors> 
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>BclContrib-Abstract.StructureMap</id>
+    <version>0.1.0</version>
+    <authors>Sky Morey</authors>
     <owners>Sky Morey</owners>
-    <description>This package contains a StructureMap implementation of the abstract ServiceLocator.</description> 
+    <description>This package contains a StructureMap implementation of the abstract ServiceLocator.</description>
     <projectUrl>http://code.google.com/p/bclcontrib-abstract/</projectUrl>
     <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
     <tags>structuremap servicelocator .net20 .net35 .net40 bclcontrib</tags>
-    <language>en-US</language> 
-  </metadata> 
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="BclContrib-Abstract" version="0.1.0" />
+      <dependency id="structuremap" version="2.6.2" />
+    </dependencies>
+  </metadata>
 </package>
 
