@@ -27,6 +27,8 @@ using System;
 using System.Abstract;
 using StructureMap.Configuration.DSL;
 using StructureMap;
+using StructureMap.Configuration.DSL.Expressions;
+using StructureMap.Pipeline;
 namespace Contoso.Abstract
 {
     /// <summary>
@@ -62,30 +64,30 @@ namespace Contoso.Abstract
             where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
         // register type
-        public void Register(Type serviceType) { For(serviceType).Add(serviceType); }
-        public void Register(Type serviceType, string name) { For(serviceType).Add(serviceType).Named(name); }
+        public void Register(Type serviceType) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ConfiguredInstance(serviceType)); }
+        public void Register(Type serviceType, string name) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ConfiguredInstance(serviceType) { Name = name }); }
 
         // register implementation
         public void Register<TService, TImplementation>()
-            where TImplementation : class, TService { For<TService>().Add<TImplementation>(); }
+            where TImplementation : class, TService { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(typeof(TImplementation))); }
         public void Register<TService, TImplementation>(string name)
-            where TImplementation : class, TService { For(typeof(TService)).Add(typeof(TImplementation)).Named(name); }
+            where TImplementation : class, TService { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(typeof(TImplementation)) { Name = name }); }
         public void Register<TService>(Type implementationType)
-            where TService : class { For(typeof(TService)).Add(implementationType); }
+            where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(implementationType)); }
         public void Register<TService>(Type implementationType, string name)
-            where TService : class { For(typeof(TService)).Add(implementationType).Named(name); }
-        public void Register(Type serviceType, Type implementationType) { For(serviceType).Add(implementationType); }
-        public void Register(Type serviceType, Type implementationType, string name) { For(serviceType).Add(implementationType).Named(name); }
+            where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(implementationType) { Name = name }); }
+        public void Register(Type serviceType, Type implementationType) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ConfiguredInstance(implementationType)); }
+        public void Register(Type serviceType, Type implementationType, string name) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ConfiguredInstance(implementationType) { Name = name }); }
 
         // register instance
         public void RegisterInstance<TService>(TService instance)
-            where TService : class { For<TService>().Use(instance); }
+            where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ObjectInstance(instance)); }
         public void RegisterInstance<TService>(TService instance, string name)
-            where TService : class { For<TService>().Use(instance).Named(name); }
+            where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ObjectInstance(instance) { Name = name }); }
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
-            where TService : class { For<TService>().Use(x => factoryMethod(_parent)); }
+            where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent))); }
 
         #region Domain extents
 

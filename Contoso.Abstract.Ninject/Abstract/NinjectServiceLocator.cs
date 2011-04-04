@@ -77,7 +77,7 @@ namespace Contoso.Abstract
             where TService : class
         {
             try { return _container.Get<TService>(new IParameter[0]); }
-            catch (ActivationException activationEx) { return (ResolveAsFirstBinding(activationEx, typeof(TService)) as TService); }
+            //catch (ActivationException activationEx) { return (ResolveAsFirstBinding(activationEx, typeof(TService)) as TService); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
         public TService Resolve<TService>(string name)
@@ -95,7 +95,7 @@ namespace Contoso.Abstract
         public object Resolve(Type serviceType)
         {
             try { return _container.Get(serviceType, new IParameter[0]); }
-            catch (ActivationException activationEx) { return ResolveAsFirstBinding(activationEx, serviceType); }
+            //catch (ActivationException activationEx) { return ResolveAsFirstBinding(activationEx, serviceType); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
         public object Resolve(Type serviceType, string name)

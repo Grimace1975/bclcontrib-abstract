@@ -27,41 +27,50 @@ using System;
 using System.Linq;
 using System.Abstract;
 using System.Collections.Generic;
-using Autofac;
+using Hiro;
+using Hiro.Containers;
 namespace Contoso.Abstract
 {
     /// <summary>
-    /// IAutofacServiceLocator
+    /// IHiroServiceLocator
     /// </summary>
-    public interface IAutofacServiceLocator : IServiceLocator
+    public interface IHiroServiceLocator : IServiceLocator
     {
-        IContainer Container { get; }
+        DependencyMap Builder { get; }
+        IMicroContainer Container { get; }
     }
 
     /// <summary>
-    /// AutofacServiceLocator
+    /// HiroServiceLocator
     /// </summary>
     [Serializable]
-    public class AutofacServiceLocator : IAutofacServiceLocator, IDisposable
+    public class HiroServiceLocator : IHiroServiceLocator, IDisposable
     {
-        private IContainer _container;
-        private AutofacServiceRegistrar _registrar;
-        private Func<IContainer> _containerBuilder;
+        private IMicroContainer _container;
+        private HiroServiceRegistrar _registrar;
+        private Func<IMicroContainer> _containerBuilder;
 
-        public AutofacServiceLocator()
-            : this(new ContainerBuilder()) { }
-        public AutofacServiceLocator(ContainerBuilder container)
+        public HiroServiceLocator()
+            : this(new DependencyMap()) { }
+        public HiroServiceLocator(DependencyMap builder)
         {
-            if (container == null)
-                throw new ArgumentNullException("container");
-            _registrar = new AutofacServiceRegistrar(this, container, out _containerBuilder);
+            if (builder == null)
+                throw new ArgumentNullException("builder");
+            Builder = builder;
+            _registrar = new HiroServiceRegistrar(this, builder, out _containerBuilder);
         }
+        //public HiroServiceLocator(IMicroContainer container)
+        //{
+        //    if (container == null)
+        //        throw new ArgumentNullException("container");
+        //    Container = container;
+        //}
 
         public void Dispose()
         {
             if (_container != null)
             {
-                _container.Dispose(); _container = null;
+                _container = null;
                 _registrar = null;
                 _containerBuilder = null;
             }
@@ -76,54 +85,53 @@ namespace Contoso.Abstract
         public TService Resolve<TService>()
             where TService : class
         {
-            try { return (Container.IsRegistered<TService>() ? Container.Resolve<TService>() : Activator.CreateInstance<TService>()); }
+            try { return (Builder.Contains(typeof(TService)) ? Container.GetInstance<TService>() : Activator.CreateInstance<TService>()); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
         public TService Resolve<TService>(string name)
             where TService : class
         {
-            try { return Container.ResolveNamed<TService>(name); }
+            try { return Container.GetInstance<TService>(name); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
         public object Resolve(Type serviceType)
         {
-            try { return (Container.IsRegistered(serviceType) ? Container.Resolve(serviceType) : Activator.CreateInstance(serviceType)); }
+            try { return (Builder.Contains(serviceType) ? Container.GetInstance(serviceType, null) : Activator.CreateInstance(serviceType)); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
         public object Resolve(Type serviceType, string name)
         {
-            try { return Container.ResolveNamed(name, serviceType); }
+            try { return Container.GetInstance(serviceType, name); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
         //
         public IEnumerable<TService> ResolveAll<TService>()
             where TService : class
         {
-            try { return new List<TService>(Container.Resolve<IEnumerable<TService>>()); }
+            try { return new List<TService>(Container.GetAllInstances(typeof(TService)).Cast<TService>()); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
         public IEnumerable<object> ResolveAll(Type serviceType)
         {
-            var type = typeof(IEnumerable<>).MakeGenericType(serviceType);
-            try { return new List<object>((IEnumerable<object>)Container.Resolve(type)); }
+            try { return new List<object>(Container.GetAllInstances(serviceType)); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
 
         // inject
         public TService Inject<TService>(TService instance)
-            where TService : class { return Container.InjectProperties(instance); }
+            where TService : class { return null; }
 
         // release and teardown
-        [Obsolete("Not used for any real purposes.")]
-        public void Release(object instance) { throw new NotSupportedException(); }
-        [Obsolete("Not used for any real purposes.")]
+        public void Release(object instance) { }
         public void TearDown<TService>(TService instance)
-            where TService : class { throw new NotSupportedException(); }
+            where TService : class { }
         public void Reset() { Dispose(); }
 
         #region Domain specific
 
-        public IContainer Container
+        public DependencyMap Builder { get; private set; }
+
+        public IMicroContainer Container
         {
             get
             {

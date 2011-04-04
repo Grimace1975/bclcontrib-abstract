@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>BclContrib-Abstract</id>
+    <id>BclContrib-Abstract.TypeSerializer</id>
     <version>0.1.0</version>
     <authors>Sky Morey</authors>
     <owners>Sky Morey</owners>
-    <description>This package contains abstractions to provide standard Interfaces, or Abstracts, for common services typicality re-implemented in various Projects/Assemblies. Utilizing a standards based Type allows services to flow between otherwise disconnected Assemblies.</description>
+    <description>This package contains TypeSerializer implementations of the abstract TypeSerializer.</description>
     <projectUrl>http://code.google.com/p/bclcontrib-abstract/</projectUrl>
     <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
-    <tags>abstract interface ioc aggregateroot servicebus servicelocator .net20 .net35 .net40 bclcontrib</tags>
+    <tags>serialize xml binary bclcontrib</tags>
     <language>en-US</language>
+    <dependencies>
+      <dependency id="BclContrib-Abstract" version="0.1.0" />
+    </dependencies>
   </metadata>
 </package>

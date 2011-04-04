@@ -78,7 +78,7 @@ namespace Contoso.Abstract
         public TService Resolve<TService>()
             where TService : class
         {
-            try { return _kernel.Resolve<TService>(); }
+            try { return (_kernel.HasComponent(typeof(TService)) ? _kernel.Resolve<TService>() : Activator.CreateInstance<TService>()); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
         public TService Resolve<TService>(string name)
@@ -89,7 +89,7 @@ namespace Contoso.Abstract
         }
         public object Resolve(Type serviceType)
         {
-            try { return _kernel.Resolve(serviceType); }
+            try { return (_kernel.HasComponent(serviceType) ? _kernel.Resolve(serviceType) : Activator.CreateInstance(serviceType)); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
         public object Resolve(Type serviceType, string name)
@@ -152,9 +152,10 @@ namespace Contoso.Abstract
         private static IWindsorContainer CreateContainer()
         {
             var container = new WindsorContainer();
-            var kernel = container.Kernel;
-            kernel.Resolver.AddSubResolver(new ArrayResolver(kernel));
-            kernel.Resolver.AddSubResolver(new ListResolver(kernel));
+            //var kernel = container.Kernel;
+            //kernel.Resolver.AddSubResolver(new ArrayResolver(kernel));
+            //kernel.Resolver.AddSubResolver(new ListResolver(kernel));
+            //kernel.AddFacility<Castle.Facilities.FactorySupport.FactorySupportFacility>();
             return container;
         }
 

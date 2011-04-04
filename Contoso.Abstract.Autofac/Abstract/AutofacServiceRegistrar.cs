@@ -45,11 +45,11 @@ namespace Contoso.Abstract
         private ContainerBuilder _builder;
         private IContainer _container;
 
-        public AutofacServiceRegistrar(AutofacServiceLocator parent, ContainerBuilder builder, out Action<IContainer> containerSetter)
+        public AutofacServiceRegistrar(AutofacServiceLocator parent, ContainerBuilder builder, out Func<IContainer> containerBuilder)
         {
             _parent = parent;
             _builder = builder;
-            containerSetter = (x => _container = x);
+            containerBuilder = (() => _container = _builder.Build());
         }
 
         public void Dispose() { }
@@ -87,6 +87,7 @@ namespace Contoso.Abstract
         public void Register<TService, TImplementation>(string name)
             where TImplementation : class, TService
         {
+            Register<TService, TImplementation>();
             if (_container != null)
                 _container.ComponentRegistry.Register(RegistrationBuilder.ForType<TImplementation>().Named<TService>(name).CreateRegistration());
             else
@@ -103,6 +104,7 @@ namespace Contoso.Abstract
         public void Register<TService>(Type implementationType, string name)
              where TService : class
         {
+            Register<TService>(implementationType);
             if (_container != null)
                 _container.ComponentRegistry.Register(RegistrationBuilder.ForType(implementationType).Named<TService>(name).CreateRegistration());
             else
@@ -117,6 +119,7 @@ namespace Contoso.Abstract
         }
         public void Register(Type serviceType, Type implementationType, string name)
         {
+            Register(serviceType, implementationType);
             if (_container != null)
                 _container.ComponentRegistry.Register(RegistrationBuilder.ForType(implementationType).Named(name, serviceType).CreateRegistration());
             else

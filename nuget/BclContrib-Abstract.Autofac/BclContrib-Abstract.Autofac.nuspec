@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>BclContrib-Abstract.NServiceBus</id>
-    <version>0.1.0</version>
+    <id>BclContrib-Abstract.Autofac</id>
+    <version>0.1.1</version>
     <authors>Sky Morey</authors>
     <owners>Sky Morey</owners>
-    <description>This package contains a NServiceBus implementation of the abstract ServiceBus.</description>
+    <description>This package contains an Autofac implementation of the abstract ServiceLocator.</description>
     <projectUrl>http://code.google.com/p/bclcontrib-abstract/</projectUrl>
     <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
-    <tags>nservicebus servicebus .net20 .net35 .net40 bclcontrib</tags>
+    <tags>autofac servicelocator ioc di bclcontrib</tags>
     <language>en-US</language>
     <dependencies>
       <dependency id="BclContrib-Abstract" version="0.1.0" />
-      <dependency id="nservicebus" version="2.5.0.1446" />
+      <dependency id="Autofac" version="2.4.5.725" />
     </dependencies>
   </metadata>
 </package>
-
