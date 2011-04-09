@@ -37,6 +37,21 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Hiro">
+      <HintPath>..\packages\Hiro.1.0.1\lib\Hiro.dll</HintPath>
+    </Reference>
+    <Reference Include="Hiro.Containers">
+      <HintPath>..\packages\Hiro.1.0.1\lib\Hiro.Containers.dll</HintPath>
+    </Reference>
+    <Reference Include="LinFu.Finders">
+      <HintPath>..\packages\Hiro.1.0.1\lib\LinFu.Finders.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>..\packages\Hiro.1.0.1\lib\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="NGenerics">
+      <HintPath>..\packages\Hiro.1.0.1\lib\NGenerics.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
@@ -53,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BclContrib.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
