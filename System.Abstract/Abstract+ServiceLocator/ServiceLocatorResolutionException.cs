@@ -33,6 +33,8 @@ namespace System.Abstract
     {
         public ServiceLocatorResolutionException(Type service)
             : base(string.Format(Local.InvalidServiceTypeA, service)) { ServiceType = service; }
+        public ServiceLocatorResolutionException(Type service, string arg0)
+            : base(string.Format(Local.InvalidServiceTypeAB, service, arg0)) { ServiceType = service; }
         public ServiceLocatorResolutionException(Type service, Exception innerException)
             : base(string.Format(Local.InvalidServiceTypeA, service), innerException) { ServiceType = service; }
 
