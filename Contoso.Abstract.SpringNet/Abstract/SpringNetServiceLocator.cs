@@ -27,30 +27,31 @@ using System;
 using System.Linq;
 using System.Abstract;
 using System.Collections.Generic;
-using System.Reflection;
-using StructureMap;
+using Spring.Objects.Factory;
+using Spring.Context.Support;
+using Spring.Context;
 namespace Contoso.Abstract
 {
     /// <summary>
-    /// IStructureMapServiceLocator
+    /// ISpringNetServiceLocator
     /// </summary>
-    public interface IStructureMapServiceLocator : IServiceLocator
+    public interface ISpringNetServiceLocator : IServiceLocator
     {
-        IContainer Container { get; }
+        IObjectFactory Container { get; }
     }
 
     /// <summary>
-    /// StructureMapServiceLocator
+    /// SpringNetServiceLocator
     /// </summary>
     [Serializable]
-    public class StructureMapServiceLocator : IStructureMapServiceLocator, IDisposable
+    public class SpringNetServiceLocator : ISpringNetServiceLocator, IDisposable
     {
-        private IContainer _container;
-        private StructureMapServiceRegistrar _registrar;
+        private GenericApplicationContext  _container;
+        private SpringNetServiceRegistrar _registrar;
 
-        public StructureMapServiceLocator()
-            : this(new Container()) { }
-        public StructureMapServiceLocator(IContainer container)
+        public SpringNetServiceLocator()
+            : this(new GenericApplicationContext) { }
+        public SpringNetServiceLocator(GenericApplicationContext container)
         {
             if (container == null)
                 throw new ArgumentNullException("container");
@@ -75,63 +76,60 @@ namespace Contoso.Abstract
         public TService Resolve<TService>()
             where TService : class
         {
-            try { return (TService)_container.GetInstance<TService>(); }
+            var serviceType = typeof(TService);
+            try { return (TService)_container.GetObject(GetName(serviceType), serviceType); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
+
+        private string GetName(Type serviceType) { return serviceType.FullName; }
+
         public TService Resolve<TService>(string name)
             where TService : class
         {
-            try { return (TService)_container.GetInstance<TService>(name); }
+            var serviceType = typeof(TService);
+            try { return (TService)_container.GetObject(name, serviceType); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
         public object Resolve(Type serviceType)
         {
-            try { return _container.GetInstance(serviceType); }
+            try { return _container.GetObject(GetName(serviceType), serviceType); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
         public object Resolve(Type serviceType, string name)
         {
-            try { return _container.GetInstance(serviceType, name); }
+            try { return _container.GetObject(name, serviceType); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
         //
         public IEnumerable<TService> ResolveAll<TService>()
-            where TService : class { return _container.GetAllInstances<TService>(); }
-        public IEnumerable<object> ResolveAll(Type serviceType)
-        {
-            try { return _container.GetAllInstances(serviceType).Cast<object>(); }
-            catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
-        }
+              where TService : class { throw new NotSupportedException(); }
+        public IEnumerable<object> ResolveAll(Type serviceType) { throw new NotSupportedException(); }
 
         // inject
         public TService Inject<TService>(TService instance)
             where TService : class
-        {
-            if (instance == null)
-                return null;
-            _container.BuildUp(instance);
-            foreach (var property in instance.GetType().GetProperties().Where(x => x.CanWrite && _container.Model.HasImplementationsFor(x.PropertyType)))
-                property.SetValue(instance, _container.GetInstance(property.PropertyType), null);
-            return instance;
+        { 
+            try { _container.ConfigureObject(instance, GetName(typeof(TService))); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
 
         // release and teardown
-        [Obsolete("Not used for any real purposes.")]
+        [Obsolete("Not used with this implementation of IServiceLocator.")]
         public void Release(object instance) { throw new NotSupportedException(); }
-        [Obsolete("Not used for any real purposes.")]
+        [Obsolete("Not used with this implementation of IServiceLocator.")]
         public void TearDown<TService>(TService instance)
             where TService : class { throw new NotSupportedException(); }
         public void Reset() { Dispose(); }
 
         #region Domain specific
 
-        public IContainer Container
+        public IObjectFactory Container
         {
             get { return _container; }
             private set
             {
                 _container = value;
-                _registrar = new StructureMapServiceRegistrar(this, value);
+                _registrar = new SpringNetServiceRegistrar(this, value);
             }
         }
 

@@ -126,6 +126,9 @@
   <data name="InvalidServiceTypeA" xml:space="preserve">
     <value>Could not resolve serviceType '{0}'</value>
   </data>
+  <data name="InvalidServiceTypeAB" xml:space="preserve">
+    <value>Could not resolve serviceType '{0}': {1}</value>
+  </data>
   <data name="UndefinedServiceBusProvider" xml:space="preserve">
     <value>UndefinedServiceBusProvider</value>
   </data>

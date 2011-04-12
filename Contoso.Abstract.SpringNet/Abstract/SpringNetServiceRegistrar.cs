@@ -24,37 +24,29 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-using System.Linq;
 using System.Abstract;
-using System.Collections.Generic;
-using Hiro;
-using Hiro.Containers;
+using Spring.Objects.Factory;
+using Spring.Context;
+using Spring.Objects.Factory.Support;
+using Spring.Context.Support;
 namespace Contoso.Abstract
 {
     /// <summary>
-    /// IHiroServiceRegistrar
+    /// ISpringNetServiceRegistrar
     /// </summary>
-    public interface IHiroServiceRegistrar : IServiceRegistrar
-    {
-    }
+    public interface ISpringNetServiceRegistrar : IServiceRegistrar { }
 
-    /// <summary>
-    /// HiroServiceRegistrar
-    /// </summary>
-    public class HiroServiceRegistrar : IHiroServiceRegistrar, IDisposable
+    public class SpringNetServiceRegistrar : ISpringNetServiceRegistrar, IDisposable
     {
-        private HiroServiceLocator _parent;
-        private DependencyMap _builder;
-        private IMicroContainer _container;
+        private SpringNetServiceLocator _parent;
+        private GenericApplicationContext _container;
+        private IObjectDefinitionFactory _factory = new DefaultObjectDefinitionFactory();
 
-        public HiroServiceRegistrar(HiroServiceLocator parent, DependencyMap builder, out Func<IMicroContainer> containerBuilder)
+        public SpringNetServiceRegistrar(SpringNetServiceLocator parent, IApplicationContext container)
         {
             _parent = parent;
-            _builder = builder;
-            containerBuilder = (() => _container = _builder.CreateContainer());
+            _container = container;
         }
-
-        public void Dispose() { }
 
         // locator
         public IServiceLocator GetLocator() { return _parent; }
@@ -62,29 +54,37 @@ namespace Contoso.Abstract
             where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
         // register type
-        public void Register(Type serviceType) { _builder.AddService(serviceType, serviceType); }
-        public void Register(Type serviceType, string name) { _builder.AddService(name, serviceType, serviceType); }
+        public void Register(Type serviceType)
+        {
+            var b = ObjectDefinitionBuilder.RootObjectDefinition(_factory, serviceType);
+            _container.RegisterObjectDefinition(GetName(serviceType), b.ObjectDefinition);
+        }
+        public void Register(Type serviceType, string name)
+        {
+            var b = ObjectDefinitionBuilder..RootObjectDefinition(_factory, serviceType);
+            _container.RegisterObjectDefinition(name, b.ObjectDefinition);
+        }
 
         // register implementation
         public void Register<TService, TImplementation>()
-            where TImplementation : class, TService { _builder.AddService<TService, TImplementation>(); }
+            where TImplementation : class, TService { Bind<TService>().To<TImplementation>(); }
         public void Register<TService, TImplementation>(string name)
-            where TImplementation : class, TService { _builder.AddService<TService, TImplementation>(name); }
+            where TImplementation : class, TService { Bind<TService>().To(typeof(TImplementation)).Named(name); }
         public void Register<TService>(Type implementationType)
-             where TService : class { _builder.AddService(typeof(TService), implementationType); }
+            where TService : class { Bind<TService>().To(implementationType); }
         public void Register<TService>(Type implementationType, string name)
-             where TService : class { _builder.AddService(name, typeof(TService), implementationType); }
-        public void Register(Type serviceType, Type implementationType) { _builder.AddService(serviceType, implementationType); }
-        public void Register(Type serviceType, Type implementationType, string name) { _builder.AddService(name, serviceType, implementationType); }
+            where TService : class { Bind<TService>().To(implementationType).Named(name); }
+        public void Register(Type serviceType, Type implementationType) { Bind(serviceType).To(implementationType); }
+        public void Register(Type serviceType, Type implementationType, string name) { Bind(serviceType).To(implementationType).Named(name); }
 
         // register instance
         public void RegisterInstance<TService>(TService instance)
-            where TService : class { Func<IMicroContainer, TService> f = (x => instance); _builder.AddService<TService>(f); }
+            where TService : class { _container.ObjectFactory.RegisterSingleton(typeof(TService).FullName, instance); }
         public void RegisterInstance<TService>(TService instance, string name)
-            where TService : class { Func<IMicroContainer, TService> f = (x => instance); _builder.AddService<TService>(name, f); }
+            where TService : class { _container.ObjectFactory.RegisterSingleton(name, instance); }
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
-            where TService : class { Func<IMicroContainer, TService> f = (x => factoryMethod(_parent)); _builder.AddService<TService>(f); }
+            where TService : class { _container.ObjectFactory.RegisterSingleton(factoryMethod.GetType().FullName, x => factoryMethod(_parent)); }
     }
 }

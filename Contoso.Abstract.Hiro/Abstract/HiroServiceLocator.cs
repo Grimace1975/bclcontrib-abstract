@@ -91,6 +91,8 @@ namespace Contoso.Abstract
         public TService Resolve<TService>(string name)
             where TService : class
         {
+            if (!Builder.Contains(typeof(TService), name))
+                throw new ServiceLocatorResolutionException(typeof(TService), string.Format("Unregistered '{0}'", name));
             try { return Container.GetInstance<TService>(name); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
@@ -101,6 +103,8 @@ namespace Contoso.Abstract
         }
         public object Resolve(Type serviceType, string name)
         {
+            if (!Builder.Contains(serviceType, name))
+                throw new ServiceLocatorResolutionException(serviceType, string.Format("Unregistered '{0}'", name));
             try { return Container.GetInstance(serviceType, name); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
