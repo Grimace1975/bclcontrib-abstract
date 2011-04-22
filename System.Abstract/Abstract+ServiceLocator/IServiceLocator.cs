@@ -30,7 +30,7 @@ namespace System.Abstract
     /// <summary>
     /// IServiceLocator
     /// </summary>
-    public interface IServiceLocator
+    public interface IServiceLocator // : IServiceProvider
     {
         // registrar
         IServiceRegistrar GetRegistrar();

@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+#if EXPERIMENTAL
 using System;
 using System.Linq;
 using System.Abstract;
@@ -50,7 +51,7 @@ namespace Contoso.Abstract
         private SpringNetServiceRegistrar _registrar;
 
         public SpringNetServiceLocator()
-            : this(new GenericApplicationContext) { }
+            : this(new GenericApplicationContext()) { }
         public SpringNetServiceLocator(GenericApplicationContext container)
         {
             if (container == null)
@@ -136,3 +137,4 @@ namespace Contoso.Abstract
         #endregion
     }
 }
+#endif

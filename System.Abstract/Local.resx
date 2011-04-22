@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ExceedRecurseCount" xml:space="preserve">
+    <value>ExceedRecurseCount</value>
+  </data>
+  <data name="InvalidDataSource" xml:space="preserve">
+    <value>InvalidDataSource</value>
+  </data>
   <data name="InvalidMessageTypeA" xml:space="preserve">
     <value>Could not send messageType '{0}'</value>
   </data>
@@ -128,6 +134,24 @@
   </data>
   <data name="InvalidServiceTypeAB" xml:space="preserve">
     <value>Could not resolve serviceType '{0}': {1}</value>
+  </data>
+  <data name="RedefineCacheDependency" xml:space="preserve">
+    <value>RedefineCacheDependency</value>
+  </data>
+  <data name="RedefineDataCacheAB" xml:space="preserve">
+    <value>RedefineDataCacheAB</value>
+  </data>
+  <data name="RedefineIDA" xml:space="preserve">
+    <value>RedefineIDA</value>
+  </data>
+  <data name="ScopeCharacterNotAllowedA" xml:space="preserve">
+    <value>ScopeCharacterNotAllowedA</value>
+  </data>
+  <data name="UndefinedDataCacheRegistrationA" xml:space="preserve">
+    <value>UndefinedDataCacheRegistrationA</value>
+  </data>
+  <data name="UndefinedDataCacheRegistrationAB" xml:space="preserve">
+    <value>UndefinedDataCacheRegistrationAB</value>
   </data>
   <data name="UndefinedServiceBusProvider" xml:space="preserve">
     <value>UndefinedServiceBusProvider</value>

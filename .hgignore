@@ -9,5 +9,5 @@ glob:Bin/*
 glob:_ReSharper.*/*
 glob:*/_ReSharper.*/*
 glob:nuget/*.suo
-glob:packages/*
-glob:*/packages/*
+syntax: glob
+Packages/*
