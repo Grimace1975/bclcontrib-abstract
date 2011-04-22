@@ -47,6 +47,12 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Contoso.Abstract.SpringNet\Abstract\SpringNetServiceLocator.cs">
+      <Link>Abstract\SpringNetServiceLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.SpringNet\Abstract\SpringNetServiceRegistrar.cs">
+      <Link>Abstract\SpringNetServiceRegistrar.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

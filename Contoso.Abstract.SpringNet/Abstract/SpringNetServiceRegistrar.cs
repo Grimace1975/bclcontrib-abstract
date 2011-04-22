@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+#if EXPERIMENTAL
 using System;
 using System.Abstract;
 using Spring.Objects.Factory;
@@ -61,7 +62,7 @@ namespace Contoso.Abstract
         }
         public void Register(Type serviceType, string name)
         {
-            var b = ObjectDefinitionBuilder..RootObjectDefinition(_factory, serviceType);
+            var b = ObjectDefinitionBuilder.RootObjectDefinition(_factory, serviceType);
             _container.RegisterObjectDefinition(name, b.ObjectDefinition);
         }
 
@@ -88,3 +89,4 @@ namespace Contoso.Abstract
             where TService : class { _container.ObjectFactory.RegisterSingleton(factoryMethod.GetType().FullName, x => factoryMethod(_parent)); }
     }
 }
+#endif
