@@ -51,12 +51,10 @@ namespace Contoso.Abstract
         {
             _parent = parent;
             _container = container;
+			_container.Configure(x => x.AddRegistry(this));
         }
 
-        public void Dispose()
-        {
-            _container.Configure(x => x.AddRegistry(this));
-        }
+        public void Dispose() { }
 
         // locator
         public IServiceLocator GetLocator() { return _parent; }
@@ -64,30 +62,30 @@ namespace Contoso.Abstract
             where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
         // register type
-        public void Register(Type serviceType) { new GenericFamilyExpression(serviceType, this).Add((Instance)new ConfiguredInstance(serviceType)); }
-        public void Register(Type serviceType, string name) { new GenericFamilyExpression(serviceType, this).Add((Instance)new ConfiguredInstance(serviceType) { Name = name }); }
+        public void Register(Type serviceType) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ConfiguredInstance(serviceType)); }
+		public void Register(Type serviceType, string name) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ConfiguredInstance(serviceType) { Name = name }); }
 
         // register implementation
         public void Register<TService, TImplementation>()
-            where TImplementation : class, TService { new GenericFamilyExpression(typeof(TService), this).Add((Instance)new ConfiguredInstance(typeof(TImplementation))); }
+			where TImplementation : class, TService { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(typeof(TImplementation))); }
         public void Register<TService, TImplementation>(string name)
-            where TImplementation : class, TService { new GenericFamilyExpression(typeof(TService), this).Add((Instance)new ConfiguredInstance(typeof(TImplementation)) { Name = name }); }
+			where TImplementation : class, TService { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(typeof(TImplementation)) { Name = name }); }
         public void Register<TService>(Type implementationType)
-            where TService : class { new GenericFamilyExpression(typeof(TService), this).Add((Instance)new ConfiguredInstance(implementationType)); }
+			where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(implementationType)); }
         public void Register<TService>(Type implementationType, string name)
-            where TService : class { new GenericFamilyExpression(typeof(TService), this).Add((Instance)new ConfiguredInstance(implementationType) { Name = name }); }
-        public void Register(Type serviceType, Type implementationType) { new GenericFamilyExpression(serviceType, this).Add((Instance)new ConfiguredInstance(implementationType)); }
-        public void Register(Type serviceType, Type implementationType, string name) { new GenericFamilyExpression(serviceType, this).Add((Instance)new ConfiguredInstance(implementationType) { Name = name }); }
+			where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(implementationType) { Name = name }); }
+		public void Register(Type serviceType, Type implementationType) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ConfiguredInstance(implementationType)); }
+		public void Register(Type serviceType, Type implementationType, string name) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ConfiguredInstance(implementationType) { Name = name }); }
 
         // register instance
         public void RegisterInstance<TService>(TService instance)
-            where TService : class { new GenericFamilyExpression(typeof(TService), this).Add((Instance)new ObjectInstance(instance)); }
+			where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ObjectInstance(instance)); }
         public void RegisterInstance<TService>(TService instance, string name)
-            where TService : class { new GenericFamilyExpression(typeof(TService), this).Add((Instance)new ObjectInstance(instance) { Name = name }); }
+			where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ObjectInstance(instance) { Name = name }); }
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
-            where TService : class { new GenericFamilyExpression(typeof(TService), this).Add((Instance)new LambdaInstance<object>(x => factoryMethod(_parent))); }
+			where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent))); }
 
         #region Domain extents
 
