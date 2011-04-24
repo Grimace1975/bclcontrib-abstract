@@ -31,66 +31,73 @@ using StructureMap.Configuration.DSL.Expressions;
 using StructureMap.Pipeline;
 namespace Contoso.Abstract
 {
-    /// <summary>
-    /// IStructureMapServiceRegistrar
-    /// </summary>
-    public interface IStructureMapServiceRegistrar : IServiceRegistrar
-    {
-        void RegisterAll<TService>();
-    }
+	/// <summary>
+	/// IStructureMapServiceRegistrar
+	/// </summary>
+	public interface IStructureMapServiceRegistrar : IServiceRegistrar
+	{
+		void RegisterAll<TService>();
+	}
 
-    /// <summary>
-    /// StructureMapServiceRegistrar
-    /// </summary>
-    public class StructureMapServiceRegistrar : Registry, IStructureMapServiceRegistrar, IDisposable
-    {
-        private StructureMapServiceLocator _parent;
-        private IContainer _container;
+	/// <summary>
+	/// StructureMapServiceRegistrar
+	/// </summary>
+	public class StructureMapServiceRegistrar : Registry, IStructureMapServiceRegistrar, IDisposable
+	{
+		private StructureMapServiceLocator _parent;
+		private IContainer _container;
 
-        public StructureMapServiceRegistrar(StructureMapServiceLocator parent, IContainer container)
-        {
-            _parent = parent;
-            _container = container;
+		public StructureMapServiceRegistrar(StructureMapServiceLocator parent, IContainer container)
+		{
+			_parent = parent;
+			_container = container;
+		}
+
+		public void Dispose() { }
+
+		public bool HasPendingRegistrations { get; private set; }
+
+		public void LoadPendingRegistrations()
+		{
 			_container.Configure(x => x.AddRegistry(this));
-        }
+			HasPendingRegistrations = false;
+		}
 
-        public void Dispose() { }
+		// locator
+		public IServiceLocator GetLocator() { return _parent; }
+		public TServiceLocator GetLocator<TServiceLocator>()
+			where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
-        // locator
-        public IServiceLocator GetLocator() { return _parent; }
-        public TServiceLocator GetLocator<TServiceLocator>()
-            where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
+		// register type
+		public void Register(Type serviceType) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ConfiguredInstance(serviceType)); HasPendingRegistrations = true; }
+		public void Register(Type serviceType, string name) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ConfiguredInstance(serviceType) { Name = name }); HasPendingRegistrations = true; }
 
-        // register type
-        public void Register(Type serviceType) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ConfiguredInstance(serviceType)); }
-		public void Register(Type serviceType, string name) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ConfiguredInstance(serviceType) { Name = name }); }
+		// register implementation
+		public void Register<TService, TImplementation>()
+			where TImplementation : class, TService { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(typeof(TImplementation))); HasPendingRegistrations = true; }
+		public void Register<TService, TImplementation>(string name)
+			where TImplementation : class, TService { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(typeof(TImplementation)) { Name = name }); HasPendingRegistrations = true; }
+		public void Register<TService>(Type implementationType)
+			where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(implementationType)); HasPendingRegistrations = true; }
+		public void Register<TService>(Type implementationType, string name)
+			where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(implementationType) { Name = name }); HasPendingRegistrations = true; }
+		public void Register(Type serviceType, Type implementationType) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ConfiguredInstance(implementationType)); HasPendingRegistrations = true; }
+		public void Register(Type serviceType, Type implementationType, string name) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ConfiguredInstance(implementationType) { Name = name }); HasPendingRegistrations = true; }
 
-        // register implementation
-        public void Register<TService, TImplementation>()
-			where TImplementation : class, TService { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(typeof(TImplementation))); }
-        public void Register<TService, TImplementation>(string name)
-			where TImplementation : class, TService { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(typeof(TImplementation)) { Name = name }); }
-        public void Register<TService>(Type implementationType)
-			where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(implementationType)); }
-        public void Register<TService>(Type implementationType, string name)
-			where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(implementationType) { Name = name }); }
-		public void Register(Type serviceType, Type implementationType) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ConfiguredInstance(implementationType)); }
-		public void Register(Type serviceType, Type implementationType, string name) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ConfiguredInstance(implementationType) { Name = name }); }
+		// register instance
+		public void RegisterInstance<TService>(TService instance)
+			where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ObjectInstance(instance)); HasPendingRegistrations = true; }
+		public void RegisterInstance<TService>(TService instance, string name)
+			where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ObjectInstance(instance) { Name = name }); HasPendingRegistrations = true; }
 
-        // register instance
-        public void RegisterInstance<TService>(TService instance)
-			where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ObjectInstance(instance)); }
-        public void RegisterInstance<TService>(TService instance, string name)
-			where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ObjectInstance(instance) { Name = name }); }
+		// register method
+		public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
+			where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent))); HasPendingRegistrations = true; }
 
-        // register method
-        public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
-			where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent))); }
+		#region Domain extents
 
-        #region Domain extents
+		public void RegisterAll<TService>() { Scan(scanner => scanner.AddAllTypesOf<TService>()); }
 
-        public void RegisterAll<TService>() { Scan(scanner => scanner.AddAllTypesOf<TService>()); }
-
-        #endregion
-    }
+		#endregion
+	}
 }

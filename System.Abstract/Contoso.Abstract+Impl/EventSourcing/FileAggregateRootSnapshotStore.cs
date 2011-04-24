@@ -23,7 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-namespace System.Abstract.EventSourcing
+using System;
+using System.Abstract.EventSourcing;
+namespace Contoso.Abstract.EventSourcing
 {
     /// <summary>
     /// FileAggregateRootSnapshotStore

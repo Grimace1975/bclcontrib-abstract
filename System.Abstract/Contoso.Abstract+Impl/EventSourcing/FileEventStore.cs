@@ -23,8 +23,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System;
+using System.Abstract.EventSourcing;
 using System.Collections.Generic;
-namespace System.Abstract.EventSourcing
+namespace Contoso.Abstract.EventSourcing
 {
     /// <summary>
     /// FileEventStore
