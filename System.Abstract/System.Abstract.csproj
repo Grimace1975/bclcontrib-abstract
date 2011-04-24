@@ -71,8 +71,8 @@
     <Compile Include="Abstract+ServiceCache+Impl\Caching\DataCacheForeignRegistration.cs" />
     <Compile Include="Abstract+ServiceCache\IServiceCache.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\MemoryServiceCache.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing+Impl\FileAggregateRootSnapshotStore.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing+Impl\FileEventStore.cs" />
+    <Compile Include="Contoso.Abstract+Impl\EventSourcing\FileAggregateRootSnapshotStore.cs" />
+    <Compile Include="Contoso.Abstract+Impl\EventSourcing\FileEventStore.cs" />
     <Compile Include="Abstract+EventSourcing\EventSourcing\AggregateRoot.cs" />
     <Compile Include="Abstract+EventSourcing\EventSourcing\AggregateRootQueryOptions.cs" />
     <Compile Include="Abstract+EventSourcing\EventSourcing\AggregateRootOptions.cs" />
@@ -114,7 +114,6 @@
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Abstract+ServiceLocator\Assembly.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceLocatorSetup.cs" />
     <Compile Include="Abstract+ServiceLocator\IWantToSkipServiceLocator.cs" />
     <Compile Include="Abstract+TypeGrapher\TypeCacheSerializer.cs" />
