@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if EXPERIMENTAL
 namespace System.Abstract
 {
 	/// <summary>
@@ -33,21 +32,21 @@ namespace System.Abstract
 	{
 		object this[string name] { get; set; }
 
-		object Add(string name, object value, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback);
+		object Add(string name, object value, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object tag);
 
 		/// <summary>
 		/// Gets the item from cache associated with the key provided.
 		/// </summary>
 		/// <param name="key">The key.</param>
 		/// <returns>The cached item.</returns>
-		object Get(string name);
+        object Get(string name, object tag);
 
 		/// <summary>
 		/// Removes from cache the item associated with the key provided.
 		/// </summary>
 		/// <param name="key">The key.</param>
 		/// <returns>The item removed from the Cache. If the value in the key parameter is not found, returns null.</returns>
-		object Remove(string name);
+		object Remove(string name, object tag);
 
 		/// <summary>
 		/// Adds an object into cache based on the parameters provided.
@@ -59,13 +58,13 @@ namespace System.Abstract
 		/// <param name="slidingExpiration">The sliding expiration value used to determine when a cache item is considered invalid due to lack of use.</param>
 		/// <param name="priority">The priority.</param>
 		/// <param name="onRemoveCallback">The delegate to invoke when the item is removed from cache.</param>
-		void Insert(string name, object value, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback);
+        object Insert(string name, object value, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object tag);
 
 		/// <summary>
 		/// Touches the specified key.
 		/// </summary>
 		/// <param name="key">The key.</param>
-		void Touch(string name);
+		void Touch(string name, object tag);
 	}
 
 	/// <summary>
@@ -91,7 +90,7 @@ namespace System.Abstract
 			var itemAddedCallback = cacheCommand.ItemAddedCallback;
 			if (itemAddedCallback != null)
 				itemAddedCallback(name, value);
-			return cache.Add(name, value, cacheCommand.Dependency, cacheCommand.AbsoluteExpiration, cacheCommand.SlidingExpiration, cacheCommand.Priority, cacheCommand.ItemRemovedCallback);
+			return cache.Add(name, value, cacheCommand.Dependency, cacheCommand.AbsoluteExpiration, cacheCommand.SlidingExpiration, cacheCommand.Priority, cacheCommand.ItemRemovedCallback, null);
 		}
 
 		public static void Insert(this IServiceCache cache, ServiceCacheCommand cacheCommand, object value)
@@ -103,7 +102,7 @@ namespace System.Abstract
 			Insert(cache, cacheCommand, cacheCommand.Name, value);
 		}
 
-		public static void Insert(this IServiceCache cache, ServiceCacheCommand cacheCommand, string name, object value)
+        public static object Insert(this IServiceCache cache, ServiceCacheCommand cacheCommand, string name, object value)
 		{
 			if (cache == null)
 				throw new ArgumentNullException("cache");
@@ -112,7 +111,7 @@ namespace System.Abstract
 			var itemAddedCallback = cacheCommand.ItemAddedCallback;
 			if (itemAddedCallback != null)
 				itemAddedCallback(name, value);
-			cache.Insert(name, value, cacheCommand.Dependency, cacheCommand.AbsoluteExpiration, cacheCommand.SlidingExpiration, cacheCommand.Priority, cacheCommand.ItemRemovedCallback);
+			return cache.Insert(name, value, cacheCommand.Dependency, cacheCommand.AbsoluteExpiration, cacheCommand.SlidingExpiration, cacheCommand.Priority, cacheCommand.ItemRemovedCallback, null);
 		}
 
 		public static object Remove(this IServiceCache cache, ServiceCacheCommand cacheCommand)
@@ -121,7 +120,7 @@ namespace System.Abstract
 				throw new ArgumentNullException("cache");
 			if (cacheCommand == null)
 				throw new ArgumentNullException("cacheCommand");
-			return cache.Remove(cacheCommand.Name);
+			return cache.Remove(cacheCommand.Name, null);
 		}
 
 		public static void InternalEnsureDependency(IServiceCache cache, ServiceCacheDependency dependency)
@@ -130,10 +129,10 @@ namespace System.Abstract
 				throw new ArgumentNullException("cache");
 			if (dependency != null)
 				return;
-			var names = dependency.CacheNames;
+            var names = dependency.CacheTags;
 			if (names != null)
 				foreach (string name in names)
-					cache.Add(name, string.Empty, null, ServiceCache.NoAbsoluteExpiration, ServiceCache.NoSlidingExpiration, CacheItemPriority.Normal, null);
+					cache.Add(name, string.Empty, null, ServiceCache.NoAbsoluteExpiration, ServiceCache.NoSlidingExpiration, CacheItemPriority.Normal, null, null);
 		}
 
 		public static void Touch(this IServiceCache cache, params string[] names)
@@ -141,8 +140,7 @@ namespace System.Abstract
 			if (cache == null)
 				throw new ArgumentNullException("cache");
 			foreach (string name in names)
-				cache.Touch(name);
+                cache.Touch(name, null);
 		}
 	}
 }
-#endif

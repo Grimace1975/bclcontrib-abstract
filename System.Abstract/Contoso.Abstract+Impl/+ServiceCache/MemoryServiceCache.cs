@@ -39,8 +39,8 @@ namespace Contoso.Abstract
 
 		public object this[string name]
 		{
-			get { return Get(name); }
-			set { Insert(name, value, null, DateTime.Now.AddMinutes(60), ServiceCache.NoSlidingExpiration, CacheItemPriority.Normal, null); }
+			get { return Get(name, null); }
+			set { Insert(name, value, null, DateTime.Now.AddMinutes(60), ServiceCache.NoSlidingExpiration, CacheItemPriority.Normal, null, null); }
 		}
 
 		/// <summary>
@@ -54,7 +54,7 @@ namespace Contoso.Abstract
 		/// <param name="priority">The priority.</param>
 		/// <param name="onRemoveCallback">The delegate to invoke when the item is removed from cache.</param>
 		/// <returns></returns>
-		public object Add(string name, object value, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback)
+        public object Add(string name, object value, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object tag)
 		{
 			// TODO: Throw on dependency or other stuff not supported by this simple system
 			object lastValue;
@@ -71,7 +71,7 @@ namespace Contoso.Abstract
 		/// </summary>
 		/// <param name="name">The key.</param>
 		/// <returns>The cached item.</returns>
-		public object Get(string name)
+        public object Get(string name, object tag)
 		{
 			object value;
 			return (Dictionary.TryGetValue(name, out value) ? value : null);
@@ -87,9 +87,9 @@ namespace Contoso.Abstract
 		/// <param name="slidingExpiration">The sliding expiration value used to determine when a cache item is considered invalid due to lack of use.</param>
 		/// <param name="priority">The priority.</param>
 		/// <param name="onRemoveCallback">The delegate to invoke when the item is removed from cache.</param>
-		public void Insert(string name, object value, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback)
+        public object Insert(string name, object value, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object tag)
 		{
-			Dictionary[name] = value;
+			return (Dictionary[name] = value);
 		}
 
 		/// <summary>
@@ -99,7 +99,7 @@ namespace Contoso.Abstract
 		/// <returns>
 		/// The item removed from the Cache. If the value in the key parameter is not found, returns null.
 		/// </returns>
-		public object Remove(string name)
+        public object Remove(string name, object tag)
 		{
 			object value;
 			if (Dictionary.TryGetValue(name, out value))
@@ -114,10 +114,10 @@ namespace Contoso.Abstract
 		/// Touches the specified key.
 		/// </summary>
 		/// <param name="name">The key.</param>
-		public void Touch(string name)
+		public void Touch(string name, object tag)
 		{
 			Dictionary.Clear();
 		}
-	}
+    }
 }
 #endif

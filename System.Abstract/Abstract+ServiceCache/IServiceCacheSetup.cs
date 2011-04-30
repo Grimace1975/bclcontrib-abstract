@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if EXPERIMENTAL
 using System;
 namespace System.Abstract
 {
@@ -36,4 +35,3 @@ namespace System.Abstract
         void Finally(IServiceCache bus);
     }
 }
-#endif

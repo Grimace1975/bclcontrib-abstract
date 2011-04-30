@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>ServerAppFabric.Client</id>
+    <version>1.0.2912</version>
+    <authors>Microsoft</authors>
+    <owners>Sky Morey</owners>
+    <description>This package contains Server AppFabric Client assemblies.</description>
+    <projectUrl>http://msdn.microsoft.com/en-us/library/aa139633.aspx</projectUrl>
+    <licenseUrl>http://msdn.microsoft.com/en-us/cc300389.aspx</licenseUrl>
+    <tags>appfabric</tags>
+    <language>en-US</language>
+  </metadata>
+</package>

@@ -23,13 +23,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-namespace System.Abstract
+using System;
+namespace Contoso.Abstract
 {
     /// <summary>
-    /// Defines a delegate type for use by <see cref="M:Instinct.CacheCommand.OnRemoveCallback">CacheCommand.OnRemoveCallback</see>.
-    /// Used to provide notification of removal of an item from an instance of a <see cref="T:Instinct.Cache">Cache</see> object.
+    /// ServerAppFabricServiceCacheSettings
     /// </summary>
-    /// <param name="key">Key of the item being removed from cache.</param>
-    /// <param name="value">Value of the item being removed from cache.</param>
-	public delegate void CacheItemRemovedCallback(string name, object value);
+    public class ServerAppFabricServiceCacheSettings
+    {
+        public ServerAppFabricServiceCacheSettings()
+        {
+            ReturnsCachedValueOnRemove = true;
+            RegionMarker = "@";
+        }
+
+        public bool ReturnsCachedValueOnRemove { get; set; }
+        public string RegionMarker { get; set; }
+    }
 }

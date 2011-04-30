@@ -49,8 +49,8 @@ namespace System.Abstract.Caching
         /// <param name="key">The key.</param>
         /// <param name="builder">The builder.</param>
         /// <param name="dependencyArray">The dependency array.</param>
-        public DataCacheRegistration(string id, DataCacheBuilder builder, params string[] dependencies)
-            : this(id, new ServiceCacheCommand("DataCacheRegistration"), builder, dependencies) { }
+        public DataCacheRegistration(string id, DataCacheBuilder builder, params string[] cacheTags)
+            : this(id, new ServiceCacheCommand("DataCacheRegistration"), builder, cacheTags) { }
         /// <summary>
         /// Adds the data source.
         /// </summary>
@@ -58,8 +58,8 @@ namespace System.Abstract.Caching
         /// <param name="minuteTimeout">The minute timeout.</param>
         /// <param name="builder">The builder.</param>
         /// <param name="dependencyArray">The dependency array.</param>
-        public DataCacheRegistration(string id, int minuteTimeout, DataCacheBuilder builder, params string[] dependencies)
-            : this(id, new ServiceCacheCommand("DataCacheRegistration", minuteTimeout), builder, dependencies) { }
+        public DataCacheRegistration(string id, int minuteTimeout, DataCacheBuilder builder, params string[] cacheTags)
+            : this(id, new ServiceCacheCommand("DataCacheRegistration", minuteTimeout), builder, cacheTags) { }
         /// <summary>
         /// Adds the data source.
         /// </summary>
@@ -67,7 +67,7 @@ namespace System.Abstract.Caching
         /// <param name="cacheCommand">The cache command.</param>
         /// <param name="builder">The builder.</param>
         /// <param name="dependencyArray">The dependency array.</param>
-        public DataCacheRegistration(string id, ServiceCacheCommand cacheCommand, DataCacheBuilder builder, params string[] dependencies)
+        public DataCacheRegistration(string id, ServiceCacheCommand cacheCommand, DataCacheBuilder builder, params string[] cacheTags)
         {
             if (string.IsNullOrEmpty(id))
                 throw new ArgumentNullException("id");
@@ -77,11 +77,11 @@ namespace System.Abstract.Caching
                 throw new ArgumentNullException("builder");
             ID = id;
             Builder = builder;
-            if ((dependencies != null) && (dependencies.Length > 0))
+            if ((cacheTags != null) && (cacheTags.Length > 0))
             {
                 if (cacheCommand.Dependency != null)
                     throw new InvalidOperationException(Local.RedefineCacheDependency);
-                cacheCommand.Dependency = new ServiceCacheDependency { CacheNames = dependencies };
+                cacheCommand.Dependency = new ServiceCacheDependency { CacheTags = cacheTags };
             }
             CacheCommand = cacheCommand;
             Tags = new List<string>();

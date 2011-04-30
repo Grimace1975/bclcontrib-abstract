@@ -41,6 +41,16 @@ xcopy %SRC%.4\bin\Release\Contoso.Abstract.CastleWindsor.dll lib\NET40\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.CastleWindsor.xml lib\NET40\ /Y/Q
 popd
 
+::
+echo Abstract.Hiro
+pushd BclContrib-Abstract.Hiro
+set SRC=..\..\Contoso.Abstract.Hiro
+xcopy %SRC%\bin\Release\Contoso.Abstract.Hiro.dll lib\NET35\ /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Abstract.Hiro.xml lib\NET35\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Abstract.Hiro.dll lib\NET40\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Abstract.Hiro.xml lib\NET40\ /Y/Q
+popd
+
 
 ::
 echo Abstract.MongoDB
@@ -90,6 +100,16 @@ xcopy %SRC%\bin\Release\Contoso.Abstract.RabbitMQ.dll lib\NET35\ /Y/Q
 xcopy %SRC%\bin\Release\Contoso.Abstract.RabbitMQ.xml lib\NET35\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.RabbitMQ.dll lib\NET40\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.RabbitMQ.xml lib\NET40\ /Y/Q
+popd
+
+;:
+echo Abstract.ServerAppFabric
+pushd BclContrib-Abstract.ServerAppFabric
+set SRC=..\..\Contoso.Abstract.ServerAppFabric
+xcopy %SRC%\bin\Release\Contoso.Abstract.ServerAppFabric.dll lib\NET35\ /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Abstract.ServerAppFabric.xml lib\NET35\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Abstract.ServerAppFabric.dll lib\NET40\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Abstract.ServerAppFabric.xml lib\NET40\ /Y/Q
 popd
 
 ;:
