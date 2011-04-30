@@ -27,14 +27,10 @@ THE SOFTWARE.
 namespace System.Abstract
 {
     /// <summary>
-	/// NparamsExtensions
+    /// NparamsManager
     /// </summary>
-	public static class NparamsExtensions
+    public class NparamsManager
     {
-		public static T Get<T>(this Nparams nparams)
-        {
-            return default(T);
-        }
     }
 }
 #endif

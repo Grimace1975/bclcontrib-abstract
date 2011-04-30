@@ -24,8 +24,10 @@ THE SOFTWARE.
 */
 #endregion
 #if EXPERIMENTAL
+using System;
+using System.Abstract;
 using System.Collections.Generic;
-namespace System.Abstract
+namespace Contoso.Abstract
 {
 	//: might need to make thread safe
 	/// <summary>

@@ -24,64 +24,27 @@ THE SOFTWARE.
 */
 #endregion
 #if EXPERIMENTAL
-using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
-	/// ServiceCacheManager
+    /// ServiceCacheManager
     /// </summary>
-    public class ServiceCacheManager : IServiceCacheSetup
+    public class ServiceCacheManager
     {
-        private static readonly object _lock = new object();
-        private static Func<IServiceCache> _provider;
-        private static IServiceCache _serviceCache;
+        private static readonly ServiceCacheInstance _instance = new ServiceCacheInstance();
 
-		public static IServiceCacheSetup SetCacheProvider(Func<IServiceCache> provider) { return SetCacheProvider(provider, new ServiceCacheManager()); }
-		public static IServiceCacheSetup SetCacheProvider(Func<IServiceCache> provider, IServiceCacheSetup setup)
+        public static IServiceCacheSetup SetCacheProvider(Func<IServiceCache> provider) { return _instance.SetCacheProvider(provider); }
+        public static IServiceCacheSetup SetCacheProvider(Func<IServiceCache> provider, IServiceCacheSetup setup) { return _instance.SetCacheProvider(provider, setup); }
+
+        public static IServiceCacheSetup Setup
         {
-            _provider = provider;
-            return (Setup = setup);
+            get { return _instance.Setup; }
         }
-
-        public static IServiceCacheSetup Setup { get; private set; }
 
         public static IServiceCache Current
         {
-            get
-            {
-                if (_provider == null)
-                    throw new InvalidOperationException(Local.UndefinedServiceBusProvider);
-				if (_serviceCache == null)
-                    lock (_lock)
-						if (_serviceCache == null)
-                        {
-                            _serviceCache = _provider();
-							if (_serviceCache == null)
-                                throw new InvalidOperationException();
-                            if (Setup != null)
-								Setup.Finally(_serviceCache);
-                        }
-                return _serviceCache;
-            }
+            get { return _instance.Current; }
         }
-
-        #region IServiceCacheSetup
-
-		private List<Action<IServiceCache>> _actions = new List<Action<IServiceCache>>();
-
-        IServiceCacheSetup IServiceCacheSetup.Do(Action<IServiceCache> action)
-        {
-            _actions.Add(action);
-            return this;
-        }
-
-        void IServiceCacheSetup.Finally(IServiceCache bus)
-        {
-            foreach (var action in _actions)
-                action(bus);
-        }
-
-        #endregion
     }
 }
 #endif

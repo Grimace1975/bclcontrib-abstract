@@ -43,25 +43,19 @@ namespace System.Abstract
     /// </summary>
     public static class IServiceLocatorSetupExtensions
     {
-        internal static Assembly GetPreviousCallingMethodsAssembly()
-        {
-            var frame = new StackTrace().GetFrame(2);
-            var method = frame.GetMethod();
-            return (method != null ? method.ReflectedType.Assembly : null);
-        }
-    }
-
-    /// <summary>
-    /// IServiceLocatorSetupGrapherExtensions
-    /// </summary>
-    public static class IServiceLocatorSetupGrapherExtensions
-    {
         public static IServiceLocatorSetup RegisterByIServiceRegistration(this IServiceLocatorSetup setup, params Assembly[] assemblies) { return setup.Do((r, l) => DoRegisterByIServiceRegistration(r, l, null, assemblies)); }
         public static IServiceLocatorSetup RegisterByIServiceRegistration(this IServiceLocatorSetup setup, Predicate<Type> predicate, params Assembly[] assemblies) { return setup.Do((r, l) => DoRegisterByIServiceRegistration(r, l, predicate, assemblies)); }
         public static IServiceLocatorSetup RegisterByNamingConvention(this IServiceLocatorSetup setup) { return setup.Do((r, l) => DoRegisterFromAssembliesByNameConvention(r, l, null, new[] { IServiceLocatorSetupExtensions.GetPreviousCallingMethodsAssembly() })); }
         public static IServiceLocatorSetup RegisterByNamingConvention(this IServiceLocatorSetup setup, params Assembly[] assemblies) { return setup.Do((r, l) => DoRegisterFromAssembliesByNameConvention(r, l, null, assemblies)); }
         public static IServiceLocatorSetup RegisterByNamingConvention(this IServiceLocatorSetup setup, Predicate<Type> predicate) { return setup.Do((r, l) => DoRegisterFromAssembliesByNameConvention(r, l, predicate, new[] { IServiceLocatorSetupExtensions.GetPreviousCallingMethodsAssembly() })); }
         public static IServiceLocatorSetup RegisterFromAssembliesByNameConvention(this IServiceLocatorSetup setup, Predicate<Type> predicate, params Assembly[] assemblies) { return setup.Do((r, l) => DoRegisterFromAssembliesByNameConvention(r, l, predicate, assemblies)); }
+
+        internal static Assembly GetPreviousCallingMethodsAssembly()
+        {
+            var frame = new StackTrace().GetFrame(2);
+            var method = frame.GetMethod();
+            return (method != null ? method.ReflectedType.Assembly : null);
+        }
 
         public static void DoRegisterByIServiceRegistration(IServiceRegistrar registrar, IServiceLocator locator, Predicate<Type> predicate, params Assembly[] assemblies)
         {

@@ -23,53 +23,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
     /// ServiceLocatorManager
     /// </summary>
-    public class ServiceLocatorManager : IServiceLocatorSetup
+    public class ServiceLocatorManager
     {
         private static readonly Type s_wantToSkipServiceLocatorType = typeof(IWantToSkipServiceLocator);
-        private static readonly object _lock = new object();
-        private static Func<IServiceLocator> _provider;
-        private static IServiceLocator _locator;
 
-        public static IServiceLocatorSetup SetLocatorProvider(Func<IServiceLocator> provider) { return SetLocatorProvider(provider, new ServiceLocatorManager()); }
-        public static IServiceLocatorSetup SetLocatorProvider(Func<IServiceLocator> provider, IServiceLocatorSetup setup)
+        private static readonly ServiceLocatorInstance _instance = new ServiceLocatorInstance();
+
+        public static IServiceLocatorSetup SetLocatorProvider(Func<IServiceLocator> provider) { return _instance.SetLocatorProvider(provider); }
+        public static IServiceLocatorSetup SetLocatorProvider(Func<IServiceLocator> provider, IServiceLocatorSetup setup) { return _instance.SetLocatorProvider(provider, setup); }
+
+        public static IServiceLocatorSetup Setup
         {
-            _provider = provider;
-            return (Setup = setup);
+            get { return _instance.Setup; }
         }
-
-        public static IServiceLocatorSetup Setup { get; private set; }
 
         public static IServiceLocator Current
         {
-            get
-            {
-                if (_provider == null)
-                    throw new InvalidOperationException(Local.UndefinedServiceLocatorProvider);
-                if (_locator == null)
-                    lock (_lock)
-                        if (_locator == null)
-                        {
-                            _locator = _provider();
-                            if (_locator == null)
-                                throw new InvalidOperationException();
-                            var registrar = _locator.GetRegistrar();
-                            RegisterSelfInLocator(registrar, _locator);
-                            if (Setup != null)
-                                Setup.Finally(registrar, _locator);
-                        }
-                return _locator;
-            }
-        }
-
-        private static void RegisterSelfInLocator(IServiceRegistrar registrar, IServiceLocator locator)
-        {
-            registrar.RegisterInstance<IServiceLocator>(locator);
+            get { return _instance.Current; }
         }
 
         public static bool GetWantsToSkipLocator(object instance) { return ((instance == null) || (GetWantsToSkipLocator(instance.GetType()))); }
@@ -78,23 +53,5 @@ namespace System.Abstract
         {
             return ((type == null) || (s_wantToSkipServiceLocatorType.IsAssignableFrom(type)));
         }
-
-        #region IServiceLocatorSetup
-
-        private List<Action<IServiceRegistrar, IServiceLocator>> _actions = new List<Action<IServiceRegistrar, IServiceLocator>>();
-
-        IServiceLocatorSetup IServiceLocatorSetup.Do(Action<IServiceRegistrar, IServiceLocator> action)
-        {
-            _actions.Add(action);
-            return this;
-        }
-
-        void IServiceLocatorSetup.Finally(IServiceRegistrar registrar, IServiceLocator locator)
-        {
-            foreach (var action in _actions)
-                action(registrar, locator);
-        }
-
-        #endregion
     }
 }

@@ -23,7 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if EXPERIMENTAL
+#if xEXPERIMENTAL
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
