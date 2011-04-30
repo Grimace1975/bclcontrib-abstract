@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if EXPERIMENTAL
 namespace System.Abstract
 {
     /// <summary>
@@ -47,4 +46,3 @@ namespace System.Abstract
         }
     }
 }
-#endif

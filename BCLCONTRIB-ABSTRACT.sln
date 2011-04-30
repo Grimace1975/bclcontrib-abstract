@@ -63,9 +63,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.Hiro", "Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.Hiro.4", "Contoso.Abstract.Hiro.4\Contoso.Abstract.Hiro.4.csproj", "{EE635BC7-9410-471D-9C8C-A89302DF0822}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.AppFabric", "Contoso.Abstract.AppFabric\Contoso.Abstract.AppFabric.csproj", "{11AB87CE-AC55-4371-B2FB-F8D8E445654F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.ServerAppFabric", "Contoso.Abstract.ServerAppFabric\Contoso.Abstract.ServerAppFabric.csproj", "{11AB87CE-AC55-4371-B2FB-F8D8E445654F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.AppFabric.4", "Contoso.Abstract.AppFabric.4\Contoso.Abstract.AppFabric.4.csproj", "{5E99415E-B741-446D-B640-6EDF90063994}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.ServerAppFabric.4", "Contoso.Abstract.ServerAppFabric.4\Contoso.Abstract.ServerAppFabric.4.csproj", "{5E99415E-B741-446D-B640-6EDF90063994}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,6 +135,7 @@ Global
 		{BF36681D-4869-48B6-B2E9-F78430206F62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF36681D-4869-48B6-B2E9-F78430206F62}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BF36681D-4869-48B6-B2E9-F78430206F62}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BF36681D-4869-48B6-B2E9-F78430206F62}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BF36681D-4869-48B6-B2E9-F78430206F62}.Release|x86.ActiveCfg = Release|Any CPU
 		{45479754-BA8C-46CE-B42A-1432EC8CEE6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{45479754-BA8C-46CE-B42A-1432EC8CEE6B}.Debug|Any CPU.Build.0 = Debug|Any CPU

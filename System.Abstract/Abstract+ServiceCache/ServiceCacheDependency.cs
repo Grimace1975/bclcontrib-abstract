@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if EXPERIMENTAL
 namespace System.Abstract
 {
     /// <summary>
@@ -37,14 +36,16 @@ namespace System.Abstract
         /// <param name="filePath">The file path.</param>
         public ServiceCacheDependency()
         {
-            StartDate = DateTime.MaxValue;
+            //StartDate = DateTime.MaxValue;
         }
 
         /// <summary>
-        /// Gets or sets the cache key array.
+        /// Gets or sets the tags.
         /// </summary>
-        /// <value>The cache key array.</value>
-        public string[] CacheNames { get; set; }
+        /// <value>The cache tag array.</value>
+        public string[] CacheTags { get; set; }
+
+        public object Tag { get; set; }
 
         ///// <summary>
         ///// Gets or sets the dependency.
@@ -52,17 +53,16 @@ namespace System.Abstract
         ///// <value>The dependency.</value>
         //public CacheDependency Dependency {get;set;}
 
-        /// <summary>
-        /// Gets or sets the file path array.
-        /// </summary>
-        /// <value>The file path array.</value>
-        public string[] FilePaths { get; set; }
+        ///// <summary>
+        ///// Gets or sets the file path array.
+        ///// </summary>
+        ///// <value>The file path array.</value>
+        //public string[] FilePaths { get; set; }
 
-        /// <summary>
-        /// Gets or sets the start date.
-        /// </summary>
-        /// <value>The start date.</value>
-        public DateTime StartDate { get; set; }
+        ///// <summary>
+        ///// Gets or sets the start date.
+        ///// </summary>
+        ///// <value>The start date.</value>
+        //public DateTime StartDate { get; set; }
     }
 }
-#endif

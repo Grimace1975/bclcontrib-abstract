@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if EXPERIMENTAL
 namespace System.Abstract
 {
     /// <summary>
@@ -34,4 +33,3 @@ namespace System.Abstract
     /// <param name="value">Value of the item being removed from cache.</param>
 	public delegate void CacheItemAddedCallback(string name, object value);
 }
-#endif

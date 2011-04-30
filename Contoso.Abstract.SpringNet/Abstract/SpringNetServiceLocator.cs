@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if EXPERIMENTAL
 using System;
 using System.Linq;
 using System.Abstract;
@@ -38,7 +37,7 @@ namespace Contoso.Abstract
     /// </summary>
     public interface ISpringNetServiceLocator : IServiceLocator
     {
-        IObjectFactory Container { get; }
+        GenericApplicationContext Container { get; }
     }
 
     /// <summary>
@@ -82,7 +81,7 @@ namespace Contoso.Abstract
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
 
-        private string GetName(Type serviceType) { return serviceType.FullName; }
+        internal static string GetName(Type serviceType) { return serviceType.FullName; }
 
         public TService Resolve<TService>(string name)
             where TService : class
@@ -109,9 +108,9 @@ namespace Contoso.Abstract
         // inject
         public TService Inject<TService>(TService instance)
             where TService : class
-        { 
-            try { _container.ConfigureObject(instance, GetName(typeof(TService))); }
-            catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
+        {
+            try { return (TService)_container.ConfigureObject(instance, GetName(typeof(TService))); }
+            catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
 
         // release and teardown
@@ -124,7 +123,7 @@ namespace Contoso.Abstract
 
         #region Domain specific
 
-        public IObjectFactory Container
+        public GenericApplicationContext Container
         {
             get { return _container; }
             private set
@@ -137,4 +136,3 @@ namespace Contoso.Abstract
         #endregion
     }
 }
-#endif

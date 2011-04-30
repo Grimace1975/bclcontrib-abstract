@@ -364,7 +364,7 @@ namespace System.Abstract.Caching
             // remove from cache
             var cache = registration.GetCacheSystem(null);
             foreach (string tags in registration.Tags)
-				cache.Remove(registration.CacheCommand.Name + "::" + tags);
+				cache.Remove(registration.CacheCommand.Name + "::" + tags, null);
         }
     }
 }
