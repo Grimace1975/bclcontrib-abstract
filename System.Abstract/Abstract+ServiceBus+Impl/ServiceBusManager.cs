@@ -23,88 +23,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
     /// ServiceBusManager
     /// </summary>
-    public class ServiceBusManager : IServiceBusSetup
+    public class ServiceBusManager
     {
-        private static readonly object _lock = new object();
-        private static Func<IServiceBus> _provider;
-        private static Func<IServiceLocator> _locator;
-        private static IServiceBus _serviceBus;
+        private static readonly ServiceBusInstance _instance = new ServiceBusInstance();
 
-        public static IServiceBusSetup SetBusProvider(Func<IServiceBus> provider) { return SetBusProvider(provider, GetDefaultServiceServiceLocator, new ServiceBusManager()); }
-        public static IServiceBusSetup SetBusProvider(Func<IServiceBus> provider, IServiceBusSetup setup) { return SetBusProvider(provider, GetDefaultServiceServiceLocator, setup); }
-        public static IServiceBusSetup SetBusProvider(Func<IServiceBus> provider, Func<IServiceLocator> locator) { return SetBusProvider(provider, locator, new ServiceBusManager()); }
-        public static IServiceBusSetup SetBusProvider(Func<IServiceBus> provider, Func<IServiceLocator> locator, IServiceBusSetup setup)
+        public static IServiceBusSetup SetBusProvider(Func<IServiceBus> provider) { return _instance.SetBusProvider(provider); }
+        public static IServiceBusSetup SetBusProvider(Func<IServiceBus> provider, IServiceBusSetup setup) { return _instance.SetBusProvider(provider, setup); }
+
+        public static IServiceBusSetup Setup
         {
-            _provider = provider;
-            _locator = locator;
-            return (Setup = setup);
+            get { return _instance.Setup; }
         }
-
-        public static IServiceBusSetup Setup { get; private set; }
 
         public static IServiceBus Current
         {
-            get
-            {
-                if (_provider == null)
-                    throw new InvalidOperationException(Local.UndefinedServiceBusProvider);
-                if (_serviceBus == null)
-                    lock (_lock)
-                        if (_serviceBus == null)
-                        {
-                            _serviceBus = _provider();
-                            if (_serviceBus == null)
-                                throw new InvalidOperationException();
-                            IServiceLocator locator;
-                            if ((_locator != null) && ((locator = _locator()) != null))
-                            {
-                                var registrar = locator.GetRegistrar();
-                                RegisterSelfInLocator(registrar, _serviceBus);
-                            }
-                            if (Setup != null)
-                                Setup.Finally(_serviceBus);
-                        }
-                return _serviceBus;
-            }
+            get { return _instance.Current; }
         }
-
-        private static void RegisterSelfInLocator(IServiceRegistrar registrar, IServiceBus serviceBus)
-        {
-            registrar.RegisterInstance<IServiceBus>(serviceBus);
-            var publishingServiceBus = (serviceBus as IPublishingServiceBus);
-            if (publishingServiceBus != null)
-                registrar.RegisterInstance<IPublishingServiceBus>(publishingServiceBus);
-        }
-
-        private static IServiceLocator GetDefaultServiceServiceLocator()
-        {
-            try { return ServiceLocatorManager.Current; }
-            catch (InvalidOperationException) { throw new InvalidOperationException(Local.InvalidServiceBusDefaultServiceLocator); }
-        }
-
-
-        #region IServiceBusSetup
-
-        private List<Action<IServiceBus>> _actions = new List<Action<IServiceBus>>();
-
-        IServiceBusSetup IServiceBusSetup.Do(Action<IServiceBus> action)
-        {
-            _actions.Add(action);
-            return this;
-        }
-
-        void IServiceBusSetup.Finally(IServiceBus bus)
-        {
-            foreach (var action in _actions)
-                action(bus);
-        }
-
-        #endregion
     }
 }

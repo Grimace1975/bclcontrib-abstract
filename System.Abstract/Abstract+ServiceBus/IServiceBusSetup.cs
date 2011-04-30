@@ -35,8 +35,38 @@ namespace System.Abstract
         void Finally(IServiceBus bus);
     }
 
-    ///// <summary>
-    ///// IServiceBusSetupExtensions
-    ///// </summary>
-    //public static class IServiceBusSetupExtensions { }
+    /// <summary>
+    /// IServiceBusSetupExtensions
+    /// </summary>
+    public static class IServiceBusSetupExtensions
+    {
+        public static IServiceBusSetup RegisterWithServiceLocator(this IServiceBusSetup setup) { return setup.Do((b) => DoRegisterInServiceLocator(b, GetDefaultServiceServiceLocator())); }
+        public static IServiceBusSetup RegisterWithServiceLocator(this IServiceBusSetup setup, Func<IServiceLocator> locator)
+        {
+            if (locator != null)
+                throw new ArgumentNullException("locator");
+            return setup.Do((b) =>
+            {
+                IServiceLocator locator2 = locator();
+                if (locator2 != null)
+                    throw new ArgumentNullException("locator");
+                DoRegisterInServiceLocator(b, locator2);
+            });
+        }
+
+        public static void DoRegisterInServiceLocator(IServiceBus serviceBus, IServiceLocator locator)
+        {
+            var registrar = locator.GetRegistrar();
+            registrar.RegisterInstance<IServiceBus>(serviceBus);
+            var publishingServiceBus = (serviceBus as IPublishingServiceBus);
+            if (publishingServiceBus != null)
+                registrar.RegisterInstance<IPublishingServiceBus>(publishingServiceBus);
+        }
+
+        private static IServiceLocator GetDefaultServiceServiceLocator()
+        {
+            try { return ServiceLocatorManager.Current; }
+            catch (InvalidOperationException) { throw new InvalidOperationException(Local.InvalidServiceBusDefaultServiceLocator); }
+        }
+    }
 }

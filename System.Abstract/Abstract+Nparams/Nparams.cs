@@ -75,5 +75,16 @@ namespace System.Abstract
             return default(T);
         }
     }
+
+    /// <summary>
+    /// NparamsExtensions
+    /// </summary>
+    public static class NparamsExtensions
+    {
+        public static T Get<T>(this Nparams nparams)
+        {
+            return default(T);
+        }
+    }
 }
 #endif

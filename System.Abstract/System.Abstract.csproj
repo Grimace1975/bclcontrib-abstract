@@ -55,22 +55,26 @@
     <Compile Include="..\+FromCoreEx\Reflection\AssemblyExtensions.cs">
       <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
     </Compile>
+    <Compile Include="Abstract+Nparams+Impl\NparamsManager.cs" />
+    <Compile Include="Abstract+ServiceBus+Impl\ServiceBusInstance.cs" />
+    <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheInstance.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCache.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheManager.cs" />
     <Compile Include="Abstract+ServiceCache\IServiceCacheSetup.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheCommand.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheDependency.cs" />
-    <Compile Include="Abstract+ServiceCache+Impl\CacheFileTouch.cs" />
+    <Compile Include="Contoso.Abstract+Impl\+ServiceCache\CacheFileTouch.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemAddedCallback.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemPriority.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemRemovedCallback.cs" />
-    <Compile Include="Abstract+ServiceCache+Impl\Caching\DataCache.cs" />
-    <Compile Include="Abstract+ServiceCache+Impl\Caching\DataCacheBuilder.cs" />
-    <Compile Include="Abstract+ServiceCache+Impl\Caching\DataCacheRegistrar.cs" />
-    <Compile Include="Abstract+ServiceCache+Impl\Caching\DataCacheRegistration.cs" />
-    <Compile Include="Abstract+ServiceCache+Impl\Caching\DataCacheForeignRegistration.cs" />
+    <Compile Include="Contoso.Abstract+Impl\+ServiceCache\DataCache.cs" />
+    <Compile Include="Contoso.Abstract+Impl\+ServiceCache\DataCacheBuilder.cs" />
+    <Compile Include="Contoso.Abstract+Impl\+ServiceCache\DataCacheRegistrar.cs" />
+    <Compile Include="Contoso.Abstract+Impl\+ServiceCache\DataCacheRegistration.cs" />
+    <Compile Include="Contoso.Abstract+Impl\+ServiceCache\DataCacheForeignRegistration.cs" />
     <Compile Include="Abstract+ServiceCache\IServiceCache.cs" />
-    <Compile Include="Abstract+ServiceCache+Impl\MemoryServiceCache.cs" />
+    <Compile Include="Contoso.Abstract+Impl\+ServiceCache\MemoryServiceCache.cs" />
+    <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocatorInstance.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\FileAggregateRootSnapshotStore.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\FileEventStore.cs" />
     <Compile Include="Abstract+EventSourcing\EventSourcing\AggregateRoot.cs" />
@@ -94,8 +98,7 @@
     <Compile Include="Abstract+EventSourcing\EventSourcing\IAccessAggregateRootState.cs" />
     <Compile Include="Abstract+Nparams\ParamObject.cs" />
     <Compile Include="Abstract+Nparams\Nparams.cs" />
-    <Compile Include="Abstract+Nparams\NparamsExtensions.cs" />
-    <Compile Include="Abstract+Nparams+Impl\NewAttrib.cs" />
+    <Compile Include="Abstract\+Move\NewAttrib.cs" />
     <Compile Include="Abstract+ServiceBus\AggregateServiceMessage.cs" />
     <Compile Include="Abstract+ServiceBus\IServiceBusSetup.cs" />
     <Compile Include="Abstract+ServiceBus\IServiceMessageHandlerFactory.cs" />
@@ -116,14 +119,14 @@
     </Compile>
     <Compile Include="Abstract+ServiceLocator\IServiceLocatorSetup.cs" />
     <Compile Include="Abstract+ServiceLocator\IWantToSkipServiceLocator.cs" />
-    <Compile Include="Abstract+TypeGrapher\TypeCacheSerializer.cs" />
-    <Compile Include="Abstract+TypeGrapher\TypeCacheManager.cs" />
+    <Compile Include="Abstract+TypeGrapher+Impl\TypeCacheSerializer.cs" />
+    <Compile Include="Abstract+TypeGrapher+Impl\TypeCacheManager.cs" />
     <Compile Include="Abstract\AService.cs" />
     <Compile Include="Abstract+TypeGrapher\IBuildManager.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\MemoryAggregateRootSnapshotStore.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\MemoryEventStore.cs" />
-    <Compile Include="Contoso.Abstract+Impl\MicroServiceLocator.cs" />
-    <Compile Include="Contoso.Abstract+Impl\MicroServiceRegistrar.cs" />
+    <Compile Include="Contoso.Abstract+Impl\+ServiceLocator\MicroServiceLocator.cs" />
+    <Compile Include="Contoso.Abstract+Impl\+ServiceLocator\MicroServiceRegistrar.cs" />
     <Compile Include="Local.Designer.cs">
       <DependentUpon>Local.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -136,9 +139,9 @@
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocatorManager.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceLocatorResolutionException.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceRegistration.cs" />
-    <Compile Include="Abstract\AssemblyTypeCatalog.cs" />
+    <Compile Include="Abstract\+Move\AssemblyTypeCatalog.cs" />
     <Compile Include="Abstract\ISerializer.cs" />
-    <Compile Include="Abstract\ITypeCatalog.cs" />
+    <Compile Include="Abstract\+Move\ITypeCatalog.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Local.resx">
@@ -149,9 +152,7 @@
   <ItemGroup>
     <None Include="BclContrib.snk" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Abstract+TypeGrapher+Impl\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -35,6 +35,12 @@ namespace System.Abstract
         {
             get { return ServiceBusManager.Current; }
         }
+#if EXPERIMENTAL
+        public static IServiceCache Cache
+        {
+            get { return ServiceCacheManager.Current; }
+        }
+#endif
         public static IServiceLocator Locator
         {
             get { return ServiceLocatorManager.Current; }

@@ -8,6 +8,6 @@ glob:*/Bin/*
 glob:Bin/*
 glob:_ReSharper.*/*
 glob:*/_ReSharper.*/*
-glob:nuget/*.suo
 syntax: glob
 Packages/*
+packages/*
