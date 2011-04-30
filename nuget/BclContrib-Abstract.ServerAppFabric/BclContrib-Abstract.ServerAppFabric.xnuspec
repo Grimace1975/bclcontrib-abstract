@@ -12,6 +12,7 @@
     <language>en-US</language>
     <dependencies>
       <dependency id="BclContrib-Abstract" version="0.1.0" />
+      <dependency id="ServerAppFabric.Client" version="1.0.2912" />
     </dependencies>
   </metadata>
 </package>
