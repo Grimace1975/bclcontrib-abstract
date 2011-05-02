@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>BclContrib-Abstract.ServerAppFabric</id>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <authors>Sky Morey</authors>
     <owners>Sky Morey</owners>
     <description>This package contains a Server AppFabric implementation of the abstract ServiceCache.</description>
@@ -11,7 +11,7 @@
     <tags>appfabric servicecache bclcontrib</tags>
     <language>en-US</language>
     <dependencies>
-      <dependency id="BclContrib-Abstract" version="0.1.0" />
+      <dependency id="BclContrib-Abstract" version="0.1.1" />
       <dependency id="ServerAppFabric.Client" version="1.0.2912" />
     </dependencies>
   </metadata>

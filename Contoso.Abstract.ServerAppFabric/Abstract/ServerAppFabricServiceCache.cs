@@ -109,32 +109,6 @@ namespace Contoso.Abstract
             return (!TryGetRegion(Settings.RegionMarker, ref name, out region) ? Cache.GetIfNewer(name, ref version) : Cache.GetIfNewer(name, ref version, region));
         }
 
-        public object Remove(string name, object tag)
-        {
-            string region;
-            string regionMarker = Settings.RegionMarker;
-            var value = (!Settings.ReturnsCachedValueOnRemove ? null : (!TryGetRegion(regionMarker, ref name, out region) ? Cache.Get(name) : Cache.Get(name, region)));
-            //
-            var version = (tag as DataCacheItemVersion);
-            var lockHandle = (tag as DataCacheLockHandle);
-            if ((version == null) && (lockHandle == null))
-            {
-                if (!TryGetRegion(regionMarker, ref name, out region)) Cache.Remove(name);
-                else Cache.Remove(name, region);
-            }
-            else if (version != null)
-            {
-                if (!TryGetRegion(regionMarker, ref name, out region)) Cache.Remove(name, version);
-                else Cache.Remove(name, version, region);
-            }
-            else
-            {
-                if (!TryGetRegion(regionMarker, ref name, out region)) Cache.Remove(name, lockHandle);
-                else Cache.Remove(name, lockHandle, region);
-            }
-            return value;
-        }
-
         public object Insert(string name, object value, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object tag)
         {
             if (slidingExpiration != ServiceCache.NoSlidingExpiration)
@@ -211,6 +185,32 @@ namespace Contoso.Abstract
                     if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.PutAndUnlock(name, value, lockHandle, timeout, tags);
                     else Cache.PutAndUnlock(name, value, lockHandle, timeout, tags, region);
                 }
+            return value;
+        }
+
+        public object Remove(string name, object tag)
+        {
+            string region;
+            string regionMarker = Settings.RegionMarker;
+            var value = (!Settings.ReturnsCachedValueOnRemove ? null : (!TryGetRegion(regionMarker, ref name, out region) ? Cache.Get(name) : Cache.Get(name, region)));
+            //
+            var version = (tag as DataCacheItemVersion);
+            var lockHandle = (tag as DataCacheLockHandle);
+            if ((version == null) && (lockHandle == null))
+            {
+                if (!TryGetRegion(regionMarker, ref name, out region)) Cache.Remove(name);
+                else Cache.Remove(name, region);
+            }
+            else if (version != null)
+            {
+                if (!TryGetRegion(regionMarker, ref name, out region)) Cache.Remove(name, version);
+                else Cache.Remove(name, version, region);
+            }
+            else
+            {
+                if (!TryGetRegion(regionMarker, ref name, out region)) Cache.Remove(name, lockHandle);
+                else Cache.Remove(name, lockHandle, region);
+            }
             return value;
         }
 

@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>BclContrib-Abstract.Unity</id>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <authors>Sky Morey</authors>
     <owners>Sky Morey</owners>
     <description>This package contains a Unity implementation of the abstract ServiceLocator.</description>
@@ -11,7 +11,7 @@
     <tags>unity servicelocator ioc di bclcontrib</tags>
     <language>en-US</language>
     <dependencies>
-      <dependency id="BclContrib-Abstract" version="0.1.0" />
+      <dependency id="BclContrib-Abstract" version="0.1.1" />
       <dependency id="Unity" version="2.0" />
     </dependencies>
   </metadata>

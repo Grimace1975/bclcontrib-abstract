@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>BclContrib-Abstract</id>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <authors>Sky Morey</authors>
     <owners>Sky Morey</owners>
     <description>This package contains abstractions to provide standard Interfaces, or Abstracts, for common services typicality re-implemented in various Projects/Assemblies. Utilizing a standards based Type allows services to flow between otherwise disconnected Assemblies.</description>
