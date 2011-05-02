@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>BclContrib-Abstract.Sql</id>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <authors>Sky Morey</authors>
     <owners>Sky Morey</owners>
     <description>This package contains Microsoft SQL Server implementations of the Event-Sourceing storage for the abstract AggregateRoot.</description>
@@ -11,8 +11,8 @@
     <tags>mssql nosql sql aggregateroot bclcontrib</tags>
     <language>en-US</language>
     <dependencies>
-      <dependency id="BclContrib-Abstract" version="0.1.0" />
-      <dependency id="BclContrib-Abstract.TypeSerializer" version="0.1.0" />
+      <dependency id="BclContrib-Abstract" version="0.1.1" />
+      <dependency id="BclContrib-Abstract.TypeSerializer" version="0.1.1" />
     </dependencies>
   </metadata>
 </package>

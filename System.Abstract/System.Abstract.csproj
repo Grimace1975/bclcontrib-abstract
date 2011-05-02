@@ -127,6 +127,15 @@
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\MemoryEventStore.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceLocator\MicroServiceLocator.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceLocator\MicroServiceRegistrar.cs" />
+    <Compile Include="DateTimeEx.cs" />
+    <Compile Include="IO\+Mock\DirectoryMock.cs" />
+    <Compile Include="IO\+Mock\DirectoryWrapper.cs" />
+    <Compile Include="IO\+Mock\FileMock.cs" />
+    <Compile Include="IO\+Mock\FileWrapper.cs" />
+    <Compile Include="IO\+Mock\PathMock.cs" />
+    <Compile Include="IO\DirectoryEx.cs" />
+    <Compile Include="IO\FileEx.cs" />
+    <Compile Include="IO\PathEx.cs" />
     <Compile Include="Local.Designer.cs">
       <DependentUpon>Local.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -152,7 +161,9 @@
   <ItemGroup>
     <None Include="BclContrib.snk" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Changelog.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

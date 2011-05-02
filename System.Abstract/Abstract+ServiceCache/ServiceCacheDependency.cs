@@ -31,38 +31,11 @@ namespace System.Abstract
     public class ServiceCacheDependency
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceCacheDependency"/> class.
-        /// </summary>
-        /// <param name="filePath">The file path.</param>
-        public ServiceCacheDependency()
-        {
-            //StartDate = DateTime.MaxValue;
-        }
-
-        /// <summary>
         /// Gets or sets the tags.
         /// </summary>
         /// <value>The cache tag array.</value>
         public string[] CacheTags { get; set; }
 
         public object Tag { get; set; }
-
-        ///// <summary>
-        ///// Gets or sets the dependency.
-        ///// </summary>
-        ///// <value>The dependency.</value>
-        //public CacheDependency Dependency {get;set;}
-
-        ///// <summary>
-        ///// Gets or sets the file path array.
-        ///// </summary>
-        ///// <value>The file path array.</value>
-        //public string[] FilePaths { get; set; }
-
-        ///// <summary>
-        ///// Gets or sets the start date.
-        ///// </summary>
-        ///// <value>The start date.</value>
-        //public DateTime StartDate { get; set; }
     }
 }

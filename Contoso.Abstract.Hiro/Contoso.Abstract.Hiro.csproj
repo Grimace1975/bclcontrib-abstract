@@ -67,7 +67,9 @@
       <Name>System.Abstract</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Changelog.txt" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="BclContrib.snk" />
     <None Include="packages.config" />
