@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>BclContrib-Abstract.Autofac</id>
+    <version>0.1.2</version>
+    <authors>Sky Morey</authors>
+    <owners>Sky Morey</owners>
+    <description>This package contains an Autofac implementation of the abstract ServiceLocator.</description>
+    <projectUrl>http://code.google.com/p/bclcontrib-abstract/</projectUrl>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <tags>autofac servicelocator ioc di bclcontrib</tags>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="BclContrib-Abstract" version="0.1.1" />
+      <dependency id="Autofac" version="2.4.5.725" />
+    </dependencies>
+  </metadata>
+</package>
