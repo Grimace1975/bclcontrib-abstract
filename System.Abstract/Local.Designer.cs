@@ -185,5 +185,14 @@ namespace System.Abstract {
                 return ResourceManager.GetString("UndefinedServiceLocatorProvider", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UndefinedServiceLogProvider.
+        /// </summary>
+        internal static string UndefinedServiceLogProvider {
+            get {
+                return ResourceManager.GetString("UndefinedServiceLogProvider", resourceCulture);
+            }
+        }
     }
 }

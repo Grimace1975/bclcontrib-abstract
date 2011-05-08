@@ -31,24 +31,24 @@ namespace System
 	public class DateTimeEx
 	{
 		[ThreadStatic]
-		private static DateTime? s_utcNowMock;
+		private static DateTime? _utcNowMock;
 
 		public static DateTime? NowMock
 		{
-			get { return (s_utcNowMock.HasValue ? (DateTime?)s_utcNowMock.Value.ToLocalTime() : null); }
+			get { return (_utcNowMock.HasValue ? (DateTime?)_utcNowMock.Value.ToLocalTime() : null); }
 			set
 			{
 				if (value.HasValue)
-					s_utcNowMock = value.Value.ToUniversalTime();
+					_utcNowMock = value.Value.ToUniversalTime();
 				else
-					s_utcNowMock = null;
+					_utcNowMock = null;
 			}
 		}
 
 		public static DateTime? UtcNowMock
 		{
-			get { return s_utcNowMock; }
-			set { s_utcNowMock = value; }
+			get { return _utcNowMock; }
+			set { _utcNowMock = value; }
 		}
 
         public static DateTime Today
@@ -58,12 +58,12 @@ namespace System
 
 		public static DateTime Now
 		{
-			get { return (!s_utcNowMock.HasValue ? DateTime.Now : s_utcNowMock.Value.ToLocalTime()); }
+			get { return (!_utcNowMock.HasValue ? DateTime.Now : _utcNowMock.Value.ToLocalTime()); }
 		}
 
 		public static DateTime UtcNow
 		{
-			get { return (!s_utcNowMock.HasValue ? DateTime.UtcNow : s_utcNowMock.Value); }
+			get { return (!_utcNowMock.HasValue ? DateTime.UtcNow : _utcNowMock.Value); }
 		}
 	}
 }

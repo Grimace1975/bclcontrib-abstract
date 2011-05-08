@@ -24,7 +24,7 @@ THE SOFTWARE.
 */
 #endregion
 #if EXPERIMENTAL
-namespace System.Abstract
+namespace System
 {
     /// <summary>
 	/// ParamObject

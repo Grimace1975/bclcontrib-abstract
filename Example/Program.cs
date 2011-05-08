@@ -9,11 +9,11 @@ namespace Example
     {
         static void Main(string[] args)
         {
-            ServiceLocatorManager.SetLocatorProvider(() => new UnityServiceLocator())
+            ServiceLocatorManager.SetProvider(() => new UnityServiceLocator())
                 .RegisterByIServiceRegistration(typeof(Program).Assembly)
                 .RegisterByNamingConvention(typeof(Program).Assembly);
             //
-            ServiceBusManager.SetBusProvider(() => new ApplicationServiceBus());
+            ServiceBusManager.SetProvider(() => new ApplicationServiceBus());
         }
     }
 

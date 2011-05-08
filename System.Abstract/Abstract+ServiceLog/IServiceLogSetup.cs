@@ -27,11 +27,11 @@ using System;
 namespace System.Abstract
 {
     /// <summary>
-    /// IServiceCacheSetup
+    /// IServiceLogSetup
     /// </summary>
-    public interface IServiceCacheSetup : IServiceSetup<IServiceCacheSetup, Action<IServiceCache>>
+    public interface IServiceLogSetup : IServiceSetup<IServiceLogSetup, Action<IServiceLog>>
     {
-        //IServiceCacheSetup Do(Action<IServiceCache> action);
-        //void Finally(IServiceCache bus);
+        //IServiceLogSetup Do(Action<IServiceLog> action);
+        //void Finally(IServiceLog log);
     }
 }

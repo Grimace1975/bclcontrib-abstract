@@ -27,66 +27,66 @@ using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
-    /// ServiceCacheInstance
+    /// ServiceLogInstance
     /// </summary>
-    public class ServiceCacheInstance : ServiceInstanceBase<IServiceCache, IServiceCacheSetup, Action<IServiceCache>>
+    public class ServiceLogInstance : ServiceInstanceBase<IServiceLog, IServiceLogSetup, Action<IServiceLog>>
     {
-        public ServiceCacheInstance()
-            : base(() => new ServiceCacheInstance()) { }
+        public ServiceLogInstance()
+            : base(() => new ServiceLogInstance()) { }
     }
 
     ///// <summary>
-    ///// ServiceCacheInstance
+    ///// ServiceLogInstance
     ///// </summary>
-    //public class ServiceCacheInstance : IServiceCacheSetup
+    //public class ServiceLogInstance : IServiceLogSetup
     //{
     //    private readonly object _lock = new object();
-    //    private Func<IServiceCache> _provider;
-    //    private IServiceCache _serviceCache;
+    //    private Func<IServiceLog> _provider;
+    //    private IServiceLog _serviceLog;
 
-    //    public IServiceCacheSetup SetCacheProvider(Func<IServiceCache> provider) { return SetCacheProvider(provider, new ServiceCacheInstance()); }
-    //    public IServiceCacheSetup SetCacheProvider(Func<IServiceCache> provider, IServiceCacheSetup setup)
+    //    public IServiceLogSetup SetLogProvider(Func<IServiceLog> provider) { return SetLogProvider(provider, new ServiceLogInstance()); }
+    //    public IServiceLogSetup SetLogProvider(Func<IServiceLog> provider, IServiceLogSetup setup)
     //    {
     //        _provider = provider;
     //        return (Setup = setup);
     //    }
 
-    //    public IServiceCacheSetup Setup { get; private set; }
+    //    public IServiceLogSetup Setup { get; private set; }
 
-    //    public IServiceCache Current
+    //    public IServiceLog Current
     //    {
     //        get
     //        {
     //            if (_provider == null)
-    //                throw new InvalidOperationException(Local.UndefinedServiceBusProvider);
-    //            if (_serviceCache == null)
+    //                throw new InvalidOperationException(Local.UndefinedServiceLogProvider);
+    //            if (_serviceLog == null)
     //                lock (_lock)
-    //                    if (_serviceCache == null)
+    //                    if (_serviceLog == null)
     //                    {
-    //                        _serviceCache = _provider();
-    //                        if (_serviceCache == null)
+    //                        _serviceLog = _provider();
+    //                        if (_serviceLog == null)
     //                            throw new InvalidOperationException();
     //                        if (Setup != null)
-    //                            Setup.Finally(_serviceCache);
+    //                            Setup.Finally(_serviceLog);
     //                    }
-    //            return _serviceCache;
+    //            return _serviceLog;
     //        }
     //    }
 
-    //    #region IServiceCacheSetup
+    //    #region IServiceLogSetup
 
-    //    private List<Action<IServiceCache>> _actions = new List<Action<IServiceCache>>();
+    //    private List<Action<IServiceLog>> _actions = new List<Action<IServiceLog>>();
 
-    //    IServiceCacheSetup IServiceCacheSetup.Do(Action<IServiceCache> action)
+    //    IServiceLogSetup IServiceLogSetup.Do(Action<IServiceLog> action)
     //    {
     //        _actions.Add(action);
     //        return this;
     //    }
 
-    //    void IServiceCacheSetup.Finally(IServiceCache bus)
+    //    void IServiceLogSetup.Finally(IServiceLog log)
     //    {
     //        foreach (var action in _actions)
-    //            action(bus);
+    //            action(log);
     //    }
 
     //    #endregion

@@ -27,25 +27,25 @@ using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
-    /// AService
+    /// ServiceManagerBase
     /// </summary>
-    public static class AService
+    public abstract class ServiceManagerBase<TServiceInstance, IService, IServiceSetup>
+        where TServiceInstance : IServiceInstance<IService, IServiceSetup>, new()
+        
     {
-        public static IServiceBus Bus
+        private static readonly TServiceInstance _instance = new TServiceInstance();
+
+        public static IServiceSetup SetProvider(Func<IService> provider) { return _instance.SetProvider(provider); }
+        public static IServiceSetup SetProvider(Func<IService> provider, IServiceSetup setup) { return _instance.SetProvider(provider, setup); }
+
+        public static IServiceSetup Setup
         {
-            get { return ServiceBusManager.Current; }
+            get { return _instance.Setup; }
         }
-        public static IServiceCache Cache
+
+        public static IService Current
         {
-            get { return ServiceCacheManager.Current; }
-        }
-        public static IServiceLocator Locator
-        {
-            get { return ServiceLocatorManager.Current; }
-        }
-        public static IServiceRegistrar Registrar
-        {
-            get { return ServiceLocatorManager.Current.GetRegistrar(); }
+            get { return _instance.Current; }
         }
     }
 }

@@ -159,4 +159,7 @@
   <data name="UndefinedServiceLocatorProvider" xml:space="preserve">
     <value>UndefinedServiceLocatorProvider</value>
   </data>
+  <data name="UndefinedServiceLogProvider" xml:space="preserve">
+    <value>UndefinedServiceLogProvider</value>
+  </data>
 </root>

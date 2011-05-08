@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /*
 The MIT License
 
@@ -23,15 +23,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
-namespace System.Abstract
+namespace System.Patterns.ReleaseManagement
 {
-    /// <summary>
-    /// IServiceCacheSetup
-    /// </summary>
-    public interface IServiceCacheSetup : IServiceSetup<IServiceCacheSetup, Action<IServiceCache>>
-    {
-        //IServiceCacheSetup Do(Action<IServiceCache> action);
-        //void Finally(IServiceCache bus);
-    }
+	/// <summary>
+    /// DevelopmentStage
+	/// </summary>
+	// [Wiki] http://en.wikipedia.org/wiki/Software_release_life_cycle
+	public enum DevelopmentStage
+	{
+		PreAlpha,
+		Alpha,
+		Beta,
+		Release,
+	}
 }

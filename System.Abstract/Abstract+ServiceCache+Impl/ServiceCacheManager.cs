@@ -28,21 +28,26 @@ namespace System.Abstract
     /// <summary>
     /// ServiceCacheManager
     /// </summary>
-    public class ServiceCacheManager
-    {
-        private static readonly ServiceCacheInstance _instance = new ServiceCacheInstance();
+    public class ServiceCacheManager : ServiceManagerBase<ServiceCacheInstance, IServiceCache, IServiceCacheSetup> { }
 
-        public static IServiceCacheSetup SetCacheProvider(Func<IServiceCache> provider) { return _instance.SetCacheProvider(provider); }
-        public static IServiceCacheSetup SetCacheProvider(Func<IServiceCache> provider, IServiceCacheSetup setup) { return _instance.SetCacheProvider(provider, setup); }
+    ///// <summary>
+    ///// ServiceCacheManager
+    ///// </summary>
+    //public class ServiceCacheManager
+    //{
+    //    private static readonly ServiceCacheInstance _instance = new ServiceCacheInstance();
 
-        public static IServiceCacheSetup Setup
-        {
-            get { return _instance.Setup; }
-        }
+    //    public static IServiceCacheSetup SetCacheProvider(Func<IServiceCache> provider) { return _instance.SetCacheProvider(provider); }
+    //    public static IServiceCacheSetup SetCacheProvider(Func<IServiceCache> provider, IServiceCacheSetup setup) { return _instance.SetCacheProvider(provider, setup); }
 
-        public static IServiceCache Current
-        {
-            get { return _instance.Current; }
-        }
-    }
+    //    public static IServiceCacheSetup Setup
+    //    {
+    //        get { return _instance.Setup; }
+    //    }
+
+    //    public static IServiceCache Current
+    //    {
+    //        get { return _instance.Current; }
+    //    }
+    //}
 }

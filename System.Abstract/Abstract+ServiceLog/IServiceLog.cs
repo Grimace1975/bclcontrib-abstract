@@ -23,15 +23,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
 namespace System.Abstract
 {
     /// <summary>
-    /// IServiceCacheSetup
+    /// IServiceLog
     /// </summary>
-    public interface IServiceCacheSetup : IServiceSetup<IServiceCacheSetup, Action<IServiceCache>>
+    public interface IServiceLog
     {
-        //IServiceCacheSetup Do(Action<IServiceCache> action);
-        //void Finally(IServiceCache bus);
+        object GetLogger(object tag);
+        void LogEvent(object logger, ServiceLogEventType eventType, string module, string text, params object[] args);
+        void LogEvent(object logger, ServiceLogEventType eventType, string module, Exception e);
+    }
+
+    /// <summary>
+    /// IServiceLogExtensions
+    /// </summary>
+    public static class IServiceLogExtensions
+    {
     }
 }

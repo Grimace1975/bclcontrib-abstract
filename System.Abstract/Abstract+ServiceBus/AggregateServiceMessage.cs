@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+#if EXPERIMENTAL
 using System.Collections.Generic;
 namespace System.Abstract
 {
@@ -35,3 +36,4 @@ namespace System.Abstract
         public IServiceMessage[] Messages { get; private set; }
     }
 }
+#endif

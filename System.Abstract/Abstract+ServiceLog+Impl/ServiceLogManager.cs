@@ -23,15 +23,31 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
 namespace System.Abstract
 {
     /// <summary>
-    /// IServiceCacheSetup
+    /// ServiceLogManager
     /// </summary>
-    public interface IServiceCacheSetup : IServiceSetup<IServiceCacheSetup, Action<IServiceCache>>
-    {
-        //IServiceCacheSetup Do(Action<IServiceCache> action);
-        //void Finally(IServiceCache bus);
-    }
+    public class ServiceLogManager : ServiceManagerBase<ServiceLogInstance, IServiceLog, IServiceLogSetup> { }
+
+    ///// <summary>
+    ///// ServiceLogManager
+    ///// </summary>
+    //public class ServiceLogManager
+    //{
+    //    private static readonly ServiceLogInstance _instance = new ServiceLogInstance();
+
+    //    public static IServiceLogSetup SetLogProvider(Func<IServiceLog> provider) { return _instance.SetLogProvider(provider); }
+    //    public static IServiceLogSetup SetLogProvider(Func<IServiceLog> provider, IServiceLogSetup setup) { return _instance.SetLogProvider(provider, setup); }
+
+    //    public static IServiceLogSetup Setup
+    //    {
+    //        get { return _instance.Setup; }
+    //    }
+
+    //    public static IServiceLog Current
+    //    {
+    //        get { return _instance.Current; }
+    //    }
+    //}
 }

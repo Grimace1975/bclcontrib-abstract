@@ -23,15 +23,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
 namespace System.Abstract
 {
     /// <summary>
-    /// IServiceCacheSetup
+    /// Category of events for classifying logging actions.
     /// </summary>
-    public interface IServiceCacheSetup : IServiceSetup<IServiceCacheSetup, Action<IServiceCache>>
+    public enum ServiceLogEventType
     {
-        //IServiceCacheSetup Do(Action<IServiceCache> action);
-        //void Finally(IServiceCache bus);
+        /// <summary>
+        /// Generic logging action indicating tracking information.
+        /// </summary>
+        Trace,
+        /// <summary>
+        /// Logging action involving application debugging information.
+        /// </summary>
+        Debug,
+        /// <summary>
+        /// Logging action involving non-specific information of general purpose.
+        /// </summary>
+        Information,
+        /// <summary>
+        /// Logging action involving information of concern.
+        /// </summary>
+        Warning,
+        /// <summary>
+        /// Logging action involving information regarding a system or application error of a non-critical nature.
+        /// </summary>
+        Error,
+        /// <summary>
+        /// Logging action involving information regarding a critical system or application error.
+        /// </summary>
+        Fatal
     }
+
 }

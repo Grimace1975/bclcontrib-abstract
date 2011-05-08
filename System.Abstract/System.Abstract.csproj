@@ -55,7 +55,7 @@
     <Compile Include="..\+FromCoreEx\Reflection\AssemblyExtensions.cs">
       <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
     </Compile>
-    <Compile Include="Abstract+Nparams+Impl\NparamsManager.cs" />
+    <Compile Include="+Nparams+Impl\NparamsManager.cs" />
     <Compile Include="Abstract+ServiceBus+Impl\ServiceBusInstance.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheInstance.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCache.cs" />
@@ -63,6 +63,15 @@
     <Compile Include="Abstract+ServiceCache\IServiceCacheSetup.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheCommand.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheDependency.cs" />
+    <Compile Include="Abstract+ServiceLog\ServiceLogEventType.cs" />
+    <Compile Include="Abstract\+Move\ServiceLog.cs" />
+    <Compile Include="Abstract+ServiceLog+Impl\ServiceLogInstance.cs" />
+    <Compile Include="Abstract+ServiceLog+Impl\ServiceLogManager.cs" />
+    <Compile Include="Abstract+ServiceLog\IServiceLog.cs" />
+    <Compile Include="Abstract+ServiceLog\IServiceLogSetup.cs" />
+    <Compile Include="Abstract+Impl\ServiceInstanceBase.cs" />
+    <Compile Include="Abstract+Impl\ServiceManagerBase.cs" />
+    <Compile Include="EnvironmentEx.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceCache\CacheFileTouch.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemAddedCallback.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemPriority.cs" />
@@ -96,8 +105,8 @@
     <Compile Include="Abstract+EventSourcing\EventSourcing\Event.cs" />
     <Compile Include="Abstract+EventSourcing\EventSourcing\IEventStore.cs" />
     <Compile Include="Abstract+EventSourcing\EventSourcing\IAccessAggregateRootState.cs" />
-    <Compile Include="Abstract+Nparams\ParamObject.cs" />
-    <Compile Include="Abstract+Nparams\Nparams.cs" />
+    <Compile Include="+Nparams\ParamObject.cs" />
+    <Compile Include="+Nparams\Nparams.cs" />
     <Compile Include="Abstract\+Move\NewAttrib.cs" />
     <Compile Include="Abstract+ServiceBus\AggregateServiceMessage.cs" />
     <Compile Include="Abstract+ServiceBus\IServiceBusSetup.cs" />
@@ -121,7 +130,7 @@
     <Compile Include="Abstract+ServiceLocator\IWantToSkipServiceLocator.cs" />
     <Compile Include="Abstract+TypeGrapher+Impl\TypeCacheSerializer.cs" />
     <Compile Include="Abstract+TypeGrapher+Impl\TypeCacheManager.cs" />
-    <Compile Include="Abstract\AService.cs" />
+    <Compile Include="Abstract+Impl\AService.cs" />
     <Compile Include="Abstract+TypeGrapher\IBuildManager.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\MemoryAggregateRootSnapshotStore.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\MemoryEventStore.cs" />
@@ -141,6 +150,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Patterns\ReleaseManagement\DeploymentEnvironment.cs" />
+    <Compile Include="Patterns\ReleaseManagement\DevelopmentStage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceDependencyAttribute.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceLocator.cs" />
@@ -164,6 +175,7 @@
   <ItemGroup>
     <Content Include="Changelog.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

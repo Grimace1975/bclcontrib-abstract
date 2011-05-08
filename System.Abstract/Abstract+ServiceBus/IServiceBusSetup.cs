@@ -29,10 +29,10 @@ namespace System.Abstract
     /// <summary>
     /// IServiceBusSetup
     /// </summary>
-    public interface IServiceBusSetup
+    public interface IServiceBusSetup : IServiceSetup<IServiceBusSetup, Action<IServiceBus>>
     {
-        IServiceBusSetup Do(Action<IServiceBus> action);
-        void Finally(IServiceBus bus);
+        //IServiceBusSetup Do(Action<IServiceBus> action);
+        //void Finally(IServiceBus bus);
     }
 
     /// <summary>

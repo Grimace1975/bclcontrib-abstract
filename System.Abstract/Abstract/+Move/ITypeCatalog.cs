@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+#if xEXPERIMENTAL
 namespace System.Abstract
 {
     /// <summary>
@@ -45,3 +46,4 @@ namespace System.Abstract
         public static Type[] GetGenericInterfaceImplementations<T>(this ITypeCatalog typeCatalog, bool concretable) { return typeCatalog.GetGenericInterfaceImplementations(typeof(T), concretable); }
     }
 }
+#endif

@@ -26,7 +26,7 @@ THE SOFTWARE.
 #if EXPERIMENTAL
 using System.Collections.Generic;
 using System.Collections;
-namespace System.Abstract
+namespace System
 {
     /// <summary>
 	/// Nparams

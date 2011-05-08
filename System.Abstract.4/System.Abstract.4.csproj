@@ -49,6 +49,15 @@
     <Compile Include="..\+FromCoreEx\Reflection\AssemblyExtensions.cs">
       <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\+Nparams+Impl\NparamsManager.cs">
+      <Link>+Nparams+Impl\NparamsManager.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\+Nparams\Nparams.cs">
+      <Link>+Nparams\Nparams.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\+Nparams\ParamObject.cs">
+      <Link>+Nparams\ParamObject.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing+Impl\RegistryEventDispatcher.cs">
       <Link>Abstract+EventSourcing\EventSourcing+Impl\RegistryEventDispatcher.cs</Link>
     </Compile>
@@ -106,14 +115,14 @@
     <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\IOfflineSnaphotQuery.cs">
       <Link>Abstract+EventSourcing\EventSourcing\IOfflineSnaphotQuery.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+Nparams+Impl\NparamsManager.cs">
-      <Link>Abstract+Nparams+Impl\NparamsManager.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract+Impl\AService.cs">
+      <Link>Abstract+Impl\AService.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+Nparams\Nparams.cs">
-      <Link>Abstract+Nparams\Nparams.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract+Impl\ServiceInstanceBase.cs">
+      <Link>Abstract+Impl\ServiceInstanceBase.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+Nparams\ParamObject.cs">
-      <Link>Abstract+Nparams\ParamObject.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract+Impl\ServiceManagerBase.cs">
+      <Link>Abstract+Impl\ServiceManagerBase.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus+Impl\ServiceBus.cs">
       <Link>Abstract+ServiceBus+Impl\ServiceBus.cs</Link>
@@ -217,6 +226,21 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceLocatorResolutionException.cs">
       <Link>Abstract+ServiceLocator\ServiceLocatorResolutionException.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLog+Impl\ServiceLogInstance.cs">
+      <Link>Abstract+ServiceLog+Impl\ServiceLogInstance.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLog+Impl\ServiceLogManager.cs">
+      <Link>Abstract+ServiceLog+Impl\ServiceLogManager.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLog\IServiceLog.cs">
+      <Link>Abstract+ServiceLog\IServiceLog.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLog\IServiceLogSetup.cs">
+      <Link>Abstract+ServiceLog\IServiceLogSetup.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLog\ServiceLogEventType.cs">
+      <Link>Abstract+ServiceLog\ServiceLogEventType.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+TypeGrapher+Impl\TypeCacheManager.cs">
       <Link>Abstract+TypeGrapher+Impl\TypeCacheManager.cs</Link>
     </Compile>
@@ -231,9 +255,6 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract\+Move\ITypeCatalog.cs">
       <Link>Abstract\+Move\ITypeCatalog.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Abstract\AService.cs">
-      <Link>Abstract\AService.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract\ISerializer.cs">
       <Link>Abstract\ISerializer.cs</Link>
@@ -258,6 +279,9 @@
     </Compile>
     <Compile Include="..\System.Abstract\DateTimeEx.cs">
       <Link>DateTimeEx.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\EnvironmentEx.cs">
+      <Link>EnvironmentEx.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\IO\+Mock\DirectoryMock.cs">
       <Link>IO\+Mock\DirectoryMock.cs</Link>
@@ -286,6 +310,12 @@
     <Compile Include="..\System.Abstract\Local.Designer.cs">
       <Link>Local.Designer.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Patterns\ReleaseManagement\DeploymentEnvironment.cs">
+      <Link>Patterns\ReleaseManagement\DeploymentEnvironment.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Patterns\ReleaseManagement\DevelopmentStage.cs">
+      <Link>Patterns\ReleaseManagement\DevelopmentStage.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -293,6 +323,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Contoso.Abstract+Impl\+ServiceCache\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\System.Abstract\Changelog.txt">
+      <Link>Changelog.txt</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

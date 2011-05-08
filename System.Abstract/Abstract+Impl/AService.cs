@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
 The MIT License
 
@@ -23,14 +23,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if EXPERIMENTAL
+using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
-    /// NparamsManager
+    /// AService
     /// </summary>
-    public class NparamsManager
+    public static class AService
     {
+        public static IServiceBus Bus
+        {
+            get { return ServiceBusManager.Current; }
+        }
+        public static IServiceCache Cache
+        {
+            get { return ServiceCacheManager.Current; }
+        }
+        public static IServiceLocator Locator
+        {
+            get { return ServiceLocatorManager.Current; }
+        }
+        public static IServiceRegistrar Registrar
+        {
+            get { return ServiceLocatorManager.Current.GetRegistrar(); }
+        }
+        public static IServiceLog Log
+        {
+            get { return ServiceLogManager.Current; }
+        }
     }
 }
-#endif
