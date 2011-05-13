@@ -277,8 +277,8 @@
     <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\EventSourcing\MemoryEventStore.cs">
       <Link>Contoso.Abstract+Impl\EventSourcing\MemoryEventStore.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\DateTimeEx.cs">
-      <Link>DateTimeEx.cs</Link>
+    <Compile Include="..\System.Abstract\DateTimeEx2.cs">
+      <Link>DateTimeEx2.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\EnvironmentEx.cs">
       <Link>EnvironmentEx.cs</Link>
@@ -298,14 +298,14 @@
     <Compile Include="..\System.Abstract\IO\+Mock\PathMock.cs">
       <Link>IO\+Mock\PathMock.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\IO\DirectoryEx.cs">
-      <Link>IO\DirectoryEx.cs</Link>
+    <Compile Include="..\System.Abstract\IO\DirectoryEx2.cs">
+      <Link>IO\DirectoryEx2.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\IO\FileEx.cs">
-      <Link>IO\FileEx.cs</Link>
+    <Compile Include="..\System.Abstract\IO\FileEx2.cs">
+      <Link>IO\FileEx2.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\IO\PathEx.cs">
-      <Link>IO\PathEx.cs</Link>
+    <Compile Include="..\System.Abstract\IO\PathEx2.cs">
+      <Link>IO\PathEx2.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Local.Designer.cs">
       <Link>Local.Designer.cs</Link>

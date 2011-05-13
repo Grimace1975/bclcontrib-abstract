@@ -26,9 +26,9 @@ THE SOFTWARE.
 namespace System.IO
 {
     /// <summary>
-    /// PathEx
+    /// PathEx2
     /// </summary>
-    public static partial class PathEx
+    public static partial class PathEx2
     {
         [ThreadStatic]
         private static MockBase s_mock;

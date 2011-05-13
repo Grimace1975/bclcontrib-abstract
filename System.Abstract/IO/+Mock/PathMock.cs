@@ -25,7 +25,7 @@ THE SOFTWARE.
 #endregion
 namespace System.IO
 {
-    public static partial class PathEx
+    public static partial class PathEx2
     {
         /// <summary>
         /// MockBase

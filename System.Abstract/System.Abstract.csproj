@@ -71,6 +71,7 @@
     <Compile Include="Abstract+ServiceLog\IServiceLogSetup.cs" />
     <Compile Include="Abstract+Impl\ServiceInstanceBase.cs" />
     <Compile Include="Abstract+Impl\ServiceManagerBase.cs" />
+    <Compile Include="Contoso.Abstract+Impl\EmptyNparams.cs" />
     <Compile Include="EnvironmentEx.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceCache\CacheFileTouch.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemAddedCallback.cs" />
@@ -136,15 +137,15 @@
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\MemoryEventStore.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceLocator\MicroServiceLocator.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceLocator\MicroServiceRegistrar.cs" />
-    <Compile Include="DateTimeEx.cs" />
+    <Compile Include="DateTimeEx2.cs" />
     <Compile Include="IO\+Mock\DirectoryMock.cs" />
     <Compile Include="IO\+Mock\DirectoryWrapper.cs" />
     <Compile Include="IO\+Mock\FileMock.cs" />
     <Compile Include="IO\+Mock\FileWrapper.cs" />
     <Compile Include="IO\+Mock\PathMock.cs" />
-    <Compile Include="IO\DirectoryEx.cs" />
-    <Compile Include="IO\FileEx.cs" />
-    <Compile Include="IO\PathEx.cs" />
+    <Compile Include="IO\DirectoryEx2.cs" />
+    <Compile Include="IO\FileEx2.cs" />
+    <Compile Include="IO\PathEx2.cs" />
     <Compile Include="Local.Designer.cs">
       <DependentUpon>Local.resx</DependentUpon>
       <AutoGen>True</AutoGen>

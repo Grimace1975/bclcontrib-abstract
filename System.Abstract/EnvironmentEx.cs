@@ -34,6 +34,8 @@ namespace System
         private static DeploymentEnvironment _deploymentEnvironment = DeploymentEnvironment.Production;
         private static DevelopmentStage _developmentStage = DevelopmentStage.Release;
 
+        #region MockBase
+
         /// <summary>
         /// MockBase
         /// </summary>
@@ -55,6 +57,8 @@ namespace System
             public virtual int NextID() { throw new NotImplementedException(); }
 #endif
         }
+
+        #endregion
 
         static EnvironmentEx()
         {
@@ -104,7 +108,7 @@ namespace System
         /// Gets the next id in the sequence.
         /// </summary>
         /// <returns></returns>
-        public static int NextDd()
+        public static int NextID()
         {
             if (_mock == null)
             {

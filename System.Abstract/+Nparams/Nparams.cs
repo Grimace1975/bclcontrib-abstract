@@ -23,57 +23,24 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if EXPERIMENTAL
 using System.Collections.Generic;
-using System.Collections;
 namespace System
 {
     /// <summary>
-	/// Nparams
+    /// Nparams
     /// </summary>
-	public class Nparams //: IDictionary<string, object>, ICollection<KeyValuePair<string, object>>, IEnumerable<KeyValuePair<string, object>>, IEnumerable
+    public abstract class Nparams //: IDictionary<string, object>, ICollection<KeyValuePair<string, object>>, IEnumerable<KeyValuePair<string, object>>, IEnumerable
     {
-        public string[] ToStringArray()
-        {
-            return new[] { string.Empty };
-        }
-
-        public int Count
-        {
-            get { return 0; }
-        }
-
-		public static Nparams Parse(Nparams args) { return (args != null ? args : null); }
-		public static Nparams Parse(string[] args) { return (args != null ? (Nparams)null : null); }
-		public static Nparams Parse(object args) { return (args != null ? (Nparams)null : null); }
-
-        public IEnumerable<string> Names
-        {
-            get { return null; }
-        }
-
-        public bool Exists(string name)
-        {
-            return false;
-        }
-
-        public T Slice<T>(string name)
-        {
-            return default(T);
-        }
-        public T Slice<T>(string name, T defaultValue)
-        {
-            return default(T);
-        }
-
-        public T Value<T>(string name)
-        {
-            return default(T);
-        }
-        public T Value<T>(string name, T defaultValue)
-        {
-            return default(T);
-        }
+        public static Nparams Parse(Nparams args) { return (args != null ? args : null); }
+        public static Nparams Parse(string[] args) { return (args != null ? (Nparams)null : null); }
+        public static Nparams Parse(object args) { return (args != null ? (Nparams)null : null); }
+        //
+        public abstract string[] ToStringArray();
+        public abstract int Count { get; }
+        public abstract IEnumerable<string> Names { get; }
+        public abstract bool Exists(string name);
+        public abstract T Slice<T>(string name, T defaultValue);
+        public abstract T Value<T>(string name, T defaultValue);
     }
 
     /// <summary>
@@ -81,10 +48,11 @@ namespace System
     /// </summary>
     public static class NparamsExtensions
     {
-        public static T Get<T>(this Nparams nparams)
+        public static T Slice<T>(this Nparams param, string name) { return param.Slice<T>(name, default(T)); }
+        public static T Value<T>(this Nparams param, string name) { return param.Value<T>(name, default(T)); }
+        public static T Get<T>(this Nparams param)
         {
             return default(T);
         }
     }
 }
-#endif

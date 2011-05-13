@@ -26,7 +26,7 @@ THE SOFTWARE.
 using System.Security.AccessControl;
 namespace System.IO
 {
-    public static partial class DirectoryEx
+    public static partial class DirectoryEx2
     {
         /// <summary>
         /// MockBase

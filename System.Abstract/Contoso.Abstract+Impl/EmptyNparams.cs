@@ -23,12 +23,44 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-namespace System
+#if EXPERIMENTAL
+using System.Collections.Generic;
+namespace Contoso
 {
     /// <summary>
-	/// ParamObject
+    /// EmptyNparams
     /// </summary>
-    public class ParamObject
+	public class EmptyNparams
     {
+        public string[] ToStringArray()
+        {
+            return new[] { string.Empty };
+        }
+
+        public int Count
+        {
+            get { return 0; }
+        }
+
+        public IEnumerable<string> Names
+        {
+            get { return null; }
+        }
+
+        public bool Exists(string name)
+        {
+            return false;
+        }
+
+        public T Slice<T>(string name, T defaultValue)
+        {
+            return defaultValue;
+        }
+
+        public T Value<T>(string name, T defaultValue)
+        {
+            return defaultValue;
+        }
     }
 }
+#endif
