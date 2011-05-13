@@ -27,9 +27,9 @@ using System.Security.AccessControl;
 namespace System.IO
 {
     /// <summary>
-    /// DirectoryEx
+    /// DirectoryEx2
     /// </summary>
-    public static partial class DirectoryEx
+    public static partial class DirectoryEx2
     {
         [ThreadStatic]
         private static MockBase s_mock;

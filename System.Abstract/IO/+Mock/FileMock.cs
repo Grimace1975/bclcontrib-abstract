@@ -27,7 +27,7 @@ using System.Security.AccessControl;
 using System.Text;
 namespace System.IO
 {
-    public static partial class FileEx
+    public static partial class FileEx2
     {
         /// <summary>
         /// MockBase

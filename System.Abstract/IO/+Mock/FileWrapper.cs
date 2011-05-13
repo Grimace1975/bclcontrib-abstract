@@ -27,7 +27,7 @@ using System.Text;
 using System.Security.AccessControl;
 namespace System.IO
 {
-    public static partial class FileEx
+    public static partial class FileEx2
     {
         /// <summary>
         /// FileWrapper

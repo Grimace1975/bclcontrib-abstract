@@ -26,9 +26,9 @@ THE SOFTWARE.
 namespace System
 {
     /// <summary>
-    /// DateTimeEx
+    /// DateTimeEx2
     /// </summary>
-	public class DateTimeEx
+	public class DateTimeEx2
 	{
 		[ThreadStatic]
 		private static DateTime? _utcNowMock;

@@ -28,9 +28,9 @@ using System.Security.AccessControl;
 namespace System.IO
 {
     /// <summary>
-    /// FileEx
+    /// FileEx2
     /// </summary>
-    public static partial class FileEx
+    public static partial class FileEx2
     {
         [ThreadStatic]
         private static MockBase s_mock;
