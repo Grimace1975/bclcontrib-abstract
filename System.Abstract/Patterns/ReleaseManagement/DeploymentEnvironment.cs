@@ -38,43 +38,4 @@ namespace System.Patterns.ReleaseManagement
 		BetaTesting,
         Production
 	}
-
-    /// <summary>
-    /// DeploymentEnvironmentExtensions
-    /// </summary>
-    public static class DeploymentEnvironmentExtensions
-    {
-        public static string ToShortName(this DeploymentEnvironment environment)
-        {
-            switch (environment)
-            {
-                case DeploymentEnvironment.ProofOfConcept: return "proof";
-                case DeploymentEnvironment.Local: return "local";
-                case DeploymentEnvironment.Development: return "develop";
-                case DeploymentEnvironment.AlphaTesting: return "alpha";
-                case DeploymentEnvironment.BetaTesting: return "beta";
-                case DeploymentEnvironment.Production: return "prod";
-                default: throw new ArgumentOutOfRangeException("environment", "unknown target");
-            }
-        }
-
-        public static bool GetExternalDeployment(this DeploymentEnvironment environment)
-        {
-            return ((environment == DeploymentEnvironment.Production) || (environment == DeploymentEnvironment.BetaTesting));
-        }
-
-        public static string ToCode(this DeploymentEnvironment environment)
-        {
-            switch (environment)
-            {
-                case DeploymentEnvironment.ProofOfConcept: return "X";
-                case DeploymentEnvironment.Local: return "Z";
-                case DeploymentEnvironment.Development: return "D";
-                case DeploymentEnvironment.AlphaTesting: return "A";
-                case DeploymentEnvironment.BetaTesting: return "B";
-                case DeploymentEnvironment.Production: return "P";
-                default: throw new ArgumentOutOfRangeException("environment", "unknown target");
-            }
-        }
-    }
 }

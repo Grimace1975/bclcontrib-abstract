@@ -26,69 +26,16 @@ THE SOFTWARE.
 using System.Collections.Generic;
 namespace System.Abstract
 {
-    /// <summary>
-    /// ServiceLogInstance
-    /// </summary>
-    public class ServiceLogInstance : ServiceInstanceBase<IServiceLog, IServiceLogSetup, Action<IServiceLog>>
-    {
-        public ServiceLogInstance()
-            : base(() => new ServiceLogInstance()) { }
-    }
-
-    ///// <summary>
-    ///// ServiceLogInstance
-    ///// </summary>
-    //public class ServiceLogInstance : IServiceLogSetup
-    //{
-    //    private readonly object _lock = new object();
-    //    private Func<IServiceLog> _provider;
-    //    private IServiceLog _serviceLog;
-
-    //    public IServiceLogSetup SetLogProvider(Func<IServiceLog> provider) { return SetLogProvider(provider, new ServiceLogInstance()); }
-    //    public IServiceLogSetup SetLogProvider(Func<IServiceLog> provider, IServiceLogSetup setup)
-    //    {
-    //        _provider = provider;
-    //        return (Setup = setup);
-    //    }
-
-    //    public IServiceLogSetup Setup { get; private set; }
-
-    //    public IServiceLog Current
-    //    {
-    //        get
-    //        {
-    //            if (_provider == null)
-    //                throw new InvalidOperationException(Local.UndefinedServiceLogProvider);
-    //            if (_serviceLog == null)
-    //                lock (_lock)
-    //                    if (_serviceLog == null)
-    //                    {
-    //                        _serviceLog = _provider();
-    //                        if (_serviceLog == null)
-    //                            throw new InvalidOperationException();
-    //                        if (Setup != null)
-    //                            Setup.Finally(_serviceLog);
-    //                    }
-    //            return _serviceLog;
-    //        }
-    //    }
-
-    //    #region IServiceLogSetup
-
-    //    private List<Action<IServiceLog>> _actions = new List<Action<IServiceLog>>();
-
-    //    IServiceLogSetup IServiceLogSetup.Do(Action<IServiceLog> action)
-    //    {
-    //        _actions.Add(action);
-    //        return this;
-    //    }
-
-    //    void IServiceLogSetup.Finally(IServiceLog log)
-    //    {
-    //        foreach (var action in _actions)
-    //            action(log);
-    //    }
-
-    //    #endregion
-    //}
+	/// <summary>
+	/// ServiceLogInstance
+	/// </summary>
+	public class ServiceLogInstance : ServiceInstanceBase<IServiceLog, Action<IServiceLog>>
+	{
+		public ServiceLogInstance()
+			: base(() => new ServiceLogInstance(), (service, setupActions) =>
+			{
+				foreach (var setupAction in setupActions)
+					setupAction(service);
+			}) { }
+	}
 }

@@ -29,21 +29,20 @@ namespace System.Abstract
     /// <summary>
     /// ServiceManagerBase
     /// </summary>
-    public abstract class ServiceManagerBase<TServiceInstance, IService, IServiceSetup>
-        where TServiceInstance : IServiceInstance<IService, IServiceSetup>, new()
-        
+	public abstract class ServiceManagerBase<TServiceInstance, TIService, TServiceSetupAction>
+		where TServiceInstance : IServiceInstance<TIService, TServiceSetupAction>, new()
     {
         private static readonly TServiceInstance _instance = new TServiceInstance();
 
-        public static IServiceSetup SetProvider(Func<IService> provider) { return _instance.SetProvider(provider); }
-        public static IServiceSetup SetProvider(Func<IService> provider, IServiceSetup setup) { return _instance.SetProvider(provider, setup); }
+		public static IServiceSetup<TServiceSetupAction> SetProvider(Func<TIService> provider) { return _instance.SetProvider(provider); }
+		public static IServiceSetup<TServiceSetupAction> SetProvider(Func<TIService> provider, IServiceSetup<TServiceSetupAction> setup) { return _instance.SetProvider(provider, setup); }
 
-        public static IServiceSetup Setup
+		public static IServiceSetup<TServiceSetupAction> Setup
         {
             get { return _instance.Setup; }
         }
 
-        public static IService Current
+        public static TIService Current
         {
             get { return _instance.Current; }
         }

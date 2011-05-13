@@ -26,76 +26,23 @@ THE SOFTWARE.
 using System.Collections.Generic;
 namespace System.Abstract
 {
-    /// <summary>
-    /// ServiceLocatorInstance
-    /// </summary>
-    public class ServiceLocatorInstance : ServiceInstanceBase<IServiceLocator, IServiceLocatorSetup, Action<IServiceRegistrar, IServiceLocator>>
-    {
-        public ServiceLocatorInstance()
-            : base(() => new ServiceLocatorInstance()) { }
-    }
+	/// <summary>
+	/// ServiceLocatorInstance
+	/// </summary>
+	public class ServiceLocatorInstance : ServiceInstanceBase<IServiceLocator, Action<IServiceRegistrar, IServiceLocator>>
+	{
+		public ServiceLocatorInstance()
+			: base(() => new ServiceLocatorInstance(), (service, setupActions) =>
+			{
+				var registrar = service.GetRegistrar();
+				RegisterSelfInLocator(registrar, service);
+				foreach (var setupAction in setupActions)
+					setupAction(registrar, service);
+			}) { }
 
-    ///// <summary>
-    ///// ServiceLocatorInstance
-    ///// </summary>
-    //public class ServiceLocatorInstance : IServiceLocatorSetup
-    //{
-    //    private readonly object _lock = new object();
-    //    private Func<IServiceLocator> _provider;
-    //    private IServiceLocator _locator;
-
-    //    public IServiceLocatorSetup SetLocatorProvider(Func<IServiceLocator> provider) { return SetLocatorProvider(provider, new ServiceLocatorInstance()); }
-    //    public IServiceLocatorSetup SetLocatorProvider(Func<IServiceLocator> provider, IServiceLocatorSetup setup)
-    //    {
-    //        _provider = provider;
-    //        return (Setup = setup);
-    //    }
-
-    //    public IServiceLocatorSetup Setup { get; private set; }
-
-    //    public IServiceLocator Current
-    //    {
-    //        get
-    //        {
-    //            if (_provider == null)
-    //                throw new InvalidOperationException(Local.UndefinedServiceLocatorProvider);
-    //            if (_locator == null)
-    //                lock (_lock)
-    //                    if (_locator == null)
-    //                    {
-    //                        _locator = _provider();
-    //                        if (_locator == null)
-    //                            throw new InvalidOperationException();
-    //                        var registrar = _locator.GetRegistrar();
-    //                        RegisterSelfInLocator(registrar, _locator);
-    //                        if (Setup != null)
-    //                            Setup.Finally(registrar, _locator);
-    //                    }
-    //            return _locator;
-    //        }
-    //    }
-
-    //    private static void RegisterSelfInLocator(IServiceRegistrar registrar, IServiceLocator locator)
-    //    {
-    //        registrar.RegisterInstance<IServiceLocator>(locator);
-    //    }
-
-    //    #region IServiceLocatorSetup
-
-    //    private List<Action<IServiceRegistrar, IServiceLocator>> _actions = new List<Action<IServiceRegistrar, IServiceLocator>>();
-
-    //    IServiceLocatorSetup IServiceLocatorSetup.Do(Action<IServiceRegistrar, IServiceLocator> action)
-    //    {
-    //        _actions.Add(action);
-    //        return this;
-    //    }
-
-    //    void IServiceLocatorSetup.Finally(IServiceRegistrar registrar, IServiceLocator locator)
-    //    {
-    //        foreach (var action in _actions)
-    //            action(registrar, locator);
-    //    }
-
-    //    #endregion
-    //}
+		private static void RegisterSelfInLocator(IServiceRegistrar registrar, IServiceLocator locator)
+		{
+			registrar.RegisterInstance<IServiceLocator>(locator);
+		}
+	}
 }

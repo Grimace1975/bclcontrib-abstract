@@ -28,26 +28,5 @@ namespace System.Abstract
     /// <summary>
     /// ServiceBusManager
     /// </summary>
-    public class ServiceBusManager : ServiceManagerBase<ServiceBusInstance, IServiceBus, IServiceBusSetup> { }
-
-    ///// <summary>
-    ///// ServiceBusManager
-    ///// </summary>
-    //public class ServiceBusManager
-    //{
-    //    private static readonly ServiceBusInstance _instance = new ServiceBusInstance();
-
-    //    public static IServiceBusSetup SetBusProvider(Func<IServiceBus> provider) { return _instance.SetBusProvider(provider); }
-    //    public static IServiceBusSetup SetBusProvider(Func<IServiceBus> provider, IServiceBusSetup setup) { return _instance.SetBusProvider(provider, setup); }
-
-    //    public static IServiceBusSetup Setup
-    //    {
-    //        get { return _instance.Setup; }
-    //    }
-
-    //    public static IServiceBus Current
-    //    {
-    //        get { return _instance.Current; }
-    //    }
-    //}
+	public class ServiceBusManager : ServiceManagerBase<ServiceBusInstance, IServiceBus, Action<IServiceBus>> { }
 }

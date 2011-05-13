@@ -26,69 +26,16 @@ THE SOFTWARE.
 using System.Collections.Generic;
 namespace System.Abstract
 {
-    /// <summary>
-    /// ServiceBusInstance
-    /// </summary>
-    public class ServiceBusInstance : ServiceInstanceBase<IServiceBus, IServiceBusSetup, Action<IServiceBus>>
-    {
-        public ServiceBusInstance()
-            : base(() => new ServiceBusInstance()) { }
-    }
-
-    ///// <summary>
-    ///// ServiceBusInstance
-    ///// </summary>
-    //public class ServiceBusInstance : IServiceBusSetup
-    //{
-    //    private readonly object _lock = new object();
-    //    private Func<IServiceBus> _provider;
-    //    private IServiceBus _serviceBus;
-
-    //    public IServiceBusSetup SetBusProvider(Func<IServiceBus> provider) { return SetBusProvider(provider, new ServiceBusInstance()); }
-    //    public IServiceBusSetup SetBusProvider(Func<IServiceBus> provider, IServiceBusSetup setup)
-    //    {
-    //        _provider = provider;
-    //        return (Setup = setup);
-    //    }
-
-    //    public IServiceBusSetup Setup { get; private set; }
-
-    //    public IServiceBus Current
-    //    {
-    //        get
-    //        {
-    //            if (_provider == null)
-    //                throw new InvalidOperationException(Local.UndefinedServiceBusProvider);
-    //            if (_serviceBus == null)
-    //                lock (_lock)
-    //                    if (_serviceBus == null)
-    //                    {
-    //                        _serviceBus = _provider();
-    //                        if (_serviceBus == null)
-    //                            throw new InvalidOperationException();
-    //                        if (Setup != null)
-    //                            Setup.Finally(_serviceBus);
-    //                    }
-    //            return _serviceBus;
-    //        }
-    //    }
-
-    //    #region IServiceBusSetup
-
-    //    private List<Action<IServiceBus>> _actions = new List<Action<IServiceBus>>();
-
-    //    IServiceBusSetup IServiceBusSetup.Do(Action<IServiceBus> action)
-    //    {
-    //        _actions.Add(action);
-    //        return this;
-    //    }
-
-    //    void IServiceBusSetup.Finally(IServiceBus bus)
-    //    {
-    //        foreach (var action in _actions)
-    //            action(bus);
-    //    }
-
-    //    #endregion
-    //}
+	/// <summary>
+	/// ServiceBusInstance
+	/// </summary>
+	public class ServiceBusInstance : ServiceInstanceBase<IServiceBus, Action<IServiceBus>>
+	{
+		public ServiceBusInstance()
+			: base(() => new ServiceBusInstance(), (service, setupActions) =>
+			{
+				foreach (var setupAction in setupActions)
+					setupAction(service);
+			}) { }
+	}
 }

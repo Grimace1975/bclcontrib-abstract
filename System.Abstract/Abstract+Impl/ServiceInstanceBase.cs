@@ -26,91 +26,88 @@ THE SOFTWARE.
 using System.Collections.Generic;
 namespace System.Abstract
 {
-    /// <summary>
-    /// IServiceInstance
-    /// </summary>
-    public interface IServiceInstance<TIService, TIServiceSetup>
-    {
-        TIServiceSetup SetProvider(Func<TIService> provider);
-        TIServiceSetup SetProvider(Func<TIService> provider, TIServiceSetup setup);
-        TIServiceSetup Setup { get; }
-        TIService Current { get; }
-    }
+	/// <summary>
+	/// IServiceInstance
+	/// </summary>
+	public interface IServiceInstance<TIService, TServiceSetupAction>
+	{
+		IServiceSetup<TServiceSetupAction> SetProvider(Func<TIService> provider);
+		IServiceSetup<TServiceSetupAction> SetProvider(Func<TIService> provider, IServiceSetup<TServiceSetupAction> setup);
+		IServiceSetup<TServiceSetupAction> Setup { get; }
+		TIService Current { get; }
+	}
 
-    /// <summary>
-    /// IServiceSetup
-    /// </summary>
-    public interface IServiceSetup<TIServiceSetup, TServiceSetupAction>
-    {
-        TIServiceSetup Do(TServiceSetupAction action);
-        //void Finally(IEnumerable<TServiceSetupAction> actions, object tag);
-    }
+	/// <summary>
+	/// IServiceSetup
+	/// </summary>
+	public interface IServiceSetup<TServiceSetupAction>
+	{
+		IServiceSetup<TServiceSetupAction> Do(TServiceSetupAction action);
+		IEnumerable<TServiceSetupAction> ToList();
+	}
 
-    /// <summary>
-    /// ServiceInstanceBase
-    /// </summary>
-    public abstract class ServiceInstanceBase<TIService, TIServiceSetup, TServiceSetupAction> : IServiceInstance<TIService, TIServiceSetup>, IServiceSetup<TIServiceSetup, TServiceSetupAction>
-        where TIServiceSetup : IServiceSetup<TIServiceSetup, TServiceSetupAction>
-    {
-        private readonly object _lock = new object();
-        private Func<TIService> _provider;
-        private TIService _service;
-        private Func<TIServiceSetup> _defaultServiceSetupBuilder;
+	/// <summary>
+	/// ServiceInstanceBase
+	/// </summary>
+	public abstract class ServiceInstanceBase<TIService, TServiceSetupAction> : IServiceInstance<TIService, TServiceSetupAction>, IServiceSetup<TServiceSetupAction>
+		//where TIServiceSetup : IServiceSetup<TIServiceSetup, TServiceSetupAction>
+	{
+		private readonly object _lock = new object();
+		private Func<TIService> _provider;
+		private TIService _service;
+		private Func<IServiceSetup<TServiceSetupAction>> _defaultServiceSetup;
+		private Action<TIService, IEnumerable<TServiceSetupAction>> _onSetup;
 
-        public ServiceInstanceBase(Func<ServiceInstanceBase<TIService, TIServiceSetup, TServiceSetupAction>> defaultServiceBuilder)
-        {
-            _defaultServiceSetupBuilder = () => (TIServiceSetup)(object)defaultServiceBuilder();
-        }
-        public ServiceInstanceBase(Func<TIServiceSetup> defaultServiceSetupBuilder)
-        {
-            _defaultServiceSetupBuilder = defaultServiceSetupBuilder;
-        }
+		public ServiceInstanceBase(Func<IServiceSetup<TServiceSetupAction>> defaultServiceSetup, Action<TIService, IEnumerable<TServiceSetupAction>> onSetup)
+		{
+			_defaultServiceSetup = defaultServiceSetup;
+			_onSetup = onSetup;
+		}
 
-        public TIServiceSetup SetProvider(Func<TIService> provider) { return SetProvider(provider, _defaultServiceSetupBuilder()); }
-        public TIServiceSetup SetProvider(Func<TIService> provider, TIServiceSetup setup)
-        {
-            _provider = provider;
-            return (Setup = setup);
-        }
+		public IServiceSetup<TServiceSetupAction> SetProvider(Func<TIService> provider) { return SetProvider(provider, _defaultServiceSetup()); }
+		public IServiceSetup<TServiceSetupAction> SetProvider(Func<TIService> provider, IServiceSetup<TServiceSetupAction> setup)
+		{
+			_provider = provider;
+			return (Setup = setup);
+		}
 
-        public TIServiceSetup Setup { get; private set; }
+		public IServiceSetup<TServiceSetupAction> Setup { get; private set; }
 
-        public TIService Current
-        {
-            get
-            {
-                if (_provider == null)
-                    throw new InvalidOperationException(Local.UndefinedServiceBusProvider);
-                if (_service == null)
-                    lock (_lock)
-                        if (_service == null)
-                        {
-                            _service = _provider();
-                            if (_service == null)
-                                throw new InvalidOperationException();
-                            //if (Setup != null)
-                            //    Setup.Finally(_service);
-                        }
-                return _service;
-            }
-        }
+		public TIService Current
+		{
+			get
+			{
+				if (_provider == null)
+					throw new InvalidOperationException(Local.UndefinedServiceBusProvider);
+				if (_service == null)
+					lock (_lock)
+						if (_service == null)
+						{
+							_service = _provider();
+							if (_service == null)
+								throw new InvalidOperationException();
+							if (_onSetup != null)
+								_onSetup(_service, (Setup == null ? Setup.ToList() : null));
+						}
+				return _service;
+			}
+		}
 
-        #region IServiceSetup
+		#region IServiceSetup
 
-        private List<TServiceSetupAction> _actions = new List<TServiceSetupAction>();
+		private List<TServiceSetupAction> _actions = new List<TServiceSetupAction>();
 
-        TIServiceSetup IServiceSetup<TIServiceSetup, TServiceSetupAction>.Do(TServiceSetupAction action)
-        {
-            _actions.Add(action);
-            return Setup;
-        }
+		IServiceSetup<TServiceSetupAction> IServiceSetup<TServiceSetupAction>.Do(TServiceSetupAction action)
+		{
+			_actions.Add(action);
+			return Setup;
+		}
 
-        //void IServiceSetup<TService, TServiceSetupAction>.Finally(IServiceRegistrar registrar, IServiceLocator locator)
-        //{
-        //    foreach (var action in _actions)
-        //        action(registrar, locator);
-        //}
+		IEnumerable<TServiceSetupAction> IServiceSetup<TServiceSetupAction>.ToList()
+		{
+			return _actions;
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

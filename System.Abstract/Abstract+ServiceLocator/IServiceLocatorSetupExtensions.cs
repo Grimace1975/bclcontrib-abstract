@@ -30,25 +30,16 @@ using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
-    /// IServiceLocatorSetup
-    /// </summary>
-    public interface IServiceLocatorSetup : IServiceSetup<IServiceLocatorSetup, Action<IServiceRegistrar, IServiceLocator>>
-    {
-        //IServiceLocatorSetup Do(Action<IServiceRegistrar, IServiceLocator> action);
-        //void Finally(IServiceRegistrar registrar, IServiceLocator locator);
-    }
-
-    /// <summary>
     /// IServiceLocatorSetupExtensions
     /// </summary>
     public static class IServiceLocatorSetupExtensions
     {
-        public static IServiceLocatorSetup RegisterByIServiceRegistration(this IServiceLocatorSetup setup, params Assembly[] assemblies) { return setup.Do((r, l) => DoRegisterByIServiceRegistration(r, l, null, assemblies)); }
-        public static IServiceLocatorSetup RegisterByIServiceRegistration(this IServiceLocatorSetup setup, Predicate<Type> predicate, params Assembly[] assemblies) { return setup.Do((r, l) => DoRegisterByIServiceRegistration(r, l, predicate, assemblies)); }
-        public static IServiceLocatorSetup RegisterByNamingConvention(this IServiceLocatorSetup setup) { return setup.Do((r, l) => DoRegisterByNamingConvention(r, l, null, new[] { IServiceLocatorSetupExtensions.GetPreviousCallingMethodsAssembly() })); }
-        public static IServiceLocatorSetup RegisterByNamingConvention(this IServiceLocatorSetup setup, params Assembly[] assemblies) { return setup.Do((r, l) => DoRegisterByNamingConvention(r, l, null, assemblies)); }
-        public static IServiceLocatorSetup RegisterByNamingConvention(this IServiceLocatorSetup setup, Predicate<Type> predicate) { return setup.Do((r, l) => DoRegisterByNamingConvention(r, l, predicate, new[] { IServiceLocatorSetupExtensions.GetPreviousCallingMethodsAssembly() })); }
-        public static IServiceLocatorSetup RegisterByNamingConvention(this IServiceLocatorSetup setup, Predicate<Type> predicate, params Assembly[] assemblies) { return setup.Do((r, l) => DoRegisterByNamingConvention(r, l, predicate, assemblies)); }
+		public static IServiceSetup<Action<IServiceRegistrar, IServiceLocator>> RegisterByIServiceRegistration(this IServiceSetup<Action<IServiceRegistrar, IServiceLocator>> setup, params Assembly[] assemblies) { return setup.Do((r, l) => DoRegisterByIServiceRegistration(r, l, null, assemblies)); }
+		public static IServiceSetup<Action<IServiceRegistrar, IServiceLocator>> RegisterByIServiceRegistration(this IServiceSetup<Action<IServiceRegistrar, IServiceLocator>> setup, Predicate<Type> predicate, params Assembly[] assemblies) { return setup.Do((r, l) => DoRegisterByIServiceRegistration(r, l, predicate, assemblies)); }
+		public static IServiceSetup<Action<IServiceRegistrar, IServiceLocator>> RegisterByNamingConvention(this IServiceSetup<Action<IServiceRegistrar, IServiceLocator>> setup) { return setup.Do((r, l) => DoRegisterByNamingConvention(r, l, null, new[] { IServiceLocatorSetupExtensions.GetPreviousCallingMethodsAssembly() })); }
+		public static IServiceSetup<Action<IServiceRegistrar, IServiceLocator>> RegisterByNamingConvention(this IServiceSetup<Action<IServiceRegistrar, IServiceLocator>> setup, params Assembly[] assemblies) { return setup.Do((r, l) => DoRegisterByNamingConvention(r, l, null, assemblies)); }
+		public static IServiceSetup<Action<IServiceRegistrar, IServiceLocator>> RegisterByNamingConvention(this IServiceSetup<Action<IServiceRegistrar, IServiceLocator>> setup, Predicate<Type> predicate) { return setup.Do((r, l) => DoRegisterByNamingConvention(r, l, predicate, new[] { IServiceLocatorSetupExtensions.GetPreviousCallingMethodsAssembly() })); }
+		public static IServiceSetup<Action<IServiceRegistrar, IServiceLocator>> RegisterByNamingConvention(this IServiceSetup<Action<IServiceRegistrar, IServiceLocator>> setup, Predicate<Type> predicate, params Assembly[] assemblies) { return setup.Do((r, l) => DoRegisterByNamingConvention(r, l, predicate, assemblies)); }
 
         internal static Assembly GetPreviousCallingMethodsAssembly()
         {

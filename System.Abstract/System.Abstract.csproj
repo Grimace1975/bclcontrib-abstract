@@ -60,7 +60,6 @@
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheInstance.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCache.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheManager.cs" />
-    <Compile Include="Abstract+ServiceCache\IServiceCacheSetup.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheCommand.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheDependency.cs" />
     <Compile Include="Abstract+ServiceLog\ServiceLogEventType.cs" />
@@ -68,7 +67,6 @@
     <Compile Include="Abstract+ServiceLog+Impl\ServiceLogInstance.cs" />
     <Compile Include="Abstract+ServiceLog+Impl\ServiceLogManager.cs" />
     <Compile Include="Abstract+ServiceLog\IServiceLog.cs" />
-    <Compile Include="Abstract+ServiceLog\IServiceLogSetup.cs" />
     <Compile Include="Abstract+Impl\ServiceInstanceBase.cs" />
     <Compile Include="Abstract+Impl\ServiceManagerBase.cs" />
     <Compile Include="Contoso.Abstract+Impl\EmptyNparams.cs" />
@@ -110,7 +108,7 @@
     <Compile Include="+Nparams\Nparams.cs" />
     <Compile Include="Abstract\+Move\NewAttrib.cs" />
     <Compile Include="Abstract+ServiceBus\AggregateServiceMessage.cs" />
-    <Compile Include="Abstract+ServiceBus\IServiceBusSetup.cs" />
+    <Compile Include="Abstract+ServiceBus\IServiceBusSetupExtensions.cs" />
     <Compile Include="Abstract+ServiceBus\IServiceMessageHandlerFactory.cs" />
     <Compile Include="Abstract+ServiceBus\LiteralServiceBusLocation.cs" />
     <Compile Include="Abstract+ServiceBus+Impl\ServiceBus.cs">
@@ -127,7 +125,7 @@
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Abstract+ServiceLocator\IServiceLocatorSetup.cs" />
+    <Compile Include="Abstract+ServiceLocator\IServiceLocatorSetupExtensions.cs" />
     <Compile Include="Abstract+ServiceLocator\IWantToSkipServiceLocator.cs" />
     <Compile Include="Abstract+TypeGrapher+Impl\TypeCacheSerializer.cs" />
     <Compile Include="Abstract+TypeGrapher+Impl\TypeCacheManager.cs" />
@@ -151,8 +149,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Patterns\ReleaseManagement\ReleaseManagementExtensions.cs" />
     <Compile Include="Patterns\ReleaseManagement\DeploymentEnvironment.cs" />
     <Compile Include="Patterns\ReleaseManagement\DevelopmentStage.cs" />
+    <Compile Include="Patterns\Versioning\VersioningExtensions.cs" />
+    <Compile Include="Patterns\Versioning\VersionType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceDependencyAttribute.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceLocator.cs" />

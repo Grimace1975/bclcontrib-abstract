@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /*
 The MIT License
 
@@ -23,15 +23,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
-namespace System.Abstract
+namespace System.Patterns.Versioning
 {
-    /// <summary>
-    /// IServiceLogSetup
-    /// </summary>
-    public interface IServiceLogSetup : IServiceSetup<IServiceLogSetup, Action<IServiceLog>>
-    {
-        //IServiceLogSetup Do(Action<IServiceLog> action);
-        //void Finally(IServiceLog log);
-    }
+	/// <summary>
+	/// VersionType
+	/// </summary>
+	public enum VersionType
+	{
+		Archive,
+		Draft,
+		Publish,
+	}
 }
