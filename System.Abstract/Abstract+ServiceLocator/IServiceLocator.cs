@@ -27,68 +27,77 @@ using System.Linq;
 using System.Collections.Generic;
 namespace System.Abstract
 {
-    /// <summary>
-    /// IServiceLocator
-    /// </summary>
-    public interface IServiceLocator // : IServiceProvider
-    {
-        // registrar
-        IServiceRegistrar GetRegistrar();
-        TServiceRegistrar GetRegistrar<TServiceRegistrar>()
-            where TServiceRegistrar : class, IServiceRegistrar;
+	/// <summary>
+	/// IServiceLocator
+	/// </summary>
+	public interface IServiceLocator // : IServiceProvider
+	{
+		// registrar
+		IServiceRegistrar GetRegistrar();
+		TServiceRegistrar GetRegistrar<TServiceRegistrar>()
+			where TServiceRegistrar : class, IServiceRegistrar;
 
-        // resolve
-        TService Resolve<TService>()
-            where TService : class;
-        TService Resolve<TService>(string name)
-            where TService : class;
-        object Resolve(Type serviceType);
-        object Resolve(Type serviceType, string name);
-        //
-        IEnumerable<TService> ResolveAll<TService>()
-            where TService : class;
-        IEnumerable<object> ResolveAll(Type serviceType);
+		// resolve
+		TService Resolve<TService>()
+			where TService : class;
+		TService Resolve<TService>(string name)
+			where TService : class;
+		object Resolve(Type serviceType);
+		object Resolve(Type serviceType, string name);
+		//
+		IEnumerable<TService> ResolveAll<TService>()
+			where TService : class;
+		IEnumerable<object> ResolveAll(Type serviceType);
 
-        // inject
-        TService Inject<TService>(TService instance)
-            where TService : class;
+		// inject
+		TService Inject<TService>(TService instance)
+			where TService : class;
 
-        // release and teardown
-        void Release(object instance);
-        void TearDown<TService>(TService instance)
-            where TService : class;
-        void Reset();
-    }
+		// release and teardown
+		void Release(object instance);
+		void TearDown<TService>(TService instance)
+			where TService : class;
+		void Reset();
+	}
 
-    /// <summary>
-    /// IServiceLocatorExtensions
-    /// </summary>
-    public static class IServiceLocatorExtensions
-    {
-        public static TServiceLocator GetServiceLocator<TServiceLocator>(this IServiceLocator locator)
-            where TServiceLocator : class, IServiceLocator
-        {
-            if (locator == null)
-                throw new ArgumentNullException("locator");
-            return (locator as TServiceLocator);
-        }
+	/// <summary>
+	/// IServiceLocatorExtensions
+	/// </summary>
+	public static class IServiceLocatorExtensions
+	{
+		public static TServiceLocator GetServiceLocator<TServiceLocator>(this IServiceLocator locator)
+			where TServiceLocator : class, IServiceLocator
+		{
+			if (locator == null)
+				throw new ArgumentNullException("locator");
+			return (locator as TServiceLocator);
+		}
 
-        public static TService Resolve<TService>(this IServiceLocator locator, Type serviceType)
-        {
-            if (locator == null)
-                throw new ArgumentNullException("locator");
-            if (serviceType == null)
-                throw new ArgumentNullException("serviceType");
-            return (TService)locator.Resolve(serviceType);
-        }
+		public static TService Resolve<TService>(this IServiceLocator locator, Type serviceType)
+		{
+			if (locator == null)
+				throw new ArgumentNullException("locator");
+			if (serviceType == null)
+				throw new ArgumentNullException("serviceType");
+			return (TService)locator.Resolve(serviceType);
+		}
 
-        public static IEnumerable<TService> ResolveAll<TService>(this IServiceLocator locator, Type serviceType)
-        {
-            if (locator == null)
-                throw new ArgumentNullException("locator");
-            if (serviceType == null)
-                throw new ArgumentNullException("serviceType");
-            return locator.ResolveAll(serviceType).Cast<TService>();
-        }
-    }
+		public static TService Resolve<TService>(this IServiceLocator locator, Type serviceType, string name)
+		{
+			if (locator == null)
+				throw new ArgumentNullException("locator");
+			if (serviceType == null)
+				throw new ArgumentNullException("serviceType");
+			return (TService)locator.Resolve(serviceType, name);
+		}
+
+		public static IEnumerable<TService> ResolveAll<TService>(this IServiceLocator locator, Type serviceType)
+		{
+			if (locator == null)
+				throw new ArgumentNullException("locator");
+			if (serviceType == null)
+				throw new ArgumentNullException("serviceType");
+			return locator.ResolveAll(serviceType).Cast<TService>();
+		}
+	}
 }
