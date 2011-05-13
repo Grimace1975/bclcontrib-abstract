@@ -28,26 +28,5 @@ namespace System.Abstract
     /// <summary>
     /// ServiceLogManager
     /// </summary>
-    public class ServiceLogManager : ServiceManagerBase<ServiceLogInstance, IServiceLog, IServiceLogSetup> { }
-
-    ///// <summary>
-    ///// ServiceLogManager
-    ///// </summary>
-    //public class ServiceLogManager
-    //{
-    //    private static readonly ServiceLogInstance _instance = new ServiceLogInstance();
-
-    //    public static IServiceLogSetup SetLogProvider(Func<IServiceLog> provider) { return _instance.SetLogProvider(provider); }
-    //    public static IServiceLogSetup SetLogProvider(Func<IServiceLog> provider, IServiceLogSetup setup) { return _instance.SetLogProvider(provider, setup); }
-
-    //    public static IServiceLogSetup Setup
-    //    {
-    //        get { return _instance.Setup; }
-    //    }
-
-    //    public static IServiceLog Current
-    //    {
-    //        get { return _instance.Current; }
-    //    }
-    //}
+	public class ServiceLogManager : ServiceManagerBase<ServiceLogInstance, IServiceLog, Action<IServiceLog>> { }
 }

@@ -148,8 +148,8 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusLocation.cs">
       <Link>Abstract+ServiceBus\IServiceBusLocation.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusSetup.cs">
-      <Link>Abstract+ServiceBus\IServiceBusSetup.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusSetupExtensions.cs">
+      <Link>Abstract+ServiceBus\IServiceBusSetupExtensions.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceMessage.cs">
       <Link>Abstract+ServiceBus\IServiceMessage.cs</Link>
@@ -187,9 +187,6 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\IServiceCache.cs">
       <Link>Abstract+ServiceCache\IServiceCache.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceCache\IServiceCacheSetup.cs">
-      <Link>Abstract+ServiceCache\IServiceCacheSetup.cs</Link>
-    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheCommand.cs">
       <Link>Abstract+ServiceCache\ServiceCacheCommand.cs</Link>
     </Compile>
@@ -208,8 +205,8 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceLocator.cs">
       <Link>Abstract+ServiceLocator\IServiceLocator.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceLocatorSetup.cs">
-      <Link>Abstract+ServiceLocator\IServiceLocatorSetup.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceLocatorSetupExtensions.cs">
+      <Link>Abstract+ServiceLocator\IServiceLocatorSetupExtensions.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceRegistrar.cs">
       <Link>Abstract+ServiceLocator\IServiceRegistrar.cs</Link>
@@ -234,9 +231,6 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLog\IServiceLog.cs">
       <Link>Abstract+ServiceLog\IServiceLog.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceLog\IServiceLogSetup.cs">
-      <Link>Abstract+ServiceLog\IServiceLogSetup.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLog\ServiceLogEventType.cs">
       <Link>Abstract+ServiceLog\ServiceLogEventType.cs</Link>
@@ -315,6 +309,15 @@
     </Compile>
     <Compile Include="..\System.Abstract\Patterns\ReleaseManagement\DevelopmentStage.cs">
       <Link>Patterns\ReleaseManagement\DevelopmentStage.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Patterns\ReleaseManagement\ReleaseManagementExtensions.cs">
+      <Link>Patterns\ReleaseManagement\ReleaseManagementExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Patterns\Versioning\VersioningExtensions.cs">
+      <Link>Patterns\Versioning\VersioningExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Patterns\Versioning\VersionType.cs">
+      <Link>Patterns\Versioning\VersionType.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

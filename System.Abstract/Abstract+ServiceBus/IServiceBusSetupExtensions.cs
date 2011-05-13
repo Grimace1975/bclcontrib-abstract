@@ -27,21 +27,12 @@ using System;
 namespace System.Abstract
 {
     /// <summary>
-    /// IServiceBusSetup
-    /// </summary>
-    public interface IServiceBusSetup : IServiceSetup<IServiceBusSetup, Action<IServiceBus>>
-    {
-        //IServiceBusSetup Do(Action<IServiceBus> action);
-        //void Finally(IServiceBus bus);
-    }
-
-    /// <summary>
     /// IServiceBusSetupExtensions
     /// </summary>
     public static class IServiceBusSetupExtensions
     {
-        public static IServiceBusSetup RegisterWithServiceLocator(this IServiceBusSetup setup) { return setup.Do((b) => DoRegisterInServiceLocator(b, GetDefaultServiceServiceLocator())); }
-        public static IServiceBusSetup RegisterWithServiceLocator(this IServiceBusSetup setup, Func<IServiceLocator> locator)
+		public static IServiceSetup<Action<IServiceBus>> RegisterWithServiceLocator(this IServiceSetup<Action<IServiceBus>> setup) { return setup.Do((b) => DoRegisterInServiceLocator(b, GetDefaultServiceServiceLocator())); }
+		public static IServiceSetup<Action<IServiceBus>> RegisterWithServiceLocator(this IServiceSetup<Action<IServiceBus>> setup, Func<IServiceLocator> locator)
         {
             if (locator != null)
                 throw new ArgumentNullException("locator");

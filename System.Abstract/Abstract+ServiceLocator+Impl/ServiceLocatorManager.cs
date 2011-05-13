@@ -28,7 +28,7 @@ namespace System.Abstract
     /// <summary>
     /// ServiceLocatorManager
     /// </summary>
-    public class ServiceLocatorManager : ServiceManagerBase<ServiceLocatorInstance, IServiceLocator, IServiceLocatorSetup>
+	public class ServiceLocatorManager : ServiceManagerBase<ServiceLocatorInstance, IServiceLocator, Action<IServiceRegistrar, IServiceLocator>>
     {
         private static readonly Type _wantToSkipServiceLocatorType = typeof(IWantToSkipServiceLocator);
 
@@ -39,34 +39,4 @@ namespace System.Abstract
             return ((type == null) || (_wantToSkipServiceLocatorType.IsAssignableFrom(type)));
         }
     }
-
-    ///// <summary>
-    ///// ServiceLocatorManager
-    ///// </summary>
-    //public class ServiceLocatorManager
-    //{
-    //    private static readonly Type _wantToSkipServiceLocatorType = typeof(IWantToSkipServiceLocator);
-
-    //    private static readonly ServiceLocatorInstance _instance = new ServiceLocatorInstance();
-
-    //    public static IServiceLocatorSetup SetLocatorProvider(Func<IServiceLocator> provider) { return _instance.SetLocatorProvider(provider); }
-    //    public static IServiceLocatorSetup SetLocatorProvider(Func<IServiceLocator> provider, IServiceLocatorSetup setup) { return _instance.SetLocatorProvider(provider, setup); }
-
-    //    public static IServiceLocatorSetup Setup
-    //    {
-    //        get { return _instance.Setup; }
-    //    }
-
-    //    public static IServiceLocator Current
-    //    {
-    //        get { return _instance.Current; }
-    //    }
-
-    //    public static bool GetWantsToSkipLocator(object instance) { return ((instance == null) || (GetWantsToSkipLocator(instance.GetType()))); }
-    //    public static bool GetWantsToSkipLocator<TService>() { return GetWantsToSkipLocator(typeof(TService)); }
-    //    public static bool GetWantsToSkipLocator(Type type)
-    //    {
-    //        return ((type == null) || (_wantToSkipServiceLocatorType.IsAssignableFrom(type)));
-    //    }
-    //}
 }
