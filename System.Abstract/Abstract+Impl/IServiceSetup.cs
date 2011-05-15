@@ -23,12 +23,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if EXPERIMENTAL
-namespace System.Abstract.Caching
+using System.Collections.Generic;
+namespace System.Abstract
 {
-    /// <summary>
-    /// DataCacheBuilder
-    /// </summary>
-    public delegate object DataCacheBuilder(object tag, object[] values);
+	/// <summary>
+	/// IServiceSetup
+	/// </summary>
+	public interface IServiceSetup<TServiceSetupAction>
+	{
+		IServiceSetup<TServiceSetupAction> Do(TServiceSetupAction action);
+        //IServiceSetup<TServiceSetupAction> RegisterWithServiceLocator();
+        //IServiceSetup<TServiceSetupAction> RegisterWithServiceLocator(string name);
+        IServiceSetup<TServiceSetupAction> RegisterWithServiceLocator(Func<IServiceLocator> locator);
+        IServiceSetup<TServiceSetupAction> RegisterWithServiceLocator(Func<IServiceLocator> locator, string name);
+		IEnumerable<TServiceSetupAction> ToList();
+	}
 }
-#endif

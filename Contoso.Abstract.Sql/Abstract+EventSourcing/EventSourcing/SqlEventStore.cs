@@ -40,7 +40,7 @@ namespace Contoso.Abstract.EventSourcing
         internal readonly string _connectionString;
         internal readonly string _tableName;
         internal readonly Func<string, object> _makeAggregateId;
-        private readonly ISerializer _serializer;
+        private readonly ITypeSerializer _serializer;
 
         protected class EventOrdinal
         {
@@ -55,14 +55,14 @@ namespace Contoso.Abstract.EventSourcing
         }
 
         public SqlEventStore(string connectionString)
-            : this(connectionString, "AggregateEvent", null, new JsonSerializer()) { }
+            : this(connectionString, "AggregateEvent", null, new JsonTypeSerializer()) { }
         public SqlEventStore(string connectionString, string tableName)
-            : this(connectionString, tableName, null, new JsonSerializer()) { }
+            : this(connectionString, tableName, null, new JsonTypeSerializer()) { }
         public SqlEventStore(string connectionString, Func<string, object> makeAggregateId)
-            : this(connectionString, "AggregateEvent", makeAggregateId, new JsonSerializer()) { }
+            : this(connectionString, "AggregateEvent", makeAggregateId, new JsonTypeSerializer()) { }
         public SqlEventStore(string connectionString, string tableName, Func<string, object> makeAggregateId)
-            : this(connectionString, tableName, makeAggregateId, new JsonSerializer()) { }
-        public SqlEventStore(string connectionString, string tableName, Func<string, object> makeAggregateId, ISerializer serializer)
+            : this(connectionString, tableName, makeAggregateId, new JsonTypeSerializer()) { }
+        public SqlEventStore(string connectionString, string tableName, Func<string, object> makeAggregateId, ITypeSerializer serializer)
         {
             if (string.IsNullOrEmpty(connectionString))
                 throw new ArgumentNullException("connectionString");

@@ -31,28 +31,28 @@ namespace System.IO
     public static partial class PathEx2
     {
         [ThreadStatic]
-        private static MockBase s_mock;
+        private static MockBase _mock;
 
         public static MockBase Mock
         {
-            get { return s_mock; }
-            set { s_mock = value; }
+            get { return _mock; }
+            set { _mock = value; }
         }
 
-        public static string ChangeExtension(string path, string extension) { return s_mock.ChangeExtension(path, extension); }
-        public static string Combine(string path1, string path2) { return s_mock.Combine(path1, path2); }
-        public static string GetDirectoryName(string path) { return s_mock.GetDirectoryName(path); }
-        public static string GetExtension(string path) { return s_mock.GetExtension(path); }
-        public static string GetFileName(string path) { return s_mock.GetFileName(path); }
-        public static string GetFileNameWithoutExtension(string path) { return s_mock.GetFileNameWithoutExtension(path); }
-        public static string GetFullPath(string path) { return s_mock.GetFullPath(path); }
-        public static char[] GetInvalidFileNameChars() { return s_mock.GetInvalidFileNameChars(); }
-        public static char[] GetInvalidPathChars() { return s_mock.GetInvalidPathChars(); }
-        public static string GetPathRoot(string path) { return s_mock.GetPathRoot(path); }
-        public static string GetRandomFileName() { return s_mock.GetRandomFileName(); }
-        public static string GetTempFileName() { return s_mock.GetTempFileName(); }
-        public static string GetTempPath() { return s_mock.GetTempPath(); }
-        public static bool HasExtension(string path) { return s_mock.HasExtension(path); }
-        public static bool IsPathRooted(string path) { return s_mock.IsPathRooted(path); }
+        public static string ChangeExtension(string path, string extension) { return _mock.ChangeExtension(path, extension); }
+        public static string Combine(string path1, string path2) { return _mock.Combine(path1, path2); }
+        public static string GetDirectoryName(string path) { return _mock.GetDirectoryName(path); }
+        public static string GetExtension(string path) { return _mock.GetExtension(path); }
+        public static string GetFileName(string path) { return _mock.GetFileName(path); }
+        public static string GetFileNameWithoutExtension(string path) { return _mock.GetFileNameWithoutExtension(path); }
+        public static string GetFullPath(string path) { return _mock.GetFullPath(path); }
+        public static char[] GetInvalidFileNameChars() { return _mock.GetInvalidFileNameChars(); }
+        public static char[] GetInvalidPathChars() { return _mock.GetInvalidPathChars(); }
+        public static string GetPathRoot(string path) { return _mock.GetPathRoot(path); }
+        public static string GetRandomFileName() { return _mock.GetRandomFileName(); }
+        public static string GetTempFileName() { return _mock.GetTempFileName(); }
+        public static string GetTempPath() { return _mock.GetTempPath(); }
+        public static bool HasExtension(string path) { return _mock.HasExtension(path); }
+        public static bool IsPathRooted(string path) { return _mock.IsPathRooted(path); }
     }
 }

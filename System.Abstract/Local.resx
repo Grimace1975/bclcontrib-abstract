@@ -126,7 +126,7 @@
   <data name="InvalidMessageTypeA" xml:space="preserve">
     <value>Could not send messageType '{0}'</value>
   </data>
-  <data name="InvalidServiceBusDefaultServiceLocator" xml:space="preserve">
+  <data name="InvalidDefaultServiceLocator" xml:space="preserve">
     <value>A default ServiceLocator could not be bound. Ether setup your default service locator or specify a service locator or none.</value>
   </data>
   <data name="InvalidServiceTypeA" xml:space="preserve">
@@ -147,11 +147,11 @@
   <data name="ScopeCharacterNotAllowedA" xml:space="preserve">
     <value>ScopeCharacterNotAllowedA</value>
   </data>
-  <data name="UndefinedDataCacheRegistrationA" xml:space="preserve">
-    <value>UndefinedDataCacheRegistrationA</value>
+  <data name="UndefinedServiceCacheRegistrationA" xml:space="preserve">
+    <value>UndefinedServiceCacheRegistrationA</value>
   </data>
-  <data name="UndefinedDataCacheRegistrationAB" xml:space="preserve">
-    <value>UndefinedDataCacheRegistrationAB</value>
+  <data name="UndefinedServiceCacheRegistrationAB" xml:space="preserve">
+    <value>UndefinedServiceCacheRegistrationAB</value>
   </data>
   <data name="UndefinedServiceBusProvider" xml:space="preserve">
     <value>UndefinedServiceBusProvider</value>

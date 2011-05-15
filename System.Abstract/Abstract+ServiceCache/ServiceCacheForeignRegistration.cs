@@ -23,46 +23,42 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.IO;
-using System.Text;
-using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
-    /// ISerializer
+    /// ServiceCacheForeignRegistration
     /// </summary>
-    public interface ISerializer
+    public class ServiceCacheForeignRegistration : ServiceCacheRegistration
     {
-        T ReadObject<T>(Type type, Stream s)
-            where T : class;
-        IEnumerable<T> ReadObjects<T>(Type type, Stream s)
-            where T : class;
-        void WriteObject<T>(Type type, Stream s, T graph)
-            where T : class;
-        void WriteObjects<T>(Type type, Stream s, IEnumerable<T> graph)
-            where T : class;
-    }
-
-    /// <summary>
-    /// ISerializerExtensions
-    /// </summary>
-    public static class ISerializerExtensions
-    {
-        public static T ReadObject<T>(this ISerializer serializer, Type type, string text)
-            where T : class
+        public ServiceCacheForeignRegistration(string name)
+            : base(name) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceCacheForeignRegistration"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="foreignType">Type of the foreign.</param>
+        /// <param name="foreignName">Name of the foreign.</param>
+        public ServiceCacheForeignRegistration(string name, Type foreignType, string foreignName)
+            : base(name)
         {
-            using (var s = new MemoryStream(Encoding.Default.GetBytes(text)))
-                return serializer.ReadObject<T>(type, s);
+            ForeignName = foreignName;
+            ForeignType = foreignType;
         }
 
-        public static string WriteObject<T>(this ISerializer serializer, Type type, T graph)
-            where T : class
-        {
-            using (var s = new MemoryStream())
-            {
-                serializer.WriteObject<T>(type, s, graph);
-                return Encoding.Default.GetString(s.ToArray());
-            }
-        }
+        /// <summary>
+        /// Gets or sets the foreign type.
+        /// </summary>
+        /// <value>
+        /// The type of the foreign.
+        /// </value>
+        public Type ForeignType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the foreign.
+        /// </summary>
+        /// <value>
+        /// The name of the foreign.
+        /// </value>
+        public string ForeignName { get; set; }
     }
 }

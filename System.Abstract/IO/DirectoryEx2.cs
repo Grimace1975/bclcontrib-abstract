@@ -32,47 +32,47 @@ namespace System.IO
     public static partial class DirectoryEx2
     {
         [ThreadStatic]
-        private static MockBase s_mock;
+        private static MockBase _mock;
 
         public static MockBase Mock
         {
-            get { return s_mock; }
-            set { s_mock = value; }
+            get { return _mock; }
+            set { _mock = value; }
         }
 
-        public static DirectoryInfo CreateDirectory(string path) { return s_mock.CreateDirectory(path); }
-        public static DirectoryInfo CreateDirectory(string path, DirectorySecurity directorySecurity) { return s_mock.CreateDirectory(path, directorySecurity); }
-        public static void Delete(string path) { s_mock.Delete(path); }
-        public static void Delete(string path, bool recursive) { s_mock.Delete(path, recursive); }
-        public static bool Exists(string path) { return s_mock.Exists(path); }
-        public static DirectorySecurity GetAccessControl(string path) { return s_mock.GetAccessControl(path); }
-        public static DirectorySecurity GetAccessControl(string path, AccessControlSections includeSections) { return s_mock.GetAccessControl(path, includeSections); }
-        public static DateTime GetCreationTime(string path) { return s_mock.GetCreationTime(path); }
-        public static DateTime GetCreationTimeUtc(string path) { return s_mock.GetCreationTimeUtc(path); }
-        public static string GetCurrentDirectory() { return s_mock.GetCurrentDirectory(); }
-        public static string[] GetDirectories(string path) { return s_mock.GetDirectories(path); }
-        public static string[] GetDirectories(string path, string searchPattern) { return s_mock.GetDirectories(path, searchPattern); }
-        public static string[] GetDirectories(string path, string searchPattern, SearchOption searchOption) { return s_mock.GetDirectories(path, searchPattern, searchOption); }
-        public static string GetDirectoryRoot(string path) { return s_mock.GetDirectoryRoot(path); }
-        public static string[] GetFiles(string path) { return s_mock.GetFiles(path); }
-        public static string[] GetFiles(string path, string searchPattern) { return s_mock.GetFiles(path, searchPattern); }
-        public static string[] GetFiles(string path, string searchPattern, SearchOption searchOption) { return s_mock.GetFiles(path, searchPattern, searchOption); }
-        public static string[] GetFileSystemEntries(string path) { return s_mock.GetFileSystemEntries(path); }
-        public static string[] GetFileSystemEntries(string path, string searchPattern) { return s_mock.GetFileSystemEntries(path, searchPattern); }
-        public static DateTime GetLastAccessTime(string path) { return s_mock.GetLastAccessTime(path); }
-        public static DateTime GetLastAccessTimeUtc(string path) { return s_mock.GetLastAccessTimeUtc(path); }
-        public static DateTime GetLastWriteTime(string path) { return s_mock.GetLastWriteTime(path); }
-        public static DateTime GetLastWriteTimeUtc(string path) { return s_mock.GetLastWriteTimeUtc(path); }
-        public static string[] GetLogicalDrives() { return s_mock.GetLogicalDrives(); }
-        public static DirectoryInfo GetParent(string path) { return s_mock.GetParent(path); }
-        public static void Move(string sourceDirName, string destDirName) { s_mock.Move(sourceDirName, destDirName); }
-        public static void SetAccessControl(string path, DirectorySecurity directorySecurity) { s_mock.SetAccessControl(path, directorySecurity); }
-        public static void SetCreationTime(string path, DateTime creationTime) { s_mock.SetCreationTime(path, creationTime); }
-        public static void SetCreationTimeUtc(string path, DateTime creationTimeUtc) { s_mock.SetCreationTimeUtc(path, creationTimeUtc); }
-        public static void SetCurrentDirectory(string path) { s_mock.SetCurrentDirectory(path); }
-        public static void SetLastAccessTime(string path, DateTime lastAccessTime) { s_mock.SetLastAccessTime(path, lastAccessTime); }
-        public static void SetLastAccessTimeUtc(string path, DateTime lastAccessTimeUtc) { s_mock.SetLastAccessTimeUtc(path, lastAccessTimeUtc); }
-        public static void SetLastWriteTime(string path, DateTime lastWriteTime) { s_mock.SetLastWriteTime(path, lastWriteTime); }
-        public static void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc) { s_mock.SetLastWriteTimeUtc(path, lastWriteTimeUtc); }
+        public static DirectoryInfo CreateDirectory(string path) { return _mock.CreateDirectory(path); }
+        public static DirectoryInfo CreateDirectory(string path, DirectorySecurity directorySecurity) { return _mock.CreateDirectory(path, directorySecurity); }
+        public static void Delete(string path) { _mock.Delete(path); }
+        public static void Delete(string path, bool recursive) { _mock.Delete(path, recursive); }
+        public static bool Exists(string path) { return _mock.Exists(path); }
+        public static DirectorySecurity GetAccessControl(string path) { return _mock.GetAccessControl(path); }
+        public static DirectorySecurity GetAccessControl(string path, AccessControlSections includeSections) { return _mock.GetAccessControl(path, includeSections); }
+        public static DateTime GetCreationTime(string path) { return _mock.GetCreationTime(path); }
+        public static DateTime GetCreationTimeUtc(string path) { return _mock.GetCreationTimeUtc(path); }
+        public static string GetCurrentDirectory() { return _mock.GetCurrentDirectory(); }
+        public static string[] GetDirectories(string path) { return _mock.GetDirectories(path); }
+        public static string[] GetDirectories(string path, string searchPattern) { return _mock.GetDirectories(path, searchPattern); }
+        public static string[] GetDirectories(string path, string searchPattern, SearchOption searchOption) { return _mock.GetDirectories(path, searchPattern, searchOption); }
+        public static string GetDirectoryRoot(string path) { return _mock.GetDirectoryRoot(path); }
+        public static string[] GetFiles(string path) { return _mock.GetFiles(path); }
+        public static string[] GetFiles(string path, string searchPattern) { return _mock.GetFiles(path, searchPattern); }
+        public static string[] GetFiles(string path, string searchPattern, SearchOption searchOption) { return _mock.GetFiles(path, searchPattern, searchOption); }
+        public static string[] GetFileSystemEntries(string path) { return _mock.GetFileSystemEntries(path); }
+        public static string[] GetFileSystemEntries(string path, string searchPattern) { return _mock.GetFileSystemEntries(path, searchPattern); }
+        public static DateTime GetLastAccessTime(string path) { return _mock.GetLastAccessTime(path); }
+        public static DateTime GetLastAccessTimeUtc(string path) { return _mock.GetLastAccessTimeUtc(path); }
+        public static DateTime GetLastWriteTime(string path) { return _mock.GetLastWriteTime(path); }
+        public static DateTime GetLastWriteTimeUtc(string path) { return _mock.GetLastWriteTimeUtc(path); }
+        public static string[] GetLogicalDrives() { return _mock.GetLogicalDrives(); }
+        public static DirectoryInfo GetParent(string path) { return _mock.GetParent(path); }
+        public static void Move(string sourceDirName, string destDirName) { _mock.Move(sourceDirName, destDirName); }
+        public static void SetAccessControl(string path, DirectorySecurity directorySecurity) { _mock.SetAccessControl(path, directorySecurity); }
+        public static void SetCreationTime(string path, DateTime creationTime) { _mock.SetCreationTime(path, creationTime); }
+        public static void SetCreationTimeUtc(string path, DateTime creationTimeUtc) { _mock.SetCreationTimeUtc(path, creationTimeUtc); }
+        public static void SetCurrentDirectory(string path) { _mock.SetCurrentDirectory(path); }
+        public static void SetLastAccessTime(string path, DateTime lastAccessTime) { _mock.SetLastAccessTime(path, lastAccessTime); }
+        public static void SetLastAccessTimeUtc(string path, DateTime lastAccessTimeUtc) { _mock.SetLastAccessTimeUtc(path, lastAccessTimeUtc); }
+        public static void SetLastWriteTime(string path, DateTime lastWriteTime) { _mock.SetLastWriteTime(path, lastWriteTime); }
+        public static void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc) { _mock.SetLastWriteTimeUtc(path, lastWriteTimeUtc); }
     }
 }

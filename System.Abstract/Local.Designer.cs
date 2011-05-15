@@ -79,20 +79,20 @@ namespace System.Abstract {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to A default ServiceLocator could not be bound. Ether setup your default service locator or specify a service locator or none..
+        /// </summary>
+        internal static string InvalidDefaultServiceLocator {
+            get {
+                return ResourceManager.GetString("InvalidDefaultServiceLocator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Could not send messageType &apos;{0}&apos;.
         /// </summary>
         internal static string InvalidMessageTypeA {
             get {
                 return ResourceManager.GetString("InvalidMessageTypeA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to A default ServiceLocator could not be bound. Ether setup your default service locator or specify a service locator or none..
-        /// </summary>
-        internal static string InvalidServiceBusDefaultServiceLocator {
-            get {
-                return ResourceManager.GetString("InvalidServiceBusDefaultServiceLocator", resourceCulture);
             }
         }
         
@@ -151,29 +151,29 @@ namespace System.Abstract {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UndefinedDataCacheRegistrationA.
-        /// </summary>
-        internal static string UndefinedDataCacheRegistrationA {
-            get {
-                return ResourceManager.GetString("UndefinedDataCacheRegistrationA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to UndefinedDataCacheRegistrationAB.
-        /// </summary>
-        internal static string UndefinedDataCacheRegistrationAB {
-            get {
-                return ResourceManager.GetString("UndefinedDataCacheRegistrationAB", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to UndefinedServiceBusProvider.
         /// </summary>
         internal static string UndefinedServiceBusProvider {
             get {
                 return ResourceManager.GetString("UndefinedServiceBusProvider", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UndefinedServiceCacheRegistrationA.
+        /// </summary>
+        internal static string UndefinedServiceCacheRegistrationA {
+            get {
+                return ResourceManager.GetString("UndefinedServiceCacheRegistrationA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UndefinedServiceCacheRegistrationAB.
+        /// </summary>
+        internal static string UndefinedServiceCacheRegistrationAB {
+            get {
+                return ResourceManager.GetString("UndefinedServiceCacheRegistrationAB", resourceCulture);
             }
         }
         

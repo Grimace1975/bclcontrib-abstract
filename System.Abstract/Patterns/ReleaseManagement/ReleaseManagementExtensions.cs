@@ -44,7 +44,7 @@ namespace System.Patterns.ReleaseManagement
             }
         }
 
-        public static bool GetExternalDeployment(this DeploymentEnvironment environment)
+        public static bool IsExternalDeployment(this DeploymentEnvironment environment)
         {
             return ((environment == DeploymentEnvironment.Production) || (environment == DeploymentEnvironment.BetaTesting));
         }
@@ -60,6 +60,18 @@ namespace System.Patterns.ReleaseManagement
                 case DeploymentEnvironment.BetaTesting: return "B";
                 case DeploymentEnvironment.Production: return "P";
                 default: throw new ArgumentOutOfRangeException("environment", "unknown target");
+            }
+        }
+
+        public static string ToCode(this DevelopmentStage stage)
+        {
+            switch (stage)
+            {
+                case DevelopmentStage.PreAlpha: return "D";
+                case DevelopmentStage.Alpha: return "A";
+                case DevelopmentStage.Beta: return "B";
+                case DevelopmentStage.Release: return "P";
+                default: throw new ArgumentOutOfRangeException("stage", "unknown target");
             }
         }
     }

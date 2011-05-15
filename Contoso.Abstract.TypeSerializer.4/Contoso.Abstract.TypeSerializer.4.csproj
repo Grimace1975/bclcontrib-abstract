@@ -38,17 +38,17 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Contoso.Abstract.TypeSerializer\Abstract\BinarySerializer.cs">
-      <Link>Abstract\BinarySerializer.cs</Link>
+    <Compile Include="..\Contoso.Abstract.TypeSerializer\Abstract\BinaryTypeSerializer.cs">
+      <Link>Abstract\BinaryTypeSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.TypeSerializer\Abstract\JsonSerializer.cs">
-      <Link>Abstract\JsonSerializer.cs</Link>
+    <Compile Include="..\Contoso.Abstract.TypeSerializer\Abstract\JsonTypeSerializer.cs">
+      <Link>Abstract\JsonTypeSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.TypeSerializer\Abstract\WcfSerializer.cs">
-      <Link>Abstract\WcfSerializer.cs</Link>
+    <Compile Include="..\Contoso.Abstract.TypeSerializer\Abstract\WcfTypeSerializer.cs">
+      <Link>Abstract\WcfTypeSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.TypeSerializer\Abstract\XmlSerializer.cs">
-      <Link>Abstract\XmlSerializer.cs</Link>
+    <Compile Include="..\Contoso.Abstract.TypeSerializer\Abstract\XmlTypeSerializer.cs">
+      <Link>Abstract\XmlTypeSerializer.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

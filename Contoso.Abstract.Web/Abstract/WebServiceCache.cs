@@ -49,13 +49,18 @@ namespace Contoso.Abstract
             public void ItemRemovedCallback(string key, object value, WebCacheItemRemovedReason cacheItemRemovedReason) { _onRemoveCallback(key, value); }
         }
 
-        public object this[string name]
+        public WebServiceCache()
         {
-            get { return Get(name, null); }
-            set { Insert(name, value, null, DateTime.Now.AddMinutes(60), ServiceCache.NoSlidingExpiration, CacheItemPriority.Normal, null, null); }
+            RegistrationDispatch = new DefaultServiceCacheRegistrationDispatch();
         }
 
-        public object Add(string name, object value, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object tag)
+        public object this[string name]
+        {
+            get { return Get(null, name); }
+            set { this.Insert(null, name, value); }
+        }
+
+        public object Add(object tag, string name, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object value)
         {
             // dependency
             WebCacheDependency dependency2;
@@ -97,12 +102,12 @@ namespace Contoso.Abstract
             return HttpRuntime.Cache.Add(name, value, dependency2, absoluteExpiration, slidingExpiration, cacheItemPriority, cacheItemRemovedCallback);
         }
 
-        public object Get(string name, object tag)
+        public object Get(object tag, string name)
         {
             return HttpRuntime.Cache.Get(name);
         }
 
-        public object Insert(string name, object value, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object tag)
+        public object Insert(object tag, string name, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object value)
         {
             // dependency
             WebCacheDependency dependency2;
@@ -145,14 +150,18 @@ namespace Contoso.Abstract
             return value;
         }
 
-        public object Remove(string name, object tag)
+        public object Remove(object tag, string name)
         {
             return HttpRuntime.Cache.Remove(name);
         }
 
-        public void Touch(string name, object tag)
+        public void Touch(object tag, params string[] names)
         {
-            Insert(name, string.Empty, null, ServiceCache.NoAbsoluteExpiration, ServiceCache.NoSlidingExpiration, CacheItemPriority.Normal, null, null);
+            if (names != null)
+                foreach (var name in names)
+                    Insert(null, name, null, ServiceCache.NoAbsoluteExpiration, ServiceCache.NoSlidingExpiration, CacheItemPriority.Normal, null, string.Empty);
         }
+
+        public ServiceCacheRegistration.IDispatch RegistrationDispatch { get; private set; }
     }
 }

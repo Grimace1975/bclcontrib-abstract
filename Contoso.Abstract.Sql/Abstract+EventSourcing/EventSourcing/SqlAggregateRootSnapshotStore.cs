@@ -41,7 +41,7 @@ namespace Contoso.Abstract.EventSourcing
         private readonly string _connectionString;
         internal readonly string _tableName;
         private readonly Func<string, object> _makeAggregateId;
-        private readonly ISerializer _serializer;
+        private readonly ITypeSerializer _serializer;
 
         protected class SnapshotOrdinal
         {
@@ -56,14 +56,14 @@ namespace Contoso.Abstract.EventSourcing
         }
 
         public SqlAggregateRootSnapshotStore(string connectionString)
-            : this(connectionString, "AggregateSnapshot", null, new JsonSerializer()) { }
+            : this(connectionString, "AggregateSnapshot", null, new JsonTypeSerializer()) { }
         public SqlAggregateRootSnapshotStore(string connectionString, string tableName)
-            : this(connectionString, tableName, null, new JsonSerializer()) { }
+            : this(connectionString, tableName, null, new JsonTypeSerializer()) { }
         public SqlAggregateRootSnapshotStore(string connectionString, Func<string, object> makeAggregateId)
-            : this(connectionString, "AggregateSnapshot", makeAggregateId, new JsonSerializer()) { }
+            : this(connectionString, "AggregateSnapshot", makeAggregateId, new JsonTypeSerializer()) { }
         public SqlAggregateRootSnapshotStore(string connectionString, string tableName, Func<string, object> makeAggregateId)
-            : this(connectionString, tableName, makeAggregateId, new JsonSerializer()) { }
-        public SqlAggregateRootSnapshotStore(string connectionString, string tableName, Func<string, object> makeAggregateId, ISerializer serializer)
+            : this(connectionString, tableName, makeAggregateId, new JsonTypeSerializer()) { }
+        public SqlAggregateRootSnapshotStore(string connectionString, string tableName, Func<string, object> makeAggregateId, ITypeSerializer serializer)
         {
             if (string.IsNullOrEmpty(connectionString))
                 throw new ArgumentNullException("connectionString");

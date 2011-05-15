@@ -55,6 +55,7 @@ namespace Contoso.Abstract
         {
             Cache = cache;
             Settings = new ServerAppFabricServiceCacheSettings();
+            RegistrationDispatch = new DefaultServiceCacheRegistrationDispatch();
         }
 
         public DataCache Cache { get; private set; }
@@ -63,11 +64,11 @@ namespace Contoso.Abstract
 
         public object this[string name]
         {
-            get { return Get(name, null); }
-            set { Insert(name, value, null, DateTime.Now.AddMinutes(60), ServiceCache.NoSlidingExpiration, CacheItemPriority.Normal, null, null); }
+            get { return Get(null, name); }
+            set { this.Insert(null, name, value); }
         }
 
-        public object Add(string name, object value, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object tag)
+        public object Add(object tag, string name, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object value)
         {
             if (slidingExpiration != ServiceCache.NoSlidingExpiration)
                 throw new ArgumentOutOfRangeException("slidingExpiration", "not supported.");
@@ -100,7 +101,7 @@ namespace Contoso.Abstract
             return value;
         }
 
-        public object Get(string name, object tag)
+        public object Get(object tag, string name)
         {
             var version = (tag as DataCacheItemVersion);
             string region;
@@ -109,7 +110,7 @@ namespace Contoso.Abstract
             return (!TryGetRegion(Settings.RegionMarker, ref name, out region) ? Cache.GetIfNewer(name, ref version) : Cache.GetIfNewer(name, ref version, region));
         }
 
-        public object Insert(string name, object value, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object tag)
+        public object Insert(object tag, string name, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object value)
         {
             if (slidingExpiration != ServiceCache.NoSlidingExpiration)
                 throw new ArgumentOutOfRangeException("slidingExpiration", "not supported.");
@@ -188,7 +189,7 @@ namespace Contoso.Abstract
             return value;
         }
 
-        public object Remove(string name, object tag)
+        public object Remove(object tag, string name)
         {
             string region;
             string regionMarker = Settings.RegionMarker;
@@ -214,10 +215,12 @@ namespace Contoso.Abstract
             return value;
         }
 
-        public void Touch(string name, object tag)
+        public void Touch(object tag, params string[] name)
         {
             throw new NotSupportedException();
         }
+
+        public ServiceCacheRegistration.IDispatch RegistrationDispatch { get; private set; }
 
         #region Domain-specific
 

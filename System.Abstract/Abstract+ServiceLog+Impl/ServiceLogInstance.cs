@@ -36,6 +36,6 @@ namespace System.Abstract
 			{
 				foreach (var setupAction in setupActions)
 					setupAction(service);
-			}) { }
+            }, (locator, name) => service => { RegisterInstance<IServiceLog>(locator(), service, name); }) { }
 	}
 }

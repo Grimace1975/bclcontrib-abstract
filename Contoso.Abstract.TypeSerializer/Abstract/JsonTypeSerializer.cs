@@ -27,11 +27,11 @@ using System;
 using System.IO;
 using System.Text;
 using System.Abstract;
-using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.Collections.Generic;
 namespace Contoso.Abstract
 {
-    public class WcfSerializer : ISerializer
+    public class JsonTypeSerializer : ITypeSerializer
     {
         public T ReadObject<T>(Type type, Stream s)
             where T : class
@@ -40,7 +40,7 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("type");
             if (s == null)
                 throw new ArgumentNullException("s");
-            var serializer = new DataContractSerializer(type);
+            var serializer = new DataContractJsonSerializer(type);
             return (serializer.ReadObject(s) as T);
         }
 
@@ -51,7 +51,7 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("type");
             if (s == null)
                 throw new ArgumentNullException("s");
-            var serializer = new DataContractSerializer(type);
+            var serializer = new DataContractJsonSerializer(type);
             return (serializer.ReadObject(s) as IEnumerable<T>);
         }
 
@@ -64,7 +64,7 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("s");
             if (graph == null)
                 throw new ArgumentNullException("graph");
-            var serializer = new DataContractSerializer(type);
+            var serializer = new DataContractJsonSerializer(type);
             serializer.WriteObject(s, graph);
         }
 
@@ -77,7 +77,7 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("s");
             if (graphs == null)
                 throw new ArgumentNullException("graphs");
-            var serializer = new DataContractSerializer(type);
+            var serializer = new DataContractJsonSerializer(type);
             serializer.WriteObject(s, graphs);
         }
     }

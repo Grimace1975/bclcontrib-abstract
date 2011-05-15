@@ -41,7 +41,7 @@ namespace System.Abstract
 		public static IServiceSetup<Action<IServiceRegistrar, IServiceLocator>> RegisterByNamingConvention(this IServiceSetup<Action<IServiceRegistrar, IServiceLocator>> setup, Predicate<Type> predicate) { return setup.Do((r, l) => DoRegisterByNamingConvention(r, l, predicate, new[] { IServiceLocatorSetupExtensions.GetPreviousCallingMethodsAssembly() })); }
 		public static IServiceSetup<Action<IServiceRegistrar, IServiceLocator>> RegisterByNamingConvention(this IServiceSetup<Action<IServiceRegistrar, IServiceLocator>> setup, Predicate<Type> predicate, params Assembly[] assemblies) { return setup.Do((r, l) => DoRegisterByNamingConvention(r, l, predicate, assemblies)); }
 
-        internal static Assembly GetPreviousCallingMethodsAssembly()
+        private static Assembly GetPreviousCallingMethodsAssembly()
         {
             var frame = new StackTrace().GetFrame(2);
             var method = frame.GetMethod();

@@ -118,6 +118,9 @@
     <Compile Include="..\System.Abstract\Abstract+Impl\AService.cs">
       <Link>Abstract+Impl\AService.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+Impl\IServiceSetup.cs">
+      <Link>Abstract+Impl\IServiceSetup.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+Impl\ServiceInstanceBase.cs">
       <Link>Abstract+Impl\ServiceInstanceBase.cs</Link>
     </Compile>
@@ -148,9 +151,6 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusLocation.cs">
       <Link>Abstract+ServiceBus\IServiceBusLocation.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusSetupExtensions.cs">
-      <Link>Abstract+ServiceBus\IServiceBusSetupExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceMessage.cs">
       <Link>Abstract+ServiceBus\IServiceMessage.cs</Link>
     </Compile>
@@ -166,6 +166,9 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\ServiceBusMessageException.cs">
       <Link>Abstract+ServiceBus\ServiceBusMessageException.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\DefaultServiceCacheRegistrationDispatch.cs">
+      <Link>Abstract+ServiceCache+Impl\DefaultServiceCacheRegistrationDispatch.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\ServiceCache.cs">
       <Link>Abstract+ServiceCache+Impl\ServiceCache.cs</Link>
     </Compile>
@@ -174,6 +177,9 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\ServiceCacheManager.cs">
       <Link>Abstract+ServiceCache+Impl\ServiceCacheManager.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\ServiceCacheRegistrar.cs">
+      <Link>Abstract+ServiceCache+Impl\ServiceCacheRegistrar.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\CacheItemAddedCallback.cs">
       <Link>Abstract+ServiceCache\CacheItemAddedCallback.cs</Link>
@@ -187,11 +193,23 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\IServiceCache.cs">
       <Link>Abstract+ServiceCache\IServiceCache.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheBuilder.cs">
+      <Link>Abstract+ServiceCache\ServiceCacheBuilder.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheCommand.cs">
       <Link>Abstract+ServiceCache\ServiceCacheCommand.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheDependency.cs">
       <Link>Abstract+ServiceCache\ServiceCacheDependency.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheForeignRegistration.cs">
+      <Link>Abstract+ServiceCache\ServiceCacheForeignRegistration.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheNamespaceWrapper.cs">
+      <Link>Abstract+ServiceCache\ServiceCacheNamespaceWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheRegistration.cs">
+      <Link>Abstract+ServiceCache\ServiceCacheRegistration.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceLocator.cs">
       <Link>Abstract+ServiceLocator+Impl\ServiceLocator.cs</Link>
@@ -244,14 +262,14 @@
     <Compile Include="..\System.Abstract\Abstract+TypeGrapher\IBuildManager.cs">
       <Link>Abstract+TypeGrapher\IBuildManager.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract\+Move\AssemblyTypeCatalog.cs">
-      <Link>Abstract\+Move\AssemblyTypeCatalog.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract+TypeSerializer\ITypeSerializer.cs">
+      <Link>Abstract+TypeSerializer\ITypeSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract\+Move\ITypeCatalog.cs">
-      <Link>Abstract\+Move\ITypeCatalog.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceCache\CacheFileTouch.cs">
+      <Link>Contoso.Abstract+Impl\+ServiceCache\CacheFileTouch.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract\ISerializer.cs">
-      <Link>Abstract\ISerializer.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceCache\MemoryServiceCache.cs">
+      <Link>Contoso.Abstract+Impl\+ServiceCache\MemoryServiceCache.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceLocator\MicroServiceLocator.cs">
       <Link>Contoso.Abstract+Impl\+ServiceLocator\MicroServiceLocator.cs</Link>
@@ -274,8 +292,8 @@
     <Compile Include="..\System.Abstract\DateTimeEx2.cs">
       <Link>DateTimeEx2.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\EnvironmentEx.cs">
-      <Link>EnvironmentEx.cs</Link>
+    <Compile Include="..\System.Abstract\EnvironmentEx2.cs">
+      <Link>EnvironmentEx2.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\IO\+Mock\DirectoryMock.cs">
       <Link>IO\+Mock\DirectoryMock.cs</Link>
@@ -313,20 +331,12 @@
     <Compile Include="..\System.Abstract\Patterns\ReleaseManagement\ReleaseManagementExtensions.cs">
       <Link>Patterns\ReleaseManagement\ReleaseManagementExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Patterns\Versioning\VersioningExtensions.cs">
-      <Link>Patterns\Versioning\VersioningExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Patterns\Versioning\VersionType.cs">
-      <Link>Patterns\Versioning\VersionType.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BclContrib.snk" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Contoso.Abstract+Impl\+ServiceCache\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="..\System.Abstract\Changelog.txt">
       <Link>Changelog.txt</Link>

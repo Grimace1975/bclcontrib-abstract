@@ -5,12 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{45479754-BA8C-46CE-B42A-1432EC8CEE6B}</ProjectGuid>
+    <ProjectGuid>{823CF03D-74EC-4D3B-BEF1-7344F73E8E82}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Contoso.Abstract</RootNamespace>
-    <AssemblyName>Contoso.Abstract.TypeSerializer</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <AssemblyName>Contoso.Abstract.Memcached</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -29,7 +29,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Contoso.Abstract.TypeSerializer.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -38,28 +37,27 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Abstract\BinaryTypeSerializer.cs" />
-    <Compile Include="Abstract\XmlTypeSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Abstract\WcfTypeSerializer.cs" />
-    <Compile Include="Abstract\JsonTypeSerializer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel.Web" />
-    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BclContrib.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\System.Abstract\System.Abstract.csproj">
-      <Project>{A44E9D89-BFF2-41A4-AADC-3C2BDFDAEEB1}</Project>
-      <Name>System.Abstract</Name>
+    <Content Include="..\Contoso.Abstract.Memcached\Changelog.txt">
+      <Link>Changelog.txt</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Enyim.Caching">
+      <HintPath>..\packages\EnyimMemcached.2.7\lib\NET35\Enyim.Caching.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.Abstract.4\System.Abstract.4.csproj">
+      <Project>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</Project>
+      <Name>System.Abstract.4</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Changelog.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
