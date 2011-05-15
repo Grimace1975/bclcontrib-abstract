@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Example</RootNamespace>
     <AssemblyName>Example</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -39,6 +40,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ServiceCacheExamples.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -55,10 +57,13 @@
       <Project>{21FCE5EA-3C6D-43D7-9984-1278307AB77E}</Project>
       <Name>Contoso.Abstract.Unity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\System.Abstract\System.Abstract.csproj">
-      <Project>{A44E9D89-BFF2-41A4-AADC-3C2BDFDAEEB1}</Project>
-      <Name>System.Abstract</Name>
+    <ProjectReference Include="..\System.Abstract.4\System.Abstract.4.csproj">
+      <Project>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</Project>
+      <Name>System.Abstract.4</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

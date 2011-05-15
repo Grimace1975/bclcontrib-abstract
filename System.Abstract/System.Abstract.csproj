@@ -56,30 +56,32 @@
       <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
     </Compile>
     <Compile Include="+Nparams+Impl\NparamsManager.cs" />
+    <Compile Include="Abstract+Impl\IServiceSetup.cs" />
     <Compile Include="Abstract+ServiceBus+Impl\ServiceBusInstance.cs" />
+    <Compile Include="Abstract+ServiceCache\ServiceCacheNamespaceWrapper.cs" />
+    <Compile Include="Abstract+ServiceCache+Impl\DefaultServiceCacheRegistrationDispatch.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheInstance.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCache.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheManager.cs" />
+    <Compile Include="Abstract+ServiceCache\ServiceCacheForeignRegistration.cs" />
+    <Compile Include="Abstract+ServiceCache\ServiceCacheBuilder.cs" />
+    <Compile Include="Abstract+ServiceCache\ServiceCacheRegistration.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheCommand.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheDependency.cs" />
     <Compile Include="Abstract+ServiceLog\ServiceLogEventType.cs" />
-    <Compile Include="Abstract\+Move\ServiceLog.cs" />
+    <Compile Include="++ToFile\ServiceLog.cs" />
     <Compile Include="Abstract+ServiceLog+Impl\ServiceLogInstance.cs" />
     <Compile Include="Abstract+ServiceLog+Impl\ServiceLogManager.cs" />
     <Compile Include="Abstract+ServiceLog\IServiceLog.cs" />
     <Compile Include="Abstract+Impl\ServiceInstanceBase.cs" />
     <Compile Include="Abstract+Impl\ServiceManagerBase.cs" />
     <Compile Include="Contoso.Abstract+Impl\EmptyNparams.cs" />
-    <Compile Include="EnvironmentEx.cs" />
+    <Compile Include="EnvironmentEx2.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceCache\CacheFileTouch.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemAddedCallback.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemPriority.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemRemovedCallback.cs" />
-    <Compile Include="Contoso.Abstract+Impl\+ServiceCache\DataCache.cs" />
-    <Compile Include="Contoso.Abstract+Impl\+ServiceCache\DataCacheBuilder.cs" />
-    <Compile Include="Contoso.Abstract+Impl\+ServiceCache\DataCacheRegistrar.cs" />
-    <Compile Include="Contoso.Abstract+Impl\+ServiceCache\DataCacheRegistration.cs" />
-    <Compile Include="Contoso.Abstract+Impl\+ServiceCache\DataCacheForeignRegistration.cs" />
+    <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheRegistrar.cs" />
     <Compile Include="Abstract+ServiceCache\IServiceCache.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceCache\MemoryServiceCache.cs" />
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocatorInstance.cs" />
@@ -106,9 +108,8 @@
     <Compile Include="Abstract+EventSourcing\EventSourcing\IAccessAggregateRootState.cs" />
     <Compile Include="+Nparams\ParamObject.cs" />
     <Compile Include="+Nparams\Nparams.cs" />
-    <Compile Include="Abstract\+Move\NewAttrib.cs" />
+    <Compile Include="++ToFile\NewAttrib.cs" />
     <Compile Include="Abstract+ServiceBus\AggregateServiceMessage.cs" />
-    <Compile Include="Abstract+ServiceBus\IServiceBusSetupExtensions.cs" />
     <Compile Include="Abstract+ServiceBus\IServiceMessageHandlerFactory.cs" />
     <Compile Include="Abstract+ServiceBus\LiteralServiceBusLocation.cs" />
     <Compile Include="Abstract+ServiceBus+Impl\ServiceBus.cs">
@@ -152,8 +153,6 @@
     <Compile Include="Patterns\ReleaseManagement\ReleaseManagementExtensions.cs" />
     <Compile Include="Patterns\ReleaseManagement\DeploymentEnvironment.cs" />
     <Compile Include="Patterns\ReleaseManagement\DevelopmentStage.cs" />
-    <Compile Include="Patterns\Versioning\VersioningExtensions.cs" />
-    <Compile Include="Patterns\Versioning\VersionType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceDependencyAttribute.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceLocator.cs" />
@@ -161,9 +160,9 @@
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocatorManager.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceLocatorResolutionException.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceRegistration.cs" />
-    <Compile Include="Abstract\+Move\AssemblyTypeCatalog.cs" />
-    <Compile Include="Abstract\ISerializer.cs" />
-    <Compile Include="Abstract\+Move\ITypeCatalog.cs" />
+    <Compile Include="++ToFile\AssemblyTypeCatalog.cs" />
+    <Compile Include="Abstract+TypeSerializer\ITypeSerializer.cs" />
+    <Compile Include="++ToFile\ITypeCatalog.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Local.resx">

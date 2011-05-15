@@ -23,59 +23,68 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if EXPERIMENTAL
 using System.Collections.Generic;
-namespace System.Abstract.Caching
+namespace System.Abstract
 {
     /// <summary>
-    /// DataCacheRegistration
+    /// ServiceCacheRegistration
     /// </summary>
-    public class DataCacheRegistration
+    public class ServiceCacheRegistration
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataCacheRegistration"/> class.
+        /// IDispatch
         /// </summary>
-        internal DataCacheRegistration(string id)
+        public interface IDispatch
+        {
+            T Get<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values);
+            void Remove(IServiceCache cache, ServiceCacheRegistration registration);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceCacheRegistration"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        internal ServiceCacheRegistration(string name)
         {
             // used for registration-links only
-            if (string.IsNullOrEmpty(id))
-                throw new ArgumentNullException("id");
-            ID = id;
-            CacheCommand = new ServiceCacheCommand("DataCacheRegistration", -1);
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
+            Name = name;
+            CacheCommand = new ServiceCacheCommand("ServiceCacheRegistration", -1);
         }
         /// <summary>
         /// Adds the data source.
         /// </summary>
-        /// <param name="key">The key.</param>
+        /// <param name="name">The key.</param>
         /// <param name="builder">The builder.</param>
-        /// <param name="dependencyArray">The dependency array.</param>
-        public DataCacheRegistration(string id, DataCacheBuilder builder, params string[] cacheTags)
-            : this(id, new ServiceCacheCommand("DataCacheRegistration"), builder, cacheTags) { }
+        /// <param name="cacheTags">The dependency array.</param>
+        public ServiceCacheRegistration(string name, ServiceCacheBuilder builder, params string[] cacheTags)
+            : this(name, new ServiceCacheCommand(name), builder, cacheTags) { }
         /// <summary>
         /// Adds the data source.
         /// </summary>
-        /// <param name="key">The key.</param>
+        /// <param name="name">The key.</param>
         /// <param name="minuteTimeout">The minute timeout.</param>
         /// <param name="builder">The builder.</param>
-        /// <param name="dependencyArray">The dependency array.</param>
-        public DataCacheRegistration(string id, int minuteTimeout, DataCacheBuilder builder, params string[] cacheTags)
-            : this(id, new ServiceCacheCommand("DataCacheRegistration", minuteTimeout), builder, cacheTags) { }
+        /// <param name="cacheTags">The dependency array.</param>
+        public ServiceCacheRegistration(string name, int minuteTimeout, ServiceCacheBuilder builder, params string[] cacheTags)
+            : this(name, new ServiceCacheCommand(name, minuteTimeout), builder, cacheTags) { }
         /// <summary>
         /// Adds the data source.
         /// </summary>
-        /// <param name="key">The key.</param>
+        /// <param name="name">The name.</param>
         /// <param name="cacheCommand">The cache command.</param>
         /// <param name="builder">The builder.</param>
-        /// <param name="dependencyArray">The dependency array.</param>
-        public DataCacheRegistration(string id, ServiceCacheCommand cacheCommand, DataCacheBuilder builder, params string[] cacheTags)
+        /// <param name="cacheTags">The dependency array.</param>
+        public ServiceCacheRegistration(string name, ServiceCacheCommand cacheCommand, ServiceCacheBuilder builder, params string[] cacheTags)
         {
-            if (string.IsNullOrEmpty(id))
-                throw new ArgumentNullException("id");
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
             if (cacheCommand == null)
                 throw new ArgumentNullException("cacheCommand");
             if (builder == null)
                 throw new ArgumentNullException("builder");
-            ID = id;
+            Name = name;
             Builder = builder;
             if ((cacheTags != null) && (cacheTags.Length > 0))
             {
@@ -84,14 +93,15 @@ namespace System.Abstract.Caching
                 cacheCommand.Dependency = new ServiceCacheDependency { CacheTags = cacheTags };
             }
             CacheCommand = cacheCommand;
-            Tags = new List<string>();
+            // tacks all namespaces created
+            Namespaces = new List<string>();
         }
 
         /// <summary>
         /// Gets or sets the key.
         /// </summary>
         /// <value>The key.</value>
-        public string ID { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the cache command.
@@ -103,27 +113,16 @@ namespace System.Abstract.Caching
         /// Gets or sets the builder.
         /// </summary>
         /// <value>The builder.</value>
-        public DataCacheBuilder Builder { get; set; }
-
-        /// <summary>
-        /// Tags
-        /// </summary>
-        internal List<string> Tags;
+        public ServiceCacheBuilder Builder { get; set; }
 
         /// <summary>
         /// Registrar
         /// </summary>
-        internal DataCacheRegistrar Registrar;
+        internal ServiceCacheRegistrar Registrar;
 
         /// <summary>
-        /// Gets the cache.
+        /// Salts
         /// </summary>
-        /// <param name="values">The values.</param>
-        /// <returns></returns>
-        internal IServiceCache GetCacheSystem(object[] values)
-        {
-			return null; // (values == null ? CacheEx.Default : CacheEx.GetNamespace(values));
-        }
+        internal List<string> Namespaces;
     }
 }
-#endif

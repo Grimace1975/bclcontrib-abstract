@@ -31,7 +31,12 @@ namespace System.Abstract
     /// </summary>
     public class LiteralServiceBusLocation : IServiceBusLocation
     {
-        public LiteralServiceBusLocation(string literal) { Value = literal; }
+        public LiteralServiceBusLocation(string literal)
+        {
+            if (literal == null)
+                throw new ArgumentNullException("literal");
+            Value = literal;
+        }
         public string Value { get; private set; }
     }
 }

@@ -23,26 +23,46 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System.IO;
+using System.Text;
 using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
-    /// ServiceBusInstance
+    /// ITypeSerializer
     /// </summary>
-    public class ServiceBusInstance : ServiceInstanceBase<IServiceBus, Action<IServiceBus>>
+    public interface ITypeSerializer
     {
-        public ServiceBusInstance()
-            : base(() => new ServiceBusInstance(), (service, setupActions) =>
+        T ReadObject<T>(Type type, Stream s)
+            where T : class;
+        IEnumerable<T> ReadObjects<T>(Type type, Stream s)
+            where T : class;
+        void WriteObject<T>(Type type, Stream s, T graph)
+            where T : class;
+        void WriteObjects<T>(Type type, Stream s, IEnumerable<T> graph)
+            where T : class;
+    }
+
+    /// <summary>
+    /// ITypeSerializerExtensions
+    /// </summary>
+    public static class ITypeSerializerExtensions
+    {
+        public static T ReadObject<T>(this ITypeSerializer serializer, Type type, string text)
+            where T : class
+        {
+            using (var s = new MemoryStream(Encoding.Default.GetBytes(text)))
+                return serializer.ReadObject<T>(type, s);
+        }
+
+        public static string WriteObject<T>(this ITypeSerializer serializer, Type type, T graph)
+            where T : class
+        {
+            using (var s = new MemoryStream())
             {
-                foreach (var setupAction in setupActions)
-                    setupAction(service);
-            }, (locator, name) => service =>
-            {
-                var locator2 = locator();
-                RegisterInstance<IServiceBus>(locator2, service, name);
-                var publishingServiceBus = (service as IPublishingServiceBus);
-                if (publishingServiceBus != null)
-                    RegisterInstance<IPublishingServiceBus>(locator2, publishingServiceBus, name);
-            }) { }
+                serializer.WriteObject<T>(type, s, graph);
+                return Encoding.Default.GetString(s.ToArray());
+            }
+        }
     }
 }

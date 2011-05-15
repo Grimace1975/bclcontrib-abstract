@@ -33,63 +33,63 @@ namespace System.IO
     public static partial class FileEx2
     {
         [ThreadStatic]
-        private static MockBase s_mock;
+        private static MockBase _mock;
 
         public static MockBase Mock
         {
-            get { return s_mock; }
-            set { s_mock = value; }
+            get { return _mock; }
+            set { _mock = value; }
         }
 
-        public static void AppendAllText(string path, string contents) { s_mock.AppendAllText(path, contents); }
-        public static void AppendAllText(string path, string contents, Encoding encoding) { s_mock.AppendAllText(path, contents, encoding); }
-        public static StreamWriter AppendText(string path) { return s_mock.AppendText(path); }
-        public static void Copy(string sourceFileName, string destFileName) { s_mock.Copy(sourceFileName, destFileName); }
-        public static void Copy(string sourceFileName, string destFileName, bool overwrite) { s_mock.Copy(sourceFileName, destFileName, overwrite); }
-        public static FileStream Create(string path) { return s_mock.Create(path); }
-        public static FileStream Create(string path, int bufferSize) { return s_mock.Create(path, bufferSize); }
-        public static FileStream Create(string path, int bufferSize, FileOptions options) { return s_mock.Create(path, bufferSize, options); }
-        public static FileStream Create(string path, int bufferSize, FileOptions options, FileSecurity fileSecurity) { return s_mock.Create(path, bufferSize, options, fileSecurity); }
-        public static StreamWriter CreateText(string path) { return s_mock.CreateText(path); }
-        public static void Decrypt(string path) { s_mock.Decrypt(path); }
-        public static void Delete(string path) { s_mock.Delete(path); }
-        public static void Encrypt(string path) { s_mock.Encrypt(path); }
-        public static bool Exists(string path) { return s_mock.Exists(path); }
-        public static FileSecurity GetAccessControl(string path) { return s_mock.GetAccessControl(path); }
-        public static FileSecurity GetAccessControl(string path, AccessControlSections includeSections) { return s_mock.GetAccessControl(path, includeSections); }
-        public static FileAttributes GetAttributes(string path) { return s_mock.GetAttributes(path); }
-        public static DateTime GetCreationTime(string path) { return s_mock.GetCreationTime(path); }
-        public static DateTime GetCreationTimeUtc(string path) { return s_mock.GetCreationTimeUtc(path); }
-        public static DateTime GetLastAccessTime(string path) { return s_mock.GetLastAccessTime(path); }
-        public static DateTime GetLastAccessTimeUtc(string path) { return s_mock.GetLastAccessTimeUtc(path); }
-        public static DateTime GetLastWriteTime(string path) { return s_mock.GetLastWriteTime(path); }
-        public static DateTime GetLastWriteTimeUtc(string path) { return s_mock.GetLastWriteTimeUtc(path); }
-        public static void Move(string sourceFileName, string destFileName) { s_mock.Move(sourceFileName, destFileName); }
-        public static FileStream Open(string path, FileMode mode) { return s_mock.Open(path, mode); }
-        public static FileStream Open(string path, FileMode mode, FileAccess access) { return s_mock.Open(path, mode, access); }
-        public static FileStream Open(string path, FileMode mode, FileAccess access, FileShare share) { return s_mock.Open(path, mode, access, share); }
-        public static FileStream OpenRead(string path) { return s_mock.OpenRead(path); }
-        public static StreamReader OpenText(string path) { return s_mock.OpenText(path); }
-        public static FileStream OpenWrite(string path) { return s_mock.OpenWrite(path); }
-        public static byte[] ReadAllBytes(string path) { return s_mock.ReadAllBytes(path); }
-        public static string[] ReadAllLines(string path) { return s_mock.ReadAllLines(path); }
-        public static string[] ReadAllLines(string path, Encoding encoding) { return s_mock.ReadAllLines(path); }
-        public static string ReadAllText(string path) { return s_mock.ReadAllText(path); }
-        public static string ReadAllText(string path, Encoding encoding) { return s_mock.ReadAllText(path); }
-        public static void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName) { s_mock.Replace(sourceFileName, destinationFileName, destinationBackupFileName); }
-        public static void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors) { s_mock.Replace(sourceFileName, destinationFileName, destinationBackupFileName, ignoreMetadataErrors); }
-        public static void SetAccessControl(string path, FileSecurity fileSecurity) { s_mock.SetAccessControl(path, fileSecurity); }
-        public static void SetAttributes(string path, FileAttributes fileAttributes) { s_mock.SetAttributes(path, fileAttributes); }
-        public static void SetCreationTime(string path, DateTime creationTime) { s_mock.SetCreationTime(path, creationTime); }
-        public static void SetCreationTimeUtc(string path, DateTime creationTimeUtc) { s_mock.SetCreationTimeUtc(path, creationTimeUtc); }
-        public static void SetLastAccessTime(string path, DateTime lastAccessTime) { s_mock.SetLastAccessTime(path, lastAccessTime); }
-        public static void SetLastAccessTimeUtc(string path, DateTime lastAccessTimeUtc) { s_mock.SetLastAccessTimeUtc(path, lastAccessTimeUtc); }
-        public static void SetLastWriteTime(string path, DateTime lastWriteTime) { s_mock.SetLastWriteTime(path, lastWriteTime); }
-        public static void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc) { s_mock.SetLastWriteTimeUtc(path, lastWriteTimeUtc); }
-        public static void WriteAllBytes(string path, byte[] bytes) { s_mock.WriteAllBytes(path, bytes); }
-        public static void WriteAllLines(string path, string[] contents) { s_mock.WriteAllLines(path, contents); }
-        public static void WriteAllLines(string path, string[] contents, Encoding encoding) { s_mock.WriteAllLines(path, contents, encoding); }
-        public static void WriteAllText(string path, string contents) { s_mock.WriteAllText(path, contents); }
-        public static void WriteAllText(string path, string contents, Encoding encoding) { s_mock.WriteAllText(path, contents, encoding); }
+        public static void AppendAllText(string path, string contents) { _mock.AppendAllText(path, contents); }
+        public static void AppendAllText(string path, string contents, Encoding encoding) { _mock.AppendAllText(path, contents, encoding); }
+        public static StreamWriter AppendText(string path) { return _mock.AppendText(path); }
+        public static void Copy(string sourceFileName, string destFileName) { _mock.Copy(sourceFileName, destFileName); }
+        public static void Copy(string sourceFileName, string destFileName, bool overwrite) { _mock.Copy(sourceFileName, destFileName, overwrite); }
+        public static FileStream Create(string path) { return _mock.Create(path); }
+        public static FileStream Create(string path, int bufferSize) { return _mock.Create(path, bufferSize); }
+        public static FileStream Create(string path, int bufferSize, FileOptions options) { return _mock.Create(path, bufferSize, options); }
+        public static FileStream Create(string path, int bufferSize, FileOptions options, FileSecurity fileSecurity) { return _mock.Create(path, bufferSize, options, fileSecurity); }
+        public static StreamWriter CreateText(string path) { return _mock.CreateText(path); }
+        public static void Decrypt(string path) { _mock.Decrypt(path); }
+        public static void Delete(string path) { _mock.Delete(path); }
+        public static void Encrypt(string path) { _mock.Encrypt(path); }
+        public static bool Exists(string path) { return _mock.Exists(path); }
+        public static FileSecurity GetAccessControl(string path) { return _mock.GetAccessControl(path); }
+        public static FileSecurity GetAccessControl(string path, AccessControlSections includeSections) { return _mock.GetAccessControl(path, includeSections); }
+        public static FileAttributes GetAttributes(string path) { return _mock.GetAttributes(path); }
+        public static DateTime GetCreationTime(string path) { return _mock.GetCreationTime(path); }
+        public static DateTime GetCreationTimeUtc(string path) { return _mock.GetCreationTimeUtc(path); }
+        public static DateTime GetLastAccessTime(string path) { return _mock.GetLastAccessTime(path); }
+        public static DateTime GetLastAccessTimeUtc(string path) { return _mock.GetLastAccessTimeUtc(path); }
+        public static DateTime GetLastWriteTime(string path) { return _mock.GetLastWriteTime(path); }
+        public static DateTime GetLastWriteTimeUtc(string path) { return _mock.GetLastWriteTimeUtc(path); }
+        public static void Move(string sourceFileName, string destFileName) { _mock.Move(sourceFileName, destFileName); }
+        public static FileStream Open(string path, FileMode mode) { return _mock.Open(path, mode); }
+        public static FileStream Open(string path, FileMode mode, FileAccess access) { return _mock.Open(path, mode, access); }
+        public static FileStream Open(string path, FileMode mode, FileAccess access, FileShare share) { return _mock.Open(path, mode, access, share); }
+        public static FileStream OpenRead(string path) { return _mock.OpenRead(path); }
+        public static StreamReader OpenText(string path) { return _mock.OpenText(path); }
+        public static FileStream OpenWrite(string path) { return _mock.OpenWrite(path); }
+        public static byte[] ReadAllBytes(string path) { return _mock.ReadAllBytes(path); }
+        public static string[] ReadAllLines(string path) { return _mock.ReadAllLines(path); }
+        public static string[] ReadAllLines(string path, Encoding encoding) { return _mock.ReadAllLines(path); }
+        public static string ReadAllText(string path) { return _mock.ReadAllText(path); }
+        public static string ReadAllText(string path, Encoding encoding) { return _mock.ReadAllText(path); }
+        public static void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName) { _mock.Replace(sourceFileName, destinationFileName, destinationBackupFileName); }
+        public static void Replace(string sourceFileName, string destinationFileName, string destinationBackupFileName, bool ignoreMetadataErrors) { _mock.Replace(sourceFileName, destinationFileName, destinationBackupFileName, ignoreMetadataErrors); }
+        public static void SetAccessControl(string path, FileSecurity fileSecurity) { _mock.SetAccessControl(path, fileSecurity); }
+        public static void SetAttributes(string path, FileAttributes fileAttributes) { _mock.SetAttributes(path, fileAttributes); }
+        public static void SetCreationTime(string path, DateTime creationTime) { _mock.SetCreationTime(path, creationTime); }
+        public static void SetCreationTimeUtc(string path, DateTime creationTimeUtc) { _mock.SetCreationTimeUtc(path, creationTimeUtc); }
+        public static void SetLastAccessTime(string path, DateTime lastAccessTime) { _mock.SetLastAccessTime(path, lastAccessTime); }
+        public static void SetLastAccessTimeUtc(string path, DateTime lastAccessTimeUtc) { _mock.SetLastAccessTimeUtc(path, lastAccessTimeUtc); }
+        public static void SetLastWriteTime(string path, DateTime lastWriteTime) { _mock.SetLastWriteTime(path, lastWriteTime); }
+        public static void SetLastWriteTimeUtc(string path, DateTime lastWriteTimeUtc) { _mock.SetLastWriteTimeUtc(path, lastWriteTimeUtc); }
+        public static void WriteAllBytes(string path, byte[] bytes) { _mock.WriteAllBytes(path, bytes); }
+        public static void WriteAllLines(string path, string[] contents) { _mock.WriteAllLines(path, contents); }
+        public static void WriteAllLines(string path, string[] contents, Encoding encoding) { _mock.WriteAllLines(path, contents, encoding); }
+        public static void WriteAllText(string path, string contents) { _mock.WriteAllText(path, contents); }
+        public static void WriteAllText(string path, string contents, Encoding encoding) { _mock.WriteAllText(path, contents, encoding); }
     }
 }

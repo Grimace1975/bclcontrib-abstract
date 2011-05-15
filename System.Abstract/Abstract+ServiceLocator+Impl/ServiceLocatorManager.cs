@@ -38,5 +38,11 @@ namespace System.Abstract
         {
             return ((type == null) || (_wantToSkipServiceLocatorType.IsAssignableFrom(type)));
         }
+
+        public static IServiceLocator GetDefaultServiceLocator()
+        {
+            try { return ServiceLocatorManager.Current; }
+            catch (InvalidOperationException) { throw new InvalidOperationException(Local.InvalidDefaultServiceLocator); }
+        }
     }
 }

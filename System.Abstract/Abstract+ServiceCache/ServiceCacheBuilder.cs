@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
 The MIT License
 
@@ -23,22 +23,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-namespace System.Patterns.Versioning
+namespace System.Abstract
 {
     /// <summary>
-	/// VersioningExtensions
+    /// ServiceCacheBuilder
     /// </summary>
-	public static class VersioningExtensions
-    {
-		public static string ToShortName(this VersionType versionType)
-        {
-			switch (versionType)
-            {
-				case VersionType.Archive: return "archive";
-				case VersionType.Draft: return "draft";
-				case VersionType.Publish: return "publish";
-				default: throw new ArgumentOutOfRangeException("versionType", "unknown version type");
-            }
-        }
-    }
+    public delegate object ServiceCacheBuilder(object tag, object[] values);
 }
