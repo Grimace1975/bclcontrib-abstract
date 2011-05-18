@@ -44,9 +44,6 @@
     <Compile Include="..\Contoso.Abstract.Web\Abstract\WebServiceCache.cs">
       <Link>Abstract\WebServiceCache.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.Web\Abstract\WebServiceCacheDependency.cs">
-      <Link>Abstract\WebServiceCacheDependency.cs</Link>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

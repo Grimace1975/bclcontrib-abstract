@@ -33,235 +33,251 @@ using System.Collections.Generic;
 // http://msdn.microsoft.com/en-us/windowsserver/ee695849
 namespace Contoso.Abstract
 {
-    /// <summary>
-    /// IServerAppFabricServiceCache
-    /// </summary>
-    public interface IServerAppFabricServiceCache : IServiceCache
-    {
-        DataCache Cache { get; }
-        //
-        object GetAndLock(string name, TimeSpan timeout, out DataCacheLockHandle lockHandle);
-        object GetAndLock(string name, TimeSpan timeout, out DataCacheLockHandle lockHandle, bool forceLock);
-        void Unlock(string name, DataCacheLockHandle lockHandle);
-        void Unlock(string name, DataCacheLockHandle lockHandle, TimeSpan timeout);
-    }
+	/// <summary>
+	/// IServerAppFabricServiceCache
+	/// </summary>
+	public interface IServerAppFabricServiceCache : IServiceCache
+	{
+		DataCache Cache { get; }
+		//
+		object GetAndLock(string name, TimeSpan timeout, out DataCacheLockHandle lockHandle);
+		object GetAndLock(string name, TimeSpan timeout, out DataCacheLockHandle lockHandle, bool forceLock);
+		void Unlock(string name, DataCacheLockHandle lockHandle);
+		void Unlock(string name, DataCacheLockHandle lockHandle, TimeSpan timeout);
+	}
 
-    /// <summary>
-    /// ServerAppFabricServiceCache
-    /// </summary>
-    public class ServerAppFabricServiceCache : IServerAppFabricServiceCache
-    {
-        public ServerAppFabricServiceCache(DataCache cache)
-        {
-            Cache = cache;
-            Settings = new ServerAppFabricServiceCacheSettings();
-            RegistrationDispatch = new DefaultServiceCacheRegistrationDispatch();
-        }
+	/// <summary>
+	/// ServerAppFabricServiceCache
+	/// </summary>
+	public class ServerAppFabricServiceCache : IServerAppFabricServiceCache
+	{
+		public ServerAppFabricServiceCache(DataCache cache)
+		{
+			Cache = cache;
+			Settings = new ServiceCacheSettings();
+			RegistrationDispatch = new DefaultServiceCacheRegistrationDispatcher();
+		}
 
-        public DataCache Cache { get; private set; }
+		public object this[string name]
+		{
+			get { return Get(null, name); }
+			set { Set(null, name, CacheItemPolicy.Default, value); }
+		}
 
-        public ServerAppFabricServiceCacheSettings Settings { get; private set; }
+		public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value)
+		{
+			if (itemPolicy == null)
+				throw new ArgumentNullException("itemPolicy");
+			var updateCallback = itemPolicy.UpdateCallback;
+			if (updateCallback != null)
+				updateCallback(name, value);
+			//
+			if (itemPolicy.SlidingExpiration != ServiceCache.NoSlidingExpiration)
+				throw new ArgumentOutOfRangeException("itemPolicy.SlidingExpiration", "not supported.");
+			if (itemPolicy.RemovedCallback != null)
+				throw new ArgumentOutOfRangeException("itemPolicy.RemovedCallback", "not supported.");
+			//
+			var dataCacheTags = GetCacheDependency(tag, itemPolicy.Dependency);
+			var timeout = GetTimeout(itemPolicy.AbsoluteExpiration);
+			string regionName;
+			if ((timeout == TimeSpan.Zero) && (dataCacheTags == null))
+			{
+				if (!Settings.TryGetRegion(ref name, out regionName)) Cache.Add(name, value);
+				else Cache.Add(name, value, regionName);
+			}
+			else if ((timeout != TimeSpan.Zero) && (dataCacheTags == null))
+			{
+				if (!Settings.TryGetRegion(ref name, out regionName)) Cache.Add(name, value, timeout);
+				else Cache.Add(name, value, timeout, regionName);
+			}
+			else if ((timeout == TimeSpan.Zero) && (dataCacheTags != null))
+			{
+				if (!Settings.TryGetRegion(ref name, out regionName)) Cache.Add(name, value, dataCacheTags);
+				else Cache.Add(name, value, dataCacheTags, regionName);
+			}
+			else
+			{
+				if (!Settings.TryGetRegion(ref name, out regionName)) Cache.Add(name, value, timeout, dataCacheTags);
+				else Cache.Add(name, value, timeout, dataCacheTags, regionName);
+			}
+			return value;
+		}
 
-        public object this[string name]
-        {
-            get { return Get(null, name); }
-            set { this.Insert(null, name, value); }
-        }
+		public object Get(object tag, string name)
+		{
+			var version = (tag as DataCacheItemVersion);
+			string regionName;
+			if (version == null)
+				return (!Settings.TryGetRegion(ref name, out regionName) ? Cache.Get(name) : Cache.Get(name, regionName));
+			return (!Settings.TryGetRegion(ref name, out regionName) ? Cache.GetIfNewer(name, ref version) : Cache.GetIfNewer(name, ref version, regionName));
+		}
 
-        public object Add(object tag, string name, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object value)
-        {
-            if (slidingExpiration != ServiceCache.NoSlidingExpiration)
-                throw new ArgumentOutOfRangeException("slidingExpiration", "not supported.");
-            if (onRemoveCallback != null)
-                throw new ArgumentOutOfRangeException("onRemoveCallback", "not supported.");
-            //
-            var tags = (dependency == null ? null : dependency.CacheTags.Select(x => new DataCacheTag(x)));
-            var timeout = (absoluteExpiration == ServiceCache.NoAbsoluteExpiration ? TimeSpan.Zero : DateTime.Now - absoluteExpiration);
-            string region;
-            if ((timeout == TimeSpan.Zero) && (tags == null))
-            {
-                if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.Add(name, value);
-                else Cache.Add(name, value, region);
-            }
-            else if ((timeout != TimeSpan.Zero) && (tags == null))
-            {
-                if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.Add(name, value, timeout);
-                else Cache.Add(name, value, timeout, region);
-            }
-            else if ((timeout == TimeSpan.Zero) && (tags != null))
-            {
-                if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.Add(name, value, tags);
-                else Cache.Add(name, value, tags, region);
-            }
-            else
-            {
-                if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.Add(name, value, timeout, tags);
-                else Cache.Add(name, value, timeout, tags, region);
-            }
-            return value;
-        }
+		public object Get(object tag, IEnumerable<string> names)
+		{
+			if (names == null)
+				throw new ArgumentNullException("names");
+			return names.Select(name => new { name, value = Get(null, name) }).ToDictionary(x => x.name, x => x.value);
+		}
 
-        public object Get(object tag, string name)
-        {
-            var version = (tag as DataCacheItemVersion);
-            string region;
-            if (version == null)
-                return (!TryGetRegion(Settings.RegionMarker, ref name, out region) ? Cache.Get(name) : Cache.Get(name, region));
-            return (!TryGetRegion(Settings.RegionMarker, ref name, out region) ? Cache.GetIfNewer(name, ref version) : Cache.GetIfNewer(name, ref version, region));
-        }
+		public bool TryGet(object tag, string name, out object value)
+		{
+			throw new NotSupportedException();
+		}
 
-        public object Insert(object tag, string name, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object value)
-        {
-            if (slidingExpiration != ServiceCache.NoSlidingExpiration)
-                throw new ArgumentOutOfRangeException("slidingExpiration", "not supported.");
-            if (onRemoveCallback != null)
-                throw new ArgumentOutOfRangeException("onRemoveCallback", "not supported.");
-            //
-            var oldVersion = (tag as DataCacheItemVersion);
-            var lockHandle = (tag as DataCacheLockHandle);
-            var tags = ((dependency == null) && (dependency.CacheTags != null) ? null : dependency.CacheTags.Select(x => new DataCacheTag(x)));
-            var timeout = (absoluteExpiration == ServiceCache.NoAbsoluteExpiration ? TimeSpan.Zero : DateTime.Now - absoluteExpiration);
-            string region;
-            if ((timeout == TimeSpan.Zero) && (tags == null))
-                if ((oldVersion == null) && (lockHandle == null))
-                {
-                    if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.Put(name, value);
-                    else Cache.Put(name, value, region);
-                }
-                else if (oldVersion != null)
-                {
-                    if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.Put(name, value, oldVersion);
-                    else Cache.Put(name, value, oldVersion, region);
-                }
-                else
-                {
-                    if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.PutAndUnlock(name, value, lockHandle);
-                    else Cache.PutAndUnlock(name, value, lockHandle, region);
-                }
-            else if ((timeout != TimeSpan.Zero) && (tags == null))
-                if ((oldVersion == null) && (lockHandle == null))
-                {
-                    if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.Put(name, value, timeout);
-                    else Cache.Put(name, value, timeout, region);
-                }
-                else if (oldVersion != null)
-                {
-                    if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.Put(name, value, oldVersion, timeout);
-                    else Cache.Put(name, value, oldVersion, timeout, region);
-                }
-                else
-                {
-                    if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.PutAndUnlock(name, value, lockHandle, timeout);
-                    else Cache.PutAndUnlock(name, value, lockHandle, timeout, region);
-                }
-            else if ((timeout == TimeSpan.Zero) && (tags != null))
-                if ((oldVersion == null) && (lockHandle == null))
-                {
-                    if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.Put(name, value, tags);
-                    else Cache.Put(name, value, tags, region);
-                }
-                else if (oldVersion != null)
-                {
-                    if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.Put(name, value, oldVersion, tags);
-                    else Cache.Put(name, value, oldVersion, tags, region);
-                }
-                else
-                {
-                    if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.PutAndUnlock(name, value, lockHandle, tags);
-                    else Cache.PutAndUnlock(name, value, lockHandle, tags, region);
-                }
-            else
-                if ((oldVersion == null) && (lockHandle == null))
-                {
-                    if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.Put(name, value, timeout, tags);
-                    else Cache.Put(name, value, timeout, tags, region);
-                }
-                else if (oldVersion != null)
-                {
-                    if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.Put(name, value, oldVersion, timeout, tags);
-                    else Cache.Put(name, value, oldVersion, timeout, tags, region);
-                }
-                else
-                {
-                    if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.PutAndUnlock(name, value, lockHandle, timeout, tags);
-                    else Cache.PutAndUnlock(name, value, lockHandle, timeout, tags, region);
-                }
-            return value;
-        }
+		public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value)
+		{
+			if (itemPolicy == null)
+				throw new ArgumentNullException("itemPolicy");
+			var updateCallback = itemPolicy.UpdateCallback;
+			if (updateCallback != null)
+				updateCallback(name, value);
+			//
+			if (itemPolicy.SlidingExpiration != ServiceCache.NoSlidingExpiration)
+				throw new ArgumentOutOfRangeException("itemPolicy.SlidingExpiration", "not supported.");
+			if (itemPolicy.RemovedCallback != null)
+				throw new ArgumentOutOfRangeException("itemPolicy.RemovedCallback", "not supported.");
+			//
+			var oldVersion = (tag as DataCacheItemVersion);
+			var lockHandle = (tag as DataCacheLockHandle);
+			var dataCacheTags = GetCacheDependency(tag, itemPolicy.Dependency);
+			var timeout = GetTimeout(itemPolicy.AbsoluteExpiration);
+			string regionName;
+			if ((timeout == TimeSpan.Zero) && (dataCacheTags == null))
+				if ((oldVersion == null) && (lockHandle == null))
+				{
+					if (!Settings.TryGetRegion(ref name, out regionName)) Cache.Put(name, value);
+					else Cache.Put(name, value, regionName);
+				}
+				else if (oldVersion != null)
+				{
+					if (!Settings.TryGetRegion(ref name, out regionName)) Cache.Put(name, value, oldVersion);
+					else Cache.Put(name, value, oldVersion, regionName);
+				}
+				else
+				{
+					if (!Settings.TryGetRegion(ref name, out regionName)) Cache.PutAndUnlock(name, value, lockHandle);
+					else Cache.PutAndUnlock(name, value, lockHandle, regionName);
+				}
+			else if ((timeout != TimeSpan.Zero) && (dataCacheTags == null))
+				if ((oldVersion == null) && (lockHandle == null))
+				{
+					if (!Settings.TryGetRegion(ref name, out regionName)) Cache.Put(name, value, timeout);
+					else Cache.Put(name, value, timeout, regionName);
+				}
+				else if (oldVersion != null)
+				{
+					if (!Settings.TryGetRegion(ref name, out regionName)) Cache.Put(name, value, oldVersion, timeout);
+					else Cache.Put(name, value, oldVersion, timeout, regionName);
+				}
+				else
+				{
+					if (!Settings.TryGetRegion(ref name, out regionName)) Cache.PutAndUnlock(name, value, lockHandle, timeout);
+					else Cache.PutAndUnlock(name, value, lockHandle, timeout, regionName);
+				}
+			else if ((timeout == TimeSpan.Zero) && (dataCacheTags != null))
+				if ((oldVersion == null) && (lockHandle == null))
+				{
+					if (!Settings.TryGetRegion(ref name, out regionName)) Cache.Put(name, value, dataCacheTags);
+					else Cache.Put(name, value, dataCacheTags, regionName);
+				}
+				else if (oldVersion != null)
+				{
+					if (!Settings.TryGetRegion(ref name, out regionName)) Cache.Put(name, value, oldVersion, dataCacheTags);
+					else Cache.Put(name, value, oldVersion, dataCacheTags, regionName);
+				}
+				else
+				{
+					if (!Settings.TryGetRegion(ref name, out regionName)) Cache.PutAndUnlock(name, value, lockHandle, dataCacheTags);
+					else Cache.PutAndUnlock(name, value, lockHandle, dataCacheTags, regionName);
+				}
+			else
+				if ((oldVersion == null) && (lockHandle == null))
+				{
+					if (!Settings.TryGetRegion(ref name, out regionName)) Cache.Put(name, value, timeout, dataCacheTags);
+					else Cache.Put(name, value, timeout, dataCacheTags, regionName);
+				}
+				else if (oldVersion != null)
+				{
+					if (!Settings.TryGetRegion(ref name, out regionName)) Cache.Put(name, value, oldVersion, timeout, dataCacheTags);
+					else Cache.Put(name, value, oldVersion, timeout, dataCacheTags, regionName);
+				}
+				else
+				{
+					if (!Settings.TryGetRegion(ref name, out regionName)) Cache.PutAndUnlock(name, value, lockHandle, timeout, dataCacheTags);
+					else Cache.PutAndUnlock(name, value, lockHandle, timeout, dataCacheTags, regionName);
+				}
+			return value;
+		}
 
-        public object Remove(object tag, string name)
-        {
-            string region;
-            string regionMarker = Settings.RegionMarker;
-            var value = (!Settings.ReturnsCachedValueOnRemove ? null : (!TryGetRegion(regionMarker, ref name, out region) ? Cache.Get(name) : Cache.Get(name, region)));
-            //
-            var version = (tag as DataCacheItemVersion);
-            var lockHandle = (tag as DataCacheLockHandle);
-            if ((version == null) && (lockHandle == null))
-            {
-                if (!TryGetRegion(regionMarker, ref name, out region)) Cache.Remove(name);
-                else Cache.Remove(name, region);
-            }
-            else if (version != null)
-            {
-                if (!TryGetRegion(regionMarker, ref name, out region)) Cache.Remove(name, version);
-                else Cache.Remove(name, version, region);
-            }
-            else
-            {
-                if (!TryGetRegion(regionMarker, ref name, out region)) Cache.Remove(name, lockHandle);
-                else Cache.Remove(name, lockHandle, region);
-            }
-            return value;
-        }
+		public object Remove(object tag, string name)
+		{
+			string regionName;
+			var value = ((Settings.Options & ServiceCacheOptions.ReturnsCachedValueOnRemove) == 0 ? null : (!Settings.TryGetRegion(ref name, out regionName) ? Cache.Get(name) : Cache.Get(name, regionName)));
+			//
+			var version = (tag as DataCacheItemVersion);
+			var lockHandle = (tag as DataCacheLockHandle);
+			if ((version == null) && (lockHandle == null))
+			{
+				if (!Settings.TryGetRegion(ref name, out regionName)) Cache.Remove(name);
+				else Cache.Remove(name, regionName);
+			}
+			else if (version != null)
+			{
+				if (!Settings.TryGetRegion(ref name, out regionName)) Cache.Remove(name, version);
+				else Cache.Remove(name, version, regionName);
+			}
+			else
+			{
+				if (!Settings.TryGetRegion(ref name, out regionName)) Cache.Remove(name, lockHandle);
+				else Cache.Remove(name, lockHandle, regionName);
+			}
+			return value;
+		}
 
-        public void Touch(object tag, params string[] name)
-        {
-            throw new NotSupportedException();
-        }
+		public void Touch(object tag, params string[] name)
+		{
+			throw new NotSupportedException();
+		}
 
-        public ServiceCacheRegistration.IDispatch RegistrationDispatch { get; private set; }
+		public ServiceCacheSettings Settings { get; private set; }
+		public ServiceCacheRegistration.IDispatch RegistrationDispatch { get; private set; }
 
-        #region Domain-specific
+		#region Domain-specific
 
-        public object GetAndLock(string name, TimeSpan timeout, out DataCacheLockHandle lockHandle)
-        {
-            string region;
-            return (!TryGetRegion(Settings.RegionMarker, ref name, out region) ? Cache.GetAndLock(name, timeout, out lockHandle) : Cache.GetAndLock(name, timeout, out lockHandle, region));
-        }
-        public object GetAndLock(string name, TimeSpan timeout, out DataCacheLockHandle lockHandle, bool forceLock)
-        {
-            string region;
-            return (!TryGetRegion(Settings.RegionMarker, ref name, out region) ? Cache.GetAndLock(name, timeout, out lockHandle, forceLock) : Cache.GetAndLock(name, timeout, out lockHandle, region, forceLock));
-        }
+		public DataCache Cache { get; private set; }
 
-        public void Unlock(string name, DataCacheLockHandle lockHandle)
-        {
-            string region;
-            if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.Unlock(name, lockHandle);
-            else Cache.Unlock(name, lockHandle);
-        }
-        public void Unlock(string name, DataCacheLockHandle lockHandle, TimeSpan timeout)
-        {
-            string region;
-            if (!TryGetRegion(Settings.RegionMarker, ref name, out region)) Cache.Unlock(name, lockHandle, timeout);
-            else Cache.Unlock(name, lockHandle, timeout);
-        }
+		public object GetAndLock(string name, TimeSpan timeout, out DataCacheLockHandle lockHandle)
+		{
+			string region;
+			return (!Settings.TryGetRegion(ref name, out region) ? Cache.GetAndLock(name, timeout, out lockHandle) : Cache.GetAndLock(name, timeout, out lockHandle, region));
+		}
+		public object GetAndLock(string name, TimeSpan timeout, out DataCacheLockHandle lockHandle, bool forceLock)
+		{
+			string region;
+			return (!Settings.TryGetRegion(ref name, out region) ? Cache.GetAndLock(name, timeout, out lockHandle, forceLock) : Cache.GetAndLock(name, timeout, out lockHandle, region, forceLock));
+		}
 
-        #endregion
+		public void Unlock(string name, DataCacheLockHandle lockHandle)
+		{
+			string region;
+			if (!Settings.TryGetRegion(ref name, out region)) Cache.Unlock(name, lockHandle);
+			else Cache.Unlock(name, lockHandle);
+		}
+		public void Unlock(string name, DataCacheLockHandle lockHandle, TimeSpan timeout)
+		{
+			string region;
+			if (!Settings.TryGetRegion(ref name, out region)) Cache.Unlock(name, lockHandle, timeout);
+			else Cache.Unlock(name, lockHandle, timeout);
+		}
 
-        private static bool TryGetRegion(string regionMarker, ref string name, out string region)
-        {
-            var index = name.IndexOf(regionMarker);
-            if (index != -1)
-            {
-                region = null;
-                return false;
-            }
-            string originalName = name;
-            region = originalName.Substring(0, index);
-            name = originalName.Substring(index + regionMarker.Length);
-            return true;
-        }
-    }
+		#endregion
+
+		private IEnumerable<DataCacheTag> GetCacheDependency(object tag, CacheItemDependency dependency)
+		{
+			string[] cacheTags;
+			return ((dependency == null) || ((cacheTags = dependency(this, tag) as string[]) == null) ? null : cacheTags.Select(x => new DataCacheTag(x)));
+		}
+
+		private static TimeSpan GetTimeout(DateTime absoluteExpiration) { return (absoluteExpiration == ServiceCache.InfiniteAbsoluteExpiration ? TimeSpan.Zero : DateTime.Now - absoluteExpiration); }
+	}
 }

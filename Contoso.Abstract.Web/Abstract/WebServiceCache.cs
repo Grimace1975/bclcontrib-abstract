@@ -24,144 +24,161 @@ THE SOFTWARE.
 */
 #endregion
 using System;
+using System.Linq;
 using System.Abstract;
 using System.Web;
+using WebCache = System.Web.Caching.Cache;
 using WebCacheDependency = System.Web.Caching.CacheDependency;
 using WebCacheItemPriority = System.Web.Caching.CacheItemPriority;
 using WebCacheItemRemovedCallback = System.Web.Caching.CacheItemRemovedCallback;
 using WebCacheItemRemovedReason = System.Web.Caching.CacheItemRemovedReason;
+using System.Collections.Generic;
 namespace Contoso.Abstract
 {
-    /// <summary>
-    /// IWebServiceCache
-    /// </summary>
-    public interface IWebServiceCache : IServiceCache { }
+	/// <summary>
+	/// IWebServiceCache
+	/// </summary>
+	public interface IWebServiceCache : IServiceCache
+	{
+		WebCache Cache { get; }
+	}
 
-    /// <summary>
-    /// WebServiceCache
-    /// </summary>
-    public class WebServiceCache : IWebServiceCache
-    {
-        private class CacheItemRemovedTranslator
-        {
-            private CacheItemRemovedCallback _onRemoveCallback;
-            public CacheItemRemovedTranslator(CacheItemRemovedCallback onRemoveCallback) { _onRemoveCallback = onRemoveCallback; }
-            public void ItemRemovedCallback(string key, object value, WebCacheItemRemovedReason cacheItemRemovedReason) { _onRemoveCallback(key, value); }
-        }
+	/// <summary>
+	/// WebServiceCache
+	/// </summary>
+	public class WebServiceCache : IWebServiceCache
+	{
+		public WebServiceCache()
+		{
+			Cache = HttpRuntime.Cache;
+			RegistrationDispatch = new DefaultServiceCacheRegistrationDispatcher();
+		}
 
-        public WebServiceCache()
-        {
-            RegistrationDispatch = new DefaultServiceCacheRegistrationDispatch();
-        }
+		public object this[string name]
+		{
+			get { return Get(null, name); }
+			set { Set(null, name, CacheItemPolicy.Default, value); }
+		}
 
-        public object this[string name]
-        {
-            get { return Get(null, name); }
-            set { this.Insert(null, name, value); }
-        }
+		public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value)
+		{
+			if (itemPolicy == null)
+				throw new ArgumentNullException("itemPolicy");
+			var updateCallback = itemPolicy.UpdateCallback;
+			if (updateCallback != null)
+				updateCallback(name, value);
+			// item priority
+			WebCacheItemPriority itemPriority;
+			switch (itemPolicy.Priority)
+			{
+				case CacheItemPriority.AboveNormal:
+					itemPriority = WebCacheItemPriority.AboveNormal;
+					break;
+				case CacheItemPriority.BelowNormal:
+					itemPriority = WebCacheItemPriority.BelowNormal;
+					break;
+				case CacheItemPriority.High:
+					itemPriority = WebCacheItemPriority.High;
+					break;
+				case CacheItemPriority.Low:
+					itemPriority = WebCacheItemPriority.Low;
+					break;
+				case CacheItemPriority.Normal:
+					itemPriority = WebCacheItemPriority.Normal;
+					break;
+				case CacheItemPriority.NotRemovable:
+					itemPriority = WebCacheItemPriority.NotRemovable;
+					break;
+				default:
+					itemPriority = WebCacheItemPriority.Default;
+					break;
+			}
+			// item removed callback
+			var removedCallback = (itemPolicy.RemovedCallback == null ? null : new WebCacheItemRemovedCallback((n, v, c) => { itemPolicy.RemovedCallback(n, v); }));
+			return Cache.Add(name, value, GetCacheDependency(tag, itemPolicy.Dependency), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, itemPriority, removedCallback);
+		}
 
-        public object Add(object tag, string name, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object value)
-        {
-            // dependency
-            WebCacheDependency dependency2;
-            WebServiceCacheDependency webDependency;
-            if (dependency == null)
-                dependency2 = null;
-            else if ((webDependency = (dependency as WebServiceCacheDependency)) != null)
-                dependency2 = new WebCacheDependency(webDependency.FilePaths, webDependency.CacheTags, webDependency.StartDate);
-            else
-                dependency2 = new WebCacheDependency(null, dependency.CacheTags, DateTime.MaxValue);
-            // item priority
-            WebCacheItemPriority cacheItemPriority;
-            switch (priority)
-            {
-                case CacheItemPriority.AboveNormal:
-                    cacheItemPriority = WebCacheItemPriority.AboveNormal;
-                    break;
-                case CacheItemPriority.BelowNormal:
-                    cacheItemPriority = WebCacheItemPriority.BelowNormal;
-                    break;
-                case CacheItemPriority.High:
-                    cacheItemPriority = WebCacheItemPriority.High;
-                    break;
-                case CacheItemPriority.Low:
-                    cacheItemPriority = WebCacheItemPriority.Low;
-                    break;
-                case CacheItemPriority.Normal:
-                    cacheItemPriority = WebCacheItemPriority.Normal;
-                    break;
-                case CacheItemPriority.NotRemovable:
-                    cacheItemPriority = WebCacheItemPriority.NotRemovable;
-                    break;
-                default:
-                    cacheItemPriority = WebCacheItemPriority.Default;
-                    break;
-            }
-            // item removed callback
-            var cacheItemRemovedCallback = (onRemoveCallback != null ? new WebCacheItemRemovedCallback(new CacheItemRemovedTranslator(onRemoveCallback).ItemRemovedCallback) : null);
-            return HttpRuntime.Cache.Add(name, value, dependency2, absoluteExpiration, slidingExpiration, cacheItemPriority, cacheItemRemovedCallback);
-        }
+		public object Get(object tag, string name) { return Cache.Get(name); }
+		public object Get(object tag, IEnumerable<string> names)
+		{
+			if (names == null)
+				throw new ArgumentNullException("names");
+			return names.Select(name => new { name, value = Cache.Get(name) }).ToDictionary(x => x.name, x => x.value);
+		}
+		public bool TryGet(object tag, string name, out object value)
+		{
+			throw new NotSupportedException();
+		}
 
-        public object Get(object tag, string name)
-        {
-            return HttpRuntime.Cache.Get(name);
-        }
+		public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value)
+		{
+			if (itemPolicy == null)
+				throw new ArgumentNullException("itemPolicy");
+			var updateCallback = itemPolicy.UpdateCallback;
+			if (updateCallback != null)
+				updateCallback(name, value);
+			// item priority
+			WebCacheItemPriority cacheItemPriority;
+			switch (itemPolicy.Priority)
+			{
+				case CacheItemPriority.AboveNormal:
+					cacheItemPriority = WebCacheItemPriority.AboveNormal;
+					break;
+				case CacheItemPriority.BelowNormal:
+					cacheItemPriority = WebCacheItemPriority.BelowNormal;
+					break;
+				case CacheItemPriority.High:
+					cacheItemPriority = WebCacheItemPriority.High;
+					break;
+				case CacheItemPriority.Low:
+					cacheItemPriority = WebCacheItemPriority.Low;
+					break;
+				case CacheItemPriority.Normal:
+					cacheItemPriority = WebCacheItemPriority.Normal;
+					break;
+				case CacheItemPriority.NotRemovable:
+					cacheItemPriority = WebCacheItemPriority.NotRemovable;
+					break;
+				default:
+					cacheItemPriority = WebCacheItemPriority.Default;
+					break;
+			}
+			// item removed callback
+			var removedCallback = (itemPolicy.RemovedCallback == null ? null : new WebCacheItemRemovedCallback((n, v, c) => { itemPolicy.RemovedCallback(n, v); }));
+			Cache.Insert(name, value, GetCacheDependency(tag, itemPolicy.Dependency), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, removedCallback);
+			return value;
+		}
 
-        public object Insert(object tag, string name, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object value)
-        {
-            // dependency
-            WebCacheDependency dependency2;
-            WebServiceCacheDependency webDependency;
-            if (dependency == null)
-                dependency2 = null;
-            else if ((webDependency = (dependency as WebServiceCacheDependency)) != null)
-                dependency2 = new WebCacheDependency(webDependency.FilePaths, webDependency.CacheTags, webDependency.StartDate);
-            else
-                dependency2 = new WebCacheDependency(null, dependency.CacheTags, DateTime.MaxValue);
-            // item priority
-            WebCacheItemPriority cacheItemPriority;
-            switch (priority)
-            {
-                case CacheItemPriority.AboveNormal:
-                    cacheItemPriority = WebCacheItemPriority.AboveNormal;
-                    break;
-                case CacheItemPriority.BelowNormal:
-                    cacheItemPriority = WebCacheItemPriority.BelowNormal;
-                    break;
-                case CacheItemPriority.High:
-                    cacheItemPriority = WebCacheItemPriority.High;
-                    break;
-                case CacheItemPriority.Low:
-                    cacheItemPriority = WebCacheItemPriority.Low;
-                    break;
-                case CacheItemPriority.Normal:
-                    cacheItemPriority = WebCacheItemPriority.Normal;
-                    break;
-                case CacheItemPriority.NotRemovable:
-                    cacheItemPriority = WebCacheItemPriority.NotRemovable;
-                    break;
-                default:
-                    cacheItemPriority = WebCacheItemPriority.Default;
-                    break;
-            }
-            // item removed callback
-            var cacheItemRemovedCallback = (onRemoveCallback != null ? new WebCacheItemRemovedCallback(new CacheItemRemovedTranslator(onRemoveCallback).ItemRemovedCallback) : null);
-            HttpRuntime.Cache.Insert(name, value, dependency2, absoluteExpiration, slidingExpiration, cacheItemPriority, cacheItemRemovedCallback);
-            return value;
-        }
+		public object Remove(object tag, string name) { return Cache.Remove(name); }
 
-        public object Remove(object tag, string name)
-        {
-            return HttpRuntime.Cache.Remove(name);
-        }
+		public void Touch(object tag, params string[] names)
+		{
+			if (names != null)
+				foreach (var name in names)
+					Cache.Insert(name, string.Empty, null, ServiceCache.InfiniteAbsoluteExpiration, ServiceCache.NoSlidingExpiration, WebCacheItemPriority.Normal, null);
+		}
 
-        public void Touch(object tag, params string[] names)
-        {
-            if (names != null)
-                foreach (var name in names)
-                    Insert(null, name, null, ServiceCache.NoAbsoluteExpiration, ServiceCache.NoSlidingExpiration, CacheItemPriority.Normal, null, string.Empty);
-        }
+		public ServiceCacheSettings Settings
+		{
+			get { return null; }
+		}
+		public ServiceCacheRegistration.IDispatch RegistrationDispatch { get; private set; }
 
-        public ServiceCacheRegistration.IDispatch RegistrationDispatch { get; private set; }
-    }
+		#region Domain-specific
+
+		public WebCache Cache { get; private set; }
+
+		#endregion
+
+		private WebCacheDependency GetCacheDependency(object tag, CacheItemDependency dependency)
+		{
+			object value;
+			if ((dependency == null) || ((value = dependency(this, tag)) == null))
+				return null;
+			string[] valueAsStrings = (value as string[]);
+			if (valueAsStrings != null)
+				return new WebCacheDependency(null, valueAsStrings);
+			return (value as WebCacheDependency);
+		}
+	}
 }

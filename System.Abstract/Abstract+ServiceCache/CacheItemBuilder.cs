@@ -23,36 +23,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Abstract;
-namespace Contoso.Abstract
+namespace System.Abstract
 {
     /// <summary>
-    /// WebServiceCacheDependency
+	/// CacheItemBuilder
     /// </summary>
-    public class WebServiceCacheDependency : ServiceCacheDependency
-    {
-        public WebServiceCacheDependency()
-        {
-            StartDate = DateTime.MaxValue;
-        }
-
-        ///// <summary>
-        ///// Gets or sets the dependency.
-        ///// </summary>
-        ///// <value>The dependency.</value>
-        //public CacheDependency Dependency {get;set;}
-
-        /// <summary>
-        /// Gets or sets the file path array.
-        /// </summary>
-        /// <value>The file path array.</value>
-        public string[] FilePaths { get; set; }
-
-        /// <summary>
-        /// Gets or sets the start date.
-        /// </summary>
-        /// <value>The start date.</value>
-        public DateTime StartDate { get; set; }
-    }
+    public delegate object CacheItemBuilder(object tag, object[] values);
 }

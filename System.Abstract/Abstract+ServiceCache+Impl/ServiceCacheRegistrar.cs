@@ -96,7 +96,7 @@ namespace System.Abstract
         /// <param name="name">The registration name.</param>
         /// <param name="builder">The builder.</param>
         /// <param name="cacheTags">The cache tags.</param>
-        public void Register(string name, ServiceCacheBuilder builder, params string[] cacheTags) { Register(new ServiceCacheRegistration(name, new ServiceCacheCommand(null, 60), builder, cacheTags)); }
+        public void Register(string name, CacheItemBuilder builder, params string[] cacheTags) { Register(new ServiceCacheRegistration(name, new CacheItemPolicy(60), builder, cacheTags)); }
         /// <summary>
         /// Registers the specified registration.
         /// </summary>
@@ -104,15 +104,15 @@ namespace System.Abstract
         /// <param name="minuteTimeout">The minute timeout.</param>
         /// <param name="builder">The builder.</param>
         /// <param name="cacheTags">The cache tags.</param>
-        public void Register(string name, int minuteTimeout, ServiceCacheBuilder builder, params string[] cacheTags) { Register(new ServiceCacheRegistration(name, new ServiceCacheCommand(null, minuteTimeout), builder, cacheTags)); }
+        public void Register(string name, int minuteTimeout, CacheItemBuilder builder, params string[] cacheTags) { Register(new ServiceCacheRegistration(name, new CacheItemPolicy(minuteTimeout), builder, cacheTags)); }
         /// <summary>
         /// Registers the specified registration.
         /// </summary>
         /// <param name="name">The registration name.</param>
-        /// <param name="cacheCommand">The cache command.</param>
+        /// <param name="itemPolicy">The cache command.</param>
         /// <param name="builder">The builder.</param>
         /// <param name="cacheTags">The cache tags.</param>
-        public void Register(string name, ServiceCacheCommand cacheCommand, ServiceCacheBuilder builder, params string[] cacheTags) { Register(new ServiceCacheRegistration(name, cacheCommand, builder, cacheTags)); }
+        public void Register(string name, CacheItemPolicy itemPolicy, CacheItemBuilder builder, params string[] cacheTags) { Register(new ServiceCacheRegistration(name, itemPolicy, builder, cacheTags)); }
         /// <summary>
         /// Registers the specified registration.
         /// </summary>
@@ -136,9 +136,8 @@ namespace System.Abstract
                     throw new ArgumentException(string.Format(Local.RedefineIDA, registrationName), "registration");
                 _setAsName.Add(registrationName, registration);
                 _set.Add(registration);
-                registration.Registrar = this;
-                // adjust cache-command
-                registration.CacheCommand.Name = _namePrefix + registrationName;
+				// link-in
+				registration.SetRegistrar(this, _namePrefix + registrationName);
             }
             finally { _setRwLock.ExitWriteLock(); }
         }

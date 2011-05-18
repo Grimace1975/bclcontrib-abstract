@@ -27,9 +27,9 @@ using System.Threading;
 namespace System.Abstract
 {
     /// <summary>
-    /// DefaultServiceCacheRegistrationDispatch
+	/// DefaultServiceCacheRegistrationDispatcher
     /// </summary>
-    public class DefaultServiceCacheRegistrationDispatch : ServiceCacheRegistration.IDispatch
+    public class DefaultServiceCacheRegistrationDispatcher : ServiceCacheRegistration.IDispatch
     {
         private static readonly ReaderWriterLockSlim _rwLock = new ReaderWriterLockSlim();
 
@@ -39,11 +39,11 @@ namespace System.Abstract
                 throw new ArgumentNullException("cache");
             if (registration == null)
                 throw new ArgumentNullException("registration");
-            var cacheCommand = registration.CacheCommand;
-            if (cacheCommand == null)
+            var itemPolicy = registration.ItemPolicy;
+            if (itemPolicy == null)
                 throw new ArgumentNullException("registration.CacheCommand");
             // fetch from cache
-            string name = cacheCommand.Name;
+			string name = registration.AbsoluteName;
             string @namespace;
             cache = cache.Wrap(values, out @namespace);
             _rwLock.EnterUpgradeableReadLock();
@@ -59,7 +59,7 @@ namespace System.Abstract
                         {
                             // create
                             value = CreateData<T>(@namespace, registration, tag, values);
-                            cache.Add(cacheCommand, name, value);
+							cache.Add(tag, name, itemPolicy, value);
                         }
                     }
                     finally { _rwLock.ExitWriteLock(); }
@@ -76,7 +76,7 @@ namespace System.Abstract
             if (registration == null)
                 throw new ArgumentNullException("registration");
             // remove from cache
-            var name = registration.CacheCommand.Name;
+            var name = registration.AbsoluteName;
             cache.Remove(name, null);
             var namespaces = registration.Namespaces;
             if (namespaces != null)

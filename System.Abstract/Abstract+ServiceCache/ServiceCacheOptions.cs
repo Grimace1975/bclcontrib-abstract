@@ -23,19 +23,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System;
 namespace System.Abstract
 {
     /// <summary>
-	/// ServiceCacheDependency
+    /// ServiceCacheOptions
     /// </summary>
-    public class ServiceCacheDependency
+	[Flags]
+    public enum ServiceCacheOptions
     {
-        /// <summary>
-        /// Gets or sets the tags.
-        /// </summary>
-        /// <value>The cache tag array.</value>
-        public string[] CacheTags { get; set; }
-
-        public object Tag { get; set; }
+		ReturnsCachedValueOnRemove,
     }
 }

@@ -29,61 +29,42 @@ namespace System.Abstract
     /// Provides an object encapulation of adding/removing items to/from a Cache object instance. Provides a delegate
     /// for when the item is removed from Cache.
     /// </summary>
-    public class ServiceCacheCommand
+    public class CacheItemPolicy
     {
-        private string _name;
+		public static readonly CacheItemPolicy Default = new CacheItemPolicy { };
         private DateTime _absoluteExpiration;
         private TimeSpan _floatingAbsoluteExpiration;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceCacheCommand"/> class.
+        /// Initializes a new instance of the <see cref="CacheItemPolicy"/> class.
         /// </summary>
         /// <param name="key">The key.</param>
-        public ServiceCacheCommand()
-            : this(null) { }
-		public ServiceCacheCommand(string name)
+		public CacheItemPolicy()
         {
-			Name = name;
             FloatingAbsoluteExpiration = new TimeSpan(1, 0, 0, 0);
 			SlidingExpiration = ServiceCache.NoSlidingExpiration;
         }
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceCacheCommand"/> class.
+        /// Initializes a new instance of the <see cref="CacheItemPolicy"/> class.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="floatingMinuteTimeout">The floating minute timeout.</param>
-		public ServiceCacheCommand(string name, int floatingAbsoluteMinuteTimeout)
+		public CacheItemPolicy(int floatingAbsoluteMinuteTimeout)
         {
-			Name = name;
             if (floatingAbsoluteMinuteTimeout < -1)
                 throw new ArgumentOutOfRangeException("floatingMinuteTimeout");
             if (floatingAbsoluteMinuteTimeout >= 0)
                 FloatingAbsoluteExpiration = new TimeSpan(0, floatingAbsoluteMinuteTimeout, 0);
             else
-				AbsoluteExpiration = ServiceCache.NoAbsoluteExpiration;
+				AbsoluteExpiration = ServiceCache.InfiniteAbsoluteExpiration;
 			SlidingExpiration = ServiceCache.NoSlidingExpiration;
-        }
-
-        /// <summary>
-        /// Gets or sets the Name value to use when caching an item.
-        /// </summary>
-        /// <value>The key.</value>
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                //if (string.IsNullOrEmpty(value))
-                //    throw new ArgumentNullException("value");
-                _name = value;
-            }
         }
 
         /// <summary>
         /// Gets or sets the object instance that contains dependency information that dictates when an item added to cache should be considered invalid.
         /// </summary>
         /// <value>The dependency.</value>
-        public ServiceCacheDependency Dependency { get; set; }
+        public CacheItemDependency Dependency { get; set; }
 
         /// <summary>
         /// Gets or sets the DateTime instance that represent the absolute expiration of the item being added to cache.
@@ -136,13 +117,13 @@ namespace System.Abstract
         /// instance of CacheCommand has been created for cache.
         /// </summary>
         /// <value>The on create callback.</value>
-        public CacheItemAddedCallback ItemAddedCallback { get; set; }
+        public CacheEntryUpdateCallback UpdateCallback { get; set; }
 
         /// <summary>
         /// Gets or sets the on CacheItemRemovedCallback instance that is invoked whenever the cached item associated with this 
         /// instance of CacheCommand has been removed from cache.
         /// </summary>
         /// <value>The on remove callback.</value>
-        public CacheItemRemovedCallback ItemRemovedCallback { get; set; }
+        public CacheEntryRemovedCallback RemovedCallback { get; set; }
     }
 }
