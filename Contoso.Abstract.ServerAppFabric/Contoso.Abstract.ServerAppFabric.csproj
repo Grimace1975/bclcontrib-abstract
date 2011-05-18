@@ -38,7 +38,6 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Abstract\ServerAppFabricServiceCacheSettings.cs" />
     <Compile Include="Abstract\ServerAppFabricServiceCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -26,103 +26,123 @@ THE SOFTWARE.
 using System.Collections.Generic;
 namespace System.Abstract
 {
-    /// <summary>
-    /// ServiceCacheRegistration
-    /// </summary>
-    public class ServiceCacheRegistration
-    {
-        /// <summary>
-        /// IDispatch
-        /// </summary>
-        public interface IDispatch
-        {
-            T Get<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values);
-            void Remove(IServiceCache cache, ServiceCacheRegistration registration);
-        }
+	/// <summary>
+	/// ServiceCacheRegistration
+	/// </summary>
+	public class ServiceCacheRegistration
+	{
+		private string _absoluteName;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceCacheRegistration"/> class.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        internal ServiceCacheRegistration(string name)
-        {
-            // used for registration-links only
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
-            Name = name;
-            CacheCommand = new ServiceCacheCommand("ServiceCacheRegistration", -1);
-        }
-        /// <summary>
-        /// Adds the data source.
-        /// </summary>
-        /// <param name="name">The key.</param>
-        /// <param name="builder">The builder.</param>
-        /// <param name="cacheTags">The dependency array.</param>
-        public ServiceCacheRegistration(string name, ServiceCacheBuilder builder, params string[] cacheTags)
-            : this(name, new ServiceCacheCommand(name), builder, cacheTags) { }
-        /// <summary>
-        /// Adds the data source.
-        /// </summary>
-        /// <param name="name">The key.</param>
-        /// <param name="minuteTimeout">The minute timeout.</param>
-        /// <param name="builder">The builder.</param>
-        /// <param name="cacheTags">The dependency array.</param>
-        public ServiceCacheRegistration(string name, int minuteTimeout, ServiceCacheBuilder builder, params string[] cacheTags)
-            : this(name, new ServiceCacheCommand(name, minuteTimeout), builder, cacheTags) { }
-        /// <summary>
-        /// Adds the data source.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="cacheCommand">The cache command.</param>
-        /// <param name="builder">The builder.</param>
-        /// <param name="cacheTags">The dependency array.</param>
-        public ServiceCacheRegistration(string name, ServiceCacheCommand cacheCommand, ServiceCacheBuilder builder, params string[] cacheTags)
-        {
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
-            if (cacheCommand == null)
-                throw new ArgumentNullException("cacheCommand");
-            if (builder == null)
-                throw new ArgumentNullException("builder");
-            Name = name;
-            Builder = builder;
-            if ((cacheTags != null) && (cacheTags.Length > 0))
-            {
-                if (cacheCommand.Dependency != null)
-                    throw new InvalidOperationException(Local.RedefineCacheDependency);
-                cacheCommand.Dependency = new ServiceCacheDependency { CacheTags = cacheTags };
-            }
-            CacheCommand = cacheCommand;
-            // tacks all namespaces created
-            Namespaces = new List<string>();
-        }
+		/// <summary>
+		/// IDispatch
+		/// </summary>
+		public interface IDispatch
+		{
+			T Get<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values);
+			void Remove(IServiceCache cache, ServiceCacheRegistration registration);
+		}
 
-        /// <summary>
-        /// Gets or sets the key.
-        /// </summary>
-        /// <value>The key.</value>
-        public string Name { get; set; }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ServiceCacheRegistration"/> class.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		internal ServiceCacheRegistration(string name)
+		{
+			// used for registration-links only
+			if (string.IsNullOrEmpty(name))
+				throw new ArgumentNullException("name");
+			Name = name;
+			ItemPolicy = new CacheItemPolicy(-1);
+		}
+		/// <summary>
+		/// Adds the data source.
+		/// </summary>
+		/// <param name="name">The key.</param>
+		/// <param name="builder">The builder.</param>
+		/// <param name="cacheTags">The dependency array.</param>
+		public ServiceCacheRegistration(string name, CacheItemBuilder builder, params string[] cacheTags)
+			: this(name, new CacheItemPolicy(), builder, cacheTags) { }
+		/// <summary>
+		/// Adds the data source.
+		/// </summary>
+		/// <param name="name">The key.</param>
+		/// <param name="minuteTimeout">The minute timeout.</param>
+		/// <param name="builder">The builder.</param>
+		/// <param name="cacheTags">The dependency array.</param>
+		public ServiceCacheRegistration(string name, int minuteTimeout, CacheItemBuilder builder, params string[] cacheTags)
+			: this(name, new CacheItemPolicy(minuteTimeout), builder, cacheTags) { }
+		/// <summary>
+		/// Adds the data source.
+		/// </summary>
+		/// <param name="name">The name.</param>
+		/// <param name="itemPolicy">The cache command.</param>
+		/// <param name="builder">The builder.</param>
+		/// <param name="cacheTags">The dependency array.</param>
+		public ServiceCacheRegistration(string name, CacheItemPolicy itemPolicy, CacheItemBuilder builder, params string[] cacheTags)
+		{
+			if (string.IsNullOrEmpty(name))
+				throw new ArgumentNullException("name");
+			if (itemPolicy == null)
+				throw new ArgumentNullException("itemPolicy");
+			if (builder == null)
+				throw new ArgumentNullException("builder");
+			Name = name;
+			Builder = builder;
+			if ((cacheTags != null) && (cacheTags.Length > 0))
+			{
+				if (itemPolicy.Dependency != null)
+					throw new InvalidOperationException(Local.RedefineCacheDependency);
+				itemPolicy.Dependency = ((a, b) => cacheTags);
+			}
+			ItemPolicy = itemPolicy;
+			// tacks all namespaces created
+			Namespaces = new List<string>();
+		}
 
-        /// <summary>
-        /// Gets or sets the cache command.
-        /// </summary>
-        /// <value>The cache command.</value>
-        public ServiceCacheCommand CacheCommand { get; set; }
+		/// <summary>
+		/// Gets or sets the key.
+		/// </summary>
+		/// <value>The key.</value>
+		public string Name { get; set; }
 
-        /// <summary>
-        /// Gets or sets the builder.
-        /// </summary>
-        /// <value>The builder.</value>
-        public ServiceCacheBuilder Builder { get; set; }
+		/// <summary>
+		/// Gets or sets the cache command.
+		/// </summary>
+		/// <value>The cache command.</value>
+		public CacheItemPolicy ItemPolicy { get; set; }
 
-        /// <summary>
-        /// Registrar
-        /// </summary>
-        internal ServiceCacheRegistrar Registrar;
+		/// <summary>
+		/// Gets or sets the builder.
+		/// </summary>
+		/// <value>The builder.</value>
+		public CacheItemBuilder Builder { get; set; }
 
-        /// <summary>
-        /// Salts
-        /// </summary>
-        internal List<string> Namespaces;
-    }
+		/// <summary>
+		/// AbsoluteName
+		/// </summary>
+		public string AbsoluteName
+		{
+			get { return _absoluteName; }
+		}
+
+		/// <summary>
+		/// Namespaces
+		/// </summary>
+		internal List<string> Namespaces;
+
+		#region Registrar
+
+		/// <summary>
+		/// Registrar
+		/// </summary>
+		internal ServiceCacheRegistrar Registrar;
+
+		internal void SetRegistrar(ServiceCacheRegistrar registrar, string absoluteName)
+		{
+			Registrar = registrar;
+			_absoluteName = absoluteName;
+		}
+
+		#endregion
+	}
 }

@@ -24,6 +24,7 @@ THE SOFTWARE.
 */
 #endregion
 using System;
+using System.Linq;
 using System.Abstract;
 using System.Collections.Generic;
 namespace Contoso.Abstract
@@ -32,34 +33,34 @@ namespace Contoso.Abstract
 	/// <summary>
 	/// Provides the core factory method mechanism for generating or accessing a singleton-based Cache Provider.
 	/// </summary>
-	public class MemoryServiceCache : IServiceCache
+	public class StaticMemoryServiceCache : IServiceCache
 	{
 		public static readonly Dictionary<string, object> Dictionary = new Dictionary<string, object>();
 
-        public MemoryServiceCache()
-        {
-            RegistrationDispatch = new DefaultServiceCacheRegistrationDispatch();
-        }
+		public StaticMemoryServiceCache()
+		{
+			RegistrationDispatch = new DefaultServiceCacheRegistrationDispatcher();
+		}
 
 		public object this[string name]
 		{
-            get { return Get(null, name); }
-            set { this.Insert(null, name, value); }
+			get { return Get(null, name); }
+			set { Set(null, name, CacheItemPolicy.Default, value); }
 		}
 
-        /// <summary>
-        /// Adds an object into cache based on the parameters provided.
-        /// </summary>
-        /// <param name="tag">The tag.</param>
-        /// <param name="name">The key used to identify the item in cache.</param>
-        /// <param name="dependency">The dependency object defining caching validity dependencies.</param>
-        /// <param name="absoluteExpiration">The absolute expiration value used to determine when a cache item must be considerd invalid.</param>
-        /// <param name="slidingExpiration">The sliding expiration value used to determine when a cache item is considered invalid due to lack of use.</param>
-        /// <param name="priority">The priority.</param>
-        /// <param name="onRemoveCallback">The delegate to invoke when the item is removed from cache.</param>
-        /// <param name="value">The value to store in cache.</param>
-        /// <returns></returns>
-        public object Add(object tag, string name, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object value)
+		/// <summary>
+		/// Adds an object into cache based on the parameters provided.
+		/// </summary>
+		/// <param name="tag">The tag.</param>
+		/// <param name="name">The key used to identify the item in cache.</param>
+		/// <param name="dependency">The dependency object defining caching validity dependencies.</param>
+		/// <param name="absoluteExpiration">The absolute expiration value used to determine when a cache item must be considerd invalid.</param>
+		/// <param name="slidingExpiration">The sliding expiration value used to determine when a cache item is considered invalid due to lack of use.</param>
+		/// <param name="priority">The priority.</param>
+		/// <param name="onRemoveCallback">The delegate to invoke when the item is removed from cache.</param>
+		/// <param name="value">The value to store in cache.</param>
+		/// <returns></returns>
+		public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value)
 		{
 			// TODO: Throw on dependency or other stuff not supported by this simple system
 			object lastValue;
@@ -76,11 +77,20 @@ namespace Contoso.Abstract
 		/// </summary>
 		/// <param name="name">The key.</param>
 		/// <returns>The cached item.</returns>
-        public object Get(object tag, string name)
+		public object Get(object tag, string name)
 		{
 			object value;
 			return (Dictionary.TryGetValue(name, out value) ? value : null);
 		}
+
+		public object Get(object tag, IEnumerable<string> names)
+		{
+			if (names == null)
+				throw new ArgumentNullException("names");
+			return names.Select(name => new { name, value = Get(null, name) }).ToDictionary(x => x.name, x => x.value);
+		}
+
+		public bool TryGet(object tag, string name, out object value) { return Dictionary.TryGetValue(name, out value); }
 
 		/// <summary>
 		/// Adds an object into cache based on the parameters provided.
@@ -92,7 +102,7 @@ namespace Contoso.Abstract
 		/// <param name="slidingExpiration">The sliding expiration value used to determine when a cache item is considered invalid due to lack of use.</param>
 		/// <param name="priority">The priority.</param>
 		/// <param name="onRemoveCallback">The delegate to invoke when the item is removed from cache.</param>
-        public object Insert(object tag, string name, ServiceCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority, CacheItemRemovedCallback onRemoveCallback, object value)
+		public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value)
 		{
 			return (Dictionary[name] = value);
 		}
@@ -104,7 +114,7 @@ namespace Contoso.Abstract
 		/// <returns>
 		/// The item removed from the Cache. If the value in the key parameter is not found, returns null.
 		/// </returns>
-        public object Remove(object tag, string name)
+		public object Remove(object tag, string name)
 		{
 			object value;
 			if (Dictionary.TryGetValue(name, out value))
@@ -115,16 +125,20 @@ namespace Contoso.Abstract
 			return null;
 		}
 
-        /// <summary>
-        /// Touches the specified names.
-        /// </summary>
-        /// <param name="tag">The tag.</param>
-        /// <param name="names">The names.</param>
-        public void Touch(object tag, params string[] names)
+		/// <summary>
+		/// Touches the specified names.
+		/// </summary>
+		/// <param name="tag">The tag.</param>
+		/// <param name="names">The names.</param>
+		public void Touch(object tag, params string[] names)
 		{
 			Dictionary.Clear();
 		}
 
-        public ServiceCacheRegistration.IDispatch RegistrationDispatch { get; private set; }
-    }
+		public ServiceCacheSettings Settings
+		{
+			get { return null; }
+		}
+		public ServiceCacheRegistration.IDispatch RegistrationDispatch { get; private set; }
+	}
 }

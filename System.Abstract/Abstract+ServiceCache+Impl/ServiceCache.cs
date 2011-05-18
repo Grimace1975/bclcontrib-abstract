@@ -35,7 +35,7 @@ namespace System.Abstract
         /// <summary>
         /// Provides <see cref="System.DateTime"/> instance to be used when no absolute expiration value to be set.
         /// </summary>
-        public static readonly DateTime NoAbsoluteExpiration = DateTime.MaxValue;
+        public static readonly DateTime InfiniteAbsoluteExpiration = DateTime.MaxValue;
         /// <summary>
         /// Provides <see cref="System.TimeSpan"/> instance to be used when no sliding expiration value to be set.
         /// </summary>

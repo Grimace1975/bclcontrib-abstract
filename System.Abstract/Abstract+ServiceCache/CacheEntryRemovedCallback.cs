@@ -26,10 +26,10 @@ THE SOFTWARE.
 namespace System.Abstract
 {
     /// <summary>
-    /// Defines a delegate type for use by <see cref="M:Instinct.CacheCommand.OnCreatedCallback">CacheCommand.OnCreatedCallback</see>.
+    /// Defines a delegate type for use by <see cref="M:Instinct.CacheCommand.OnRemoveCallback">CacheCommand.OnRemoveCallback</see>.
     /// Used to provide notification of removal of an item from an instance of a <see cref="T:Instinct.Cache">Cache</see> object.
     /// </summary>
     /// <param name="key">Key of the item being removed from cache.</param>
     /// <param name="value">Value of the item being removed from cache.</param>
-	public delegate void CacheItemAddedCallback(string name, object value);
+	public delegate void CacheEntryRemovedCallback(string name, object value);
 }

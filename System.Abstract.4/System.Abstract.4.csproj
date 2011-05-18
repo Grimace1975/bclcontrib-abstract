@@ -26,7 +26,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;CLR4</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\System.Abstract.XML</DocumentationFile>
@@ -40,6 +40,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
@@ -166,8 +167,8 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\ServiceBusMessageException.cs">
       <Link>Abstract+ServiceBus\ServiceBusMessageException.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\DefaultServiceCacheRegistrationDispatch.cs">
-      <Link>Abstract+ServiceCache+Impl\DefaultServiceCacheRegistrationDispatch.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\DefaultServiceCacheRegistrationDispatcher.cs">
+      <Link>Abstract+ServiceCache+Impl\DefaultServiceCacheRegistrationDispatcher.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\ServiceCache.cs">
       <Link>Abstract+ServiceCache+Impl\ServiceCache.cs</Link>
@@ -181,26 +182,26 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\ServiceCacheRegistrar.cs">
       <Link>Abstract+ServiceCache+Impl\ServiceCacheRegistrar.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceCache\CacheItemAddedCallback.cs">
-      <Link>Abstract+ServiceCache\CacheItemAddedCallback.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache\CacheEntryRemovedCallback.cs">
+      <Link>Abstract+ServiceCache\CacheEntryRemovedCallback.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache\CacheEntryUpdateCallback.cs">
+      <Link>Abstract+ServiceCache\CacheEntryUpdateCallback.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache\CacheItemBuilder.cs">
+      <Link>Abstract+ServiceCache\CacheItemBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache\CacheItemDependency.cs">
+      <Link>Abstract+ServiceCache\CacheItemDependency.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache\CacheItemPolicy.cs">
+      <Link>Abstract+ServiceCache\CacheItemPolicy.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\CacheItemPriority.cs">
       <Link>Abstract+ServiceCache\CacheItemPriority.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceCache\CacheItemRemovedCallback.cs">
-      <Link>Abstract+ServiceCache\CacheItemRemovedCallback.cs</Link>
-    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\IServiceCache.cs">
       <Link>Abstract+ServiceCache\IServiceCache.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheBuilder.cs">
-      <Link>Abstract+ServiceCache\ServiceCacheBuilder.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheCommand.cs">
-      <Link>Abstract+ServiceCache\ServiceCacheCommand.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheDependency.cs">
-      <Link>Abstract+ServiceCache\ServiceCacheDependency.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheForeignRegistration.cs">
       <Link>Abstract+ServiceCache\ServiceCacheForeignRegistration.cs</Link>
@@ -208,8 +209,14 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheNamespaceWrapper.cs">
       <Link>Abstract+ServiceCache\ServiceCacheNamespaceWrapper.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheOptions.cs">
+      <Link>Abstract+ServiceCache\ServiceCacheOptions.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheRegistration.cs">
       <Link>Abstract+ServiceCache\ServiceCacheRegistration.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheSettings.cs">
+      <Link>Abstract+ServiceCache\ServiceCacheSettings.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceLocator.cs">
       <Link>Abstract+ServiceLocator+Impl\ServiceLocator.cs</Link>
@@ -268,8 +275,11 @@
     <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceCache\CacheFileTouch.cs">
       <Link>Contoso.Abstract+Impl\+ServiceCache\CacheFileTouch.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceCache\MemoryServiceCache.cs">
-      <Link>Contoso.Abstract+Impl\+ServiceCache\MemoryServiceCache.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceCache\StaticMemoryServiceCache.cs">
+      <Link>Contoso.Abstract+Impl\+ServiceCache\StaticMemoryServiceCache.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceCache\SystemServiceCache.cs">
+      <Link>Contoso.Abstract+Impl\+ServiceCache\SystemServiceCache.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceLocator\MicroServiceLocator.cs">
       <Link>Contoso.Abstract+Impl\+ServiceLocator\MicroServiceLocator.cs</Link>

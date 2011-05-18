@@ -51,6 +51,15 @@ xcopy %SRC%.4\bin\Release\Contoso.Abstract.Hiro.dll lib\NET40\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.Hiro.xml lib\NET40\ /Y/Q
 popd
 
+::
+echo Abstract.Memcached
+pushd BclContrib-Abstract.Memcached
+set SRC=..\..\Contoso.Abstract.Memcached
+xcopy %SRC%\bin\Release\Contoso.Abstract.Memcached.dll lib\NET35\ /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Abstract.Memcached.xml lib\NET35\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Abstract.Memcached.dll lib\NET40\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Abstract.Memcached.xml lib\NET40\ /Y/Q
+popd
 
 ::
 echo Abstract.MongoDB

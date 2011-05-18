@@ -24,20 +24,33 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-namespace Contoso.Abstract
+namespace System.Abstract
 {
     /// <summary>
-    /// ServerAppFabricServiceCacheSettings
+    /// ServiceCacheSettings
     /// </summary>
-    public class ServerAppFabricServiceCacheSettings
+    public class ServiceCacheSettings
     {
-        public ServerAppFabricServiceCacheSettings()
+		public ServiceCacheSettings()
         {
-            ReturnsCachedValueOnRemove = true;
             RegionMarker = "@";
         }
 
-        public bool ReturnsCachedValueOnRemove { get; set; }
         public string RegionMarker { get; set; }
+		public ServiceCacheOptions Options { get; set; }
+
+		public bool TryGetRegion(ref string name, out string regionName)
+		{
+			var index = name.IndexOf(RegionMarker);
+			if (index != -1)
+			{
+				regionName = null;
+				return false;
+			}
+			string originalName = name;
+			regionName = originalName.Substring(0, index);
+			name = originalName.Substring(index + RegionMarker.Length);
+			return true;
+		}
     }
 }
