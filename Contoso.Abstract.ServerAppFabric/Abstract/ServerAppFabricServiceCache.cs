@@ -51,6 +51,14 @@ namespace Contoso.Abstract
 	/// </summary>
 	public class ServerAppFabricServiceCache : IServerAppFabricServiceCache
 	{
+		public ServerAppFabricServiceCache()
+			: this(new DataCacheFactory()) { }
+		public ServerAppFabricServiceCache(DataCacheFactoryConfiguration configuration)
+			: this(new DataCacheFactory(configuration)) { }
+		public ServerAppFabricServiceCache(DataCacheFactory cacheFactory)
+			: this(cacheFactory.GetDefaultCache()) { CacheFactory = cacheFactory; }
+		public ServerAppFabricServiceCache(DataCacheFactory cacheFactory, string cacheName)
+			: this(cacheFactory.GetCache(cacheName)) { CacheFactory = cacheFactory; }
 		public ServerAppFabricServiceCache(DataCache cache)
 		{
 			Cache = cache;
@@ -244,6 +252,7 @@ namespace Contoso.Abstract
 
 		#region Domain-specific
 
+		public static DataCacheFactory CacheFactory { get; private set; }
 		public DataCache Cache { get; private set; }
 
 		public object GetAndLock(string name, TimeSpan timeout, out DataCacheLockHandle lockHandle)

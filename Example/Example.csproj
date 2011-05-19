@@ -34,12 +34,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Contoso.Abstract.Memcached">
+      <HintPath>..\Contoso.Abstract.Memcached.4\bin\Debug\Contoso.Abstract.Memcached.dll</HintPath>
+    </Reference>
+    <Reference Include="Enyim.Caching">
+      <HintPath>..\Contoso.Abstract.Memcached.4\bin\Debug\Enyim.Caching.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\Contoso.Abstract.Unity\bin\Debug\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Memcached\ConstructorExamples.cs" />
     <Compile Include="ServiceCacheExamples.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -48,6 +55,10 @@
     <ProjectReference Include="..\Contoso.Abstract.ApplicationBus\Contoso.Abstract.ApplicationBus.csproj">
       <Project>{7F717114-B597-4B43-931A-529F696A549A}</Project>
       <Name>Contoso.Abstract.ApplicationBus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.Memcached.4\Contoso.Abstract.Memcached.4.csproj">
+      <Project>{823CF03D-74EC-4D3B-BEF1-7344F73E8E82}</Project>
+      <Name>Contoso.Abstract.Memcached.4</Name>
     </ProjectReference>
     <ProjectReference Include="..\Contoso.Abstract.Sql\Contoso.Abstract.Sql.csproj">
       <Project>{530515EF-6DFC-4A59-BCF2-F0F998DC6D89}</Project>

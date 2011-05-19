@@ -41,8 +41,6 @@ namespace System.Abstract
         /// </summary>
         public static readonly TimeSpan NoSlidingExpiration = TimeSpan.Zero;
 
-        public const string NoHeaderId = "none";
-
         #region Primitives
 
         /// <summary>
@@ -56,10 +54,11 @@ namespace System.Abstract
             public static readonly ServiceCacheRegistration YesNo = new ServiceCacheRegistration("YesNo", (tag, values) =>
             {
                 var values2 = new Dictionary<string, string>(3);
-                switch (tag as string)
+                switch ((values != null) && (values.Length == 0) ? null : values[0] as string)
                 {
-                    case "": values2.Add(string.Empty, "--"); break;
-                    case NoHeaderId: break;
+					case null:
+					case "": break;
+                    case "--": values2.Add(string.Empty, "--"); break;
                     default: throw new InvalidOperationException();
                 }
                 values2.Add(bool.TrueString, "Yes");
@@ -72,10 +71,11 @@ namespace System.Abstract
             public static readonly ServiceCacheRegistration Gender = new ServiceCacheRegistration("Gender", (tag, values) =>
             {
                 var values2 = new Dictionary<string, string>(3);
-                switch (tag as string)
+				switch ((values != null) && (values.Length == 0) ? null : values[0] as string)
                 {
-                    case "": values2.Add(string.Empty, "--"); break;
-                    case NoHeaderId: break;
+					case null:
+					case "": break;
+                    case "--": values2.Add(string.Empty, "--"); break;
                     default: throw new InvalidOperationException();
                 }
                 values2.Add("Male", "Male");
@@ -88,10 +88,11 @@ namespace System.Abstract
             public static readonly ServiceCacheRegistration Integer = new ServiceCacheRegistration("Integer", (tag, values) =>
             {
                 var values2 = new Dictionary<string, string>(3);
-                switch (tag as string)
+				switch ((values != null) && (values.Length == 0) ? null : values[0] as string)
                 {
-                    case "": values2.Add(string.Empty, "--"); break;
-                    case NoHeaderId: break;
+					case null:
+					case "": break;
+                    case "--": values2.Add(string.Empty, "--"); break;
                     default: throw new InvalidOperationException();
                 }
                 int startIndex = (int)values[0];
