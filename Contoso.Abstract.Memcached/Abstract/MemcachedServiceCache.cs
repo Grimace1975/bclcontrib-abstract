@@ -51,51 +51,6 @@ namespace Contoso.Abstract
 	/// </summary>
 	public class MemcachedServiceCache : IMemcachedServiceCache, IDisposable
 	{
-		#region Opcode Decode
-
-		public struct IncrementTag
-		{
-			public ulong DefaultValue;
-			public ulong Delta;
-		}
-
-		public struct DecrementTag
-		{
-			public ulong DefaultValue;
-			public ulong Delta;
-		}
-
-		private enum Opcode
-		{
-			Append,
-			AppendCas,
-			Prepend,
-			PrependCas,
-			Store,
-			CasPlain,
-			Cas,
-			Decrement,
-			DecrementCas,
-			Increment,
-			IncrementCas
-		}
-
-		private static Opcode GetAddOpcode(object tag, out ulong cas)
-		{
-			cas = 0;
-			return Opcode.Store;
-		}
-
-		private static Opcode GetInsertOpcode(object tag, ref string name, out ulong cas, out object opvalue, out StoreMode storeMode)
-		{
-			cas = 0;
-			opvalue = null;
-			storeMode = StoreMode.Replace;
-			return Opcode.Store;
-		}
-
-		#endregion
-
 		public MemcachedServiceCache()
 			: this((IMemcachedClientConfiguration)null) { }
 		public MemcachedServiceCache(IMemcachedClientConfiguration configuration)
@@ -199,9 +154,10 @@ namespace Contoso.Abstract
 					case Opcode.AppendCas: return Cache.Append(name, cas, (ArraySegment<byte>)opvalue);
 					case Opcode.Prepend: return Cache.Prepend(name, (ArraySegment<byte>)opvalue);
 					case Opcode.PrependCas: return Cache.Prepend(name, cas, (ArraySegment<byte>)opvalue);
-					case Opcode.CasPlain: return Cache.Cas(StoreMode.Set, name, value);
-					case Opcode.Store: return Cache.Store(StoreMode.Set, name, value);
-					case Opcode.Cas: return Cache.Cas(StoreMode.Set, name, value, cas);
+					case Opcode.CasPlain: return Cache.Cas(storeMode, name, value);
+					//
+					case Opcode.Store: return Cache.Store(storeMode, name, value);
+					case Opcode.Cas: return Cache.Cas(storeMode, name, value, cas);
 					case Opcode.Decrement: decrement = (DecrementTag)opvalue; return Cache.Decrement(name, decrement.DefaultValue, decrement.Delta);
 					case Opcode.DecrementCas: decrement = (DecrementTag)opvalue; return Cache.Decrement(name, decrement.DefaultValue, decrement.Delta, cas);
 					case Opcode.Increment: increment = (IncrementTag)opvalue; return Cache.Increment(name, increment.DefaultValue, increment.Delta);
@@ -217,8 +173,8 @@ namespace Contoso.Abstract
 					case Opcode.PrependCas:
 					case Opcode.CasPlain:
 						throw new NotSupportedException("Operation not supported with absoluteExpiration && slidingExpiration");
-					case Opcode.Store: return Cache.Store(StoreMode.Set, name, value, absoluteExpiration);
-					case Opcode.Cas: return Cache.Cas(StoreMode.Set, name, value, absoluteExpiration, cas);
+					case Opcode.Store: return Cache.Store(storeMode, name, value, absoluteExpiration);
+					case Opcode.Cas: return Cache.Cas(storeMode, name, value, absoluteExpiration, cas);
 					case Opcode.Decrement: decrement = (DecrementTag)opvalue; return Cache.Decrement(name, decrement.DefaultValue, decrement.Delta, absoluteExpiration);
 					case Opcode.DecrementCas: decrement = (DecrementTag)opvalue; return Cache.Decrement(name, decrement.DefaultValue, decrement.Delta, absoluteExpiration, cas);
 					case Opcode.Increment: increment = (IncrementTag)opvalue; return Cache.Increment(name, increment.DefaultValue, increment.Delta, absoluteExpiration);
@@ -234,8 +190,8 @@ namespace Contoso.Abstract
 					case Opcode.PrependCas:
 					case Opcode.CasPlain:
 						throw new NotSupportedException("Operation not supported with absoluteExpiration && slidingExpiration");
-					case Opcode.Store: return Cache.Store(StoreMode.Set, name, value, slidingExpiration);
-					case Opcode.Cas: return Cache.Cas(StoreMode.Set, name, value, slidingExpiration, cas);
+					case Opcode.Store: return Cache.Store(storeMode, name, value, slidingExpiration);
+					case Opcode.Cas: return Cache.Cas(storeMode, name, value, slidingExpiration, cas);
 					case Opcode.Decrement: decrement = (DecrementTag)opvalue; return Cache.Decrement(name, decrement.DefaultValue, decrement.Delta, slidingExpiration);
 					case Opcode.DecrementCas: decrement = (DecrementTag)opvalue; return Cache.Decrement(name, decrement.DefaultValue, decrement.Delta, slidingExpiration, cas);
 					case Opcode.Increment: increment = (IncrementTag)opvalue; return Cache.Increment(name, increment.DefaultValue, increment.Delta, slidingExpiration);
@@ -265,6 +221,116 @@ namespace Contoso.Abstract
 		public CasResult<object> GetWithCas(string key) { return Cache.GetWithCas(key); }
 		public CasResult<T> GetWithCas<T>(string key) { return Cache.GetWithCas<T>(key); }
 		public bool TryGetWithCas(string key, out CasResult<object> value) { return TryGetWithCas(key, out value); }
+
+		#endregion
+
+		#region Opcode Decode
+
+		public struct IncrementTag
+		{
+			public ulong DefaultValue;
+			public ulong Delta;
+		}
+
+		public struct DecrementTag
+		{
+			public ulong DefaultValue;
+			public ulong Delta;
+		}
+
+		private enum Opcode
+		{
+			Append,
+			AppendCas,
+			Prepend,
+			PrependCas,
+			Store,
+			CasPlain,
+			Cas,
+			Decrement,
+			DecrementCas,
+			Increment,
+			IncrementCas
+		}
+
+		private static Opcode GetAddOpcode(object tag, out ulong cas)
+		{
+			cas = 0;
+			return Opcode.Store;
+		}
+
+		private static Opcode GetInsertOpcode(object tag, ref string name, out ulong cas, out object opvalue, out StoreMode storeMode)
+		{
+			if (name == null)
+				throw new ArgumentNullException("name");
+			// determine flag, striping name if needed
+			bool flag = name.StartsWith("#");
+			if (flag)
+			{
+				storeMode = StoreMode.Replace;
+				name = name.Substring(1);
+			}
+			else
+				storeMode = StoreMode.Set;
+			// store
+			if (tag == null)
+			{
+				cas = 0;
+				opvalue = null;
+				return Opcode.Store;
+			}
+			//
+			if (tag is CasResult<object>)
+			{
+				var plainCas = (CasResult<object>)tag;
+				cas = plainCas.Cas;
+				opvalue = null;
+				return Opcode.Store;
+			}
+			// append/prepend
+			if (tag is ArraySegment<byte>)
+			{
+				cas = 0;
+				opvalue = tag;
+				return (flag ? Opcode.Prepend : Opcode.Append);
+			}
+			else if (tag is CasResult<ArraySegment<byte>>)
+			{
+				var appendCas = (CasResult<DecrementTag>)tag;
+				cas = appendCas.Cas;
+				opvalue = appendCas.Result;
+				return (flag ? Opcode.PrependCas : Opcode.AppendCas);
+			}
+			// decrement
+			else if (tag is DecrementTag)
+			{
+				cas = 0;
+				opvalue = (DecrementTag)tag;
+				return Opcode.Decrement;
+			}
+			else if (tag is CasResult<DecrementTag>)
+			{
+				var decrementCas = (CasResult<DecrementTag>)tag;
+				cas = decrementCas.Cas;
+				opvalue = decrementCas.Result;
+				return Opcode.DecrementCas;
+			}
+			// increment
+			else if (tag is IncrementTag)
+			{
+				cas = 0;
+				opvalue = (IncrementTag)tag;
+				return Opcode.Increment;
+			}
+			else if (tag is CasResult<IncrementTag>)
+			{
+				var incrementCas = (CasResult<IncrementTag>)tag;
+				cas = incrementCas.Cas;
+				opvalue = incrementCas.Result;
+				return Opcode.IncrementCas;
+			}
+			throw new InvalidOperationException();
+		}
 
 		#endregion
 	}
