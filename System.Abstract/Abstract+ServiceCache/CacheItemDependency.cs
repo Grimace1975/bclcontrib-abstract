@@ -29,18 +29,4 @@ namespace System.Abstract
 	/// CacheItemDependency
 	/// </summary>
 	public delegate object CacheItemDependency(IServiceCache cache, object tag);
-
-	///// <summary>
-	///// CacheItemDependency
-	///// </summary>
-	//public class CacheItemDependency
-	//{
-	//    /// <summary>
-	//    /// Gets or sets the tags.
-	//    /// </summary>
-	//    /// <value>The cache tag array.</value>
-	//    public string[] CacheTags { get; set; }
-
-	//    public object Tag { get; set; }
-	//}
 }
