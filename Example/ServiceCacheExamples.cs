@@ -28,7 +28,15 @@ namespace Example
 			// getting an item from cache
 			var getValue = cache.Get("name");
 			// getting an item from cache with a tag
-			var getValue3 = cache.Get(tag, "name");
+			var getValue2 = cache.Get(tag, "name");
+			// getting an item from cache
+			var getValues = cache.Get(new[] { "name", "name2" });
+			// getting an item from cache with a tag
+			var getValues2 = cache.Get(tag, new[] { "name", "name2" });
+			// trying to get an item from cache
+			var hasValue = cache.TryGet("name", out value);
+			// trying to get an item from cache with a tag
+			var hasValue2 = cache.TryGet(tag, "name", out value);
 
 			// getting a registered item from cache
 			var registeredGetValue = (string)cache.Get(MyCache.MyItem);
@@ -102,7 +110,7 @@ namespace Example
 			// removing an item from cache
 			var removedValue = cache.Remove("name");
 			// removing an item from cache with a tag
-			var removedValue3 = cache.Remove(tag, "name");
+			var removedValue2 = cache.Remove(tag, "name");
 
 			// removing a registered item from cache 
 			cache.Remove(MyCache.MyItem);
@@ -121,14 +129,21 @@ namespace Example
 			// inserting an item into cache with a tag, and a CacheItemPolicy and a name
 			cache.Set(tag, "name", new CacheItemPolicy { SlidingExpiration = new TimeSpan(1, 0, 0) }, "value");
 
-			//// ensuring a cache dependency is ready
-			//IServiceCacheExtensions.EnsureCacheDependency(cache,
-			//    new CacheItemDependency { CacheTags = new[] { "tag", "tag2" } });
+			// ensuring a cache dependency is ready from a builder
+			IServiceCacheExtensions.EnsureCacheDependency(cache, tag, (a, b) => new[] { "tag", "tag2" });
+			// ensuring a cache dependency is ready from values
+			IServiceCacheExtensions.EnsureCacheDependency(cache, new[] { "tag", "tag2" });
 
 			// touch cache tags
 			cache.Touch("tag", "tag2");
 			// touch cache tags with tag
 			cache.Touch(tag, "tag", "tag2");
+
+			// wrapping a servicecache with a namespace
+			var newCache2 = cache.Wrap("namespace");
+			// wrapping a servicecache using a generated namespace from an object[] of values
+			string @namespace;
+			var newCache = cache.Wrap(new object[] { "value", 5 }, out @namespace);
 		}
 
 		class MyCache

@@ -99,17 +99,23 @@ namespace System.Abstract
 		public static object Set(this IServiceCache cache, string name, CacheItemPolicy itemPolicy, object value) { return cache.Set(null, name, itemPolicy, value); }
 		public static object Set(this IServiceCache cache, object tag, string name, object value) { return cache.Set(tag, name, CacheItemPolicy.Default, value); }
 
-		//public static void EnsureCacheDependency(IServiceCache cache, CacheItemDependency dependency)
-		//{
-		//    if (cache == null)
-		//        throw new ArgumentNullException("cache");
-		//    if (dependency != null)
-		//        return;
-		//    var names = dependency.CacheTags;
-		//    if (names != null)
-		//        foreach (string name in names)
-		//            cache.Add(null, name, new CacheItemPolicy { AbsoluteExpiration = ServiceCache.InfiniteAbsoluteExpiration }, string.Empty);
-		//}
+		public static void EnsureCacheDependency(IServiceCache cache, object tag, CacheItemDependency dependency)
+		{
+			if (cache == null)
+				throw new ArgumentNullException("cache");
+			string[] cacheTags;
+			if ((dependency == null) || ((cacheTags = (dependency(cache, tag) as string[])) == null))
+				return;
+			EnsureCacheDependency(cache, cacheTags);
+		}
+		public static void EnsureCacheDependency(IServiceCache cache, IEnumerable<string> cacheTags)
+		{
+			if (cache == null)
+				throw new ArgumentNullException("cache");
+			if (cacheTags != null)
+				foreach (string cacheTag in cacheTags)
+					cache.Add(null, cacheTag, new CacheItemPolicy { AbsoluteExpiration = ServiceCache.InfiniteAbsoluteExpiration }, string.Empty);
+		}
 
 		public static void Touch(this IServiceCache cache, params string[] names) { cache.Touch(null, names); }
 
