@@ -38,6 +38,9 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Contoso.Abstract.Memcached\Abstract\MemcachedServiceCache+TagMapper.cs">
+      <Link>Abstract\MemcachedServiceCache+TagMapper.cs</Link>
+    </Compile>
     <Compile Include="..\Contoso.Abstract.Memcached\Abstract\MemcachedServiceCache.cs">
       <Link>Abstract\MemcachedServiceCache.cs</Link>
     </Compile>
