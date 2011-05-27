@@ -151,15 +151,6 @@ namespace System.Abstract {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UndefinedServiceBusProvider.
-        /// </summary>
-        internal static string UndefinedServiceBusProvider {
-            get {
-                return ResourceManager.GetString("UndefinedServiceBusProvider", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to UndefinedServiceCacheRegistrationA.
         /// </summary>
         internal static string UndefinedServiceCacheRegistrationA {
@@ -178,20 +169,11 @@ namespace System.Abstract {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UndefinedServiceLocatorProvider.
+        ///   Looks up a localized string similar to UndefinedServiceProviderA.
         /// </summary>
-        internal static string UndefinedServiceLocatorProvider {
+        internal static string UndefinedServiceProviderA {
             get {
-                return ResourceManager.GetString("UndefinedServiceLocatorProvider", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to UndefinedServiceLogProvider.
-        /// </summary>
-        internal static string UndefinedServiceLogProvider {
-            get {
-                return ResourceManager.GetString("UndefinedServiceLogProvider", resourceCulture);
+                return ResourceManager.GetString("UndefinedServiceProviderA", resourceCulture);
             }
         }
     }

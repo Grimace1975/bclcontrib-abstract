@@ -18,9 +18,10 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;EXPERIMENTAL</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CLR4;EXPERIMENTAL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -305,6 +306,9 @@
     <Compile Include="..\System.Abstract\EnvironmentEx2.cs">
       <Link>EnvironmentEx2.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\ExceptionEx.cs">
+      <Link>ExceptionEx.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\IO\+Mock\DirectoryMock.cs">
       <Link>IO\+Mock\DirectoryMock.cs</Link>
     </Compile>
@@ -329,6 +333,12 @@
     <Compile Include="..\System.Abstract\IO\PathEx2.cs">
       <Link>IO\PathEx2.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Lazy.cs">
+      <Link>Lazy.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\LazyDebugView.cs">
+      <Link>LazyDebugView.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Local.Designer.cs">
       <Link>Local.Designer.cs</Link>
     </Compile>
@@ -341,16 +351,23 @@
     <Compile Include="..\System.Abstract\Patterns\ReleaseManagement\ReleaseManagementExtensions.cs">
       <Link>Patterns\ReleaseManagement\ReleaseManagementExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Threading\LazyThreadSafetyMode.cs">
+      <Link>Threading\LazyThreadSafetyMode.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BclContrib.snk" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="..\System.Abstract\Changelog.txt">
       <Link>Changelog.txt</Link>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\System.Abstract\Local.resx">
+      <Link>Local.resx</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

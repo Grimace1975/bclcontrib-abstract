@@ -71,7 +71,7 @@ namespace System.Abstract
             get
             {
                 if (_provider == null)
-                    throw new InvalidOperationException(Local.UndefinedServiceBusProvider);
+                    throw new InvalidOperationException(string.Format(Local.UndefinedServiceProviderA, "ServiceName"));
                 if (_service == null)
                     lock (_lock)
                         if (_service == null)
@@ -105,7 +105,7 @@ namespace System.Abstract
         IServiceSetup<TServiceSetupAction> IServiceSetup<TServiceSetupAction>.Do(TServiceSetupAction action)
         {
             _actions.Add(action);
-            return Setup;
+			return this;
         }
 
         //IServiceSetup<TServiceSetupAction> IServiceSetup<TServiceSetupAction>.RegisterWithServiceLocator() { return ((IServiceSetup<TServiceSetupAction>)this).Do(x => DoRegisterInServiceLocator(x, ServiceLocatorManager.GetDefaultServiceLocator(), null)); }
@@ -116,7 +116,7 @@ namespace System.Abstract
             if (locator != null)
                 throw new ArgumentNullException("locator");
             _actions.Add(_serviceLocatorRegistrar(locator, name));
-            return Setup;
+			return this;
             //((IServiceSetup<TServiceSetupAction>)this).Do(x =>
             // {
             //     IServiceLocator locator2 = locator();

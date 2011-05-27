@@ -26,23 +26,24 @@ THE SOFTWARE.
 using System.Collections.Generic;
 namespace System.Abstract
 {
-    /// <summary>
-    /// ServiceBusInstance
-    /// </summary>
-    public class ServiceBusInstance : ServiceInstanceBase<IServiceBus, Action<IServiceBus>>
-    {
-        public ServiceBusInstance()
-            : base(() => new ServiceBusInstance(), (service, setupActions) =>
-            {
-                foreach (var setupAction in setupActions)
-                    setupAction(service);
-            }, (locator, name) => service =>
-            {
-                var locator2 = locator();
-                RegisterInstance<IServiceBus>(locator2, service, name);
-                var publishingServiceBus = (service as IPublishingServiceBus);
-                if (publishingServiceBus != null)
-                    RegisterInstance<IPublishingServiceBus>(locator2, publishingServiceBus, name);
-            }) { }
-    }
+	/// <summary>
+	/// ServiceBusInstance
+	/// </summary>
+	public class ServiceBusInstance : ServiceInstanceBase<IServiceBus, Action<IServiceBus>>
+	{
+		public ServiceBusInstance()
+			: base(() => new ServiceBusInstance(), (service, setupActions) =>
+			{
+				if (setupActions != null)
+					foreach (var setupAction in setupActions)
+						setupAction(service);
+			}, (locator, name) => service =>
+			{
+				var locator2 = locator();
+				RegisterInstance<IServiceBus>(locator2, service, name);
+				var publishingServiceBus = (service as IPublishingServiceBus);
+				if (publishingServiceBus != null)
+					RegisterInstance<IPublishingServiceBus>(locator2, publishingServiceBus, name);
+			}) { }
+	}
 }

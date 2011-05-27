@@ -153,13 +153,7 @@
   <data name="UndefinedServiceCacheRegistrationAB" xml:space="preserve">
     <value>UndefinedServiceCacheRegistrationAB</value>
   </data>
-  <data name="UndefinedServiceBusProvider" xml:space="preserve">
-    <value>UndefinedServiceBusProvider</value>
-  </data>
-  <data name="UndefinedServiceLocatorProvider" xml:space="preserve">
-    <value>UndefinedServiceLocatorProvider</value>
-  </data>
-  <data name="UndefinedServiceLogProvider" xml:space="preserve">
-    <value>UndefinedServiceLogProvider</value>
+  <data name="UndefinedServiceProviderA" xml:space="preserve">
+    <value>UndefinedServiceProviderA</value>
   </data>
 </root>

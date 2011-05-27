@@ -26,16 +26,17 @@ THE SOFTWARE.
 using System.Collections.Generic;
 namespace System.Abstract
 {
-    /// <summary>
-    /// ServiceCacheInstance
-    /// </summary>
-    public class ServiceCacheInstance : ServiceInstanceBase<IServiceCache, Action<IServiceCache>>
-    {
-        public ServiceCacheInstance()
+	/// <summary>
+	/// ServiceCacheInstance
+	/// </summary>
+	public class ServiceCacheInstance : ServiceInstanceBase<IServiceCache, Action<IServiceCache>>
+	{
+		public ServiceCacheInstance()
 			: base(() => new ServiceCacheInstance(), (service, setupActions) =>
 			{
-				foreach (var setupAction in setupActions)
-					setupAction(service);
-            }, (locator, name) => service => { RegisterInstance<IServiceCache>(locator(), service, name); }) { }
-    }
+				if (setupActions != null)
+					foreach (var setupAction in setupActions)
+						setupAction(service);
+			}, (locator, name) => service => { RegisterInstance<IServiceCache>(locator(), service, name); }) { }
+	}
 }
