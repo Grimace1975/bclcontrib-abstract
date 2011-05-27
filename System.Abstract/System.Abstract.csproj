@@ -140,6 +140,7 @@
     <Compile Include="Contoso.Abstract+Impl\+ServiceLocator\MicroServiceLocator.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceLocator\MicroServiceRegistrar.cs" />
     <Compile Include="DateTimeEx2.cs" />
+    <Compile Include="ExceptionEx.cs" />
     <Compile Include="IO\+Mock\DirectoryMock.cs" />
     <Compile Include="IO\+Mock\DirectoryWrapper.cs" />
     <Compile Include="IO\+Mock\FileMock.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="IO\DirectoryEx2.cs" />
     <Compile Include="IO\FileEx2.cs" />
     <Compile Include="IO\PathEx2.cs" />
+    <Compile Include="Lazy.cs" />
     <Compile Include="Local.Designer.cs">
       <DependentUpon>Local.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -166,6 +168,8 @@
     <Compile Include="++ToFile\AssemblyTypeCatalog.cs" />
     <Compile Include="Abstract+TypeSerializer\ITypeSerializer.cs" />
     <Compile Include="++ToFile\ITypeCatalog.cs" />
+    <Compile Include="LazyDebugView.cs" />
+    <Compile Include="Threading\LazyThreadSafetyMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Local.resx">

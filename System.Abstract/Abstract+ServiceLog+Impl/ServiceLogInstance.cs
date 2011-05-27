@@ -34,8 +34,9 @@ namespace System.Abstract
 		public ServiceLogInstance()
 			: base(() => new ServiceLogInstance(), (service, setupActions) =>
 			{
-				foreach (var setupAction in setupActions)
-					setupAction(service);
-            }, (locator, name) => service => { RegisterInstance<IServiceLog>(locator(), service, name); }) { }
+				if (setupActions != null)
+					foreach (var setupAction in setupActions)
+						setupAction(service);
+			}, (locator, name) => service => { RegisterInstance<IServiceLog>(locator(), service, name); }) { }
 	}
 }

@@ -24,12 +24,14 @@ THE SOFTWARE.
 */
 #endregion
 using System.Patterns.ReleaseManagement;
+using System.Globalization;
+using System.Security;
 namespace System
 {
     /// <summary>
-    /// EnvironmentEx
+    /// EnvironmentEx2
     /// </summary>
-    public static partial class EnvironmentEx
+    public static partial class EnvironmentEx2
     {
         private static DeploymentEnvironment _deploymentEnvironment = DeploymentEnvironment.Production;
         private static DevelopmentStage _developmentStage = DevelopmentStage.Release;
@@ -60,7 +62,7 @@ namespace System
 
         #endregion
 
-        static EnvironmentEx()
+		static EnvironmentEx2()
         {
             ApplicationID = "NONE";
         }
@@ -124,5 +126,19 @@ namespace System
             return _mock.NextID();
         }
 #endif
+
+
+		[SecurityCritical]
+		internal static string GetResourceFromDefault(string key) { return key; }
+
+		[SecuritySafeCritical] //, TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
+		internal static string GetResourceString(string key) { return GetResourceFromDefault(key); }
+
+		[SecuritySafeCritical]
+		internal static string GetResourceString(string key, params object[] values)
+		{
+			string resourceFromDefault = GetResourceFromDefault(key);
+			return string.Format(CultureInfo.CurrentCulture, resourceFromDefault, values);
+		}
     }
 }

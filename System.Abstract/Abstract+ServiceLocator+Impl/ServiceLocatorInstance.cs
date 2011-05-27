@@ -36,9 +36,10 @@ namespace System.Abstract
 			{
 				var registrar = service.GetRegistrar();
 				RegisterSelfInLocator(registrar, service);
-				foreach (var setupAction in setupActions)
-					setupAction(registrar, service);
-            }, (locator, name) => (r, service) => { RegisterInstance<IServiceLocator>(locator(), service, name); }) { }
+				if (setupActions != null)
+					foreach (var setupAction in setupActions)
+						setupAction(registrar, service);
+			}, (locator, name) => (r, service) => { RegisterInstance<IServiceLocator>(locator(), service, name); }) { }
 
 		private static void RegisterSelfInLocator(IServiceRegistrar registrar, IServiceLocator locator)
 		{
