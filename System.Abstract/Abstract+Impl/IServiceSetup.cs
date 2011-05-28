@@ -32,8 +32,8 @@ namespace System.Abstract
 	public interface IServiceSetup<TServiceSetupAction>
 	{
 		IServiceSetup<TServiceSetupAction> Do(TServiceSetupAction action);
-        //IServiceSetup<TServiceSetupAction> RegisterWithServiceLocator();
-        //IServiceSetup<TServiceSetupAction> RegisterWithServiceLocator(string name);
+        IServiceSetup<TServiceSetupAction> RegisterWithServiceLocator();
+        IServiceSetup<TServiceSetupAction> RegisterWithServiceLocator(string name);
         IServiceSetup<TServiceSetupAction> RegisterWithServiceLocator(Func<IServiceLocator> locator);
         IServiceSetup<TServiceSetupAction> RegisterWithServiceLocator(Func<IServiceLocator> locator, string name);
 		IEnumerable<TServiceSetupAction> ToList();

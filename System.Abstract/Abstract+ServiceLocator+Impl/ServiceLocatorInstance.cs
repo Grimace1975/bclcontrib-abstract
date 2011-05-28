@@ -32,7 +32,7 @@ namespace System.Abstract
 	public class ServiceLocatorInstance : ServiceInstanceBase<IServiceLocator, Action<IServiceRegistrar, IServiceLocator>>
 	{
 		public ServiceLocatorInstance()
-			: base(() => new ServiceLocatorInstance(), (service, setupActions) =>
+			: base(() => new ServiceSetup(), (service, setupActions) =>
 			{
 				var registrar = service.GetRegistrar();
 				RegisterSelfInLocator(registrar, service);

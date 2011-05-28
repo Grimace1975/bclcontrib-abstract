@@ -32,7 +32,7 @@ namespace System.Abstract
 	public class ServiceBusInstance : ServiceInstanceBase<IServiceBus, Action<IServiceBus>>
 	{
 		public ServiceBusInstance()
-			: base(() => new ServiceBusInstance(), (service, setupActions) =>
+			: base(() => new ServiceSetup(), (service, setupActions) =>
 			{
 				if (setupActions != null)
 					foreach (var setupAction in setupActions)

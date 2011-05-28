@@ -32,11 +32,15 @@ namespace System.Abstract
 	public class ServiceCacheInstance : ServiceInstanceBase<IServiceCache, Action<IServiceCache>>
 	{
 		public ServiceCacheInstance()
-			: base(() => new ServiceCacheInstance(), (service, setupActions) =>
-			{
-				if (setupActions != null)
-					foreach (var setupAction in setupActions)
-						setupAction(service);
-			}, (locator, name) => service => { RegisterInstance<IServiceCache>(locator(), service, name); }) { }
+			: base(() => new ServiceSetup(),
+				// setup
+				(service, setupActions) =>
+				{
+					if (setupActions != null)
+						foreach (var setupAction in setupActions)
+							setupAction(service);
+				},
+				// register
+				(locator, name) => (service => RegisterInstance<IServiceCache>(locator(), service, name))) { }
 	}
 }
