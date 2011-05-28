@@ -45,7 +45,6 @@ namespace Contoso.Abstract
                 Append,
                 AppendCas,
                 Store,
-                CasPlain,
                 Cas,
             }
 
@@ -54,7 +53,6 @@ namespace Contoso.Abstract
                 Prepend,
                 PrependCas,
                 Store,
-                CasPlain,
                 Cas,
                 Decrement,
                 DecrementCas,
@@ -89,9 +87,9 @@ namespace Contoso.Abstract
                     var plainCas = (CasResult<object>)tag;
                     cas = plainCas.Cas;
                     opvalue = null;
-                    return AddOpcode.Store;
+                    return AddOpcode.Cas;
                 }
-                // append/prepend
+                // append
                 if (tag is ArraySegment<byte>)
                 {
                     cas = 0;
@@ -134,9 +132,9 @@ namespace Contoso.Abstract
                     var plainCas = (CasResult<object>)tag;
                     cas = plainCas.Cas;
                     opvalue = null;
-                    return SetOpcode.Store;
+                    return SetOpcode.Cas;
                 }
-                // append/prepend
+                // prepend
                 if (tag is ArraySegment<byte>)
                 {
                     cas = 0;

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>BclContrib-Abstract.Autofac</id>
-    <version>0.1.3</version>
+    <version>0.1.4</version>
     <authors>Sky Morey</authors>
     <owners>Sky Morey</owners>
     <description>This package contains an Autofac implementation of the abstract ServiceLocator.</description>
@@ -11,7 +11,7 @@
     <tags>autofac servicelocator ioc di bclcontrib</tags>
     <language>en-US</language>
     <dependencies>
-      <dependency id="BclContrib-Abstract" version="0.1.3" />
+      <dependency id="BclContrib-Abstract" version="0.1.4" />
       <dependency id="Autofac" version="2.4.5.725" />
     </dependencies>
   </metadata>

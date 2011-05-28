@@ -122,7 +122,6 @@ namespace Contoso.Abstract
                 {
                     case TagMapper.AddOpcode.Append: return Cache.Append(name, (ArraySegment<byte>)opvalue);
                     case TagMapper.AddOpcode.AppendCas: return Cache.Append(name, cas, (ArraySegment<byte>)opvalue);
-                    case TagMapper.AddOpcode.CasPlain: return Cache.Cas(StoreMode.Add, name, value);
                     case TagMapper.AddOpcode.Store: return Cache.Store(StoreMode.Add, name, value);
                     case TagMapper.AddOpcode.Cas: return Cache.Cas(StoreMode.Add, name, value, cas);
                     default: throw new InvalidOperationException();
@@ -191,7 +190,6 @@ namespace Contoso.Abstract
                 {
                     case TagMapper.SetOpcode.Prepend: return Cache.Prepend(name, (ArraySegment<byte>)opvalue);
                     case TagMapper.SetOpcode.PrependCas: return Cache.Prepend(name, cas, (ArraySegment<byte>)opvalue);
-                    case TagMapper.SetOpcode.CasPlain: return Cache.Cas(storeMode, name, value);
                     //
                     case TagMapper.SetOpcode.Store: return Cache.Store(storeMode, name, value);
                     case TagMapper.SetOpcode.Cas: return Cache.Cas(storeMode, name, value, cas);
@@ -206,7 +204,6 @@ namespace Contoso.Abstract
                 {
                     case TagMapper.SetOpcode.Prepend:
                     case TagMapper.SetOpcode.PrependCas:
-                    case TagMapper.SetOpcode.CasPlain:
                         throw new NotSupportedException("Operation not supported with absoluteExpiration && slidingExpiration");
                     case TagMapper.SetOpcode.Store: return Cache.Store(storeMode, name, value, absoluteExpiration);
                     case TagMapper.SetOpcode.Cas: return Cache.Cas(storeMode, name, value, absoluteExpiration, cas);
@@ -221,7 +218,6 @@ namespace Contoso.Abstract
                 {
                     case TagMapper.SetOpcode.Prepend:
                     case TagMapper.SetOpcode.PrependCas:
-                    case TagMapper.SetOpcode.CasPlain:
                         throw new NotSupportedException("Operation not supported with absoluteExpiration && slidingExpiration");
                     case TagMapper.SetOpcode.Store: return Cache.Store(storeMode, name, value, slidingExpiration);
                     case TagMapper.SetOpcode.Cas: return Cache.Cas(storeMode, name, value, slidingExpiration, cas);

@@ -5,20 +5,21 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{823CF03D-74EC-4D3B-BEF1-7344F73E8E82}</ProjectGuid>
+    <ProjectGuid>{6ECD2B38-B550-430E-A90B-E770512BF458}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Contoso.Abstract</RootNamespace>
-    <AssemblyName>Contoso.Abstract.Memcached</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <AssemblyName>Contoso.Abstract.MvcTurbine</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CLR4</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -26,10 +27,10 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;CLR4</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Contoso.Abstract.Memcached.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Contoso.Abstract.MvcTurbine.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -38,32 +39,20 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Contoso.Abstract.Memcached\Abstract\MemcachedServiceCache+TagMapper.cs">
-      <Link>Abstract\MemcachedServiceCache+TagMapper.cs</Link>
-    </Compile>
-    <Compile Include="..\Contoso.Abstract.Memcached\Abstract\MemcachedServiceCache.cs">
-      <Link>Abstract\MemcachedServiceCache.cs</Link>
-    </Compile>
+    <Compile Include="Abstract\RegistrationStub.cs" />
+    <Compile Include="Abstract\TurbineServiceLocatorAbstractor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BclContrib.snk" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Contoso.Abstract.Memcached\Changelog.txt">
-      <Link>Changelog.txt</Link>
-    </Content>
+    <Content Include="Changelog.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Enyim.Caching">
-      <HintPath>..\packages\EnyimMemcached.2.7\lib\NET35\Enyim.Caching.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\System.Abstract.4\System.Abstract.4.csproj">
-      <Project>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</Project>
-      <Name>System.Abstract.4</Name>
+    <ProjectReference Include="..\System.Abstract\System.Abstract.csproj">
+      <Project>{A44E9D89-BFF2-41A4-AADC-3C2BDFDAEEB1}</Project>
+      <Name>System.Abstract</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

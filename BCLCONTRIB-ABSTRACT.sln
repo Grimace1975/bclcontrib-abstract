@@ -75,7 +75,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.Memcached"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.Memcached.4", "Contoso.Abstract.Memcached.4\Contoso.Abstract.Memcached.4.csproj", "{823CF03D-74EC-4D3B-BEF1-7344F73E8E82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.MvcTurbine.4", "Contoso.MvcTurbine.4\Contoso.MvcTurbine.4.csproj", "{1BE7E10E-2D69-40A6-B78C-D2BB81687D2B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.MvcTurbine.4", "Contoso.Abstract.MvcTurbine.4\Contoso.Abstract.MvcTurbine.4.csproj", "{1BE7E10E-2D69-40A6-B78C-D2BB81687D2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.MvcTurbine", "Contoso.Abstract.MvcTurbine\Contoso.Abstract.MvcTurbine.csproj", "{6ECD2B38-B550-430E-A90B-E770512BF458}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -467,8 +469,21 @@ Global
 		{1BE7E10E-2D69-40A6-B78C-D2BB81687D2B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{1BE7E10E-2D69-40A6-B78C-D2BB81687D2B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{1BE7E10E-2D69-40A6-B78C-D2BB81687D2B}.Release|x86.ActiveCfg = Release|Any CPU
+		{6ECD2B38-B550-430E-A90B-E770512BF458}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ECD2B38-B550-430E-A90B-E770512BF458}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6ECD2B38-B550-430E-A90B-E770512BF458}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{6ECD2B38-B550-430E-A90B-E770512BF458}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{6ECD2B38-B550-430E-A90B-E770512BF458}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6ECD2B38-B550-430E-A90B-E770512BF458}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6ECD2B38-B550-430E-A90B-E770512BF458}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6ECD2B38-B550-430E-A90B-E770512BF458}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{6ECD2B38-B550-430E-A90B-E770512BF458}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{6ECD2B38-B550-430E-A90B-E770512BF458}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 EndGlobal
