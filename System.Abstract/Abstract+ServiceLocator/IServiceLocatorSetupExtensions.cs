@@ -64,10 +64,10 @@ namespace System.Abstract
             var matchedTypes = assemblies.SelectMany(a => a.GetTypes())
                 .Where(t => (!t.IsInterface) && (!t.IsAbstract) && (t.GetInterfaces().Contains(registrationType)))
                 .ToList();
-            foreach (var matchedType in matchedTypes)
-                locator.Resolve<IServiceRegistration>(matchedType).Register(registrar);
+			//foreach (var matchedType in matchedTypes)
+			//    locator.Resolve<IServiceRegistration>(matchedType).Register(registrar);
             // default registation
-            var remainingAssemblies = assemblies.Where(a => !matchedTypes.Any(y => y.Assembly == a));
+            var remainingAssemblies = assemblies; //.Where(a => !matchedTypes.Any(y => y.Assembly == a));
             ApplyDefaultNamingConvention(remainingAssemblies, predicate, (interfaceType, type) => registrar.Register(interfaceType, type));
         }
 

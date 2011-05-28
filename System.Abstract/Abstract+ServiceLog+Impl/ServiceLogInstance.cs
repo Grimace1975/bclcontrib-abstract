@@ -32,7 +32,7 @@ namespace System.Abstract
 	public class ServiceLogInstance : ServiceInstanceBase<IServiceLog, Action<IServiceLog>>
 	{
 		public ServiceLogInstance()
-			: base(() => new ServiceLogInstance(), (service, setupActions) =>
+			: base(() => new ServiceSetup(), (service, setupActions) =>
 			{
 				if (setupActions != null)
 					foreach (var setupAction in setupActions)
