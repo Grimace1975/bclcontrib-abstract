@@ -8,8 +8,8 @@
     <ProjectGuid>{1BE7E10E-2D69-40A6-B78C-D2BB81687D2B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Contoso.MvcTurbine</RootNamespace>
-    <AssemblyName>Contoso.MvcTurbine</AssemblyName>
+    <RootNamespace>Contoso.Abstract</RootNamespace>
+    <AssemblyName>Contoso.Abstract.MvcTurbine</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CLR4</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -26,9 +26,10 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;CLR4</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Contoso.Abstract.MvcTurbine.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -37,8 +38,12 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="TurbineServiceLocatorAbstractor.cs" />
-    <Compile Include="RegistrationStub.cs" />
+    <Compile Include="..\Contoso.Abstract.MvcTurbine\Abstract\RegistrationStub.cs">
+      <Link>Abstract\RegistrationStub.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.MvcTurbine\Abstract\TurbineServiceLocatorAbstractor.cs">
+      <Link>Abstract\TurbineServiceLocatorAbstractor.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +63,11 @@
       <Project>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</Project>
       <Name>System.Abstract.4</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Contoso.Abstract.MvcTurbine\Changelog.txt">
+      <Link>Changelog.txt</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
