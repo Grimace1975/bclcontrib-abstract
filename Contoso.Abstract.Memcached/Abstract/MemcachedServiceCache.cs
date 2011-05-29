@@ -75,13 +75,14 @@ namespace Contoso.Abstract
             : this(configuration == null ? new MemcachedClient() : new MemcachedClient(configuration), new TagMapper()) { }
         public MemcachedServiceCache(IMemcachedClient client)
             : this(client, new TagMapper()) { }
-        public MemcachedServiceCache(IMemcachedClient client, ITagMapper x)
+        public MemcachedServiceCache(IMemcachedClient client, ITagMapper tagMapper)
         {
             if (client == null)
                 throw new ArgumentNullException("client");
             Cache = client;
             RegistrationDispatch = new DefaultServiceCacheRegistrationDispatcher();
-            _tagMapper = x;
+            _tagMapper = tagMapper;
+            ServiceCacheManager.Setup(this);
         }
         ~MemcachedServiceCache()
         {
@@ -98,6 +99,8 @@ namespace Contoso.Abstract
                 finally { Cache = null; }
             }
         }
+
+        public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         public object this[string name]
         {

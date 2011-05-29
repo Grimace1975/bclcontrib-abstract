@@ -30,7 +30,7 @@ namespace System.Abstract
 	/// <summary>
 	/// IServiceCache
 	/// </summary>
-	public interface IServiceCache
+    public interface IServiceCache : IServiceProvider
 	{
 		object this[string name] { get; set; }
 
@@ -294,5 +294,14 @@ namespace System.Abstract
 		}
 
 		#endregion
+
+        #region Lazy Setup
+
+        public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> lazy) { ServiceCacheManager.SetupActions(lazy).RegisterWithServiceLocator(null); return lazy; }
+        public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> lazy, string name) { ServiceCacheManager.SetupActions(lazy).RegisterWithServiceLocator(name); return lazy; }
+        public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> lazy, Func<IServiceLocator> locator) { ServiceCacheManager.SetupActions(lazy).RegisterWithServiceLocator(locator, null); return lazy; }
+        public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> lazy, Func<IServiceLocator> locator, string name) { ServiceCacheManager.SetupActions(lazy).RegisterWithServiceLocator(locator, name); return lazy; }
+
+        #endregion
 	}
 }

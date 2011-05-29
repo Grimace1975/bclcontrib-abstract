@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Example</RootNamespace>
     <AssemblyName>Example</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -44,99 +44,108 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationBus\ConstructorExamples.cs" />
+    <Compile Include="Examples.cs" />
     <Compile Include="Memcached\ConstructorExamples.cs" />
     <Compile Include="ServiceCacheExamples.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Contoso.Abstract.ApplicationBus.4\Contoso.Abstract.ApplicationBus.4.csproj">
-      <Project>{2D0DAEDD-96E3-4395-AA31-A2407B03CB95}</Project>
-      <Name>Contoso.Abstract.ApplicationBus.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.Autofac.4\Contoso.Abstract.Autofac.4.csproj">
-      <Project>{078ECB87-6595-448E-8054-FB999B0DB350}</Project>
-      <Name>Contoso.Abstract.Autofac.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.CastleWindsor.4\Contoso.Abstract.CastleWindsor.4.csproj">
-      <Project>{BBF59724-E4CC-4243-9E43-9860B39EAB69}</Project>
-      <Name>Contoso.Abstract.CastleWindsor.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.Hiro.4\Contoso.Abstract.Hiro.4.csproj">
-      <Project>{EE635BC7-9410-471D-9C8C-A89302DF0822}</Project>
-      <Name>Contoso.Abstract.Hiro.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.Memcached.4\Contoso.Abstract.Memcached.4.csproj">
-      <Project>{823CF03D-74EC-4D3B-BEF1-7344F73E8E82}</Project>
-      <Name>Contoso.Abstract.Memcached.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.MongoDB.4\Contoso.Abstract.MongoDB.4.csproj">
-      <Project>{F3B9AFC0-A8D9-4D7F-B660-54553A8A7A30}</Project>
-      <Name>Contoso.Abstract.MongoDB.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.Msmq.4\Contoso.Abstract.Msmq.4.csproj">
-      <Project>{38A2CF20-3E58-4C61-AEAC-4230C0F3F8AC}</Project>
-      <Name>Contoso.Abstract.Msmq.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.MvcTurbine.4\Contoso.Abstract.MvcTurbine.4.csproj">
-      <Project>{1BE7E10E-2D69-40A6-B78C-D2BB81687D2B}</Project>
-      <Name>Contoso.Abstract.MvcTurbine.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.Ninject.4\Contoso.Abstract.Ninject.4.csproj">
-      <Project>{D85B51C1-9B97-4AF0-B0BE-BAE93866103A}</Project>
-      <Name>Contoso.Abstract.Ninject.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.NServiceBus.4\Contoso.Abstract.NServiceBus.4.csproj">
-      <Project>{9F470F63-B509-4B5F-B2A4-3364914935E4}</Project>
-      <Name>Contoso.Abstract.NServiceBus.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.RabbitMQ.4\Contoso.Abstract.RabbitMQ.4.csproj">
-      <Project>{2512C0B2-013C-4E2C-8BA1-29B919B3CFB3}</Project>
-      <Name>Contoso.Abstract.RabbitMQ.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.ServerAppFabric.4\Contoso.Abstract.ServerAppFabric.4.csproj">
-      <Project>{5E99415E-B741-446D-B640-6EDF90063994}</Project>
-      <Name>Contoso.Abstract.ServerAppFabric.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.SimpleBus.4\Contoso.Abstract.SimpleBus.4.csproj">
-      <Project>{3CBEF415-B71A-4811-A615-8635A778E281}</Project>
-      <Name>Contoso.Abstract.SimpleBus.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.SimpleCqrs.4\Contoso.Abstract.SimpleCqrs.4.csproj">
-      <Project>{14D5934C-F462-4087-89A9-579E7F7BE704}</Project>
-      <Name>Contoso.Abstract.SimpleCqrs.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.SpringNet.4\Contoso.Abstract.SpringNet.4.csproj">
-      <Project>{AF124673-8996-4EB5-A2E5-AF94C7B8F667}</Project>
-      <Name>Contoso.Abstract.SpringNet.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.Sql.4\Contoso.Abstract.Sql.4.csproj">
-      <Project>{875FB8E5-8631-42E5-9DA2-8D8037627592}</Project>
-      <Name>Contoso.Abstract.Sql.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.StructureMap.4\Contoso.Abstract.StructureMap.4.csproj">
-      <Project>{C8B19127-C82E-45C5-8A6D-DA22AE9C8A7B}</Project>
-      <Name>Contoso.Abstract.StructureMap.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.TypeSerializer.4\Contoso.Abstract.TypeSerializer.4.csproj">
-      <Project>{4B9E4DED-536A-450E-9B34-53383D3D1BFC}</Project>
-      <Name>Contoso.Abstract.TypeSerializer.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.Unity.4\Contoso.Abstract.Unity.4.csproj">
-      <Project>{D8273634-E428-474A-98EB-4D9374F782A2}</Project>
-      <Name>Contoso.Abstract.Unity.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.Web.4\Contoso.Abstract.Web.4.csproj">
-      <Project>{4FF6400F-0C67-4156-AE24-9DC8D3A36FF8}</Project>
-      <Name>Contoso.Abstract.Web.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\System.Abstract.4\System.Abstract.4.csproj">
-      <Project>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</Project>
-      <Name>System.Abstract.4</Name>
-    </ProjectReference>
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <ProjectReference Include="..\Contoso.Abstract.ApplicationBus\Contoso.Abstract.ApplicationBus.csproj">
+      <Project>{7F717114-B597-4B43-931A-529F696A549A}</Project>
+      <Name>Contoso.Abstract.ApplicationBus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.Autofac\Contoso.Abstract.Autofac.csproj">
+      <Project>{3AB44594-75F2-4D20-8450-F3FA9D4DE763}</Project>
+      <Name>Contoso.Abstract.Autofac</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.CastleWindsor\Contoso.Abstract.CastleWindsor.csproj">
+      <Project>{C03A8167-F65E-4271-978C-E72914C9C311}</Project>
+      <Name>Contoso.Abstract.CastleWindsor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.Hiro\Contoso.Abstract.Hiro.csproj">
+      <Project>{60E87E13-151E-40A4-A896-D1C3E2B4DEE7}</Project>
+      <Name>Contoso.Abstract.Hiro</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.Log4Net\Contoso.Abstract.Log4Net.csproj">
+      <Project>{539BA0CF-E8E4-4501-A6A8-F7E695BCFA19}</Project>
+      <Name>Contoso.Abstract.Log4Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.Memcached\Contoso.Abstract.Memcached.csproj">
+      <Project>{4681087B-F518-41B5-A6AB-5421F7BD198A}</Project>
+      <Name>Contoso.Abstract.Memcached</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.MongoDB\Contoso.Abstract.MongoDB.csproj">
+      <Project>{02959882-7BAC-4763-B26E-58ED362A9A3F}</Project>
+      <Name>Contoso.Abstract.MongoDB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.Msmq\Contoso.Abstract.Msmq.csproj">
+      <Project>{329592DA-BAC3-41D0-9197-EC1186A28560}</Project>
+      <Name>Contoso.Abstract.Msmq</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.MvcTurbine\Contoso.Abstract.MvcTurbine.csproj">
+      <Project>{6ECD2B38-B550-430E-A90B-E770512BF458}</Project>
+      <Name>Contoso.Abstract.MvcTurbine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.Ninject\Contoso.Abstract.Ninject.csproj">
+      <Project>{03A4AE50-0401-4DDB-96E8-B90A5D64FA93}</Project>
+      <Name>Contoso.Abstract.Ninject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.NLog\Contoso.Abstract.NLog.csproj">
+      <Project>{46DBED3F-72CA-4FE8-9C61-97C39E655F45}</Project>
+      <Name>Contoso.Abstract.NLog</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.NServiceBus\Contoso.Abstract.NServiceBus.csproj">
+      <Project>{BF36681D-4869-48B6-B2E9-F78430206F62}</Project>
+      <Name>Contoso.Abstract.NServiceBus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.RabbitMQ\Contoso.Abstract.RabbitMQ.csproj">
+      <Project>{23DE10E6-3675-417C-A0E6-FE9CF566CBB0}</Project>
+      <Name>Contoso.Abstract.RabbitMQ</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.ServerAppFabric\Contoso.Abstract.ServerAppFabric.csproj">
+      <Project>{11AB87CE-AC55-4371-B2FB-F8D8E445654F}</Project>
+      <Name>Contoso.Abstract.ServerAppFabric</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.SimpleBus\Contoso.Abstract.SimpleBus.csproj">
+      <Project>{1AE81111-2088-4963-BBFC-27C7D098FD80}</Project>
+      <Name>Contoso.Abstract.SimpleBus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.SimpleCqrs\Contoso.Abstract.SimpleCqrs.csproj">
+      <Project>{C2F4F0D8-979A-4DCB-AC26-9701F7D46224}</Project>
+      <Name>Contoso.Abstract.SimpleCqrs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.SpringNet\Contoso.Abstract.SpringNet.csproj">
+      <Project>{08D54C60-5744-423F-A700-9ABE13C62B20}</Project>
+      <Name>Contoso.Abstract.SpringNet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.Sql\Contoso.Abstract.Sql.csproj">
+      <Project>{530515EF-6DFC-4A59-BCF2-F0F998DC6D89}</Project>
+      <Name>Contoso.Abstract.Sql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.StructureMap\Contoso.Abstract.StructureMap.csproj">
+      <Project>{48DC2445-A460-4B42-B175-10B0924B248C}</Project>
+      <Name>Contoso.Abstract.StructureMap</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.TypeSerializer\Contoso.Abstract.TypeSerializer.csproj">
+      <Project>{45479754-BA8C-46CE-B42A-1432EC8CEE6B}</Project>
+      <Name>Contoso.Abstract.TypeSerializer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.Unity\Contoso.Abstract.Unity.csproj">
+      <Project>{21FCE5EA-3C6D-43D7-9984-1278307AB77E}</Project>
+      <Name>Contoso.Abstract.Unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.Web\Contoso.Abstract.Web.csproj">
+      <Project>{D1EBE7A3-1CFD-438C-A007-FF281F0B1D2A}</Project>
+      <Name>Contoso.Abstract.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Abstract\System.Abstract.csproj">
+      <Project>{A44E9D89-BFF2-41A4-AADC-3C2BDFDAEEB1}</Project>
+      <Name>System.Abstract</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

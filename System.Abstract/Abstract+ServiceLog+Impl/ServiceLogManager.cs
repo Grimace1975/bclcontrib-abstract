@@ -29,5 +29,20 @@ namespace System.Abstract
     /// <summary>
     /// ServiceLogManager
     /// </summary>
-	public class ServiceLogManager : ServiceManagerBase<ServiceLogInstance, IServiceLog, Action<IServiceLog>> { }
+    public class ServiceLogManager : ServiceManagerBase<IServiceLog, Action<IServiceLog>>
+    {
+        static ServiceLogManager()
+        {
+            Registration = new SetupRegistration
+            {
+                OnSetup = (service, setupActions) =>
+                {
+                    if (setupActions != null)
+                        foreach (var setupAction in setupActions)
+                            setupAction(service);
+                },
+                ServiceLocatorRegistrar = (locator, name) => (service => RegisterInstance(locator(), service, name)),
+            };
+        }
+    }
 }

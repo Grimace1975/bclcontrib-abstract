@@ -53,7 +53,10 @@ namespace Contoso.Abstract
 			Cache = cache;
 			Settings = new ServiceCacheSettings();
 			RegistrationDispatch = new DefaultServiceCacheRegistrationDispatcher();
+            ServiceCacheManager.Setup(this);
 		}
+
+        public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
 		public object this[string name]
 		{
@@ -132,11 +135,11 @@ namespace Contoso.Abstract
 		public ServiceCacheSettings Settings { get; private set; }
 		public ServiceCacheRegistration.IDispatch RegistrationDispatch { get; private set; }
 
-		#region Domain-specific
+#region Domain-specific
 
 		public SystemCaching.ObjectCache Cache { get; private set; }
 
-		#endregion
+#endregion
 
 		private SystemCaching.CacheItemPolicy MapToSystemCacheItemPolicy(object tag, CacheItemPolicy itemPolicy)
 		{

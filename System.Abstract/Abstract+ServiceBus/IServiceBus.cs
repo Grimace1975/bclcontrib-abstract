@@ -28,7 +28,7 @@ namespace System.Abstract
     /// <summary>
     /// IServiceBus
     /// </summary>
-    public interface IServiceBus
+    public interface IServiceBus : IServiceProvider
     {
         TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder) where TMessage : IServiceMessage;
         IServiceBusCallback Send(IServiceBusLocation destination, params IServiceMessage[] messages);
@@ -48,5 +48,14 @@ namespace System.Abstract
         // send
         public static IServiceBusCallback Send(this IServiceBus serviceBus, params IServiceMessage[] messages) { return serviceBus.Send(null, messages); }
         public static IServiceBusCallback Send(this IServiceBus serviceBus, string destination, params IServiceMessage[] messages) { return serviceBus.Send(new LiteralServiceBusLocation(destination), messages); }
+
+        #region Lazy Setup
+
+        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> lazy) { ServiceBusManager.SetupActions(lazy).RegisterWithServiceLocator(null); return lazy; }
+        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> lazy, string name) { ServiceBusManager.SetupActions(lazy).RegisterWithServiceLocator(name); return lazy; }
+        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> lazy, Func<IServiceLocator> locator) { ServiceBusManager.SetupActions(lazy).RegisterWithServiceLocator(locator, null); return lazy; }
+        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> lazy, Func<IServiceLocator> locator, string name) { ServiceBusManager.SetupActions(lazy).RegisterWithServiceLocator(locator, name); return lazy; }
+
+        #endregion
     }
 }

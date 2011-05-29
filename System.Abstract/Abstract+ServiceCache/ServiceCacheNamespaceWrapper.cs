@@ -29,7 +29,7 @@ namespace System.Abstract
     /// <summary>
     /// ServiceCacheNamespaceWrapper
     /// </summary>
-    public class ServiceCacheNamespaceWrapper : IServiceCache
+    public struct ServiceCacheNamespaceWrapper : IServiceCache
     {
         private IServiceCache _parent;
         private string _namespace;
@@ -44,18 +44,20 @@ namespace System.Abstract
             _namespace = @namespace;
         }
 
+        public object GetService(Type serviceType) { return _parent.GetService(serviceType); }
+
         public object this[string name]
         {
             get { return _parent[_namespace + name]; }
             set { _parent[_namespace + name] = value; }
         }
-		public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value) { return _parent.Add(tag, _namespace + name, itemPolicy, value); }
+        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value) { return _parent.Add(tag, _namespace + name, itemPolicy, value); }
         public object Get(object tag, string name) { return _parent.Get(tag, _namespace + name); }
-		public object Get(object tag, IEnumerable<string> names) { return _parent.Get(tag, names); }
-		public bool TryGet(object tag, string name, out object value) { return _parent.TryGet(tag, name, out value); }
+        public object Get(object tag, IEnumerable<string> names) { return _parent.Get(tag, names); }
+        public bool TryGet(object tag, string name, out object value) { return _parent.TryGet(tag, name, out value); }
         public object Remove(object tag, string name) { return _parent.Remove(tag, _namespace + name); }
-		public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value) { return _parent.Add(tag, _namespace + name, itemPolicy, value); }
-        public void Touch(object tag, params string[] names) { _parent.Touch(tag, names);  }
+        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value) { return _parent.Add(tag, _namespace + name, itemPolicy, value); }
+        public void Touch(object tag, params string[] names) { _parent.Touch(tag, names); }
 
         public IServiceCache Parent
         {
@@ -67,13 +69,13 @@ namespace System.Abstract
             get { return _namespace; }
         }
 
-		public ServiceCacheSettings Settings
-		{
-			get { return _parent.Settings; }
-		}
-		public ServiceCacheRegistration.IDispatch RegistrationDispatch
-		{
-			get { return _parent.RegistrationDispatch; }
-		}
-	}
+        public ServiceCacheSettings Settings
+        {
+            get { return _parent.Settings; }
+        }
+        public ServiceCacheRegistration.IDispatch RegistrationDispatch
+        {
+            get { return _parent.RegistrationDispatch; }
+        }
+    }
 }

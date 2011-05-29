@@ -95,6 +95,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.Log4Net.4"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.Log4Net", "Contoso.Abstract.Log4Net\Contoso.Abstract.Log4Net.csproj", "{539BA0CF-E8E4-4501-A6A8-F7E695BCFA19}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.4", "Example.4\Example.4.csproj", "{0194BC96-FBEE-49A9-9F9B-6FB7D55E810B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -575,6 +577,16 @@ Global
 		{539BA0CF-E8E4-4501-A6A8-F7E695BCFA19}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{539BA0CF-E8E4-4501-A6A8-F7E695BCFA19}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{539BA0CF-E8E4-4501-A6A8-F7E695BCFA19}.Release|x86.ActiveCfg = Release|Any CPU
+		{0194BC96-FBEE-49A9-9F9B-6FB7D55E810B}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{0194BC96-FBEE-49A9-9F9B-6FB7D55E810B}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{0194BC96-FBEE-49A9-9F9B-6FB7D55E810B}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{0194BC96-FBEE-49A9-9F9B-6FB7D55E810B}.Debug|x86.ActiveCfg = Debug|x86
+		{0194BC96-FBEE-49A9-9F9B-6FB7D55E810B}.Debug|x86.Build.0 = Debug|x86
+		{0194BC96-FBEE-49A9-9F9B-6FB7D55E810B}.Release|Any CPU.ActiveCfg = Release|x86
+		{0194BC96-FBEE-49A9-9F9B-6FB7D55E810B}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{0194BC96-FBEE-49A9-9F9B-6FB7D55E810B}.Release|Mixed Platforms.Build.0 = Release|x86
+		{0194BC96-FBEE-49A9-9F9B-6FB7D55E810B}.Release|x86.ActiveCfg = Release|x86
+		{0194BC96-FBEE-49A9-9F9B-6FB7D55E810B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

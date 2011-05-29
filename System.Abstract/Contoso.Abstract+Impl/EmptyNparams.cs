@@ -25,7 +25,7 @@ THE SOFTWARE.
 #endregion
 #if EXPERIMENTAL
 using System.Collections.Generic;
-namespace Contoso
+namespace Contoso.Abstract
 {
     /// <summary>
     /// EmptyNparams

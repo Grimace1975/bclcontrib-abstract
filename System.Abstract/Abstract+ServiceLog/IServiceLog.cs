@@ -28,7 +28,7 @@ namespace System.Abstract
     /// <summary>
     /// IServiceLog
     /// </summary>
-    public interface IServiceLog
+    public interface IServiceLog : IServiceProvider
     {
         object GetLogger(object tag);
         void LogEvent(object logger, ServiceLogEventType eventType, string module, string text, params object[] args);
@@ -40,5 +40,13 @@ namespace System.Abstract
     /// </summary>
     public static class IServiceLogExtensions
     {
+        #region Lazy Setup
+
+        public static Lazy<IServiceLog> RegisterWithServiceLocator(this Lazy<IServiceLog> lazy) { ServiceLogManager.SetupActions(lazy).RegisterWithServiceLocator(null); return lazy; }
+        public static Lazy<IServiceLog> RegisterWithServiceLocator(this Lazy<IServiceLog> lazy, string name) { ServiceLogManager.SetupActions(lazy).RegisterWithServiceLocator(name); return lazy; }
+        public static Lazy<IServiceLog> RegisterWithServiceLocator(this Lazy<IServiceLog> lazy, Func<IServiceLocator> locator) { ServiceLogManager.SetupActions(lazy).RegisterWithServiceLocator(locator, null); return lazy; }
+        public static Lazy<IServiceLog> RegisterWithServiceLocator(this Lazy<IServiceLog> lazy, Func<IServiceLocator> locator, string name) { ServiceLogManager.SetupActions(lazy).RegisterWithServiceLocator(locator, name); return lazy; }
+
+        #endregion
     }
 }

@@ -29,5 +29,20 @@ namespace System.Abstract
     /// <summary>
     /// ServiceCacheManager
     /// </summary>
-	public class ServiceCacheManager : ServiceManagerBase<ServiceCacheInstance, IServiceCache, Action<IServiceCache>> { }
+    public class ServiceCacheManager : ServiceManagerBase<IServiceCache, Action<IServiceCache>>
+    {
+        static ServiceCacheManager()
+        {
+            Registration = new SetupRegistration
+            {
+                OnSetup = (service, setupActions) =>
+                {
+                    if (setupActions != null)
+                        foreach (var setupAction in setupActions)
+                            setupAction(service);
+                },
+                ServiceLocatorRegistrar = (locator, name) => (service => RegisterInstance(locator(), service, name)),
+            };
+        }
+    }
 }

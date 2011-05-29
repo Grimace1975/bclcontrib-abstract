@@ -56,6 +56,7 @@ namespace Contoso.Abstract
             if (kernel == null)
                 throw new ArgumentNullException("kernel");
             Container = kernel;
+            ServiceLocatorManager.Setup(this);
         }
 
         public void Dispose()
@@ -66,6 +67,8 @@ namespace Contoso.Abstract
                 _registrar = null;
             }
         }
+
+        public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         // registrar
         public IServiceRegistrar GetRegistrar() { return _registrar; }

@@ -30,13 +30,17 @@ namespace Contoso.Abstract
             Container = new Dictionary<string, IDictionary<Type, Type>> { 
                 {string.Empty, container}
             };
+            ServiceLocatorManager.Setup(this);
         }
         public MicroServiceLocator(IDictionary<string, IDictionary<Type, Type>> container)
         {
             if (container == null)
                 throw new ArgumentNullException("container");
             Container = container;
+            ServiceLocatorManager.Setup(this);
         }
+
+        public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         // registrar
         public IServiceRegistrar GetRegistrar() { return _registrar; }
