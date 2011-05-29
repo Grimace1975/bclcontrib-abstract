@@ -29,9 +29,30 @@ namespace System.Abstract
     /// <summary>
     /// ServiceLocatorManager
     /// </summary>
-	public class ServiceLocatorManager : ServiceManagerBase<ServiceLocatorInstance, IServiceLocator, Action<IServiceRegistrar, IServiceLocator>>
+    public class ServiceLocatorManager : ServiceManagerBase<IServiceLocator, Action<IServiceRegistrar, IServiceLocator>>
     {
         private static readonly Type _wantToSkipServiceLocatorType = typeof(IWantToSkipServiceLocator);
+
+        static ServiceLocatorManager()
+        {
+            Registration = new SetupRegistration
+            {
+                OnSetup = (service, setupActions) =>
+                {
+                    var registrar = service.GetRegistrar();
+                    RegisterSelfInLocator(registrar, service);
+                    if (setupActions != null)
+                        foreach (var setupAction in setupActions)
+                            setupAction(registrar, service);
+                },
+                ServiceLocatorRegistrar = (locator, name) => ((r, service) => RegisterInstance(locator(), service, name)),
+            };
+        }
+
+        private static void RegisterSelfInLocator(IServiceRegistrar registrar, IServiceLocator locator)
+        {
+            registrar.RegisterInstance<IServiceLocator>(locator);
+        }
 
         public static bool GetWantsToSkipLocator(object instance) { return ((instance == null) || (GetWantsToSkipLocator(instance.GetType()))); }
         public static bool GetWantsToSkipLocator<TService>() { return GetWantsToSkipLocator(typeof(TService)); }

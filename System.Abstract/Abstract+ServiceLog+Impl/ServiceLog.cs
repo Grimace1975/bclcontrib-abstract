@@ -24,24 +24,12 @@ THE SOFTWARE.
 */
 #endregion
 using System.Collections.Generic;
-using System.Abstract.Parts;
 namespace System.Abstract
 {
-	/// <summary>
-	/// ServiceCacheInstance
-	/// </summary>
-	public class ServiceCacheInstance : ServiceInstanceBase<IServiceCache, Action<IServiceCache>>
-	{
-		public ServiceCacheInstance()
-			: base(() => new ServiceSetup(),
-				// setup
-				(service, setupActions) =>
-				{
-					if (setupActions != null)
-						foreach (var setupAction in setupActions)
-							setupAction(service);
-				},
-				// register
-				(locator, name) => (service => RegisterInstance<IServiceCache>(locator(), service, name))) { }
-	}
+    /// <summary>
+    /// ServiceLog
+    /// </summary>
+    public static class ServiceLog
+    {
+    }
 }

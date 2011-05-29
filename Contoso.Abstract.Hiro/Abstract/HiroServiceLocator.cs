@@ -58,12 +58,14 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("builder");
             Builder = builder;
             _registrar = new HiroServiceRegistrar(this, builder, out _containerBuilder);
+            ServiceLocatorManager.Setup(this);
         }
         //public HiroServiceLocator(IMicroContainer container)
         //{
         //    if (container == null)
         //        throw new ArgumentNullException("container");
         //    Container = container;
+        //    ServiceLocatorManager.Setup(this);
         //}
 
         public void Dispose()
@@ -75,6 +77,8 @@ namespace Contoso.Abstract
                 _containerBuilder = null;
             }
         }
+
+        public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         // registrar
         public IServiceRegistrar GetRegistrar() { return _registrar; }

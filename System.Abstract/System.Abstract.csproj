@@ -49,6 +49,9 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="+Kludge\Collections\ConditionalWeakTable.cs" />
+    <Compile Include="+Kludge\Runtime\CompilerServices\ConditionalWeakTable.cs" />
+    <Compile Include="+Kludge\Runtime\CompilerServices\DependentHandle.cs" />
     <Compile Include="..\+FromCoreEx\Linq\Expressions\ExpressionEx.cs">
       <Link>+FromCoreEx\Linq\Expressions\ExpressionEx.cs</Link>
     </Compile>
@@ -56,13 +59,10 @@
       <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
     </Compile>
     <Compile Include="+Nparams+Impl\NparamsManager.cs" />
-    <Compile Include="Abstract\IServiceSetup.cs" />
-    <Compile Include="Abstract+ServiceBus+Impl\ServiceBusInstance.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheOptions.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheSettings.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheNamespaceWrapper.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\DefaultServiceCacheRegistrationDispatcher.cs" />
-    <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheInstance.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCache.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheManager.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheForeignRegistration.cs" />
@@ -70,12 +70,11 @@
     <Compile Include="Abstract+ServiceCache\ServiceCacheRegistration.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemPolicy.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemDependency.cs" />
+    <Compile Include="Abstract+ServiceLog+Impl\ServiceLog.cs" />
     <Compile Include="Abstract+ServiceLog\ServiceLogEventType.cs" />
     <Compile Include="++ToFile\ServiceLog.cs" />
-    <Compile Include="Abstract+ServiceLog+Impl\ServiceLogInstance.cs" />
     <Compile Include="Abstract+ServiceLog+Impl\ServiceLogManager.cs" />
     <Compile Include="Abstract+ServiceLog\IServiceLog.cs" />
-    <Compile Include="Abstract\Parts\ServiceInstanceBase.cs" />
     <Compile Include="Abstract\Parts\ServiceManagerBase.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceCache\SystemServiceCache.cs" />
     <Compile Include="Contoso.Abstract+Impl\EmptyNparams.cs" />
@@ -87,7 +86,6 @@
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheRegistrar.cs" />
     <Compile Include="Abstract+ServiceCache\IServiceCache.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceCache\StaticServiceCache.cs" />
-    <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocatorInstance.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\FileAggregateRootSnapshotStore.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\FileEventStore.cs" />
     <Compile Include="Abstract+EventSourcing\EventSourcing\AggregateRoot.cs" />
@@ -129,7 +127,6 @@
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Abstract+ServiceLocator\IServiceLocatorSetupExtensions.cs" />
     <Compile Include="Abstract+ServiceLocator\IWantToSkipServiceLocator.cs" />
     <Compile Include="Abstract\Parts+TypeGrapher+Impl\TypeCacheSerializer.cs" />
     <Compile Include="Abstract\Parts+TypeGrapher+Impl\TypeCacheManager.cs" />
@@ -149,7 +146,7 @@
     <Compile Include="IO\DirectoryEx2.cs" />
     <Compile Include="IO\FileEx2.cs" />
     <Compile Include="IO\PathEx2.cs" />
-    <Compile Include="Lazy.cs" />
+    <Compile Include="+Kludge\Lazy.cs" />
     <Compile Include="Local.Designer.cs">
       <DependentUpon>Local.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -168,8 +165,8 @@
     <Compile Include="++ToFile\AssemblyTypeCatalog.cs" />
     <Compile Include="Abstract\Parts+TypeSerializer\ITypeSerializer.cs" />
     <Compile Include="++ToFile\ITypeCatalog.cs" />
-    <Compile Include="LazyDebugView.cs" />
-    <Compile Include="Threading\LazyThreadSafetyMode.cs" />
+    <Compile Include="+Kludge\LazyDebugView.cs" />
+    <Compile Include="+Kludge\Threading\LazyThreadSafetyMode.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Local.resx">

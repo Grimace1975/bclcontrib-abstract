@@ -46,13 +46,17 @@ namespace Contoso.Abstract
             if (bus == null)
                 throw new ArgumentNullException("bus", "The specified NServiceBus bus cannot be null.");
             Bus = ApplyRequiredBusDependencies(bus).Start();
+            ServiceBusManager.Setup(this);
         }
         public NServiceBusAbstractor(IBus bus)
         {
             if (bus == null)
                 throw new ArgumentNullException("bus", "The specified NServiceBus bus cannot be null.");
             Bus = bus;
+            ServiceBusManager.Setup(this);
         }
+
+        public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         public TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder)
             where TMessage : IServiceMessage

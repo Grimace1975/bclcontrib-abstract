@@ -55,6 +55,7 @@ namespace Contoso.Abstract
             if (container == null)
                 throw new ArgumentNullException("container");
             _registrar = new AutofacServiceRegistrar(this, container, out _containerBuilder);
+            ServiceLocatorManager.Setup(this);
         }
 
         public void Dispose()
@@ -66,6 +67,8 @@ namespace Contoso.Abstract
                 _containerBuilder = null;
             }
         }
+
+        public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         // registrar
         public IServiceRegistrar GetRegistrar() { return _registrar; }

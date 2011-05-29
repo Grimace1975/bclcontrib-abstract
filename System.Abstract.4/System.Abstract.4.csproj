@@ -54,6 +54,24 @@
     <Compile Include="..\System.Abstract\+FromCoreEx\ExceptionEx.cs">
       <Link>+FromCoreEx\ExceptionEx.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\+Kludge\Collections\ConditionalWeakTable.cs">
+      <Link>+Kludge\Collections\ConditionalWeakTable.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\+Kludge\Lazy.cs">
+      <Link>+Kludge\Lazy.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\+Kludge\LazyDebugView.cs">
+      <Link>+Kludge\LazyDebugView.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\+Kludge\Runtime\CompilerServices\ConditionalWeakTable.cs">
+      <Link>+Kludge\Runtime\CompilerServices\ConditionalWeakTable.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\+Kludge\Runtime\CompilerServices\DependentHandle.cs">
+      <Link>+Kludge\Runtime\CompilerServices\DependentHandle.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\+Kludge\Threading\LazyThreadSafetyMode.cs">
+      <Link>+Kludge\Threading\LazyThreadSafetyMode.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\+Nparams+Impl\NparamsManager.cs">
       <Link>+Nparams+Impl\NparamsManager.cs</Link>
     </Compile>
@@ -123,9 +141,6 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceBus+Impl\ServiceBus.cs">
       <Link>Abstract+ServiceBus+Impl\ServiceBus.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceBus+Impl\ServiceBusInstance.cs">
-      <Link>Abstract+ServiceBus+Impl\ServiceBusInstance.cs</Link>
-    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus+Impl\ServiceBusManager.cs">
       <Link>Abstract+ServiceBus+Impl\ServiceBusManager.cs</Link>
     </Compile>
@@ -164,9 +179,6 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\ServiceCache.cs">
       <Link>Abstract+ServiceCache+Impl\ServiceCache.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\ServiceCacheInstance.cs">
-      <Link>Abstract+ServiceCache+Impl\ServiceCacheInstance.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\ServiceCacheManager.cs">
       <Link>Abstract+ServiceCache+Impl\ServiceCacheManager.cs</Link>
@@ -213,17 +225,11 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceLocator.cs">
       <Link>Abstract+ServiceLocator+Impl\ServiceLocator.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceLocatorInstance.cs">
-      <Link>Abstract+ServiceLocator+Impl\ServiceLocatorInstance.cs</Link>
-    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceLocatorManager.cs">
       <Link>Abstract+ServiceLocator+Impl\ServiceLocatorManager.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceLocator.cs">
       <Link>Abstract+ServiceLocator\IServiceLocator.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceLocatorSetupExtensions.cs">
-      <Link>Abstract+ServiceLocator\IServiceLocatorSetupExtensions.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceRegistrar.cs">
       <Link>Abstract+ServiceLocator\IServiceRegistrar.cs</Link>
@@ -237,8 +243,8 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceLocatorResolutionException.cs">
       <Link>Abstract+ServiceLocator\ServiceLocatorResolutionException.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceLog+Impl\ServiceLogInstance.cs">
-      <Link>Abstract+ServiceLog+Impl\ServiceLogInstance.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLog+Impl\ServiceLog.cs">
+      <Link>Abstract+ServiceLog+Impl\ServiceLog.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLog+Impl\ServiceLogManager.cs">
       <Link>Abstract+ServiceLog+Impl\ServiceLogManager.cs</Link>
@@ -252,9 +258,6 @@
     <Compile Include="..\System.Abstract\Abstract\AService.cs">
       <Link>Abstract\AService.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract\IServiceSetup.cs">
-      <Link>Abstract\IServiceSetup.cs</Link>
-    </Compile>
     <Compile Include="..\System.Abstract\Abstract\Parts+TypeGrapher+Impl\TypeCacheManager.cs">
       <Link>Abstract\Parts+TypeGrapher+Impl\TypeCacheManager.cs</Link>
     </Compile>
@@ -266,9 +269,6 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract\Parts+TypeSerializer\ITypeSerializer.cs">
       <Link>Abstract\Parts+TypeSerializer\ITypeSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Abstract\Parts\ServiceInstanceBase.cs">
-      <Link>Abstract\Parts\ServiceInstanceBase.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract\Parts\ServiceManagerBase.cs">
       <Link>Abstract\Parts\ServiceManagerBase.cs</Link>
@@ -333,12 +333,6 @@
     <Compile Include="..\System.Abstract\IO\PathEx2.cs">
       <Link>IO\PathEx2.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Lazy.cs">
-      <Link>Lazy.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\LazyDebugView.cs">
-      <Link>LazyDebugView.cs</Link>
-    </Compile>
     <Compile Include="..\System.Abstract\Local.Designer.cs">
       <Link>Local.Designer.cs</Link>
     </Compile>
@@ -350,9 +344,6 @@
     </Compile>
     <Compile Include="..\System.Abstract\Patterns\ReleaseManagement\ReleaseManagementExtensions.cs">
       <Link>Patterns\ReleaseManagement\ReleaseManagementExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Threading\LazyThreadSafetyMode.cs">
-      <Link>Threading\LazyThreadSafetyMode.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -369,6 +360,7 @@
       <Link>Local.resx</Link>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

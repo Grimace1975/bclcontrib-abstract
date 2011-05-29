@@ -29,5 +29,27 @@ namespace System.Abstract
     /// <summary>
     /// ServiceBusManager
     /// </summary>
-	public class ServiceBusManager : ServiceManagerBase<ServiceBusInstance, IServiceBus, Action<IServiceBus>> { }
+    public class ServiceBusManager : ServiceManagerBase<IServiceBus, Action<IServiceBus>>
+    {
+        static ServiceBusManager()
+        {
+            Registration = new SetupRegistration
+            {
+                OnSetup = (service, setupActions) =>
+                {
+                    if (setupActions != null)
+                        foreach (var setupAction in setupActions)
+                            setupAction(service);
+                },
+                ServiceLocatorRegistrar = (locator, name) => (service =>
+                {
+                    var locator2 = locator();
+                    RegisterInstance(locator2, service, name);
+                    var publishingServiceBus = (service as IPublishingServiceBus);
+                    if (publishingServiceBus != null)
+                        RegisterInstance(locator2, publishingServiceBus, name);
+                }),
+            };
+        }
+    }
 }
