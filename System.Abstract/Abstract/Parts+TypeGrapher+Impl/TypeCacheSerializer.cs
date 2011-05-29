@@ -28,7 +28,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Xml;
 using System.Reflection;
-namespace System.Abstract
+namespace System.Abstract.Parts
 {
     /// <summary>
     /// ITypeCacheSerializer

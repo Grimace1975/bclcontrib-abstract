@@ -26,6 +26,7 @@
 //using System;
 //using System.IO;
 //using System.Abstract;
+//using System.Abstract.Parts;
 //using System.Collections.Generic;
 //using System.Reflection;
 //using Contoso.Abstract.Abstract;
@@ -36,7 +37,7 @@
 //using System.Collections;
 //using System.Xml.Serialization;
 
-//namespace Contoso.Abstract
+//namespace Contoso.Abstract.Parts
 //{
 //    public class MessageSerializer
 //    {

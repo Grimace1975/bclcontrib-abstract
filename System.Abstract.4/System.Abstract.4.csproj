@@ -51,6 +51,9 @@
     <Compile Include="..\+FromCoreEx\Reflection\AssemblyExtensions.cs">
       <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\+FromCoreEx\ExceptionEx.cs">
+      <Link>+FromCoreEx\ExceptionEx.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\+Nparams+Impl\NparamsManager.cs">
       <Link>+Nparams+Impl\NparamsManager.cs</Link>
     </Compile>
@@ -116,18 +119,6 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\IOfflineSnaphotQuery.cs">
       <Link>Abstract+EventSourcing\EventSourcing\IOfflineSnaphotQuery.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Abstract+Impl\AService.cs">
-      <Link>Abstract+Impl\AService.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Abstract+Impl\IServiceSetup.cs">
-      <Link>Abstract+Impl\IServiceSetup.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Abstract+Impl\ServiceInstanceBase.cs">
-      <Link>Abstract+Impl\ServiceInstanceBase.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Abstract+Impl\ServiceManagerBase.cs">
-      <Link>Abstract+Impl\ServiceManagerBase.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus+Impl\ServiceBus.cs">
       <Link>Abstract+ServiceBus+Impl\ServiceBus.cs</Link>
@@ -243,9 +234,6 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IWantToSkipServiceLocator.cs">
       <Link>Abstract+ServiceLocator\IWantToSkipServiceLocator.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceDependencyAttribute.cs">
-      <Link>Abstract+ServiceLocator\ServiceDependencyAttribute.cs</Link>
-    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceLocatorResolutionException.cs">
       <Link>Abstract+ServiceLocator\ServiceLocatorResolutionException.cs</Link>
     </Compile>
@@ -261,23 +249,38 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceLog\ServiceLogEventType.cs">
       <Link>Abstract+ServiceLog\ServiceLogEventType.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+TypeGrapher+Impl\TypeCacheManager.cs">
-      <Link>Abstract+TypeGrapher+Impl\TypeCacheManager.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract\AService.cs">
+      <Link>Abstract\AService.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+TypeGrapher+Impl\TypeCacheSerializer.cs">
-      <Link>Abstract+TypeGrapher+Impl\TypeCacheSerializer.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract\IServiceSetup.cs">
+      <Link>Abstract\IServiceSetup.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+TypeGrapher\IBuildManager.cs">
-      <Link>Abstract+TypeGrapher\IBuildManager.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract\Parts+TypeGrapher+Impl\TypeCacheManager.cs">
+      <Link>Abstract\Parts+TypeGrapher+Impl\TypeCacheManager.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+TypeSerializer\ITypeSerializer.cs">
-      <Link>Abstract+TypeSerializer\ITypeSerializer.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract\Parts+TypeGrapher+Impl\TypeCacheSerializer.cs">
+      <Link>Abstract\Parts+TypeGrapher+Impl\TypeCacheSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract\Parts+TypeGrapher\IBuildManager.cs">
+      <Link>Abstract\Parts+TypeGrapher\IBuildManager.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract\Parts+TypeSerializer\ITypeSerializer.cs">
+      <Link>Abstract\Parts+TypeSerializer\ITypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract\Parts\ServiceInstanceBase.cs">
+      <Link>Abstract\Parts\ServiceInstanceBase.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract\Parts\ServiceManagerBase.cs">
+      <Link>Abstract\Parts\ServiceManagerBase.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract\ServiceDependencyAttribute.cs">
+      <Link>Abstract\ServiceDependencyAttribute.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceCache\CacheFileTouch.cs">
       <Link>Contoso.Abstract+Impl\+ServiceCache\CacheFileTouch.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceCache\StaticMemoryServiceCache.cs">
-      <Link>Contoso.Abstract+Impl\+ServiceCache\StaticMemoryServiceCache.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceCache\StaticServiceCache.cs">
+      <Link>Contoso.Abstract+Impl\+ServiceCache\StaticServiceCache.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceCache\SystemServiceCache.cs">
       <Link>Contoso.Abstract+Impl\+ServiceCache\SystemServiceCache.cs</Link>
@@ -305,9 +308,6 @@
     </Compile>
     <Compile Include="..\System.Abstract\EnvironmentEx2.cs">
       <Link>EnvironmentEx2.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\ExceptionEx.cs">
-      <Link>ExceptionEx.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\IO\+Mock\DirectoryMock.cs">
       <Link>IO\+Mock\DirectoryMock.cs</Link>

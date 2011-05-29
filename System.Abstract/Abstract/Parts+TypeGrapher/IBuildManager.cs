@@ -25,7 +25,7 @@ THE SOFTWARE.
 #endregion
 using System.IO;
 using System.Collections;
-namespace System.Abstract
+namespace System.Abstract.Parts
 {
     /// <summary>
     /// IBuildManager

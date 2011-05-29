@@ -27,7 +27,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using System.IO;
-namespace System.Abstract
+namespace System.Abstract.Parts
 {
     /// <summary>
     /// TypeCacheManager

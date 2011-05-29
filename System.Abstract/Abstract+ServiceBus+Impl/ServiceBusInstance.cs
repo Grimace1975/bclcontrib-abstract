@@ -24,6 +24,7 @@ THE SOFTWARE.
 */
 #endregion
 using System.Collections.Generic;
+using System.Abstract.Parts;
 namespace System.Abstract
 {
 	/// <summary>

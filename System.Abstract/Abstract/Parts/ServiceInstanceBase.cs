@@ -24,7 +24,7 @@ THE SOFTWARE.
 */
 #endregion
 using System.Collections.Generic;
-namespace System.Abstract
+namespace System.Abstract.Parts
 {
 	/// <summary>
 	/// IServiceInstance

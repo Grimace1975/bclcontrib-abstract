@@ -36,7 +36,7 @@ namespace Contoso.Abstract
     public interface IApplicationServiceBus : IServiceBus
     {
         IApplicationServiceBus Add<TMessageHandler>()
-            where TMessageHandler : IApplicationServiceMessageHandler<IApplicationServiceMessage>;
+            where TMessageHandler : class;
         IApplicationServiceBus Add(Type messageHandlerType);
     }
 
@@ -54,13 +54,11 @@ namespace Contoso.Abstract
             _messageHandlerFactory = messageHandlerFactory;
         }
 
-        public TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder) where TMessage : IServiceMessage
-        {
-            throw new NotImplementedException();
-        }
+        public TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder)
+            where TMessage : IServiceMessage { throw new NotImplementedException(); }
 
         public IApplicationServiceBus Add<TMessageHandler>()
-            where TMessageHandler : IApplicationServiceMessageHandler<IApplicationServiceMessage> { return Add(typeof(TMessageHandler)); }
+            where TMessageHandler : class { return Add(typeof(TMessageHandler)); }
         public IApplicationServiceBus Add(Type messageHandlerType)
         {
             var messageType = GetMessageTypeFromHandler(messageHandlerType);
@@ -98,10 +96,12 @@ namespace Contoso.Abstract
 
         private static Type GetMessageTypeFromHandler(Type messageHandlerType)
         {
+            var serviceMessageType = typeof(IServiceMessage);
+            var applicationServiceMessageType = typeof(IApplicationServiceMessage);
             return messageHandlerType.GetInterfaces()
-                .Where(h => (h.IsGenericType) && (h.FullName.StartsWith("Contoso.Abstract.IApplicationServiceMessageHandler`1")))
+                .Where(h => (h.IsGenericType) && (h.FullName.StartsWith("System.Abstract.IServiceMessageHandler`1") || h.FullName.StartsWith("Contoso.Abstract.IApplicationServiceMessageHandler`1")))
                 .Select(h => h.GetGenericArguments()[0])
-                .Where(m => m.GetInterfaces().Any(x => (x == typeof(IApplicationServiceMessage))))
+                .Where(m => m.GetInterfaces().Any(x => (x == serviceMessageType) || (x == applicationServiceMessageType)))
                 .SingleOrDefault();
         }
     }
