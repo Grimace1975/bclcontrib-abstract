@@ -56,7 +56,7 @@
       <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
     </Compile>
     <Compile Include="+Nparams+Impl\NparamsManager.cs" />
-    <Compile Include="Abstract+Impl\IServiceSetup.cs" />
+    <Compile Include="Abstract\IServiceSetup.cs" />
     <Compile Include="Abstract+ServiceBus+Impl\ServiceBusInstance.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheOptions.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheSettings.cs" />
@@ -75,8 +75,8 @@
     <Compile Include="Abstract+ServiceLog+Impl\ServiceLogInstance.cs" />
     <Compile Include="Abstract+ServiceLog+Impl\ServiceLogManager.cs" />
     <Compile Include="Abstract+ServiceLog\IServiceLog.cs" />
-    <Compile Include="Abstract+Impl\ServiceInstanceBase.cs" />
-    <Compile Include="Abstract+Impl\ServiceManagerBase.cs" />
+    <Compile Include="Abstract\Parts\ServiceInstanceBase.cs" />
+    <Compile Include="Abstract\Parts\ServiceManagerBase.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceCache\SystemServiceCache.cs" />
     <Compile Include="Contoso.Abstract+Impl\EmptyNparams.cs" />
     <Compile Include="EnvironmentEx2.cs" />
@@ -86,7 +86,7 @@
     <Compile Include="Abstract+ServiceCache\CacheEntryRemovedCallback.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheRegistrar.cs" />
     <Compile Include="Abstract+ServiceCache\IServiceCache.cs" />
-    <Compile Include="Contoso.Abstract+Impl\+ServiceCache\StaticMemoryServiceCache.cs" />
+    <Compile Include="Contoso.Abstract+Impl\+ServiceCache\StaticServiceCache.cs" />
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocatorInstance.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\FileAggregateRootSnapshotStore.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\FileEventStore.cs" />
@@ -131,16 +131,16 @@
     </Compile>
     <Compile Include="Abstract+ServiceLocator\IServiceLocatorSetupExtensions.cs" />
     <Compile Include="Abstract+ServiceLocator\IWantToSkipServiceLocator.cs" />
-    <Compile Include="Abstract+TypeGrapher+Impl\TypeCacheSerializer.cs" />
-    <Compile Include="Abstract+TypeGrapher+Impl\TypeCacheManager.cs" />
-    <Compile Include="Abstract+Impl\AService.cs" />
-    <Compile Include="Abstract+TypeGrapher\IBuildManager.cs" />
+    <Compile Include="Abstract\Parts+TypeGrapher+Impl\TypeCacheSerializer.cs" />
+    <Compile Include="Abstract\Parts+TypeGrapher+Impl\TypeCacheManager.cs" />
+    <Compile Include="Abstract\AService.cs" />
+    <Compile Include="Abstract\Parts+TypeGrapher\IBuildManager.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\MemoryAggregateRootSnapshotStore.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\MemoryEventStore.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceLocator\MicroServiceLocator.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceLocator\MicroServiceRegistrar.cs" />
     <Compile Include="DateTimeEx2.cs" />
-    <Compile Include="ExceptionEx.cs" />
+    <Compile Include="+FromCoreEx\ExceptionEx.cs" />
     <Compile Include="IO\+Mock\DirectoryMock.cs" />
     <Compile Include="IO\+Mock\DirectoryWrapper.cs" />
     <Compile Include="IO\+Mock\FileMock.cs" />
@@ -159,14 +159,14 @@
     <Compile Include="Patterns\ReleaseManagement\DeploymentEnvironment.cs" />
     <Compile Include="Patterns\ReleaseManagement\DevelopmentStage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Abstract+ServiceLocator\ServiceDependencyAttribute.cs" />
+    <Compile Include="Abstract\ServiceDependencyAttribute.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceLocator.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceRegistrar.cs" />
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocatorManager.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceLocatorResolutionException.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceRegistration.cs" />
     <Compile Include="++ToFile\AssemblyTypeCatalog.cs" />
-    <Compile Include="Abstract+TypeSerializer\ITypeSerializer.cs" />
+    <Compile Include="Abstract\Parts+TypeSerializer\ITypeSerializer.cs" />
     <Compile Include="++ToFile\ITypeCatalog.cs" />
     <Compile Include="LazyDebugView.cs" />
     <Compile Include="Threading\LazyThreadSafetyMode.cs" />

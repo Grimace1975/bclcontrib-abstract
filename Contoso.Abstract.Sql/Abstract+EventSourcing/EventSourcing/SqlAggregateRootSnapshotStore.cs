@@ -32,8 +32,10 @@ using System.Data;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Abstract;
+using System.Abstract.Parts;
 using System.Abstract.EventSourcing;
 using Contoso.Abstract;
+using Contoso.Abstract.Parts;
 namespace Contoso.Abstract.EventSourcing
 {
     public class SqlAggregateRootSnapshotStore : IBatchedAggregateRootSnapshotStore

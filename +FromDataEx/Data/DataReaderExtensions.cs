@@ -2,7 +2,7 @@ using System.Reflection;
 using System.Collections.Generic;
 namespace System.Data
 {
-    public static class DataReaderExtensions
+    internal static class DataReaderExtensions
     {
         public static IEnumerable<IDataReader> AsEnumerable(this IDataReader r)
         {

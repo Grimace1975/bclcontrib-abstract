@@ -27,9 +27,10 @@ using System;
 using System.IO;
 using System.Text;
 using System.Abstract;
+using System.Abstract.Parts;
 using System.Runtime.Serialization;
 using System.Collections.Generic;
-namespace Contoso.Abstract
+namespace Contoso.Abstract.Parts
 {
     public class WcfTypeSerializer : ITypeSerializer
     {

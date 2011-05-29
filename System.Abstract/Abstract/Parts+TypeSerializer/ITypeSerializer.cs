@@ -26,7 +26,7 @@ THE SOFTWARE.
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
-namespace System.Abstract
+namespace System.Abstract.Parts
 {
     /// <summary>
     /// ITypeSerializer

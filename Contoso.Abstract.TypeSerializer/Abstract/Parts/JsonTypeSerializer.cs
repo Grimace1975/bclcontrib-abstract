@@ -25,16 +25,15 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.IO;
-using System.Linq;
+using System.Text;
 using System.Abstract;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Abstract.Parts;
+using System.Runtime.Serialization.Json;
 using System.Collections.Generic;
-namespace Contoso.Abstract
+namespace Contoso.Abstract.Parts
 {
-    public class BinaryTypeSerializer : ITypeSerializer
+    public class JsonTypeSerializer : ITypeSerializer
     {
-        private readonly BinaryFormatter _binaryFormatter = new BinaryFormatter();
-
         public T ReadObject<T>(Type type, Stream s)
             where T : class
         {
@@ -42,7 +41,8 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("type");
             if (s == null)
                 throw new ArgumentNullException("s");
-            return (_binaryFormatter.Deserialize(s) as T);
+            var serializer = new DataContractJsonSerializer(type);
+            return (serializer.ReadObject(s) as T);
         }
 
         public IEnumerable<T> ReadObjects<T>(Type type, Stream s)
@@ -52,10 +52,8 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("type");
             if (s == null)
                 throw new ArgumentNullException("s");
-            var graphs = (_binaryFormatter.Deserialize(s) as List<object>);
-            if (graphs == null)
-                return null;
-            return graphs.Cast<T>();
+            var serializer = new DataContractJsonSerializer(type);
+            return (serializer.ReadObject(s) as IEnumerable<T>);
         }
 
         public void WriteObject<T>(Type type, Stream s, T graph)
@@ -67,7 +65,8 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("s");
             if (graph == null)
                 throw new ArgumentNullException("graph");
-            _binaryFormatter.Serialize(s, graph);
+            var serializer = new DataContractJsonSerializer(type);
+            serializer.WriteObject(s, graph);
         }
 
         public void WriteObjects<T>(Type type, Stream s, IEnumerable<T> graphs)
@@ -79,8 +78,8 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("s");
             if (graphs == null)
                 throw new ArgumentNullException("graphs");
-            var x = new List<object>(graphs.ToArray());
-            _binaryFormatter.Serialize(s, x);
+            var serializer = new DataContractJsonSerializer(type);
+            serializer.WriteObject(s, graphs);
         }
     }
 }

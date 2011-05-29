@@ -38,11 +38,11 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Abstract\BinaryTypeSerializer.cs" />
-    <Compile Include="Abstract\XmlTypeSerializer.cs" />
+    <Compile Include="Abstract\Parts\BinaryTypeSerializer.cs" />
+    <Compile Include="Abstract\Parts\XmlTypeSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Abstract\WcfTypeSerializer.cs" />
-    <Compile Include="Abstract\JsonTypeSerializer.cs" />
+    <Compile Include="Abstract\Parts\WcfTypeSerializer.cs" />
+    <Compile Include="Abstract\Parts\JsonTypeSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Runtime.Serialization" />
