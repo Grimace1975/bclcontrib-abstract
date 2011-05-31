@@ -1,12 +1,17 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
+using System.Abstract;
+using Contoso.Abstract;
 namespace Example
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("OK");
+            var service = new Lazy<IServiceCache>(() => new StaticServiceCache());
+            var actions = ServiceCacheManager.GetSetupDescriptor(service);
+            actions.Do(x => Console.Write("Here"));
+            //
+            var cache = service.Value;
         }
     }
 }

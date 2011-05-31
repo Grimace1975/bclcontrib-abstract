@@ -43,9 +43,9 @@ namespace System.Runtime.CompilerServices
 
         private delegate void GetPrimaryAndSecondaryDelegate(out object primary, out object secondary);
 
-        public static bool TryGetValueByLazyValue<TKey, TValue>(this ConditionalWeakTable<Lazy<TKey>, TValue> table, TKey key, out TValue value)
+        public static bool TryGetValueByLazyValue<TKey, TValue>(this ConditionalWeakTable<Lazy<TKey>, TValue> table, TKey key, out TValue value, bool isValueCreated)
             where TKey : class
-            where TValue : class { return LazyValueHelper<TKey, TValue>.TryGetValueWorker(table, key, out value); }
+            where TValue : class { return LazyValueHelper<TKey, TValue>.TryGetValueWorker(table, key, out value, isValueCreated); }
 
         private class LazyValueHelper<TLazyKey, TValue>
             where TLazyKey : class
@@ -57,11 +57,11 @@ namespace System.Runtime.CompilerServices
             private static readonly FieldInfo _entryDepHndField = _entryType.GetField("depHnd", BindingFlags.Public | BindingFlags.Instance);
 
             [SecurityCritical]
-            public static bool TryGetValueWorker(ConditionalWeakTable<Lazy<TLazyKey>, TValue> table, TLazyKey key, out TValue value)
+            public static bool TryGetValueWorker(ConditionalWeakTable<Lazy<TLazyKey>, TValue> table, TLazyKey key, out TValue value, bool isValueCreated)
             {
                 var entries = (_entriesField.GetValue(table) as IList);
                 var buckets = (int[])_bucketsField.GetValue(table);
-                int index = FindEntry(key, buckets, entries);
+                int index = FindEntry(key, buckets, entries, isValueCreated);
                 if (index != -1)
                 {
                     object primary = null;
@@ -81,14 +81,15 @@ namespace System.Runtime.CompilerServices
                 return false;
             }
 
-            private static int FindEntry(TLazyKey key, int[] buckets, IList entries)
+            private static int FindEntry(TLazyKey key, int[] buckets, IList entries, bool isValueCreated)
             {
                 Lazy<TLazyKey> lazy;
                 for (int entriesIndex = 0; entriesIndex < entries.Count; entriesIndex++)
                 {
                     var depHnd = _entryDepHndField.GetValue(entries[entriesIndex]);
                     if (((bool)_isAllocatedProperty.GetValue(depHnd, null) == true)
-                        && (lazy = (Lazy<TLazyKey>)_getPrimaryMethod.Invoke(depHnd, null)).IsValueCreated
+                        && ((lazy = (Lazy<TLazyKey>)_getPrimaryMethod.Invoke(depHnd, null)) != null)
+                        && (lazy.IsValueCreated || isValueCreated)
                         && (lazy.Value == key))
                         return entriesIndex;
                 }
@@ -105,9 +106,9 @@ namespace System.Runtime.CompilerServices
             //}
         }
 #else
-        public static bool TryGetValueByLazyValue<TKey, TValue>(this ConditionalWeakTable<Lazy<TKey>, TValue> table, TKey key, out TValue value)
+        public static bool TryGetValueByLazyValue<TKey, TValue>(this ConditionalWeakTable<Lazy<TKey>, TValue> table, TKey key, out TValue value, bool isValueCreated)
             where TKey : class
-            where TValue : class { return table.TryGetValueByLazyValue(key, out value); }
+            where TValue : class { return table.TryGetValueWorkerForLazyValueHelper(key, out value, isValueCreated); }
 #endif
     }
 }

@@ -21,7 +21,7 @@ namespace System.Runtime.CompilerServices
 
         public bool IsAllocated
         {
-            get { return _primary.IsAlive; }
+            get { return ((_primary != null) && _primary.IsAlive); }
         }
 
         [SecurityCritical]
