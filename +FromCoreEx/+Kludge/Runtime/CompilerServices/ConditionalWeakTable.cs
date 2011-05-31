@@ -152,15 +152,16 @@ namespace System.Runtime.CompilerServices
         }
 
         // Kludge: CompilerServicesExtensions dependency
-        internal int FindEntryForLazyValueHelper<TLazyKey>(TLazyKey key)
+        internal int FindEntryForLazyValueHelper<TLazyKey>(TLazyKey key, bool isValueCreated)
         {
             Lazy<TLazyKey> lazy;
             for (int entriesIndex = 0; entriesIndex < _entries.Length; entriesIndex++)
             {
                 var depHnd = _entries[entriesIndex].depHnd;
                 if (depHnd.IsAllocated
-                    && (lazy = (Lazy<TLazyKey>)depHnd.GetPrimary()).IsValueCreated
-                    && (lazy.Value == key))
+                    && ((lazy = (Lazy<TLazyKey>)depHnd.GetPrimary()) != null)
+                    && (lazy.IsValueCreated || isValueCreated)
+                    && lazy.Value.Equals(key))
                     return entriesIndex;
             }
             return -1;
@@ -321,9 +322,9 @@ namespace System.Runtime.CompilerServices
 
         // Kludge: CompilerServicesExtensions dependency
         [SecurityCritical]
-        public bool FindEntryForLazyValueHelper<TLazyKey>(TLazyKey key, out TValue value)
+        public bool TryGetValueWorkerForLazyValueHelper<TLazyKey>(TLazyKey key, out TValue value, bool isValueCreated)
         {
-            int index = FindEntryForLazyValueHelper(key);
+            int index = FindEntryForLazyValueHelper(key, isValueCreated);
             if (index != -1)
             {
                 object primary = null;

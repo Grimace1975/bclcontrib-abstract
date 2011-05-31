@@ -83,7 +83,7 @@ namespace System.Abstract.Parts
                 return;
             // preform setup
             ISetupDescriptor setupDescriptor;
-            var list = (CompilerServicesExtensions.TryGetValueByLazyValue<TIService, ISetupDescriptor>(_setupDescriptors, service, out setupDescriptor) && (setupDescriptor == null) ? setupDescriptor.ToList() : null);
+            var list = (_setupDescriptors.TryGetValueByLazyValue(service, out setupDescriptor, false) && (setupDescriptor != null) ? setupDescriptor.ToList() : null);
             onSetup(service, list);
         }
 
