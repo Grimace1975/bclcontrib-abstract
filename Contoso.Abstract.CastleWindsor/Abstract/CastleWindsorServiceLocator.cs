@@ -50,6 +50,7 @@ namespace Contoso.Abstract
         private IKernel _kernel;
         private CastleWindsorServiceRegistrar _registrar;
 
+        static CastleWindsorServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
         public CastleWindsorServiceLocator()
             : this(CreateContainer()) { }
         public CastleWindsorServiceLocator(IWindsorContainer container)
@@ -57,7 +58,7 @@ namespace Contoso.Abstract
             if (container == null)
                 throw new ArgumentNullException("container");
             Container = container;
-            ServiceLocatorManager.Setup(this);
+            ServiceLocatorManager.ApplySetup(this);
         }
 
         public void Dispose()

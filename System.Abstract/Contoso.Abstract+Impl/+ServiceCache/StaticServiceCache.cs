@@ -45,10 +45,11 @@ namespace Contoso.Abstract
     {
         public static readonly Dictionary<string, object> _cache = new Dictionary<string, object>();
 
+        static StaticServiceCache() { ServiceCacheManager.EnsureRegistration(); }
         public StaticServiceCache()
         {
             RegistrationDispatch = new DefaultServiceCacheRegistrationDispatcher();
-            ServiceCacheManager.Setup(this);
+            ServiceCacheManager.ApplySetup(this);
         }
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }

@@ -48,11 +48,12 @@ namespace Contoso.Abstract
 	/// </summary>
 	public class WebServiceCache : IWebServiceCache
 	{
+        static WebServiceCache() { ServiceCacheManager.EnsureRegistration(); }
 		public WebServiceCache()
 		{
 			Cache = HttpRuntime.Cache;
 			RegistrationDispatch = new DefaultServiceCacheRegistrationDispatcher();
-            ServiceCacheManager.Setup(this);
+            ServiceCacheManager.ApplySetup(this);
 		}
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }

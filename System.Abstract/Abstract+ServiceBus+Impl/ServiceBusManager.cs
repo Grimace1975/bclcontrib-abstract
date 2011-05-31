@@ -51,5 +51,7 @@ namespace System.Abstract
                 }),
             };
         }
+
+        public static void EnsureRegistration() { }
     }
 }

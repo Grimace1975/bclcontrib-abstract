@@ -69,6 +69,7 @@ namespace Contoso.Abstract
 
         #endregion
 
+        static MemcachedServiceCache() { ServiceCacheManager.EnsureRegistration(); }
         public MemcachedServiceCache()
             : this(new MemcachedClient(), new TagMapper()) { }
         public MemcachedServiceCache(IMemcachedClientConfiguration configuration)
@@ -82,7 +83,7 @@ namespace Contoso.Abstract
             Cache = client;
             RegistrationDispatch = new DefaultServiceCacheRegistrationDispatcher();
             _tagMapper = tagMapper;
-            ServiceCacheManager.Setup(this);
+            ServiceCacheManager.ApplySetup(this);
         }
         ~MemcachedServiceCache()
         {

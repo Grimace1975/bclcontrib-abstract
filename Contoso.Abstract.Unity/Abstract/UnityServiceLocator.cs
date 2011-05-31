@@ -47,6 +47,7 @@ namespace Contoso.Abstract
         private IUnityContainer _container;
         private UnityServiceRegistrar _registrar;
 
+        static UnityServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
         public UnityServiceLocator()
             : this(new UnityContainer()) { }
         public UnityServiceLocator(IUnityContainer container)
@@ -55,7 +56,7 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("container");
             Container = container;
             _container.AddNewExtension<UnityStrategiesExtension>();
-            ServiceLocatorManager.Setup(this);
+            ServiceLocatorManager.ApplySetup(this);
         }
 
         public void Dispose()

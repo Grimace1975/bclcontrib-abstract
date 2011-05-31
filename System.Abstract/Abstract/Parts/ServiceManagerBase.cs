@@ -35,13 +35,16 @@ namespace System.Abstract.Parts
     public abstract partial class ServiceManagerBase<TIService, TServiceSetupAction>
         where TIService : class
     {
-        private static readonly ConditionalWeakTable<Lazy<TIService>, ISetupActionCollection> _setupActionCollections = new ConditionalWeakTable<Lazy<TIService>, ISetupActionCollection>();
+        private static readonly ConditionalWeakTable<Lazy<TIService>, ISetupDescriptor> _setupDescriptors = new ConditionalWeakTable<Lazy<TIService>, ISetupDescriptor>();
         private static readonly object _lock = new object();
 
         public static Lazy<TIService> Lazy { get; private set; }
         public static Lazy<TIService> SetProvider(Func<TIService> provider) { return Lazy = new Lazy<TIService>(provider); }
-        public static Lazy<TIService> SetProvider(Func<TIService> provider, ISetupActionCollection setup) { return Lazy = new Lazy<TIService>(provider); }
+        public static Lazy<TIService> SetProvider(Func<TIService> provider, ISetupDescriptor setup) { return Lazy = new Lazy<TIService>(provider); }
         protected static SetupRegistration Registration { get; set; }
+
+        // Force "precise" initialization
+        static ServiceManagerBase() { }
 
         public static TIService Current
         {
@@ -68,7 +71,7 @@ namespace System.Abstract.Parts
 
         #region IServiceSetup
 
-        public static void Setup(TIService service)
+        public static void ApplySetup(TIService service)
         {
             if (service == null)
                 throw new ArgumentNullException("service");
@@ -79,31 +82,31 @@ namespace System.Abstract.Parts
             if (onSetup == null)
                 return;
             // preform setup
-            ISetupActionCollection setupActions;
-            var list = (CompilerServicesExtensions.TryGetValueByLazyValue<TIService, ISetupActionCollection>(_setupActionCollections, service, out setupActions) && (setupActions == null) ? setupActions.ToList() : null);
+            ISetupDescriptor setupDescriptor;
+            var list = (CompilerServicesExtensions.TryGetValueByLazyValue<TIService, ISetupDescriptor>(_setupDescriptors, service, out setupDescriptor) && (setupDescriptor == null) ? setupDescriptor.ToList() : null);
             onSetup(service, list);
         }
 
-        public static ISetupActionCollection SetupActions(Lazy<TIService> lazy)
+        public static ISetupDescriptor GetSetupDescriptor(Lazy<TIService> lazy)
         {
             if (lazy == null)
                 throw new ArgumentNullException("lazy");
-            ISetupActionCollection setupActions;
-            if (_setupActionCollections.TryGetValue(lazy, out setupActions))
-                return setupActions;
+            ISetupDescriptor setupDescriptor;
+            if (_setupDescriptors.TryGetValue(lazy, out setupDescriptor))
+                return setupDescriptor;
             lock (_lock)
-                if (!_setupActionCollections.TryGetValue(lazy, out setupActions))
+                if (!_setupDescriptors.TryGetValue(lazy, out setupDescriptor))
                 {
-                    setupActions = new SetupActionCollection(Registration);
-                    _setupActionCollections.Add(lazy, setupActions);
+                    setupDescriptor = new SetupDescriptor(Registration);
+                    _setupDescriptors.Add(lazy, setupDescriptor);
                 }
-            return setupActions;
+            return setupDescriptor;
         }
 
         /// <summary>
         /// ISetupActionCollection
         /// </summary>
-        public interface ISetupActionCollection
+        public interface ISetupDescriptor
         {
             void Do(TServiceSetupAction action);
             void RegisterWithServiceLocator(string name);
@@ -114,22 +117,22 @@ namespace System.Abstract.Parts
         /// <summary>
         /// SetupActionCollection
         /// </summary>
-        protected class SetupActionCollection : ISetupActionCollection
+        protected class SetupDescriptor : ISetupDescriptor
         {
             private List<TServiceSetupAction> _actions = new List<TServiceSetupAction>();
             private SetupRegistration _registration;
 
-            public SetupActionCollection(SetupRegistration registration) { _registration = registration; }
+            public SetupDescriptor(SetupRegistration registration) { _registration = registration; }
 
-            void ISetupActionCollection.Do(TServiceSetupAction action)
+            void ISetupDescriptor.Do(TServiceSetupAction action)
             {
                 if (action == null)
                     throw new ArgumentNullException("action");
                 _actions.Add(action);
             }
 
-            void ISetupActionCollection.RegisterWithServiceLocator(string name) { ((ISetupActionCollection)this).RegisterWithServiceLocator(ServiceLocatorManager.GetDefaultServiceLocator, name); }
-            void ISetupActionCollection.RegisterWithServiceLocator(Func<IServiceLocator> locator, string name)
+            void ISetupDescriptor.RegisterWithServiceLocator(string name) { ((ISetupDescriptor)this).RegisterWithServiceLocator(ServiceLocatorManager.GetDefaultServiceLocator, name); }
+            void ISetupDescriptor.RegisterWithServiceLocator(Func<IServiceLocator> locator, string name)
             {
                 if (locator == null)
                     throw new ArgumentNullException("locator");
@@ -139,7 +142,7 @@ namespace System.Abstract.Parts
                 _actions.Add(serviceLocatorRegistrar(locator, name));
             }
 
-            IEnumerable<TServiceSetupAction> ISetupActionCollection.ToList() { return _actions; }
+            IEnumerable<TServiceSetupAction> ISetupDescriptor.ToList() { return _actions; }
         }
 
         #endregion

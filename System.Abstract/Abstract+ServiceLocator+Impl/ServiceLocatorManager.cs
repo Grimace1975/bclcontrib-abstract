@@ -50,6 +50,8 @@ namespace System.Abstract
             };
         }
 
+        public static void EnsureRegistration() { }
+
         private static void RegisterSelfInLocator(IServiceRegistrar registrar, IServiceLocator locator)
         {
             registrar.RegisterInstance<IServiceLocator>(locator);

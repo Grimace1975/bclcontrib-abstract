@@ -48,6 +48,7 @@ namespace Contoso.Abstract
         private AutofacServiceRegistrar _registrar;
         private Func<IContainer> _containerBuilder;
 
+        static AutofacServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
         public AutofacServiceLocator()
             : this(new ContainerBuilder()) { }
         public AutofacServiceLocator(ContainerBuilder container)
@@ -55,7 +56,7 @@ namespace Contoso.Abstract
             if (container == null)
                 throw new ArgumentNullException("container");
             _registrar = new AutofacServiceRegistrar(this, container, out _containerBuilder);
-            ServiceLocatorManager.Setup(this);
+            ServiceLocatorManager.ApplySetup(this);
         }
 
         public void Dispose()

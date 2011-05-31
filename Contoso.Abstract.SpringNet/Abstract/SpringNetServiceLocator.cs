@@ -49,6 +49,7 @@ namespace Contoso.Abstract
         private GenericApplicationContext  _container;
         private SpringNetServiceRegistrar _registrar;
 
+        static SpringNetServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
         public SpringNetServiceLocator()
             : this(new GenericApplicationContext()) { }
         public SpringNetServiceLocator(GenericApplicationContext container)
@@ -56,7 +57,7 @@ namespace Contoso.Abstract
             if (container == null)
                 throw new ArgumentNullException("container");
             Container = container;
-            ServiceLocatorManager.Setup(this);
+            ServiceLocatorManager.ApplySetup(this);
         }
 
         public void Dispose()
