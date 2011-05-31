@@ -51,6 +51,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LazyEx.cs" />
     <Compile Include="..\+FromCoreEx\+Kludge\Collections\HashHelpers.cs">
       <Link>+FromCoreEx\+Kludge\Collections\HashHelpers.cs</Link>
     </Compile>
