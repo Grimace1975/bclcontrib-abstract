@@ -49,6 +49,7 @@ namespace Contoso.Abstract
         private IKernel _container;
         private NinjectServiceRegistrar _registrar;
 
+        static NinjectServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
         public NinjectServiceLocator()
             : this(new StandardKernel(new INinjectModule[0])) { }
         public NinjectServiceLocator(IKernel kernel)
@@ -56,7 +57,7 @@ namespace Contoso.Abstract
             if (kernel == null)
                 throw new ArgumentNullException("kernel");
             Container = kernel;
-            ServiceLocatorManager.Setup(this);
+            ServiceLocatorManager.ApplySetup(this);
         }
 
         public void Dispose()

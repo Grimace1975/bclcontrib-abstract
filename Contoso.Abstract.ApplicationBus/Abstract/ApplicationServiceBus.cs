@@ -47,12 +47,13 @@ namespace Contoso.Abstract
     {
         private readonly IServiceMessageHandlerFactory _messageHandlerFactory;
 
+        static ApplicationServiceBus() { ServiceBusManager.EnsureRegistration(); }
         public ApplicationServiceBus()
             : this(null) { }
         public ApplicationServiceBus(IServiceMessageHandlerFactory messageHandlerFactory)
         {
             _messageHandlerFactory = messageHandlerFactory;
-            ServiceBusManager.Setup(this);
+            ServiceBusManager.ApplySetup(this);
         }
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }

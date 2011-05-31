@@ -105,16 +105,16 @@ namespace System.Abstract
 
         #region Lazy Setup
 
-        public static Lazy<IServiceLocator> RegisterWithServiceLocator(this Lazy<IServiceLocator> lazy) { ServiceLocatorManager.SetupActions(lazy).RegisterWithServiceLocator(null); return lazy; }
-        public static Lazy<IServiceLocator> RegisterWithServiceLocator(this Lazy<IServiceLocator> lazy, string name) { ServiceLocatorManager.SetupActions(lazy).RegisterWithServiceLocator(name); return lazy; }
-        public static Lazy<IServiceLocator> RegisterWithServiceLocator(this Lazy<IServiceLocator> lazy, Func<IServiceLocator> locator) { ServiceLocatorManager.SetupActions(lazy).RegisterWithServiceLocator(locator, null); return lazy; }
-        public static Lazy<IServiceLocator> RegisterWithServiceLocator(this Lazy<IServiceLocator> lazy, Func<IServiceLocator> locator, string name) { ServiceLocatorManager.SetupActions(lazy).RegisterWithServiceLocator(locator, name); return lazy; }
-        public static Lazy<IServiceLocator> RegisterByIServiceRegistration(this Lazy<IServiceLocator> lazy, params Assembly[] assemblies) { ServiceLocatorManager.SetupActions(lazy).Do((r, l) => RegisterByIServiceRegistration(r, l, null, assemblies)); return lazy; }
-        public static Lazy<IServiceLocator> RegisterByIServiceRegistration(this Lazy<IServiceLocator> lazy, Predicate<Type> predicate, params Assembly[] assemblies) { ServiceLocatorManager.SetupActions(lazy).Do((r, l) => RegisterByIServiceRegistration(r, l, predicate, assemblies)); return lazy; }
-        public static Lazy<IServiceLocator> RegisterByNamingConvention(this Lazy<IServiceLocator> lazy) { ServiceLocatorManager.SetupActions(lazy).Do((r, l) => RegisterByNamingConvention(r, l, null, new[] { GetPreviousCallingMethodAssembly() })); return lazy; }
-        public static Lazy<IServiceLocator> RegisterByNamingConvention(this Lazy<IServiceLocator> lazy, params Assembly[] assemblies) { ServiceLocatorManager.SetupActions(lazy).Do((r, l) => RegisterByNamingConvention(r, l, null, assemblies)); return lazy; }
-        public static Lazy<IServiceLocator> RegisterByNamingConvention(this Lazy<IServiceLocator> lazy, Predicate<Type> predicate) { ServiceLocatorManager.SetupActions(lazy).Do((r, l) => RegisterByNamingConvention(r, l, predicate, new[] { GetPreviousCallingMethodAssembly() })); return lazy; }
-        public static Lazy<IServiceLocator> RegisterByNamingConvention(this Lazy<IServiceLocator> lazy, Predicate<Type> predicate, params Assembly[] assemblies) { ServiceLocatorManager.SetupActions(lazy).Do((r, l) => RegisterByNamingConvention(r, l, predicate, assemblies)); return lazy; }
+        public static Lazy<IServiceLocator> RegisterWithServiceLocator(this Lazy<IServiceLocator> lazy) { ServiceLocatorManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(null); return lazy; }
+        public static Lazy<IServiceLocator> RegisterWithServiceLocator(this Lazy<IServiceLocator> lazy, string name) { ServiceLocatorManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(name); return lazy; }
+        public static Lazy<IServiceLocator> RegisterWithServiceLocator(this Lazy<IServiceLocator> lazy, Func<IServiceLocator> locator) { ServiceLocatorManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(locator, null); return lazy; }
+        public static Lazy<IServiceLocator> RegisterWithServiceLocator(this Lazy<IServiceLocator> lazy, Func<IServiceLocator> locator, string name) { ServiceLocatorManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(locator, name); return lazy; }
+        public static Lazy<IServiceLocator> RegisterByIServiceRegistration(this Lazy<IServiceLocator> lazy, params Assembly[] assemblies) { ServiceLocatorManager.GetSetupDescriptor(lazy).Do((r, l) => RegisterByIServiceRegistration(r, l, null, assemblies)); return lazy; }
+        public static Lazy<IServiceLocator> RegisterByIServiceRegistration(this Lazy<IServiceLocator> lazy, Predicate<Type> predicate, params Assembly[] assemblies) { ServiceLocatorManager.GetSetupDescriptor(lazy).Do((r, l) => RegisterByIServiceRegistration(r, l, predicate, assemblies)); return lazy; }
+        public static Lazy<IServiceLocator> RegisterByNamingConvention(this Lazy<IServiceLocator> lazy) { ServiceLocatorManager.GetSetupDescriptor(lazy).Do((r, l) => RegisterByNamingConvention(r, l, null, new[] { GetPreviousCallingMethodAssembly() })); return lazy; }
+        public static Lazy<IServiceLocator> RegisterByNamingConvention(this Lazy<IServiceLocator> lazy, params Assembly[] assemblies) { ServiceLocatorManager.GetSetupDescriptor(lazy).Do((r, l) => RegisterByNamingConvention(r, l, null, assemblies)); return lazy; }
+        public static Lazy<IServiceLocator> RegisterByNamingConvention(this Lazy<IServiceLocator> lazy, Predicate<Type> predicate) { ServiceLocatorManager.GetSetupDescriptor(lazy).Do((r, l) => RegisterByNamingConvention(r, l, predicate, new[] { GetPreviousCallingMethodAssembly() })); return lazy; }
+        public static Lazy<IServiceLocator> RegisterByNamingConvention(this Lazy<IServiceLocator> lazy, Predicate<Type> predicate, params Assembly[] assemblies) { ServiceLocatorManager.GetSetupDescriptor(lazy).Do((r, l) => RegisterByNamingConvention(r, l, predicate, assemblies)); return lazy; }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static Assembly GetPreviousCallingMethodAssembly()

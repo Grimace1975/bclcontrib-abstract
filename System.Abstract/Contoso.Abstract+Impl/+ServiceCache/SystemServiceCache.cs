@@ -46,6 +46,7 @@ namespace Contoso.Abstract
 	/// </summary>
 	public class SystemServiceCache : ISystemServiceCache
 	{
+        static SystemServiceCache() { ServiceCacheManager.EnsureRegistration(); }
 		public SystemServiceCache(string name)
 			: this(new SystemCaching.MemoryCache(name)) { }
 		public SystemServiceCache(SystemCaching.ObjectCache cache)
@@ -53,7 +54,7 @@ namespace Contoso.Abstract
 			Cache = cache;
 			Settings = new ServiceCacheSettings();
 			RegistrationDispatch = new DefaultServiceCacheRegistrationDispatcher();
-            ServiceCacheManager.Setup(this);
+            ServiceCacheManager.ApplySetup(this);
 		}
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }

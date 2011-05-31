@@ -48,6 +48,7 @@ namespace Contoso.Abstract
 		private IContainer _container;
 		private StructureMapServiceRegistrar _registrar;
 
+        static StructureMapServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
 		public StructureMapServiceLocator()
 			: this(new Container()) { }
 		public StructureMapServiceLocator(IContainer container)
@@ -56,7 +57,7 @@ namespace Contoso.Abstract
 				throw new ArgumentNullException("container");
 			_container = container;
 			_registrar = new StructureMapServiceRegistrar(this, container);
-            ServiceLocatorManager.Setup(this);
+            ServiceLocatorManager.ApplySetup(this);
 		}
 
 		public void Dispose()

@@ -50,6 +50,7 @@ namespace Contoso.Abstract
         private HiroServiceRegistrar _registrar;
         private Func<IMicroContainer> _containerBuilder;
 
+        static HiroServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
         public HiroServiceLocator()
             : this(new DependencyMap()) { }
         public HiroServiceLocator(DependencyMap builder)
@@ -58,7 +59,7 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("builder");
             Builder = builder;
             _registrar = new HiroServiceRegistrar(this, builder, out _containerBuilder);
-            ServiceLocatorManager.Setup(this);
+            ServiceLocatorManager.ApplySetup(this);
         }
         //public HiroServiceLocator(IMicroContainer container)
         //{

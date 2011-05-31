@@ -51,10 +51,10 @@ namespace System.Abstract
 
         #region Lazy Setup
 
-        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> lazy) { ServiceBusManager.SetupActions(lazy).RegisterWithServiceLocator(null); return lazy; }
-        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> lazy, string name) { ServiceBusManager.SetupActions(lazy).RegisterWithServiceLocator(name); return lazy; }
-        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> lazy, Func<IServiceLocator> locator) { ServiceBusManager.SetupActions(lazy).RegisterWithServiceLocator(locator, null); return lazy; }
-        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> lazy, Func<IServiceLocator> locator, string name) { ServiceBusManager.SetupActions(lazy).RegisterWithServiceLocator(locator, name); return lazy; }
+        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> lazy) { ServiceBusManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(null); return lazy; }
+        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> lazy, string name) { ServiceBusManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(name); return lazy; }
+        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> lazy, Func<IServiceLocator> locator) { ServiceBusManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(locator, null); return lazy; }
+        public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> lazy, Func<IServiceLocator> locator, string name) { ServiceBusManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(locator, name); return lazy; }
 
         public static Lazy<IServiceBus> AddEndpoint(this Lazy<IServiceBus> lazy, string endpoint) { return lazy; }
 

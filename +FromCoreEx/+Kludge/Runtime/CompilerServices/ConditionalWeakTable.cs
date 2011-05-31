@@ -151,6 +151,21 @@ namespace System.Runtime.CompilerServices
             return -1;
         }
 
+        // Kludge: CompilerServicesExtensions dependency
+        internal int FindEntryForLazyValueHelper<TLazyKey>(TLazyKey key)
+        {
+            Lazy<TLazyKey> lazy;
+            for (int entriesIndex = 0; entriesIndex < _entries.Length; entriesIndex++)
+            {
+                var depHnd = _entries[entriesIndex].depHnd;
+                if (depHnd.IsAllocated
+                    && (lazy = (Lazy<TLazyKey>)depHnd.GetPrimary()).IsValueCreated
+                    && (lazy.Value == key))
+                    return entriesIndex;
+            }
+            return -1;
+        }
+
         public TValue GetOrCreateValue(TKey key) { return GetValue(key, (TKey k) => Activator.CreateInstance<TValue>()); }
 
         [SecuritySafeCritical]
@@ -287,6 +302,28 @@ namespace System.Runtime.CompilerServices
         private bool TryGetValueWorker(TKey key, out TValue value)
         {
             int index = FindEntry(key);
+            if (index != -1)
+            {
+                object primary = null;
+                object secondary = null;
+                _entries[index].depHnd.GetPrimaryAndSecondary(out primary, out secondary);
+                // Now that we've secured a strong reference to the secondary, must check the primary again to ensure it didn't expire
+                // (otherwise, we open a ---- where TryGetValue misreports an expired key as a live key with a null value.) 
+                if (primary != null)
+                {
+                    value = (TValue)secondary;
+                    return true;
+                }
+            }
+            value = default(TValue);
+            return false;
+        }
+
+        // Kludge: CompilerServicesExtensions dependency
+        [SecurityCritical]
+        public bool FindEntryForLazyValueHelper<TLazyKey>(TLazyKey key, out TValue value)
+        {
+            int index = FindEntryForLazyValueHelper(key);
             if (index != -1)
             {
                 object primary = null;

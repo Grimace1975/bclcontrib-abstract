@@ -51,6 +51,7 @@ namespace Contoso.Abstract
 	/// </summary>
 	public class ServerAppFabricServiceCache : IServerAppFabricServiceCache
 	{
+        static ServerAppFabricServiceCache() { ServiceCacheManager.EnsureRegistration(); }
 		public ServerAppFabricServiceCache()
 			: this(new DataCacheFactory()) { }
 		public ServerAppFabricServiceCache(DataCacheFactoryConfiguration configuration)
@@ -64,7 +65,7 @@ namespace Contoso.Abstract
 			Cache = cache;
 			Settings = new ServiceCacheSettings();
 			RegistrationDispatch = new DefaultServiceCacheRegistrationDispatcher();
-            ServiceCacheManager.Setup(this);
+            ServiceCacheManager.ApplySetup(this);
 		}
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }

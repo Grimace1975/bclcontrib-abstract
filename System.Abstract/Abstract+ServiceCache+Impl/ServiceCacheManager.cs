@@ -44,5 +44,7 @@ namespace System.Abstract
                 ServiceLocatorRegistrar = (locator, name) => (service => RegisterInstance(locator(), service, name)),
             };
         }
+
+        public static void EnsureRegistration() { }
     }
 }

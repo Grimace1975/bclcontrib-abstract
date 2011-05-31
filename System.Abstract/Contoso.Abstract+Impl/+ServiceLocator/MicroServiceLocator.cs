@@ -10,7 +10,7 @@ namespace Contoso.Abstract
     /// </summary>
     public interface IMicroServiceLocator : IServiceLocator
     {
-        IDictionary<string, IDictionary<Type, Type>> Container { get; }
+        IDictionary<string, IDictionary<Type, object>> Container { get; }
     }
 
     /// <summary>
@@ -18,26 +18,30 @@ namespace Contoso.Abstract
     /// </summary>
     public class MicroServiceLocator : IMicroServiceLocator
     {
-        private IDictionary<string, IDictionary<Type, Type>> _container;
+        private IDictionary<string, IDictionary<Type, object>> _container;
         private MicroServiceRegistrar _registrar;
 
+        // used so Type is not a reserved value
+        internal class Trampoline { public Type Type; }
+
+        static MicroServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
         public MicroServiceLocator()
-            : this(new Dictionary<Type, Type>()) { }
-        public MicroServiceLocator(IDictionary<Type, Type> container)
+            : this(new Dictionary<Type, object>()) { }
+        public MicroServiceLocator(IDictionary<Type, object> container)
         {
             if (container == null)
                 throw new ArgumentNullException("container");
-            Container = new Dictionary<string, IDictionary<Type, Type>> { 
+            Container = new Dictionary<string, IDictionary<Type, object>> { 
                 {string.Empty, container}
             };
-            ServiceLocatorManager.Setup(this);
+            ServiceLocatorManager.ApplySetup(this);
         }
-        public MicroServiceLocator(IDictionary<string, IDictionary<Type, Type>> container)
+        public MicroServiceLocator(IDictionary<string, IDictionary<Type, object>> container)
         {
             if (container == null)
                 throw new ArgumentNullException("container");
             Container = container;
-            ServiceLocatorManager.Setup(this);
+            ServiceLocatorManager.ApplySetup(this);
         }
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
@@ -57,20 +61,40 @@ namespace Contoso.Abstract
         {
             try
             {
-                IDictionary<Type, Type> container;
-                if (!_container.TryGetValue(name, out container))
-                    throw new ArgumentOutOfRangeException(string.Format("Could not resolve implementation for [{0}-{1}]", name, serviceType.ToString()));
-                Type concreteType;
-                if (!container.TryGetValue(serviceType, out concreteType))
+                IDictionary<Type, object> container;
+                if (!_container.TryGetValue(name ?? string.Empty, out container))
+                    throw new ArgumentOutOfRangeException(string.Format("Could not resolve implementation for [{0}-{1}]", name ?? "+", serviceType.ToString()));
+                // if not registered, then use requested type
+                object concrete;
+                if (!container.TryGetValue(serviceType, out concrete))
+                    concrete = new Trampoline { Type = serviceType };
+                // register as null for default constructor
+                if (concrete == null)
                     return Activator.CreateInstance(serviceType);
-                var constructorInfo = concreteType.GetConstructors()
-                    .FirstOrDefault(constructor => constructor.GetParameters().Length > 0);
-                if (constructorInfo == null)
-                    return Activator.CreateInstance(concreteType);
-                var args = constructorInfo.GetParameters()
-                    .Select(arg => Resolve(arg.ParameterType))
-                    .ToArray();
-                return Activator.CreateInstance(concreteType, args);
+                // try factory
+                var factory = (concrete as Func<IServiceLocator, object>);
+                if (factory != null)
+                    return factory(this);
+                // try type, then register as factory
+                var concreteAsTrampoline = (concrete as Trampoline);
+                if (concreteAsTrampoline != null)
+                {
+                    var concreteAsType = concreteAsTrampoline.Type;
+                    var constructorInfo = concreteAsType.GetConstructors()
+                        .FirstOrDefault(constructor => constructor.GetParameters().Length > 0);
+                    if (constructorInfo == null)
+                        container[serviceType] = factory = (l => Activator.CreateInstance(concreteAsType));
+                    else
+                    {
+                        var args = constructorInfo.GetParameters()
+                            .Select(arg => Resolve(arg.ParameterType))
+                            .ToArray();
+                        container[serviceType] = factory = (l => Activator.CreateInstance(concreteAsType, args));
+                    }
+                    return factory(this);
+                }
+                // other wise was registered as an instance
+                return concrete;
             }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
@@ -81,7 +105,7 @@ namespace Contoso.Abstract
         {
             return _container.SelectMany(x => x.Value, (a, b) => new { Name = a.Key, Services = b })
                 .Where(x => x.Services.Key == serviceType)
-                .Select(x => Resolve(x.Services.Value, x.Name));
+                .Select(x => Resolve(x.Services.Key, x.Name));
         }
 
         // inject
@@ -96,7 +120,7 @@ namespace Contoso.Abstract
 
         #region Domain specific
 
-        public IDictionary<string, IDictionary<Type, Type>> Container
+        public IDictionary<string, IDictionary<Type, object>> Container
         {
             get { return _container; }
             private set
