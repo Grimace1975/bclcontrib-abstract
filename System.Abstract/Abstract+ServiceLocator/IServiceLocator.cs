@@ -27,6 +27,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 namespace System.Abstract
 {
     /// <summary>
@@ -110,44 +111,33 @@ namespace System.Abstract
         public static Lazy<IServiceLocator> RegisterWithServiceLocator(this Lazy<IServiceLocator> lazy, Func<IServiceLocator> locator, string name) { ServiceLocatorManager.SetupActions(lazy).RegisterWithServiceLocator(locator, name); return lazy; }
         public static Lazy<IServiceLocator> RegisterByIServiceRegistration(this Lazy<IServiceLocator> lazy, params Assembly[] assemblies) { ServiceLocatorManager.SetupActions(lazy).Do((r, l) => RegisterByIServiceRegistration(r, l, null, assemblies)); return lazy; }
         public static Lazy<IServiceLocator> RegisterByIServiceRegistration(this Lazy<IServiceLocator> lazy, Predicate<Type> predicate, params Assembly[] assemblies) { ServiceLocatorManager.SetupActions(lazy).Do((r, l) => RegisterByIServiceRegistration(r, l, predicate, assemblies)); return lazy; }
-        public static Lazy<IServiceLocator> RegisterByNamingConvention(this Lazy<IServiceLocator> lazy) { ServiceLocatorManager.SetupActions(lazy).Do((r, l) => RegisterByNamingConvention(r, l, null, new[] { GetPreviousCallingMethodsAssembly() })); return lazy; }
+        public static Lazy<IServiceLocator> RegisterByNamingConvention(this Lazy<IServiceLocator> lazy) { ServiceLocatorManager.SetupActions(lazy).Do((r, l) => RegisterByNamingConvention(r, l, null, new[] { GetPreviousCallingMethodAssembly() })); return lazy; }
         public static Lazy<IServiceLocator> RegisterByNamingConvention(this Lazy<IServiceLocator> lazy, params Assembly[] assemblies) { ServiceLocatorManager.SetupActions(lazy).Do((r, l) => RegisterByNamingConvention(r, l, null, assemblies)); return lazy; }
-        public static Lazy<IServiceLocator> RegisterByNamingConvention(this Lazy<IServiceLocator> lazy, Predicate<Type> predicate) { ServiceLocatorManager.SetupActions(lazy).Do((r, l) => RegisterByNamingConvention(r, l, predicate, new[] { GetPreviousCallingMethodsAssembly() })); return lazy; }
+        public static Lazy<IServiceLocator> RegisterByNamingConvention(this Lazy<IServiceLocator> lazy, Predicate<Type> predicate) { ServiceLocatorManager.SetupActions(lazy).Do((r, l) => RegisterByNamingConvention(r, l, predicate, new[] { GetPreviousCallingMethodAssembly() })); return lazy; }
         public static Lazy<IServiceLocator> RegisterByNamingConvention(this Lazy<IServiceLocator> lazy, Predicate<Type> predicate, params Assembly[] assemblies) { ServiceLocatorManager.SetupActions(lazy).Do((r, l) => RegisterByNamingConvention(r, l, predicate, assemblies)); return lazy; }
 
-        #endregion
-
-        private static Assembly GetPreviousCallingMethodsAssembly()
+        [MethodImpl(MethodImplOptions.NoInlining)]
+        private static Assembly GetPreviousCallingMethodAssembly()
         {
-            var frame = new StackTrace().GetFrame(2);
-            var method = frame.GetMethod();
+            var method = new StackTrace().GetFrame(2).GetMethod();
             return (method != null ? method.ReflectedType.Assembly : null);
         }
+
+        #endregion
 
         public static void RegisterByIServiceRegistration(IServiceRegistrar registrar, IServiceLocator locator, Predicate<Type> predicate, params Assembly[] assemblies)
         {
             var registrationType = typeof(IServiceRegistration);
             var matchedTypes = assemblies.SelectMany(a => a.GetTypes())
                 .Where(t => (!t.IsInterface) && (!t.IsAbstract) && (t.GetInterfaces().Contains(registrationType)))
-                .Where(t => (predicate == null) || (predicate(t)));
+                .Where(t => (predicate == null) || (predicate(t)))
+                .Where(t => !ServiceLocatorManager.GetWantsToSkipRegistration(t));
             foreach (var matchedType in matchedTypes)
                 locator.Resolve<IServiceRegistration>(matchedType).Register(registrar);
         }
 
-        public static void RegisterByNamingConvention(IServiceRegistrar registrar, IServiceLocator locator, Predicate<Type> predicate, params Assembly[] assemblies)
-        {
-            var registrationType = typeof(IServiceRegistration);
-            var matchedTypes = assemblies.SelectMany(a => a.GetTypes())
-                .Where(t => (!t.IsInterface) && (!t.IsAbstract) && (t.GetInterfaces().Contains(registrationType)))
-                .ToList();
-            //foreach (var matchedType in matchedTypes)
-            //    locator.Resolve<IServiceRegistration>(matchedType).Register(registrar);
-            // default registation
-            var remainingAssemblies = assemblies; //.Where(a => !matchedTypes.Any(y => y.Assembly == a));
-            ApplyDefaultNamingConvention(remainingAssemblies, predicate, (interfaceType, type) => registrar.Register(interfaceType, type));
-        }
-
-        public static void ApplyDefaultNamingConvention(IEnumerable<Assembly> assemblies, Predicate<Type> predicate, Action<Type, Type> action)
+        public static void RegisterByNamingConvention(IServiceRegistrar registrar, IServiceLocator locator, Predicate<Type> predicate, params Assembly[] assemblies) { RegisterByNamingConvention(assemblies, predicate, (interfaceType, type) => registrar.Register(interfaceType, type)); }
+        public static void RegisterByNamingConvention(IEnumerable<Assembly> assemblies, Predicate<Type> predicate, Action<Type, Type> action)
         {
             if (assemblies.Count() == 0)
                 return;
@@ -160,6 +150,7 @@ namespace System.Abstract
                 var matchedTypes = interfaceType.Assembly.AsTypesEnumerator(interfaceType)
                     .Where(t => t.Name == concreteName)
                     .Where(t => (predicate == null) || (predicate(t)))
+                    .Where(t => !ServiceLocatorManager.GetWantsToSkipRegistration(t))
                     .ToList();
                 if (matchedTypes.Count == 1)
                     action(interfaceType, matchedTypes.First());

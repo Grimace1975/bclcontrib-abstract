@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C2F4F0D8-979A-4DCB-AC26-9701F7D46224}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Contoso.Practices</RootNamespace>
+    <AssemblyName>Contoso.Practices.Cqrs</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Practices\Cqrs\+Command\CommandHandler3.cs" />
+    <Compile Include="Practices\Cqrs\+Command\CommandHandler.cs" />
+    <Compile Include="Practices\Cqrs\+Command\CommandHandlerNotFoundException.cs" />
+    <Compile Include="Practices\Cqrs\+Command\CommandInvokerDictionaryBuilderHelpers.cs" />
+    <Compile Include="Practices\Cqrs\+Command\CommandWithAggregateRootId.cs" />
+    <Compile Include="Practices\Cqrs\+Command\DuplicateCommandHandlersException.cs" />
+    <Compile Include="Practices\Cqrs\+Command\ExecuteTimeoutException.cs" />
+    <Compile Include="Practices\Cqrs\+Command\ICommand.cs" />
+    <Compile Include="Practices\Cqrs\+Command\ICommandBus.cs" />
+    <Compile Include="Practices\Cqrs\+Command\ICommandErrorHandler.cs" />
+    <Compile Include="Practices\Cqrs\+Command\ICommandHandlingContext.cs" />
+    <Compile Include="Practices\Cqrs\+Command\IHandleCommands.cs" />
+    <Compile Include="Practices\Cqrs\+Command\LocalCommandBus.cs" />
+    <Compile Include="Practices\Cqrs\+Event\EventHandlerFactory.cs" />
+    <Compile Include="Practices\Cqrs\+Event\IEventBus.cs" />
+    <Compile Include="Practices\Cqrs\+Event\IHandleDomainEvents.cs" />
+    <Compile Include="Practices\Cqrs\+Event\LocalEventBus.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BclContrib.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Changelog.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.Abstract\System.Abstract.csproj">
+      <Project>{A44E9D89-BFF2-41A4-AADC-3C2BDFDAEEB1}</Project>
+      <Name>System.Abstract</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

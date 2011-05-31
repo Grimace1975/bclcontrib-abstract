@@ -57,6 +57,17 @@ xcopy %SRC%.4\bin\Release\Contoso.Abstract.Hiro.xml lib\NET40\ /Y/Q
 popd
 
 ::
+echo Abstract.Log4Net
+pushd BclContrib-Abstract.Log4Net
+set SRC=..\..\Contoso.Abstract.Log4Net
+xcopy %SRC%\Changelog.txt . /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Abstract.Log4Net.dll lib\NET35\ /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Abstract.Log4Net.xml lib\NET35\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Abstract.Log4Net.dll lib\NET40\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Abstract.Log4Net.xml lib\NET40\ /Y/Q
+popd
+
+::
 echo Abstract.Memcached
 pushd BclContrib-Abstract.Memcached
 set SRC=..\..\Contoso.Abstract.Memcached
@@ -112,6 +123,17 @@ xcopy %SRC%.4\bin\Release\Contoso.Abstract.Ninject.xml lib\NET40\ /Y/Q
 popd
 
 ::
+echo Abstract.NLog
+pushd BclContrib-Abstract.NLog
+set SRC=..\..\Contoso.Abstract.NLog
+xcopy %SRC%\Changelog.txt . /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Abstract.NLog.dll lib\NET35\ /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Abstract.NLog.xml lib\NET35\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Abstract.NLog.dll lib\NET40\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Abstract.NLog.xml lib\NET40\ /Y/Q
+popd
+
+::
 echo Abstract.NServiceBus
 pushd BclContrib-Abstract.NServiceBus
 set SRC=..\..\Contoso.Abstract.NServiceBus
@@ -142,6 +164,28 @@ xcopy %SRC%\bin\Release\Contoso.Abstract.ServerAppFabric.dll lib\NET35\ /Y/Q
 xcopy %SRC%\bin\Release\Contoso.Abstract.ServerAppFabric.xml lib\NET35\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.ServerAppFabric.dll lib\NET40\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.ServerAppFabric.xml lib\NET40\ /Y/Q
+popd
+
+::
+echo Abstract.SimpleBus
+pushd BclContrib-Abstract.SimpleBus
+set SRC=..\..\Contoso.Practices.SimpleBus
+xcopy %SRC%\Changelog.txt . /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Practices.SimpleBus.dll lib\NET35\ /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Practices.SimpleBus.xml lib\NET35\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Practices.SimpleBus.dll lib\NET40\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Practices.SimpleBus.xml lib\NET40\ /Y/Q
+popd
+
+::
+echo Abstract.SimpleCqrs
+pushd BclContrib-Abstract.SimpleCqrs
+set SRC=..\..\Contoso.Practices.SimpleCqrs
+xcopy %SRC%\Changelog.txt . /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Practices.SimpleCqrs.dll lib\NET35\ /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Practices.SimpleCqrs.xml lib\NET35\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Practices.SimpleCqrs.dll lib\NET40\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Practices.SimpleCqrs.xml lib\NET40\ /Y/Q
 popd
 
 ::
@@ -208,6 +252,17 @@ xcopy %SRC%\bin\Release\Contoso.Abstract.Web.dll lib\NET35\ /Y/Q
 xcopy %SRC%\bin\Release\Contoso.Abstract.Web.xml lib\NET35\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.Web.dll lib\NET40\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.Web.xml lib\NET40\ /Y/Q
+popd
+
+::
+echo Abstract.Web.Mvc
+pushd BclContrib-Abstract.Web.Mvc
+set SRC=..\..\Contoso.Abstract.Web.Mvc
+xcopy %SRC%\Changelog.txt . /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Abstract.Web.Mvc.dll lib\NET35\ /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Abstract.Web.Mvc.xml lib\NET35\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Abstract.Web.Mvc.dll lib\NET40\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Abstract.Web.Mvc.xml lib\NET40\ /Y/Q
 popd
 
 pause

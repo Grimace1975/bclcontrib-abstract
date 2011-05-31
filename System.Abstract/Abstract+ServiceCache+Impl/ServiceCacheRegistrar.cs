@@ -133,7 +133,7 @@ namespace System.Abstract
                 if (registrationName.IndexOf("::") > -1)
                     throw new ArgumentException(string.Format(Local.ScopeCharacterNotAllowedA, registrationName), "registration");
                 if (_setAsName.ContainsKey(registrationName))
-                    throw new ArgumentException(string.Format(Local.RedefineIDA, registrationName), "registration");
+                    throw new ArgumentException(string.Format(Local.RedefineNameA, registrationName), "registration");
                 _setAsName.Add(registrationName, registration);
                 _set.Add(registration);
 				// link-in

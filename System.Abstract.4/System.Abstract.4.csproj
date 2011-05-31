@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CLR4;EXPERIMENTAL</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;CLR4;COREINTERNAL;EXPERIMENTAL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -27,7 +27,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;CLR4</DefineConstants>
+    <DefineConstants>TRACE;CLR4;COREINTERNAL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\System.Abstract.XML</DocumentationFile>
@@ -40,34 +40,53 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\+FromCoreEx\Linq\Expressions\ExpressionEx.cs">
-      <Link>+FromCoreEx\Linq\Expressions\ExpressionEx.cs</Link>
+    <Compile Include="..\+fromcoreex\+kludge\collections\HashHelpers.cs">
+      <Link>+FromCoreEx\+Kludge\Collections\HashHelpers.cs</Link>
     </Compile>
-    <Compile Include="..\+FromCoreEx\Reflection\AssemblyExtensions.cs">
-      <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
+    <Compile Include="..\+fromcoreex\+kludge\runtime\compilerservices\ConditionalWeakTable.cs">
+      <Link>+FromCoreEx\+Kludge\Runtime\CompilerServices\ConditionalWeakTable.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\+FromCoreEx\ExceptionEx.cs">
+    <Compile Include="..\+fromcoreex\+kludge\runtime\compilerservices\DependentHandle.cs">
+      <Link>+FromCoreEx\+Kludge\Runtime\CompilerServices\DependentHandle.cs</Link>
+    </Compile>
+    <Compile Include="..\+fromcoreex\collections\IIndexer.cs">
+      <Link>+FromCoreEx\Collections\IIndexer.cs</Link>
+    </Compile>
+    <Compile Include="..\+fromcoreex\configuration\ConfigurationElementEx.cs">
+      <Link>+FromCoreEx\Configuration\ConfigurationElementEx.cs</Link>
+    </Compile>
+    <Compile Include="..\+fromcoreex\configuration\ConfigurationElementsEx.cs">
+      <Link>+FromCoreEx\Configuration\ConfigurationElementsEx.cs</Link>
+    </Compile>
+    <Compile Include="..\+fromcoreex\configuration\ConfigurationSectionEx.cs">
+      <Link>+FromCoreEx\Configuration\ConfigurationSectionEx.cs</Link>
+    </Compile>
+    <Compile Include="..\+fromcoreex\EnvironmentEx.cs">
+      <Link>+FromCoreEx\EnvironmentEx.cs</Link>
+    </Compile>
+    <Compile Include="..\+fromcoreex\ExceptionEx.cs">
       <Link>+FromCoreEx\ExceptionEx.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\+Kludge\Collections\ConditionalWeakTable.cs">
-      <Link>+Kludge\Collections\ConditionalWeakTable.cs</Link>
+    <Compile Include="..\+fromcoreex\linq\expressions\ExpressionEx.cs">
+      <Link>+FromCoreEx\Linq\Expressions\ExpressionEx.cs</Link>
+    </Compile>
+    <Compile Include="..\+fromcoreex\reflection\AssemblyExtensions.cs">
+      <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\+fromcoreex\runtime\compilerservices\CompilerServicesExtensions.cs">
+      <Link>+FromCoreEx\Runtime\CompilerServices\CompilerServicesExtensions.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\+Kludge\Lazy.cs">
       <Link>+Kludge\Lazy.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\+Kludge\LazyDebugView.cs">
       <Link>+Kludge\LazyDebugView.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\+Kludge\Runtime\CompilerServices\ConditionalWeakTable.cs">
-      <Link>+Kludge\Runtime\CompilerServices\ConditionalWeakTable.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\+Kludge\Runtime\CompilerServices\DependentHandle.cs">
-      <Link>+Kludge\Runtime\CompilerServices\DependentHandle.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\+Kludge\Threading\LazyThreadSafetyMode.cs">
       <Link>+Kludge\Threading\LazyThreadSafetyMode.cs</Link>
@@ -239,6 +258,9 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IWantToSkipServiceLocator.cs">
       <Link>Abstract+ServiceLocator\IWantToSkipServiceLocator.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IWantToSkipServiceRegistration.cs">
+      <Link>Abstract+ServiceLocator\IWantToSkipServiceRegistration.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceLocatorResolutionException.cs">
       <Link>Abstract+ServiceLocator\ServiceLocatorResolutionException.cs</Link>

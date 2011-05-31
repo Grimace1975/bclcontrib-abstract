@@ -110,13 +110,13 @@
       <Project>{11AB87CE-AC55-4371-B2FB-F8D8E445654F}</Project>
       <Name>Contoso.Abstract.ServerAppFabric</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.SimpleBus\Contoso.Abstract.SimpleBus.csproj">
+    <ProjectReference Include="..\Contoso.Practices.DurableBus\Contoso.Practices.DurableBus.csproj">
       <Project>{1AE81111-2088-4963-BBFC-27C7D098FD80}</Project>
-      <Name>Contoso.Abstract.SimpleBus</Name>
+      <Name>Contoso.Practices.DurableBus</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.SimpleCqrs\Contoso.Abstract.SimpleCqrs.csproj">
+    <ProjectReference Include="..\Contoso.Practices.Cqrs\Contoso.Practices.Cqrs.csproj">
       <Project>{C2F4F0D8-979A-4DCB-AC26-9701F7D46224}</Project>
-      <Name>Contoso.Abstract.SimpleCqrs</Name>
+      <Name>Contoso.Practices.Cqrs</Name>
     </ProjectReference>
     <ProjectReference Include="..\Contoso.Abstract.SpringNet\Contoso.Abstract.SpringNet.csproj">
       <Project>{08D54C60-5744-423F-A700-9ABE13C62B20}</Project>

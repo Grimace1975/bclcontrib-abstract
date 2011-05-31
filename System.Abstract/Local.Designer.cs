@@ -135,7 +135,7 @@ namespace System.Abstract {
         /// <summary>
         ///   Looks up a localized string similar to RedefineIDA.
         /// </summary>
-        internal static string RedefineIDA {
+        internal static string RedefineNameA {
             get {
                 return ResourceManager.GetString("RedefineIDA", resourceCulture);
             }

@@ -41,11 +41,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BclContrib.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Contoso.Abstract.Log4Net\Changelog.txt">
       <Link>Changelog.txt</Link>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

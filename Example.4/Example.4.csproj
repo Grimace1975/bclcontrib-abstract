@@ -97,13 +97,13 @@
       <Project>{5E99415E-B741-446D-B640-6EDF90063994}</Project>
       <Name>Contoso.Abstract.ServerAppFabric.4</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.SimpleBus.4\Contoso.Abstract.SimpleBus.4.csproj">
+    <ProjectReference Include="..\Contoso.Practices.DurableBus.4\Contoso.Practices.DurableBus.4.csproj">
       <Project>{3CBEF415-B71A-4811-A615-8635A778E281}</Project>
-      <Name>Contoso.Abstract.SimpleBus.4</Name>
+      <Name>Contoso.Practices.DurableBus.4</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.SimpleCqrs.4\Contoso.Abstract.SimpleCqrs.4.csproj">
+    <ProjectReference Include="..\Contoso.Practices.Cqrs.4\Contoso.Practices.Cqrs.4.csproj">
       <Project>{14D5934C-F462-4087-89A9-579E7F7BE704}</Project>
-      <Name>Contoso.Abstract.SimpleCqrs.4</Name>
+      <Name>Contoso.Practices.Cqrs.4</Name>
     </ProjectReference>
     <ProjectReference Include="..\Contoso.Abstract.SpringNet.4\Contoso.Abstract.SpringNet.4.csproj">
       <Project>{AF124673-8996-4EB5-A2E5-AF94C7B8F667}</Project>
@@ -133,6 +133,9 @@
       <Project>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</Project>
       <Name>System.Abstract.4</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
