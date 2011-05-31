@@ -22,15 +22,16 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;EXPERIMENTAL</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;COREINTERNAL;EXPERIMENTAL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;COREINTERNAL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\System.Abstract.XML</DocumentationFile>
@@ -43,15 +44,40 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="+Kludge\Collections\ConditionalWeakTable.cs" />
-    <Compile Include="+Kludge\Runtime\CompilerServices\ConditionalWeakTable.cs" />
-    <Compile Include="+Kludge\Runtime\CompilerServices\DependentHandle.cs" />
+    <Compile Include="..\+FromCoreEx\+Kludge\Collections\HashHelpers.cs">
+      <Link>+FromCoreEx\+Kludge\Collections\HashHelpers.cs</Link>
+    </Compile>
+    <Compile Include="..\+FromCoreEx\+Kludge\Runtime\CompilerServices\ConditionalWeakTable.cs">
+      <Link>+FromCoreEx\+Kludge\Runtime\CompilerServices\ConditionalWeakTable.cs</Link>
+    </Compile>
+    <Compile Include="..\+FromCoreEx\+Kludge\Runtime\CompilerServices\DependentHandle.cs">
+      <Link>+FromCoreEx\+Kludge\Runtime\CompilerServices\DependentHandle.cs</Link>
+    </Compile>
+    <Compile Include="..\+FromCoreEx\Collections\IIndexer.cs">
+      <Link>+FromCoreEx\Collections\IIndexer.cs</Link>
+    </Compile>
+    <Compile Include="..\+FromCoreEx\Configuration\ConfigurationElementEx.cs">
+      <Link>+FromCoreEx\Configuration\ConfigurationElementEx.cs</Link>
+    </Compile>
+    <Compile Include="..\+FromCoreEx\Configuration\ConfigurationElementsEx.cs">
+      <Link>+FromCoreEx\Configuration\ConfigurationElementsEx.cs</Link>
+    </Compile>
+    <Compile Include="..\+FromCoreEx\Configuration\ConfigurationSectionEx.cs">
+      <Link>+FromCoreEx\Configuration\ConfigurationSectionEx.cs</Link>
+    </Compile>
+    <Compile Include="..\+FromCoreEx\EnvironmentEx.cs">
+      <Link>+FromCoreEx\EnvironmentEx.cs</Link>
+    </Compile>
+    <Compile Include="..\+FromCoreEx\ExceptionEx.cs">
+      <Link>+FromCoreEx\ExceptionEx.cs</Link>
+    </Compile>
     <Compile Include="..\+FromCoreEx\Linq\Expressions\ExpressionEx.cs">
       <Link>+FromCoreEx\Linq\Expressions\ExpressionEx.cs</Link>
     </Compile>
@@ -59,6 +85,9 @@
       <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
     </Compile>
     <Compile Include="+Nparams+Impl\NparamsManager.cs" />
+    <Compile Include="..\+FromCoreEx\Runtime\CompilerServices\CompilerServicesExtensions.cs">
+      <Link>+FromCoreEx\Runtime\CompilerServices\CompilerServicesExtensions.cs</Link>
+    </Compile>
     <Compile Include="Abstract+ServiceCache\ServiceCacheOptions.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheSettings.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheNamespaceWrapper.cs" />
@@ -70,11 +99,13 @@
     <Compile Include="Abstract+ServiceCache\ServiceCacheRegistration.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemPolicy.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemDependency.cs" />
+    <Compile Include="Abstract+ServiceLocator\IWantToSkipServiceRegistration.cs" />
     <Compile Include="Abstract+ServiceLog+Impl\ServiceLog.cs" />
     <Compile Include="Abstract+ServiceLog\ServiceLogEventType.cs" />
     <Compile Include="++ToFile\ServiceLog.cs" />
     <Compile Include="Abstract+ServiceLog+Impl\ServiceLogManager.cs" />
     <Compile Include="Abstract+ServiceLog\IServiceLog.cs" />
+    <Compile Include="Foo.cs" />
     <Compile Include="Abstract\Parts\ServiceManagerBase.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceCache\SystemServiceCache.cs" />
     <Compile Include="Contoso.Abstract+Impl\EmptyNparams.cs" />
@@ -137,7 +168,6 @@
     <Compile Include="Contoso.Abstract+Impl\+ServiceLocator\MicroServiceLocator.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceLocator\MicroServiceRegistrar.cs" />
     <Compile Include="DateTimeEx2.cs" />
-    <Compile Include="+FromCoreEx\ExceptionEx.cs" />
     <Compile Include="IO\+Mock\DirectoryMock.cs" />
     <Compile Include="IO\+Mock\DirectoryWrapper.cs" />
     <Compile Include="IO\+Mock\FileMock.cs" />
@@ -180,7 +210,9 @@
   <ItemGroup>
     <Content Include="Changelog.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Abstract\Configuration\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

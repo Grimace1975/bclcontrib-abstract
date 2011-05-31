@@ -25,15 +25,17 @@ THE SOFTWARE.
 #endregion
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Diagnostics;
+using System.Reflection;
 namespace System.Abstract.Parts
 {
     /// <summary>
     /// ServiceManagerBase
     /// </summary>
-    public abstract class ServiceManagerBase<TIService, TServiceSetupAction>
+    public abstract partial class ServiceManagerBase<TIService, TServiceSetupAction>
         where TIService : class
     {
-        private static readonly ConditionalWeakTable<Lazy<TIService>, ISetupActionCollection> _setups = new ConditionalWeakTable<Lazy<TIService>, ISetupActionCollection>();
+        private static readonly ConditionalWeakTable<Lazy<TIService>, ISetupActionCollection> _setupActionCollections = new ConditionalWeakTable<Lazy<TIService>, ISetupActionCollection>();
         private static readonly object _lock = new object();
 
         public static Lazy<TIService> Lazy { get; private set; }
@@ -76,33 +78,26 @@ namespace System.Abstract.Parts
             var onSetup = registration.OnSetup;
             if (onSetup == null)
                 return;
-            var setupActions = SetupActions(service);
-            if (setupActions == null)
-                throw new NullReferenceException("SetupActions(service)");
-            if (onSetup != null)
-                onSetup(service, (setupActions != null ? setupActions.ToList() : null));
+            // preform setup
+            ISetupActionCollection setupActions;
+            var list = (CompilerServicesExtensions.TryGetValueByLazyValue<TIService, ISetupActionCollection>(_setupActionCollections, service, out setupActions) && (setupActions == null) ? setupActions.ToList() : null);
+            onSetup(service, list);
         }
+
         public static ISetupActionCollection SetupActions(Lazy<TIService> lazy)
         {
             if (lazy == null)
                 throw new ArgumentNullException("lazy");
-            ISetupActionCollection value;
-            if (_setups.TryGetValue(lazy, out value))
-                return value;
+            ISetupActionCollection setupActions;
+            if (_setupActionCollections.TryGetValue(lazy, out setupActions))
+                return setupActions;
             lock (_lock)
-                if (!_setups.TryGetValue(lazy, out value))
+                if (!_setupActionCollections.TryGetValue(lazy, out setupActions))
                 {
-                    value = new SetupActionCollection(Registration);
-                    _setups.Add(lazy, value);
+                    setupActions = new SetupActionCollection(Registration);
+                    _setupActionCollections.Add(lazy, setupActions);
                 }
-            return value;
-        }
-
-        public static ISetupActionCollection SetupActions(TIService service)
-        {
-            if (service == null)
-                throw new ArgumentNullException("service");
-            return null;
+            return setupActions;
         }
 
         /// <summary>

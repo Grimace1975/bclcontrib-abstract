@@ -56,6 +56,8 @@ namespace System.Abstract
         public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> lazy, Func<IServiceLocator> locator) { ServiceBusManager.SetupActions(lazy).RegisterWithServiceLocator(locator, null); return lazy; }
         public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> lazy, Func<IServiceLocator> locator, string name) { ServiceBusManager.SetupActions(lazy).RegisterWithServiceLocator(locator, name); return lazy; }
 
+        public static Lazy<IServiceBus> AddEndpoint(this Lazy<IServiceBus> lazy, string endpoint) { return lazy; }
+
         #endregion
     }
 }

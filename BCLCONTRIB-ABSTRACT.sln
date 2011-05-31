@@ -79,13 +79,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.MvcTurbine
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.MvcTurbine", "Contoso.Abstract.MvcTurbine\Contoso.Abstract.MvcTurbine.csproj", "{6ECD2B38-B550-430E-A90B-E770512BF458}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.SimpleBus", "Contoso.Abstract.SimpleBus\Contoso.Abstract.SimpleBus.csproj", "{1AE81111-2088-4963-BBFC-27C7D098FD80}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Practices.DurableBus", "Contoso.Practices.DurableBus\Contoso.Practices.DurableBus.csproj", "{1AE81111-2088-4963-BBFC-27C7D098FD80}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.SimpleBus.4", "Contoso.Abstract.SimpleBus.4\Contoso.Abstract.SimpleBus.4.csproj", "{3CBEF415-B71A-4811-A615-8635A778E281}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Practices.DurableBus.4", "Contoso.Practices.DurableBus.4\Contoso.Practices.DurableBus.4.csproj", "{3CBEF415-B71A-4811-A615-8635A778E281}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.SimpleCqrs.4", "Contoso.Abstract.SimpleCqrs.4\Contoso.Abstract.SimpleCqrs.4.csproj", "{14D5934C-F462-4087-89A9-579E7F7BE704}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Practices.Cqrs.4", "Contoso.Practices.Cqrs.4\Contoso.Practices.Cqrs.4.csproj", "{14D5934C-F462-4087-89A9-579E7F7BE704}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.SimpleCqrs", "Contoso.Abstract.SimpleCqrs\Contoso.Abstract.SimpleCqrs.csproj", "{C2F4F0D8-979A-4DCB-AC26-9701F7D46224}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Practices.Cqrs", "Contoso.Practices.Cqrs\Contoso.Practices.Cqrs.csproj", "{C2F4F0D8-979A-4DCB-AC26-9701F7D46224}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.NLog", "Contoso.Abstract.NLog\Contoso.Abstract.NLog.csproj", "{46DBED3F-72CA-4FE8-9C61-97C39E655F45}"
 EndProject
@@ -96,6 +96,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.Log4Net", "Contoso.Abstract.Log4Net\Contoso.Abstract.Log4Net.csproj", "{539BA0CF-E8E4-4501-A6A8-F7E695BCFA19}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.4", "Example.4\Example.4.csproj", "{0194BC96-FBEE-49A9-9F9B-6FB7D55E810B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.Web.Mvc.4", "Contoso.Abstract.Web.Mvc.4\Contoso.Abstract.Web.Mvc.4.csproj", "{9061E52B-AB9F-4BCE-8840-850824B039D8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Abstract.Web.Mvc", "Contoso.Abstract.Web.Mvc\Contoso.Abstract.Web.Mvc.csproj", "{9E961ED4-69FD-42FE-B19C-3EAB67D1535B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -587,6 +591,26 @@ Global
 		{0194BC96-FBEE-49A9-9F9B-6FB7D55E810B}.Release|Mixed Platforms.Build.0 = Release|x86
 		{0194BC96-FBEE-49A9-9F9B-6FB7D55E810B}.Release|x86.ActiveCfg = Release|x86
 		{0194BC96-FBEE-49A9-9F9B-6FB7D55E810B}.Release|x86.Build.0 = Release|x86
+		{9061E52B-AB9F-4BCE-8840-850824B039D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9061E52B-AB9F-4BCE-8840-850824B039D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9061E52B-AB9F-4BCE-8840-850824B039D8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9061E52B-AB9F-4BCE-8840-850824B039D8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9061E52B-AB9F-4BCE-8840-850824B039D8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9061E52B-AB9F-4BCE-8840-850824B039D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9061E52B-AB9F-4BCE-8840-850824B039D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9061E52B-AB9F-4BCE-8840-850824B039D8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9061E52B-AB9F-4BCE-8840-850824B039D8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9061E52B-AB9F-4BCE-8840-850824B039D8}.Release|x86.ActiveCfg = Release|Any CPU
+		{9E961ED4-69FD-42FE-B19C-3EAB67D1535B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E961ED4-69FD-42FE-B19C-3EAB67D1535B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E961ED4-69FD-42FE-B19C-3EAB67D1535B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9E961ED4-69FD-42FE-B19C-3EAB67D1535B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9E961ED4-69FD-42FE-B19C-3EAB67D1535B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9E961ED4-69FD-42FE-B19C-3EAB67D1535B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E961ED4-69FD-42FE-B19C-3EAB67D1535B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E961ED4-69FD-42FE-B19C-3EAB67D1535B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9E961ED4-69FD-42FE-B19C-3EAB67D1535B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9E961ED4-69FD-42FE-B19C-3EAB67D1535B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -126,19 +126,5 @@ namespace System
             return _mock.NextID();
         }
 #endif
-
-
-		[SecurityCritical]
-		internal static string GetResourceFromDefault(string key) { return key; }
-
-		[SecuritySafeCritical] //, TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
-		internal static string GetResourceString(string key) { return GetResourceFromDefault(key); }
-
-		[SecuritySafeCritical]
-		internal static string GetResourceString(string key, params object[] values)
-		{
-			string resourceFromDefault = GetResourceFromDefault(key);
-			return string.Format(CultureInfo.CurrentCulture, resourceFromDefault, values);
-		}
     }
 }

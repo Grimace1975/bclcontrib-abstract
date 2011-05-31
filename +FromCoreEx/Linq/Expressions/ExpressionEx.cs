@@ -29,7 +29,12 @@ namespace System.Linq.Expressions
     /// <summary>
     /// ExpressionEx
     /// </summary>
-    internal static class ExpressionEx
+#if COREINTERNAL
+    internal
+#else
+    public
+#endif
+ static class ExpressionEx
     {
 #if !NO_EXPRESSIONS
         public static Action<TBase> CovariantCast<TBase, TDerived>(Expression<Action<TDerived>> source)

@@ -29,7 +29,12 @@ namespace System.Reflection
     /// <summary>
     /// AssemblyExtensions
     /// </summary>
-    internal static class AssemblyExtensions
+#if COREINTERNAL
+    internal
+#else
+    public
+#endif
+ static class AssemblyExtensions
     {
         public static IEnumerable<Type> AsTypesEnumerator(this Assembly assembly, Predicate<Type> predicate)
         {

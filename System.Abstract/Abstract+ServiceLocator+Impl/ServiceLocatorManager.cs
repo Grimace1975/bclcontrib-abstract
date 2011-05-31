@@ -32,6 +32,7 @@ namespace System.Abstract
     public class ServiceLocatorManager : ServiceManagerBase<IServiceLocator, Action<IServiceRegistrar, IServiceLocator>>
     {
         private static readonly Type _wantToSkipServiceLocatorType = typeof(IWantToSkipServiceLocator);
+        private static readonly Type _wantToSkipServiceRegistrationType = typeof(IWantToSkipServiceRegistration);
 
         static ServiceLocatorManager()
         {
@@ -59,6 +60,13 @@ namespace System.Abstract
         public static bool GetWantsToSkipLocator(Type type)
         {
             return ((type == null) || (_wantToSkipServiceLocatorType.IsAssignableFrom(type)));
+        }
+
+        public static bool GetWantsToSkipRegistration(object instance) { return ((instance == null) || (GetWantsToSkipRegistration(instance.GetType()))); }
+        public static bool GetWantsToSkipRegistration<TService>() { return GetWantsToSkipRegistration(typeof(TService)); }
+        public static bool GetWantsToSkipRegistration(Type type)
+        {
+            return ((type == null) || (_wantToSkipServiceRegistrationType.IsAssignableFrom(type)));
         }
 
         public static IServiceLocator GetDefaultServiceLocator()
