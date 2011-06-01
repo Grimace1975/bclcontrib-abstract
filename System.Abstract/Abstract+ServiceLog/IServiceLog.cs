@@ -42,10 +42,10 @@ namespace System.Abstract
     {
         #region Lazy Setup
 
-        public static Lazy<IServiceLog> RegisterWithServiceLocator(this Lazy<IServiceLog> lazy) { ServiceLogManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(null); return lazy; }
-        public static Lazy<IServiceLog> RegisterWithServiceLocator(this Lazy<IServiceLog> lazy, string name) { ServiceLogManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(name); return lazy; }
-        public static Lazy<IServiceLog> RegisterWithServiceLocator(this Lazy<IServiceLog> lazy, Func<IServiceLocator> locator) { ServiceLogManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(locator, null); return lazy; }
-        public static Lazy<IServiceLog> RegisterWithServiceLocator(this Lazy<IServiceLog> lazy, Func<IServiceLocator> locator, string name) { ServiceLogManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(locator, name); return lazy; }
+        public static LazyEx<IServiceLog> RegisterWithServiceLocator(this LazyEx<IServiceLog> service) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator(null); return service; }
+        public static LazyEx<IServiceLog> RegisterWithServiceLocator(this LazyEx<IServiceLog> service, string name) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator(name); return service; }
+        public static LazyEx<IServiceLog> RegisterWithServiceLocator(this LazyEx<IServiceLog> service, Func<IServiceLocator> locator) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator(locator, null); return service; }
+        public static LazyEx<IServiceLog> RegisterWithServiceLocator(this LazyEx<IServiceLog> service, Func<IServiceLocator> locator, string name) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator(locator, name); return service; }
 
         #endregion
     }

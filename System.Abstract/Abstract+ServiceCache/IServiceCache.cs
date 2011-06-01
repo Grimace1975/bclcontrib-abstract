@@ -30,7 +30,7 @@ namespace System.Abstract
 	/// <summary>
 	/// IServiceCache
 	/// </summary>
-    public interface IServiceCache : IServiceProvider
+	public interface IServiceCache : IServiceProvider
 	{
 		object this[string name] { get; set; }
 
@@ -119,7 +119,13 @@ namespace System.Abstract
 
 		public static void Touch(this IServiceCache cache, params string[] names) { cache.Touch(null, names); }
 
-		public static IServiceCache Wrap(this IServiceCache cache, IEnumerable<object> values, out string @namespace) { @namespace = ServiceCache.GetNamespace(values); return new ServiceCacheNamespaceWrapper(cache, @namespace); }
+		public static IServiceCache Wrap(this IServiceCache cache, IEnumerable<object> values, out string @namespace)
+		{
+			@namespace = ServiceCache.GetNamespace(values);
+			if (@namespace == null)
+				throw new ArgumentNullException("@values");
+			return new ServiceCacheNamespaceWrapper(cache, @namespace);
+		}
 		public static IServiceCache Wrap(this IServiceCache cache, string @namespace)
 		{
 			if (@namespace == null)
@@ -295,13 +301,13 @@ namespace System.Abstract
 
 		#endregion
 
-        #region Lazy Setup
+		#region Lazy Setup
 
-        public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> lazy) { ServiceCacheManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(null); return lazy; }
-        public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> lazy, string name) { ServiceCacheManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(name); return lazy; }
-        public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> lazy, Func<IServiceLocator> locator) { ServiceCacheManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(locator, null); return lazy; }
-        public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> lazy, Func<IServiceLocator> locator, string name) { ServiceCacheManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(locator, name); return lazy; }
+		public static LazyEx<IServiceCache> RegisterWithServiceLocator(this LazyEx<IServiceCache> lazy) { ServiceCacheManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(null); return lazy; }
+		public static LazyEx<IServiceCache> RegisterWithServiceLocator(this LazyEx<IServiceCache> lazy, string name) { ServiceCacheManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(name); return lazy; }
+		public static LazyEx<IServiceCache> RegisterWithServiceLocator(this LazyEx<IServiceCache> lazy, Func<IServiceLocator> locator) { ServiceCacheManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(locator, null); return lazy; }
+		public static LazyEx<IServiceCache> RegisterWithServiceLocator(this LazyEx<IServiceCache> lazy, Func<IServiceLocator> locator, string name) { ServiceCacheManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(locator, name); return lazy; }
 
-        #endregion
+		#endregion
 	}
 }

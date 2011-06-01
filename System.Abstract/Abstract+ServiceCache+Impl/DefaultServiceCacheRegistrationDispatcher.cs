@@ -26,70 +26,76 @@ THE SOFTWARE.
 using System.Threading;
 namespace System.Abstract
 {
-    /// <summary>
+	/// <summary>
 	/// DefaultServiceCacheRegistrationDispatcher
-    /// </summary>
-    public class DefaultServiceCacheRegistrationDispatcher : ServiceCacheRegistration.IDispatch
-    {
-        private static readonly ReaderWriterLockSlim _rwLock = new ReaderWriterLockSlim();
+	/// </summary>
+	public class DefaultServiceCacheRegistrationDispatcher : ServiceCacheRegistration.IDispatch
+	{
+		private static readonly ReaderWriterLockSlim _rwLock = new ReaderWriterLockSlim();
 
-        public T Get<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values)
-        {
-            if (cache == null)
-                throw new ArgumentNullException("cache");
-            if (registration == null)
-                throw new ArgumentNullException("registration");
-            var itemPolicy = registration.ItemPolicy;
-            if (itemPolicy == null)
-                throw new ArgumentNullException("registration.CacheCommand");
-            // fetch from cache
+		public T Get<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values)
+		{
+			if (cache == null)
+				throw new ArgumentNullException("cache");
+			if (registration == null)
+				throw new ArgumentNullException("registration");
+			var itemPolicy = registration.ItemPolicy;
+			if (itemPolicy == null)
+				throw new ArgumentNullException("registration.CacheCommand");
+			// fetch from cache
 			string name = registration.AbsoluteName;
-            string @namespace;
-            cache = cache.Wrap(values, out @namespace);
-            _rwLock.EnterUpgradeableReadLock();
-            try
-            {
-                T value;
-                if ((value = (T)cache[name]) == null)
-                {
-                    _rwLock.EnterWriteLock();
-                    try
-                    {
-                        if ((value = (T)cache[name]) == null)
-                        {
-                            // create
-                            value = CreateData<T>(@namespace, registration, tag, values);
+			string @namespace;
+			if ((values != null) || (values.Length == 0))
+				cache = cache.Wrap(values, out @namespace);
+			else
+				@namespace = null;
+			_rwLock.EnterUpgradeableReadLock();
+			try
+			{
+				T value;
+				if ((value = (T)cache[name]) == null)
+				{
+					_rwLock.EnterWriteLock();
+					try
+					{
+						if ((value = (T)cache[name]) == null)
+						{
+							// create
+							value = CreateData<T>(@namespace, registration, tag, values);
 							cache.Add(tag, name, itemPolicy, value);
-                        }
-                    }
-                    finally { _rwLock.ExitWriteLock(); }
-                }
-                return value;
-            }
-            finally { _rwLock.ExitUpgradeableReadLock(); }
-        }
+						}
+					}
+					finally { _rwLock.ExitWriteLock(); }
+				}
+				return value;
+			}
+			finally { _rwLock.ExitUpgradeableReadLock(); }
+		}
 
-        public void Remove(IServiceCache cache, ServiceCacheRegistration registration)
-        {
-            if (cache == null)
-                throw new ArgumentNullException("cache");
-            if (registration == null)
-                throw new ArgumentNullException("registration");
-            // remove from cache
-            var name = registration.AbsoluteName;
-            cache.Remove(name, null);
-            var namespaces = registration.Namespaces;
-            if (namespaces != null)
-                foreach (string n in namespaces)
-                    cache.Remove(n + name, null);
-        }
+		public void Remove(IServiceCache cache, ServiceCacheRegistration registration)
+		{
+			if (cache == null)
+				throw new ArgumentNullException("cache");
+			if (registration == null)
+				throw new ArgumentNullException("registration");
+			// remove from cache
+			var name = registration.AbsoluteName;
+			cache.Remove(name, null);
+			var namespaces = registration.Namespaces;
+			if (namespaces != null)
+				foreach (string n in namespaces)
+					cache.Remove(n + name, null);
+		}
 
-        private static T CreateData<T>(string @namespace, ServiceCacheRegistration registration, object tag, object[] values)
-        {
-            var namespaces = registration.Namespaces;
-            if (!namespaces.Contains(@namespace))
-                namespaces.Add(@namespace);
-            return (T)registration.Builder(tag, values);
-        }
-    }
+		private static T CreateData<T>(string @namespace, ServiceCacheRegistration registration, object tag, object[] values)
+		{
+			if (@namespace != null)
+			{
+				var namespaces = registration.Namespaces;
+				if (!namespaces.Contains(@namespace))
+					namespaces.Add(@namespace);
+			}
+			return (T)registration.Builder(tag, values);
+		}
+	}
 }
