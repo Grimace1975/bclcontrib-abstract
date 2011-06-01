@@ -29,7 +29,7 @@ namespace System.Abstract
 	/// <summary>
 	/// DefaultServiceCacheRegistrationDispatcher
 	/// </summary>
-	public class DefaultServiceCacheRegistrationDispatcher : ServiceCacheRegistration.IDispatch
+	public class DefaultServiceCacheRegistrationDispatcher : ServiceCacheRegistration.IDispatcher
 	{
 		private static readonly ReaderWriterLockSlim _rwLock = new ReaderWriterLockSlim();
 

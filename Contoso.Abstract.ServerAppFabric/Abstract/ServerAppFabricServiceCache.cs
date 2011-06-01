@@ -51,7 +51,7 @@ namespace Contoso.Abstract
 	/// </summary>
 	public class ServerAppFabricServiceCache : IServerAppFabricServiceCache
 	{
-        static ServerAppFabricServiceCache() { ServiceCacheManager.EnsureRegistration(); }
+		static ServerAppFabricServiceCache() { ServiceCacheManager.EnsureRegistration(); }
 		public ServerAppFabricServiceCache()
 			: this(new DataCacheFactory()) { }
 		public ServerAppFabricServiceCache(DataCacheFactoryConfiguration configuration)
@@ -64,10 +64,9 @@ namespace Contoso.Abstract
 		{
 			Cache = cache;
 			Settings = new ServiceCacheSettings();
-			RegistrationDispatch = new DefaultServiceCacheRegistrationDispatcher();
 		}
 
-        public object GetService(Type serviceType) { throw new NotImplementedException(); }
+		public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
 		public object this[string name]
 		{
@@ -251,7 +250,6 @@ namespace Contoso.Abstract
 		}
 
 		public ServiceCacheSettings Settings { get; private set; }
-		public ServiceCacheRegistration.IDispatch RegistrationDispatch { get; private set; }
 
 		#region Domain-specific
 
@@ -286,8 +284,19 @@ namespace Contoso.Abstract
 
 		private IEnumerable<DataCacheTag> GetCacheDependency(object tag, CacheItemDependency dependency)
 		{
-			string[] cacheTags;
-			return ((dependency == null) || ((cacheTags = dependency(this, tag) as string[]) == null) ? null : cacheTags.Select(x => new DataCacheTag(x)));
+			object value;
+			if ((dependency == null) || ((value = dependency(this, tag)) == null))
+				return null;
+			//
+			var touchable = Settings.Touchable;
+			string[] names = (value as string[]);
+			if ((names != null) && (names.Length > 0))
+			{
+				if ((touchable != null) && names.Any(x => touchable.CanTouch(tag, ref x)))
+					throw new NotSupportedException("Unsupported.");
+				return names.Select(x => new DataCacheTag(x));
+			}
+			return null;
 		}
 
 		private static TimeSpan GetTimeout(DateTime absoluteExpiration) { return (absoluteExpiration == ServiceCache.InfiniteAbsoluteExpiration ? TimeSpan.Zero : DateTime.Now - absoluteExpiration); }

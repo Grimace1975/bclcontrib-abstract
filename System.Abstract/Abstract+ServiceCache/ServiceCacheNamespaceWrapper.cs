@@ -73,9 +73,5 @@ namespace System.Abstract
         {
             get { return _parent.Settings; }
         }
-        public ServiceCacheRegistration.IDispatch RegistrationDispatch
-        {
-            get { return _parent.RegistrationDispatch; }
-        }
     }
 }

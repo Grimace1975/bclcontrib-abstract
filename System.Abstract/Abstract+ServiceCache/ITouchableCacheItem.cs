@@ -23,45 +23,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Collections.Generic;
 namespace System.Abstract
 {
 	/// <summary>
-	/// ServiceCacheSettings
+	/// ITouchableCacheItem
 	/// </summary>
-	public class ServiceCacheSettings
+	public interface ITouchableCacheItem
 	{
-		public ServiceCacheSettings()
-		{
-			RegionMarker = "@";
-			RegistrationDispatcher = new DefaultServiceCacheRegistrationDispatcher();
-		}
-		public ServiceCacheSettings(Func<object, IEnumerable<string>, CacheItemDependency> filePathDependencyFactory)
-			: this() { Touchable = new FileTouchableCacheItem(filePathDependencyFactory); }
-
-		public string RegionMarker { get; set; }
-		public ServiceCacheOptions Options { get; set; }
-
-		/// <summary>
-		/// Gets the registration dispatcher.
-		/// </summary>
-		public ServiceCacheRegistration.IDispatcher RegistrationDispatcher { get; set; }
-
-		public ITouchableCacheItem Touchable { get; set; }
-
-		public bool TryGetRegion(ref string name, out string regionName)
-		{
-			var index = name.IndexOf(RegionMarker);
-			if (index != -1)
-			{
-				regionName = null;
-				return false;
-			}
-			string originalName = name;
-			regionName = originalName.Substring(0, index);
-			name = originalName.Substring(index + RegionMarker.Length);
-			return true;
-		}
+		bool CanTouch(object tag, ref string name);
+		void Touch(object tag, params string[] names);
+		CacheItemDependency MakeDependency(object tag, params string[] names);
 	}
 }

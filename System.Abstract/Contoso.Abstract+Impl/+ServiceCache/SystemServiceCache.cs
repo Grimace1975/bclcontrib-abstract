@@ -46,17 +46,16 @@ namespace Contoso.Abstract
 	/// </summary>
 	public class SystemServiceCache : ISystemServiceCache
 	{
-        static SystemServiceCache() { ServiceCacheManager.EnsureRegistration(); }
+		static SystemServiceCache() { ServiceCacheManager.EnsureRegistration(); }
 		public SystemServiceCache(string name)
 			: this(new SystemCaching.MemoryCache(name)) { }
 		public SystemServiceCache(SystemCaching.ObjectCache cache)
 		{
 			Cache = cache;
-			Settings = new ServiceCacheSettings();
-			RegistrationDispatch = new DefaultServiceCacheRegistrationDispatcher();
+			Settings = new ServiceCacheSettings((tag, filePaths) => (cache2, tag2) => (object)new SystemCaching.HostFileChangeMonitor(filePaths.ToArray()));
 		}
 
-        public object GetService(Type serviceType) { throw new NotImplementedException(); }
+		public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
 		public object this[string name]
 		{
@@ -122,24 +121,29 @@ namespace Contoso.Abstract
 
 		public void Touch(object tag, params string[] names)
 		{
-			if (names != null)
+			var touchable = Settings.Touchable;
+			var touchNames = (touchable != null ? new List<string>() : null);
+			if ((names != null) && (names.Length > 0))
 				foreach (var name in names)
 				{
-					var name2 = name;
+					var touchName = name;
+					if ((touchable != null) && touchable.CanTouch(tag, ref touchName))
+						touchNames.Add(touchName);
 					string regionName;
-					Settings.TryGetRegion(ref name2, out regionName);
-					Cache.Set(name2, string.Empty, ServiceCache.InfiniteAbsoluteExpiration, regionName);
+					Settings.TryGetRegion(ref touchName, out regionName);
+					Cache.Set(touchName, string.Empty, ServiceCache.InfiniteAbsoluteExpiration, regionName);
 				}
+			if ((touchNames != null) && (touchNames.Count > 0))
+				touchable.Touch(touchNames);
 		}
 
 		public ServiceCacheSettings Settings { get; private set; }
-		public ServiceCacheRegistration.IDispatch RegistrationDispatch { get; private set; }
 
-#region Domain-specific
+		#region Domain-specific
 
 		public SystemCaching.ObjectCache Cache { get; private set; }
 
-#endregion
+		#endregion
 
 		private SystemCaching.CacheItemPolicy MapToSystemCacheItemPolicy(object tag, CacheItemPolicy itemPolicy)
 		{
@@ -179,9 +183,29 @@ namespace Contoso.Abstract
 			object value;
 			if ((dependency == null) || ((value = dependency(this, tag)) == null))
 				return null;
-			string[] valueAsStrings = (value as string[]);
-			if (valueAsStrings != null)
-				return new[] { Cache.CreateCacheEntryChangeMonitor(valueAsStrings) };
+			//
+			var touchable = Settings.Touchable;
+			string[] names = (value as string[]);
+			if ((names != null) && (names.Length > 0))
+			{
+				if (touchable == null)
+					return new[] { Cache.CreateCacheEntryChangeMonitor(names) };
+				// has touchable
+				var fileNames = new List<string>();
+				var cacheKeys = new List<string>();
+				foreach (var name in names)
+				{
+					var touchName = name;
+					if (touchable.CanTouch(tag, ref touchName))
+						fileNames.Add(name);
+					cacheKeys.Add(name);
+				}
+				var changeMonitors = new List<SystemCaching.ChangeMonitor>();
+				changeMonitors.Add(Cache.CreateCacheEntryChangeMonitor(cacheKeys));
+				if (fileNames.Count > 0)
+					changeMonitors.Add(new SystemCaching.HostFileChangeMonitor(fileNames));
+				return changeMonitors;
+			}
 			return (value as IEnumerable<SystemCaching.ChangeMonitor>);
 		}
 	}

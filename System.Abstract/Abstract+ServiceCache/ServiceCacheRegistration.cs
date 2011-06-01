@@ -34,9 +34,9 @@ namespace System.Abstract
 		private string _absoluteName;
 
 		/// <summary>
-		/// IDispatch
+		/// IDispatcher
 		/// </summary>
-		public interface IDispatch
+		public interface IDispatcher
 		{
 			T Get<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values);
 			void Remove(IServiceCache cache, ServiceCacheRegistration registration);
