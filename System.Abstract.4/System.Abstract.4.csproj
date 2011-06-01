@@ -199,6 +199,9 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\DefaultServiceCacheRegistrationDispatcher.cs">
       <Link>Abstract+ServiceCache+Impl\DefaultServiceCacheRegistrationDispatcher.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\FileTouchableCacheItem.cs">
+      <Link>Abstract+ServiceCache+Impl\FileTouchableCacheItem.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\ServiceCache.cs">
       <Link>Abstract+ServiceCache+Impl\ServiceCache.cs</Link>
     </Compile>
@@ -228,6 +231,9 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\IServiceCache.cs">
       <Link>Abstract+ServiceCache\IServiceCache.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache\ITouchableCacheItem.cs">
+      <Link>Abstract+ServiceCache\ITouchableCacheItem.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheForeignRegistration.cs">
       <Link>Abstract+ServiceCache\ServiceCacheForeignRegistration.cs</Link>
@@ -300,9 +306,6 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract\ServiceDependencyAttribute.cs">
       <Link>Abstract\ServiceDependencyAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceCache\CacheFileTouch.cs">
-      <Link>Contoso.Abstract+Impl\+ServiceCache\CacheFileTouch.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceCache\StaticServiceCache.cs">
       <Link>Contoso.Abstract+Impl\+ServiceCache\StaticServiceCache.cs</Link>

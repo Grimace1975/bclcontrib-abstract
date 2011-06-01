@@ -74,10 +74,6 @@ namespace System.Abstract
 		void Touch(object tag, params string[] names);
 
 		ServiceCacheSettings Settings { get; }
-		/// <summary>
-		/// Gets the registration dispatch.
-		/// </summary>
-		ServiceCacheRegistration.IDispatch RegistrationDispatch { get; }
 	}
 
 	/// <summary>
@@ -103,18 +99,18 @@ namespace System.Abstract
 		{
 			if (cache == null)
 				throw new ArgumentNullException("cache");
-			string[] cacheTags;
-			if ((dependency == null) || ((cacheTags = (dependency(cache, tag) as string[])) == null))
+			string[] names;
+			if ((dependency == null) || ((names = (dependency(cache, tag) as string[])) == null))
 				return;
-			EnsureCacheDependency(cache, cacheTags);
+			EnsureCacheDependency(cache, names);
 		}
-		public static void EnsureCacheDependency(IServiceCache cache, IEnumerable<string> cacheTags)
+		public static void EnsureCacheDependency(IServiceCache cache, IEnumerable<string> names)
 		{
 			if (cache == null)
 				throw new ArgumentNullException("cache");
-			if (cacheTags != null)
-				foreach (string cacheTag in cacheTags)
-					cache.Add(null, cacheTag, new CacheItemPolicy { AbsoluteExpiration = ServiceCache.InfiniteAbsoluteExpiration }, string.Empty);
+			if (names != null)
+				foreach (string name in names)
+					cache.Add(null, name, new CacheItemPolicy { AbsoluteExpiration = ServiceCache.InfiniteAbsoluteExpiration }, string.Empty);
 		}
 
 		public static void Touch(this IServiceCache cache, params string[] names) { cache.Touch(null, names); }
@@ -176,10 +172,9 @@ namespace System.Abstract
 		public static IQueryable<T> GetQuery<T>(this IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values) { return Get<IQueryable<T>>(cache, registration, tag, values); }
 		public static T Get<T>(this IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values)
 		{
-			if (cache.RegistrationDispatch == null)
-				throw new NullReferenceException("cache.RegistrationDispatch");
 			if (registration == null)
 				throw new ArgumentNullException("registration");
+			var registrationDispatcher = GetRegistrationDispatcher(cache);
 			// fetch registration
 			int recurses = 0;
 			ServiceCacheRegistration foundRegistration;
@@ -187,7 +182,7 @@ namespace System.Abstract
 				throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationAB, (registration.Registrar != null ? registration.Registrar.AnchorType.ToString() : "{unregistered}"), registration.Name));
 			if (foundRegistration is ServiceCacheForeignRegistration)
 				throw new InvalidOperationException(Local.InvalidDataSource);
-			return cache.RegistrationDispatch.Get<T>(cache, foundRegistration, tag, values);
+			return registrationDispatcher.Get<T>(cache, foundRegistration, tag, values);
 		}
 
 		/// <summary>
@@ -235,12 +230,11 @@ namespace System.Abstract
 		public static IQueryable<T> GetQuery<T>(this IServiceCache cache, Type anchorType, string registrationName, object tag, object[] values) { return Get<IQueryable<T>>(cache, anchorType, registrationName, tag, values); }
 		public static T Get<T>(this IServiceCache cache, Type anchorType, string registrationName, object tag, object[] values)
 		{
-			if (cache.RegistrationDispatch == null)
-				throw new NullReferenceException("cache.RegistrationDispatch");
 			if (anchorType == null)
 				throw new ArgumentNullException("anchorType");
 			if (string.IsNullOrEmpty(registrationName))
 				throw new ArgumentNullException("registrationName");
+			var registrationDispatcher = GetRegistrationDispatcher(cache);
 			// fetch registration
 			int recurses = 0;
 			ServiceCacheRegistration foundRegistration;
@@ -248,29 +242,27 @@ namespace System.Abstract
 				throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationAB, anchorType.ToString(), registrationName));
 			if (foundRegistration is ServiceCacheForeignRegistration)
 				throw new InvalidOperationException(Local.InvalidDataSource);
-			return cache.RegistrationDispatch.Get<T>(cache, foundRegistration, tag, values);
+			return registrationDispatcher.Get<T>(cache, foundRegistration, tag, values);
 		}
 
 		public static void RemoveAll(this IServiceCache cache, Type anchorType)
 		{
-			if (cache.RegistrationDispatch == null)
-				throw new NullReferenceException("cache.RegistrationDispatch");
 			if (anchorType == null)
 				throw new ArgumentNullException("anchorType");
+			var registrationDispatcher = GetRegistrationDispatcher(cache);
 			// fetch registrar
 			ServiceCacheRegistrar registrar;
 			if (!ServiceCacheRegistrar.TryGet(anchorType, out registrar, false))
 				throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationA, anchorType.ToString()));
 			foreach (var registration in registrar.GetAll())
-				cache.RegistrationDispatch.Remove(cache, registration);
+				registrationDispatcher.Remove(cache, registration);
 		}
 
 		public static void Remove(this IServiceCache cache, ServiceCacheRegistration registration)
 		{
-			if (cache.RegistrationDispatch == null)
-				throw new NullReferenceException("cache.RegistrationDispatch");
 			if (registration == null)
 				throw new ArgumentNullException("registration");
+			var registrationDispatcher = GetRegistrationDispatcher(cache);
 			// fetch registration
 			int recurses = 0;
 			ServiceCacheRegistration foundRegistration;
@@ -278,17 +270,16 @@ namespace System.Abstract
 				throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationA, registration.ToString()));
 			if (foundRegistration is ServiceCacheForeignRegistration)
 				throw new InvalidOperationException(Local.InvalidDataSource);
-			cache.RegistrationDispatch.Remove(cache, foundRegistration);
+			registrationDispatcher.Remove(cache, foundRegistration);
 		}
 
 		public static void Remove(this IServiceCache cache, Type anchorType, string registrationName)
 		{
-			if (cache.RegistrationDispatch == null)
-				throw new NullReferenceException("cache.RegistrationDispatch");
 			if (anchorType == null)
 				throw new ArgumentNullException("anchorType");
 			if (string.IsNullOrEmpty(registrationName))
 				throw new ArgumentNullException("registrationName");
+			var registrationDispatcher = GetRegistrationDispatcher(cache);
 			// fetch registration
 			int recurses = 0;
 			ServiceCacheRegistration foundRegistration;
@@ -296,7 +287,18 @@ namespace System.Abstract
 				throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationAB, anchorType.ToString(), registrationName));
 			if (foundRegistration is ServiceCacheForeignRegistration)
 				throw new InvalidOperationException(Local.InvalidDataSource);
-			cache.RegistrationDispatch.Remove(cache, foundRegistration);
+			registrationDispatcher.Remove(cache, foundRegistration);
+		}
+
+		private static ServiceCacheRegistration.IDispatcher GetRegistrationDispatcher(IServiceCache cache)
+		{
+			var settings = cache.Settings;
+			if (settings == null)
+				throw new NullReferenceException("settings");
+			var registrationDispatcher = settings.RegistrationDispatcher;
+			if (registrationDispatcher == null)
+				throw new NullReferenceException("cache.Settings.RegistrationDispatch");
+			return registrationDispatcher;
 		}
 
 		#endregion

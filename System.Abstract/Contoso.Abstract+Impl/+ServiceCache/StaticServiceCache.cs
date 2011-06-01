@@ -48,7 +48,7 @@ namespace Contoso.Abstract
         static StaticServiceCache() { ServiceCacheManager.EnsureRegistration(); }
         public StaticServiceCache()
         {
-            RegistrationDispatch = new DefaultServiceCacheRegistrationDispatcher();
+			Settings = new ServiceCacheSettings();
         }
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
@@ -146,11 +146,7 @@ namespace Contoso.Abstract
             _cache.Clear();
         }
 
-        public ServiceCacheSettings Settings
-        {
-            get { return null; }
-        }
-        public ServiceCacheRegistration.IDispatch RegistrationDispatch { get; private set; }
+        public ServiceCacheSettings Settings { get; private set; }
 
         #region Domain-specific
 

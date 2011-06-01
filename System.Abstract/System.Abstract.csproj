@@ -91,6 +91,7 @@
     <Compile Include="..\+FromCoreEx\Runtime\CompilerServices\CompilerServicesExtensions.cs">
       <Link>+FromCoreEx\Runtime\CompilerServices\CompilerServicesExtensions.cs</Link>
     </Compile>
+    <Compile Include="Abstract+ServiceCache\ITouchableCacheItem.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheOptions.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheSettings.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheNamespaceWrapper.cs" />
@@ -112,7 +113,7 @@
     <Compile Include="Contoso.Abstract+Impl\+ServiceCache\SystemServiceCache.cs" />
     <Compile Include="Contoso.Abstract+Impl\EmptyNparams.cs" />
     <Compile Include="EnvironmentEx2.cs" />
-    <Compile Include="Contoso.Abstract+Impl\+ServiceCache\CacheFileTouch.cs" />
+    <Compile Include="Abstract+ServiceCache+Impl\FileTouchableCacheItem.cs" />
     <Compile Include="Abstract+ServiceCache\CacheEntryUpdateCallback.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemPriority.cs" />
     <Compile Include="Abstract+ServiceCache\CacheEntryRemovedCallback.cs" />

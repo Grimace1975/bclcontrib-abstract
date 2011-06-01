@@ -81,8 +81,8 @@ namespace Contoso.Abstract
             if (client == null)
                 throw new ArgumentNullException("client");
             Cache = client;
-            RegistrationDispatch = new DefaultServiceCacheRegistrationDispatcher();
             _tagMapper = tagMapper;
+			Settings = new ServiceCacheSettings();
         }
         ~MemcachedServiceCache()
         {
@@ -183,6 +183,7 @@ namespace Contoso.Abstract
             //
             var absoluteExpiration = itemPolicy.AbsoluteExpiration;
             var slidingExpiration = itemPolicy.SlidingExpiration;
+			var dependency = GetCacheDependency(tag, itemPolicy.Dependency);
             ulong cas;
             object opvalue;
             StoreMode storeMode;
@@ -238,11 +239,7 @@ namespace Contoso.Abstract
             throw new NotSupportedException();
         }
 
-        public ServiceCacheSettings Settings
-        {
-            get { return null; }
-        }
-        public ServiceCacheRegistration.IDispatch RegistrationDispatch { get; private set; }
+		public ServiceCacheSettings Settings { get; private set; }
 
         #region Domain-specific
 
@@ -255,5 +252,19 @@ namespace Contoso.Abstract
         public bool TryGetWithCas(string key, out CasResult<object> value) { return TryGetWithCas(key, out value); }
 
         #endregion
+
+		private IEnumerable<object> GetCacheDependency(object tag, CacheItemDependency dependency)
+		{
+			object value;
+			if ((dependency == null) || ((value = dependency(this, tag)) == null))
+				return null;
+			//
+			var touchable = Settings.Touchable;
+			string[] names = (value as string[]);
+			if ((names != null) && (names.Length > 0))
+				if ((touchable != null) && names.Any(x => touchable.CanTouch(tag, ref x)))
+					throw new NotSupportedException("Unsupported.");
+			return null;
+		}
     }
 }
