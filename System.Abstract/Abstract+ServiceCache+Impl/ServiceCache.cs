@@ -116,8 +116,8 @@ namespace System.Abstract
 
         public static string GetNamespace(IEnumerable<object> values)
         {
-            if (values == null)
-                throw new ArgumentNullException("values");
+			if ((values == null) || !values.Any())
+				return null;
             // add one additional item, so join ends with scope character.
             var valuesAsObject = values.ToArray();
             string[] valuesAsText = new string[valuesAsObject.Length + 1];

@@ -355,6 +355,9 @@
     <Compile Include="..\System.Abstract\IO\PathEx2.cs">
       <Link>IO\PathEx2.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\LazyEx.cs">
+      <Link>LazyEx.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Local.Designer.cs">
       <Link>Local.Designer.cs</Link>
     </Compile>
