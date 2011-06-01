@@ -7,9 +7,11 @@ namespace Example
     {
         static void Main(string[] args)
         {
-            var service = new LazyEx<IServiceCache>(() => new StaticServiceCache(), System.Threading.LazyThreadSafetyMode.PublicationOnly);
-            var actions = ServiceCacheManager.GetSetupDescriptor(service);
-            //actions.Do(x => Console.Write("Here"));
+            var service = new Lazy<IServiceCache>(() => new StaticServiceCache());
+			var actions = ServiceCacheManager.GetSetupDescriptor(service);
+			actions.Do(x => Console.WriteLine("Here"));
+			actions.Do(x => Console.WriteLine("Here"));
+			actions.Do(x => Console.WriteLine("Here"));
             //
             var cache = service.Value;
         }

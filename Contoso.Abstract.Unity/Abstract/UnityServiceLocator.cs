@@ -56,7 +56,6 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("container");
             Container = container;
             _container.AddNewExtension<UnityStrategiesExtension>();
-            ServiceLocatorManager.ApplySetup(this);
         }
 
         public void Dispose()

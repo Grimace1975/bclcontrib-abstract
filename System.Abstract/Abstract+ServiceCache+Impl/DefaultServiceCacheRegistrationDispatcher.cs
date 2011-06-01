@@ -45,7 +45,7 @@ namespace System.Abstract
 			// fetch from cache
 			string name = registration.AbsoluteName;
 			string @namespace;
-			if ((values != null) || (values.Length == 0))
+			if ((values != null) && (values.Length > 0))
 				cache = cache.Wrap(values, out @namespace);
 			else
 				@namespace = null;

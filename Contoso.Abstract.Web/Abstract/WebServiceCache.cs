@@ -53,7 +53,6 @@ namespace Contoso.Abstract
 		{
 			Cache = HttpRuntime.Cache;
 			RegistrationDispatch = new DefaultServiceCacheRegistrationDispatcher();
-            ServiceCacheManager.ApplySetup(this);
 		}
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }

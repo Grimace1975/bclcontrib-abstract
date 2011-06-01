@@ -83,7 +83,6 @@ namespace Contoso.Abstract
             Cache = client;
             RegistrationDispatch = new DefaultServiceCacheRegistrationDispatcher();
             _tagMapper = tagMapper;
-            ServiceCacheManager.ApplySetup(this);
         }
         ~MemcachedServiceCache()
         {

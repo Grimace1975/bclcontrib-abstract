@@ -303,10 +303,10 @@ namespace System.Abstract
 
 		#region Lazy Setup
 
-		public static LazyEx<IServiceCache> RegisterWithServiceLocator(this LazyEx<IServiceCache> lazy) { ServiceCacheManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(null); return lazy; }
-		public static LazyEx<IServiceCache> RegisterWithServiceLocator(this LazyEx<IServiceCache> lazy, string name) { ServiceCacheManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(name); return lazy; }
-		public static LazyEx<IServiceCache> RegisterWithServiceLocator(this LazyEx<IServiceCache> lazy, Func<IServiceLocator> locator) { ServiceCacheManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(locator, null); return lazy; }
-		public static LazyEx<IServiceCache> RegisterWithServiceLocator(this LazyEx<IServiceCache> lazy, Func<IServiceLocator> locator, string name) { ServiceCacheManager.GetSetupDescriptor(lazy).RegisterWithServiceLocator(locator, name); return lazy; }
+		public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> service) { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator(null); return service; }
+		public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> service, string name) { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator(name); return service; }
+		public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> service, Func<IServiceLocator> locator) { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator(locator, null); return service; }
+		public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> service, Func<IServiceLocator> locator, string name) { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator(locator, name); return service; }
 
 		#endregion
 	}

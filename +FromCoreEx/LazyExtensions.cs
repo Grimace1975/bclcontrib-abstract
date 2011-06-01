@@ -24,25 +24,36 @@ THE SOFTWARE.
 */
 #endregion
 using System.Threading;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 namespace System
 {
-    public class LazyEx<T> : Lazy<T>
-    {
-        public LazyEx()
-            : this(LazyThreadSafetyMode.ExecutionAndPublication) { }
-        public LazyEx(bool isThreadSafe)
-            : this(isThreadSafe ? LazyThreadSafetyMode.ExecutionAndPublication : LazyThreadSafetyMode.None) { }
-        public LazyEx(Func<T> valueFactory)
-            : this(valueFactory, LazyThreadSafetyMode.ExecutionAndPublication) { }
-        public LazyEx(LazyThreadSafetyMode mode)
-        {
-        }
-        public LazyEx(Func<T> valueFactory, bool isThreadSafe)
-            : this(valueFactory, isThreadSafe ? LazyThreadSafetyMode.ExecutionAndPublication : LazyThreadSafetyMode.None) { }
-        public LazyEx(Func<T> valueFactory, LazyThreadSafetyMode mode)
-        {
-            if (valueFactory == null)
-                throw new ArgumentNullException("valueFactory");
-        }
-    }
+	/// <summary>
+	/// Internal
+	/// </summary>
+#if COREINTERNAL
+    internal
+#else
+	public
+#endif
+ static class LazyExtensions
+	{
+		public static Lazy<T> HookValueFactory<T>(this Lazy<T> lazy, Func<Func<T>, T> valueFactory) { LazyHelper<T>.HookValueFactory(lazy, valueFactory); return lazy; }
+
+		private class LazyHelper<T>
+		{
+			private static readonly object _lock = new object();
+			private static readonly FieldInfo _valueFactoryField = typeof(Lazy<T>).GetField("m_valueFactory", BindingFlags.NonPublic | BindingFlags.Instance);
+
+			public static void HookValueFactory(Lazy<T> lazy, Func<Func<T>, T> valueFactory)
+			{
+				lock (_lock)
+				{
+					var hook = (Func<T>)_valueFactoryField.GetValue(lazy);
+					Func<T> newHook = () => valueFactory(hook);
+					_valueFactoryField.SetValue(lazy, newHook);
+				}
+			}
+		}
+	}
 }

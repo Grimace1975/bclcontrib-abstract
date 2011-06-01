@@ -57,7 +57,6 @@ namespace Contoso.Abstract
 				throw new ArgumentNullException("container");
 			_container = container;
 			_registrar = new StructureMapServiceRegistrar(this, container);
-            ServiceLocatorManager.ApplySetup(this);
 		}
 
 		public void Dispose()

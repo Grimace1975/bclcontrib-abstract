@@ -17,6 +17,7 @@ xcopy %SRC%\Reflection\AssemblyExtensions.cs Reflection\ /Y/Q
 xcopy %SRC%\Runtime\CompilerServices\CompilerServicesExtensions.cs Runtime\CompilerServices\ /Y/Q
 xcopy %SRC%\ExceptionEx.cs .\ /Y/Q
 xcopy %SRC%\EnvironmentEx.cs .\ /Y/Q
+xcopy %SRC%\LazyExtensions.cs .\ /Y/Q
 popd
 
 

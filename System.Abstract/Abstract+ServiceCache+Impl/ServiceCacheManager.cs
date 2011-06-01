@@ -35,16 +35,18 @@ namespace System.Abstract
         {
             Registration = new SetupRegistration
             {
-                OnSetup = (service, setupActions) =>
-                {
-                    if (setupActions != null)
-                        foreach (var setupAction in setupActions)
-                            setupAction(service);
-                },
+				OnSetup = (service, descriptor) =>
+				{
+					if (descriptor != null)
+						foreach (var action in descriptor.Actions)
+							action(service);
+					return service;
+				},
                 ServiceLocatorRegistrar = (locator, name) => (service => RegisterInstance(locator(), service, name)),
             };
         }
 
         public static void EnsureRegistration() { }
+		public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceCache> service) { return ProtectedGetSetupDescriptor(service); }
     }
 }
