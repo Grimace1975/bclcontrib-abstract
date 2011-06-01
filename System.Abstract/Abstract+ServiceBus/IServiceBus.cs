@@ -51,12 +51,12 @@ namespace System.Abstract
 
         #region Lazy Setup
 
-		public static LazyEx<IServiceBus> RegisterWithServiceLocator(this LazyEx<IServiceBus> service) { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(null); return service; }
-		public static LazyEx<IServiceBus> RegisterWithServiceLocator(this LazyEx<IServiceBus> service, string name) { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(name); return service; }
-		public static LazyEx<IServiceBus> RegisterWithServiceLocator(this LazyEx<IServiceBus> service, Func<IServiceLocator> locator) { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(locator, null); return service; }
-		public static LazyEx<IServiceBus> RegisterWithServiceLocator(this LazyEx<IServiceBus> service, Func<IServiceLocator> locator, string name) { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(locator, name); return service; }
+		public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> service) { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(null); return service; }
+		public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> service, string name) { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(name); return service; }
+		public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> service, Func<IServiceLocator> locator) { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(locator, null); return service; }
+		public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> service, Func<IServiceLocator> locator, string name) { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(locator, name); return service; }
 
-		public static LazyEx<IServiceBus> AddEndpoint(this LazyEx<IServiceBus> service, string endpoint) { return service; }
+		public static Lazy<IServiceBus> AddEndpoint(this Lazy<IServiceBus> service, string endpoint) { return service; }
 
         #endregion
     }

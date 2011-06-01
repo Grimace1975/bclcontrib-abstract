@@ -38,19 +38,21 @@ namespace System.Abstract
         {
             Registration = new SetupRegistration
             {
-                OnSetup = (service, setupActions) =>
-                {
-                    var registrar = service.GetRegistrar();
-                    RegisterSelfInLocator(registrar, service);
-                    if (setupActions != null)
-                        foreach (var setupAction in setupActions)
-                            setupAction(registrar, service);
-                },
+				OnSetup = (service, descriptor) =>
+				{
+					var registrar = service.GetRegistrar();
+					RegisterSelfInLocator(registrar, service);
+					if (descriptor != null)
+						foreach (var action in descriptor.Actions)
+							action(registrar, service);
+					return service;
+				},
                 ServiceLocatorRegistrar = (locator, name) => ((r, service) => RegisterInstance(locator(), service, name)),
             };
         }
 
         public static void EnsureRegistration() { }
+		public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLocator> service) { return ProtectedGetSetupDescriptor(service); }
 
         private static void RegisterSelfInLocator(IServiceRegistrar registrar, IServiceLocator locator)
         {

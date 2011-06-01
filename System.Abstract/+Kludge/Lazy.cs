@@ -16,7 +16,7 @@ namespace System
         [NonSerialized]
         private readonly object _threadSafeObj;
         [NonSerialized]
-        private Func<T> _valueFactory;
+        private Func<T> m_valueFactory;
         private static Func<T> PUBLICATION_ONLY_OR_ALREADY_INITIALIZED = (() => default(T));
 
         static Lazy() { }
@@ -40,22 +40,22 @@ namespace System
             if (valueFactory == null)
                 throw new ArgumentNullException("valueFactory");
             _threadSafeObj = GetObjectFromMode(mode);
-            _valueFactory = valueFactory;
+            m_valueFactory = valueFactory;
         }
 
         private Boxed CreateValue()
         {
             Boxed boxed = null;
             LazyThreadSafetyMode mode = Mode;
-            if (_valueFactory != null)
+            if (m_valueFactory != null)
             {
                 try
                 {
-                    if ((mode != LazyThreadSafetyMode.PublicationOnly) && (_valueFactory == PUBLICATION_ONLY_OR_ALREADY_INITIALIZED))
+                    if ((mode != LazyThreadSafetyMode.PublicationOnly) && (m_valueFactory == PUBLICATION_ONLY_OR_ALREADY_INITIALIZED))
                         throw new InvalidOperationException(EnvironmentEx.GetResourceString("Lazy_Value_RecursiveCallsToValue"));
-                    var valueFactory = _valueFactory;
+                    var valueFactory = m_valueFactory;
                     if (mode != LazyThreadSafetyMode.PublicationOnly)
-                        _valueFactory = PUBLICATION_ONLY_OR_ALREADY_INITIALIZED;
+                        m_valueFactory = PUBLICATION_ONLY_OR_ALREADY_INITIALIZED;
                     return new Boxed(valueFactory());
                 }
                 catch (Exception exception)

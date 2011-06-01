@@ -49,7 +49,6 @@ namespace Contoso.Abstract
         public StaticServiceCache()
         {
             RegistrationDispatch = new DefaultServiceCacheRegistrationDispatcher();
-            ServiceCacheManager.ApplySetup(this);
         }
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }

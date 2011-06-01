@@ -73,6 +73,9 @@
     <Compile Include="..\+fromcoreex\ExceptionEx.cs">
       <Link>+FromCoreEx\ExceptionEx.cs</Link>
     </Compile>
+    <Compile Include="..\+FromCoreEx\LazyExtensions.cs">
+      <Link>+FromCoreEx\LazyExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\+fromcoreex\linq\expressions\ExpressionEx.cs">
       <Link>+FromCoreEx\Linq\Expressions\ExpressionEx.cs</Link>
     </Compile>
@@ -354,9 +357,6 @@
     </Compile>
     <Compile Include="..\System.Abstract\IO\PathEx2.cs">
       <Link>IO\PathEx2.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\LazyEx.cs">
-      <Link>LazyEx.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Local.Designer.cs">
       <Link>Local.Designer.cs</Link>

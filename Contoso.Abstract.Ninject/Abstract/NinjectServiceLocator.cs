@@ -57,7 +57,6 @@ namespace Contoso.Abstract
             if (kernel == null)
                 throw new ArgumentNullException("kernel");
             Container = kernel;
-            ServiceLocatorManager.ApplySetup(this);
         }
 
         public void Dispose()

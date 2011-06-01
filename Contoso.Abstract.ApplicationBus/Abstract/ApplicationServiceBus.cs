@@ -53,7 +53,6 @@ namespace Contoso.Abstract
         public ApplicationServiceBus(IServiceMessageHandlerFactory messageHandlerFactory)
         {
             _messageHandlerFactory = messageHandlerFactory;
-            ServiceBusManager.ApplySetup(this);
         }
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }

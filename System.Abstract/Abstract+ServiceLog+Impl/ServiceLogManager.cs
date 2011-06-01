@@ -26,25 +26,27 @@ THE SOFTWARE.
 using System.Abstract.Parts;
 namespace System.Abstract
 {
-    /// <summary>
-    /// ServiceLogManager
-    /// </summary>
-    public class ServiceLogManager : ServiceManagerBase<IServiceLog, Action<IServiceLog>>
-    {
-        static ServiceLogManager()
-        {
-            Registration = new SetupRegistration
-            {
-                OnSetup = (service, setupActions) =>
-                {
-                    if (setupActions != null)
-                        foreach (var setupAction in setupActions)
-                            setupAction(service);
-                },
-                ServiceLocatorRegistrar = (locator, name) => (service => RegisterInstance(locator(), service, name)),
-            };
-        }
+	/// <summary>
+	/// ServiceLogManager
+	/// </summary>
+	public class ServiceLogManager : ServiceManagerBase<IServiceLog, Action<IServiceLog>>
+	{
+		static ServiceLogManager()
+		{
+			Registration = new SetupRegistration
+			{
+				OnSetup = (service, descriptor) =>
+				{
+					if (descriptor != null)
+						foreach (var action in descriptor.Actions)
+							action(service);
+					return service;
+				},
+				ServiceLocatorRegistrar = (locator, name) => (service => RegisterInstance(locator(), service, name)),
+			};
+		}
 
-        public static void EnsureRegistration() { }
-    }
+		public static void EnsureRegistration() { }
+		public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLog> service) { return ProtectedGetSetupDescriptor(service); }
+	}
 }
