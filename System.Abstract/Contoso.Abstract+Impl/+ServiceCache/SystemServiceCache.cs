@@ -191,20 +191,17 @@ namespace Contoso.Abstract
 				if (touchable == null)
 					return new[] { Cache.CreateCacheEntryChangeMonitor(names) };
 				// has touchable
-				var fileNames = new List<string>();
+				var touchables = new List<string>();
 				var cacheKeys = new List<string>();
 				foreach (var name in names)
 				{
 					var touchName = name;
 					if (touchable.CanTouch(tag, ref touchName))
-						fileNames.Add(name);
+						touchables.Add(name);
 					cacheKeys.Add(name);
 				}
-				var changeMonitors = new List<SystemCaching.ChangeMonitor>();
-				changeMonitors.Add(Cache.CreateCacheEntryChangeMonitor(cacheKeys));
-				if (fileNames.Count > 0)
-					changeMonitors.Add(new SystemCaching.HostFileChangeMonitor(fileNames));
-				return changeMonitors;
+				var touchablesDependency = (touchables.Count > 0 ? (SystemCaching.ChangeMonitor)touchable.MakeDependency(tag, touchables.ToArray())(this, tag) : null);
+				return (touchablesDependency == null ? new[] { Cache.CreateCacheEntryChangeMonitor(cacheKeys) } : new[] { Cache.CreateCacheEntryChangeMonitor(cacheKeys), touchablesDependency });
 			}
 			return (value as IEnumerable<SystemCaching.ChangeMonitor>);
 		}

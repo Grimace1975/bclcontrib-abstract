@@ -191,16 +191,17 @@ namespace Contoso.Abstract
 				if (touchable == null)
 					return new WebCacheDependency(null, names);
 				// has touchable
-				var fileNames = new List<string>();
+				var touchables = new List<string>();
 				var cacheKeys = new List<string>();
 				foreach (var name in names)
 				{
 					var touchName = name;
 					if (touchable.CanTouch(tag, ref touchName))
-						fileNames.Add(name);
-					cacheKeys.Add(name);
+						touchables.Add(touchName);
+					cacheKeys.Add(touchName);
 				}
-				return new WebCacheDependency(fileNames.Count == 0 ? null : fileNames.ToArray(), cacheKeys.ToArray());
+				var touchablesDependency = (touchables.Count > 0 ? (WebCacheDependency)touchable.MakeDependency(tag, touchables.ToArray())(this, tag) : null);
+				return (touchablesDependency == null ? new WebCacheDependency(null, cacheKeys.ToArray()) : new WebCacheDependency(null, cacheKeys.ToArray(), touchablesDependency));
 			}
 			return (value as WebCacheDependency);
 		}
