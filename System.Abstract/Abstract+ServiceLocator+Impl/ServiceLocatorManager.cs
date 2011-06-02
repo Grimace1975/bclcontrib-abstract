@@ -26,18 +26,18 @@ THE SOFTWARE.
 using System.Abstract.Parts;
 namespace System.Abstract
 {
-    /// <summary>
-    /// ServiceLocatorManager
-    /// </summary>
-    public class ServiceLocatorManager : ServiceManagerBase<IServiceLocator, Action<IServiceRegistrar, IServiceLocator>>
-    {
-        private static readonly Type _wantToSkipServiceLocatorType = typeof(IWantToSkipServiceLocator);
-        private static readonly Type _wantToSkipServiceRegistrationType = typeof(IWantToSkipServiceRegistration);
+	/// <summary>
+	/// ServiceLocatorManager
+	/// </summary>
+	public class ServiceLocatorManager : ServiceManagerBase<IServiceLocator, Action<IServiceRegistrar, IServiceLocator>>
+	{
+		private static readonly Type _wantToSkipServiceLocatorType = typeof(IWantToSkipServiceLocator);
+		private static readonly Type _wantToSkipServiceRegistrationType = typeof(IWantToSkipServiceRegistration);
 
-        static ServiceLocatorManager()
-        {
-            Registration = new SetupRegistration
-            {
+		static ServiceLocatorManager()
+		{
+			Registration = new SetupRegistration
+			{
 				OnSetup = (service, descriptor) =>
 				{
 					var registrar = service.GetRegistrar();
@@ -47,36 +47,36 @@ namespace System.Abstract
 							action(registrar, service);
 					return service;
 				},
-                ServiceLocatorRegistrar = (locator, name) => ((r, service) => RegisterInstance(locator(), service, name)),
-            };
-        }
+				OnServiceRegistrar = RegisterInstance,
+			};
+		}
 
-        public static void EnsureRegistration() { }
+		public static void EnsureRegistration() { }
 		public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLocator> service) { return ProtectedGetSetupDescriptor(service); }
 
-        private static void RegisterSelfInLocator(IServiceRegistrar registrar, IServiceLocator locator)
-        {
-            registrar.RegisterInstance<IServiceLocator>(locator);
-        }
+		private static void RegisterSelfInLocator(IServiceRegistrar registrar, IServiceLocator locator)
+		{
+			registrar.RegisterInstance<IServiceLocator>(locator);
+		}
 
-        public static bool GetWantsToSkipLocator(object instance) { return ((instance == null) || (GetWantsToSkipLocator(instance.GetType()))); }
-        public static bool GetWantsToSkipLocator<TService>() { return GetWantsToSkipLocator(typeof(TService)); }
-        public static bool GetWantsToSkipLocator(Type type)
-        {
-            return ((type == null) || (_wantToSkipServiceLocatorType.IsAssignableFrom(type)));
-        }
+		public static bool GetWantsToSkipLocator(object instance) { return ((instance == null) || (GetWantsToSkipLocator(instance.GetType()))); }
+		public static bool GetWantsToSkipLocator<TService>() { return GetWantsToSkipLocator(typeof(TService)); }
+		public static bool GetWantsToSkipLocator(Type type)
+		{
+			return ((type == null) || (_wantToSkipServiceLocatorType.IsAssignableFrom(type)));
+		}
 
-        public static bool GetWantsToSkipRegistration(object instance) { return ((instance == null) || (GetWantsToSkipRegistration(instance.GetType()))); }
-        public static bool GetWantsToSkipRegistration<TService>() { return GetWantsToSkipRegistration(typeof(TService)); }
-        public static bool GetWantsToSkipRegistration(Type type)
-        {
-            return ((type == null) || (_wantToSkipServiceRegistrationType.IsAssignableFrom(type)));
-        }
+		public static bool GetWantsToSkipRegistration(object instance) { return ((instance == null) || (GetWantsToSkipRegistration(instance.GetType()))); }
+		public static bool GetWantsToSkipRegistration<TService>() { return GetWantsToSkipRegistration(typeof(TService)); }
+		public static bool GetWantsToSkipRegistration(Type type)
+		{
+			return ((type == null) || (_wantToSkipServiceRegistrationType.IsAssignableFrom(type)));
+		}
 
-        public static IServiceLocator GetDefaultServiceLocator()
-        {
-            try { return ServiceLocatorManager.Current; }
-            catch (InvalidOperationException) { throw new InvalidOperationException(Local.InvalidDefaultServiceLocator); }
-        }
-    }
+		public static Lazy<IServiceLocator> GetDefaultServiceLocator()
+		{
+			try { return ServiceLocatorManager.Lazy; }
+			catch (InvalidOperationException) { throw new InvalidOperationException(Local.InvalidDefaultServiceLocator); }
+		}
+	}
 }

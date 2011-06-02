@@ -37,19 +37,32 @@ namespace System.Abstract
 			RegionMarker = "@";
 			RegistrationDispatcher = new DefaultServiceCacheRegistrationDispatcher();
 		}
-		public ServiceCacheSettings(Func<object, IEnumerable<string>, CacheItemDependency> filePathDependencyFactory)
-			: this() { Touchable = new FileTouchableCacheItem(filePathDependencyFactory); }
+		public ServiceCacheSettings(ITouchableCacheItem touchable)
+			: this() { Touchable = touchable; }
 
+		/// <summary>
+		/// Gets or sets the RegionMarker.
+		/// </summary>
 		public string RegionMarker { get; set; }
+
+		/// <summary>
+		/// Gets or sets the options.
+		/// </summary>
 		public ServiceCacheOptions Options { get; set; }
 
 		/// <summary>
-		/// Gets the registration dispatcher.
+		/// Gets or sets the registration dispatcher.
 		/// </summary>
 		public ServiceCacheRegistration.IDispatcher RegistrationDispatcher { get; set; }
 
+		/// <summary>
+		/// Gets or sets the touchable.
+		/// </summary>
 		public ITouchableCacheItem Touchable { get; set; }
 
+		/// <summary>
+		/// Tries to get the region.
+		/// </summary>
 		public bool TryGetRegion(ref string name, out string regionName)
 		{
 			var index = name.IndexOf(RegionMarker);

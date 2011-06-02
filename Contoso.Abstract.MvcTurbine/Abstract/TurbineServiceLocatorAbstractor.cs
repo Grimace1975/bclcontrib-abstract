@@ -30,6 +30,9 @@ using System.Collections.Generic;
 
 namespace Contoso.Abstract
 {
+	/// <summary>
+	/// TurbineServiceLocatorAbstractor
+	/// </summary
 	public class TurbineServiceLocatorAbstractor : IServiceLocator
 	{
 		private System.Abstract.IServiceLocator _locator;

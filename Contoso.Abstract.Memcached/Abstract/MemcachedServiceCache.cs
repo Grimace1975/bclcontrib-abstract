@@ -183,7 +183,6 @@ namespace Contoso.Abstract
             //
             var absoluteExpiration = itemPolicy.AbsoluteExpiration;
             var slidingExpiration = itemPolicy.SlidingExpiration;
-			var dependency = GetCacheDependency(tag, itemPolicy.Dependency);
             ulong cas;
             object opvalue;
             StoreMode storeMode;
@@ -234,12 +233,35 @@ namespace Contoso.Abstract
             throw new InvalidOperationException("absoluteExpiration && slidingExpiration");
         }
 
-        public void Touch(object tag, params string[] names)
-        {
-            throw new NotSupportedException();
-        }
-
 		public ServiceCacheSettings Settings { get; private set; }
+
+		#region TouchableCacheItem
+
+		///// <summary>
+		///// DefaultTouchableCacheItem
+		///// </summary>
+		//public class DefaultTouchableCacheItem : ITouchableCacheItem
+		//{
+		//    private MemcachedServiceCache _parent;
+		//    private ITouchableCacheItem _base;
+		//    public DefaultTouchableCacheItem(MemcachedServiceCache parent, ITouchableCacheItem @base) { _parent = parent; _base = @base; }
+
+		//    public void Touch(object tag, string[] names)
+		//    {
+		//        if ((names == null) || (names.Length == 0))
+		//            return;
+		//        throw new NotSupportedException();
+		//    }
+
+		//    public object MakeDependency(object tag, string[] names)
+		//    {
+		//        if ((names == null) || (names.Length == 0))
+		//            return null;
+		//        throw new NotSupportedException();
+		//    }
+		//}
+
+		#endregion
 
         #region Domain-specific
 
@@ -252,19 +274,5 @@ namespace Contoso.Abstract
         public bool TryGetWithCas(string key, out CasResult<object> value) { return TryGetWithCas(key, out value); }
 
         #endregion
-
-		private IEnumerable<object> GetCacheDependency(object tag, CacheItemDependency dependency)
-		{
-			object value;
-			if ((dependency == null) || ((value = dependency(this, tag)) == null))
-				return null;
-			//
-			var touchable = Settings.Touchable;
-			string[] names = (value as string[]);
-			if ((names != null) && (names.Length > 0))
-				if ((touchable != null) && names.Any(x => touchable.CanTouch(tag, ref x)))
-					throw new NotSupportedException("Unsupported.");
-			return null;
-		}
     }
 }

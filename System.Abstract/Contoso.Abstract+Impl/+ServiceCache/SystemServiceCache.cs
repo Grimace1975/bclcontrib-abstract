@@ -52,7 +52,7 @@ namespace Contoso.Abstract
 		public SystemServiceCache(SystemCaching.ObjectCache cache)
 		{
 			Cache = cache;
-			Settings = new ServiceCacheSettings((tag, filePaths) => (cache2, tag2) => (object)new SystemCaching.HostFileChangeMonitor(filePaths.ToArray()));
+			Settings = new ServiceCacheSettings(new DefaultFileTouchableCacheItem(this, new DefaultTouchableCacheItem(this, null)));
 		}
 
 		public object GetService(Type serviceType) { throw new NotImplementedException(); }
@@ -119,25 +119,57 @@ namespace Contoso.Abstract
 			return Cache.Remove(name, regionName);
 		}
 
-		public void Touch(object tag, params string[] names)
+		public ServiceCacheSettings Settings { get; private set; }
+
+		#region TouchableCacheItem
+
+		/// <summary>
+		/// DefaultTouchableCacheItem
+		/// </summary>
+		public class DefaultTouchableCacheItem : ITouchableCacheItem
 		{
-			var touchable = Settings.Touchable;
-			var touchNames = (touchable != null ? new List<string>() : null);
-			if ((names != null) && (names.Length > 0))
+			private SystemServiceCache _parent;
+			private ITouchableCacheItem _base;
+			public DefaultTouchableCacheItem(SystemServiceCache parent, ITouchableCacheItem @base) { _parent = parent; _base = @base; }
+
+			public void Touch(object tag, string[] names)
+			{
+				if ((names == null) || (names.Length == 0))
+					return;
+				var settings = _parent.Settings;
+				var cache = _parent.Cache;
 				foreach (var name in names)
 				{
 					var touchName = name;
-					if ((touchable != null) && touchable.CanTouch(tag, ref touchName))
-						touchNames.Add(touchName);
 					string regionName;
-					Settings.TryGetRegion(ref touchName, out regionName);
-					Cache.Set(touchName, string.Empty, ServiceCache.InfiniteAbsoluteExpiration, regionName);
+					settings.TryGetRegion(ref touchName, out regionName);
+					cache.Set(touchName, string.Empty, ServiceCache.InfiniteAbsoluteExpiration, regionName);
 				}
-			if ((touchNames != null) && (touchNames.Count > 0))
-				touchable.Touch(touchNames);
+				if (_base != null)
+					_base.Touch(tag, names);
+			}
+
+			public object MakeDependency(object tag, string[] names)
+			{
+				if ((names == null) || (names.Length == 0))
+					return null;
+				var changeMonitors = new[] { _parent.Cache.CreateCacheEntryChangeMonitor(names) };
+				return (_base == null ? changeMonitors : changeMonitors.Union(_base.MakeDependency(tag, names) as IEnumerable<SystemCaching.ChangeMonitor>));
+			}
 		}
 
-		public ServiceCacheSettings Settings { get; private set; }
+		/// <summary>
+		/// DefaultFileTouchableCacheItem
+		/// </summary>
+		public class DefaultFileTouchableCacheItem : ServiceCache.FileTouchableCacheItemBase
+		{
+			public DefaultFileTouchableCacheItem(SystemServiceCache parent, ITouchableCacheItem @base)
+				: base(parent, @base) { }
+
+			protected override object MakeDependencyInternal(object tag, string[] names) { return new SystemCaching.HostFileChangeMonitor(names.Select(x => GetFilePathForName(x)).ToArray()); }
+		}
+
+		#endregion
 
 		#region Domain-specific
 
@@ -184,26 +216,9 @@ namespace Contoso.Abstract
 			if ((dependency == null) || ((value = dependency(this, tag)) == null))
 				return null;
 			//
-			var touchable = Settings.Touchable;
 			string[] names = (value as string[]);
-			if ((names != null) && (names.Length > 0))
-			{
-				if (touchable == null)
-					return new[] { Cache.CreateCacheEntryChangeMonitor(names) };
-				// has touchable
-				var touchables = new List<string>();
-				var cacheKeys = new List<string>();
-				foreach (var name in names)
-				{
-					var touchName = name;
-					if (touchable.CanTouch(tag, ref touchName))
-						touchables.Add(name);
-					cacheKeys.Add(name);
-				}
-				var touchablesDependency = (touchables.Count > 0 ? (SystemCaching.ChangeMonitor)touchable.MakeDependency(tag, touchables.ToArray())(this, tag) : null);
-				return (touchablesDependency == null ? new[] { Cache.CreateCacheEntryChangeMonitor(cacheKeys) } : new[] { Cache.CreateCacheEntryChangeMonitor(cacheKeys), touchablesDependency });
-			}
-			return (value as IEnumerable<SystemCaching.ChangeMonitor>);
+			var touchable = Settings.Touchable;
+			return (((touchable != null) && (names != null) ? touchable.MakeDependency(tag, names) : value) as IEnumerable<SystemCaching.ChangeMonitor>);
 		}
 	}
 }

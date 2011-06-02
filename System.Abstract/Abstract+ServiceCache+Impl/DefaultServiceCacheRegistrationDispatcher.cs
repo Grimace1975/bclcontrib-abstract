@@ -53,12 +53,12 @@ namespace System.Abstract
 			try
 			{
 				T value;
-				if ((value = (T)cache[name]) == null)
+				if ((value = (T)cache.Get(tag, name)) == null)
 				{
 					_rwLock.EnterWriteLock();
 					try
 					{
-						if ((value = (T)cache[name]) == null)
+						if ((value = (T)cache.Get(tag, name)) == null)
 						{
 							// create
 							value = CreateData<T>(@namespace, registration, tag, values);

@@ -25,110 +25,43 @@ THE SOFTWARE.
 #endregion
 using System.Linq;
 using System.Collections.Generic;
+using System.Text;
 namespace System.Abstract
 {
-    /// <summary>
-    /// ServiceCache
-    /// </summary>
-    public static class ServiceCache
-    {
-        /// <summary>
-        /// Provides <see cref="System.DateTime"/> instance to be used when no absolute expiration value to be set.
-        /// </summary>
-        public static readonly DateTime InfiniteAbsoluteExpiration = DateTime.MaxValue;
-        /// <summary>
-        /// Provides <see cref="System.TimeSpan"/> instance to be used when no sliding expiration value to be set.
-        /// </summary>
-        public static readonly TimeSpan NoSlidingExpiration = TimeSpan.Zero;
+	/// <summary>
+	/// ServiceCache
+	/// </summary>
+	public static partial class ServiceCache
+	{
+		/// <summary>
+		/// Provides <see cref="System.DateTime"/> instance to be used when no absolute expiration value to be set.
+		/// </summary>
+		public static readonly DateTime InfiniteAbsoluteExpiration = DateTime.MaxValue;
+		/// <summary>
+		/// Provides <see cref="System.TimeSpan"/> instance to be used when no sliding expiration value to be set.
+		/// </summary>
+		public static readonly TimeSpan NoSlidingExpiration = TimeSpan.Zero;
 
-        #region Primitives
+		static ServiceCache()
+		{
+			var registrar = ServiceCacheRegistrar.Get(typeof(ServiceCache));
+			registrar.Register(Primitives.YesNo);
+			registrar.Register(Primitives.Gender);
+			registrar.Register(Primitives.Integer);
+		}
 
-        /// <summary>
-        /// Primitives
-        /// </summary>
-        public static class Primitives
-        {
-            /// <summary>
-            /// YesNo
-            /// </summary>
-            public static readonly ServiceCacheRegistration YesNo = new ServiceCacheRegistration("YesNo", (tag, values) =>
-            {
-                var values2 = new Dictionary<string, string>(3);
-                switch ((values != null) && (values.Length == 0) ? null : values[0] as string)
-                {
-					case null:
-					case "": break;
-                    case "--": values2.Add(string.Empty, "--"); break;
-                    default: throw new InvalidOperationException();
-                }
-                values2.Add(bool.TrueString, "Yes");
-                values2.Add(bool.FalseString, "No");
-                return values2;
-            });
-            /// <summary>
-            /// Gender
-            /// </summary>
-            public static readonly ServiceCacheRegistration Gender = new ServiceCacheRegistration("Gender", (tag, values) =>
-            {
-                var values2 = new Dictionary<string, string>(3);
-				switch ((values != null) && (values.Length == 0) ? null : values[0] as string)
-                {
-					case null:
-					case "": break;
-                    case "--": values2.Add(string.Empty, "--"); break;
-                    default: throw new InvalidOperationException();
-                }
-                values2.Add("Male", "Male");
-                values2.Add("Female", "Female");
-                return values2;
-            });
-            /// <summary>
-            /// Integer
-            /// </summary>
-            public static readonly ServiceCacheRegistration Integer = new ServiceCacheRegistration("Integer", (tag, values) =>
-            {
-                var values2 = new Dictionary<string, string>(3);
-				switch ((values != null) && (values.Length == 0) ? null : values[0] as string)
-                {
-					case null:
-					case "": break;
-                    case "--": values2.Add(string.Empty, "--"); break;
-                    default: throw new InvalidOperationException();
-                }
-                int startIndex = (int)values[0];
-                int endIndex = (int)values[1];
-                int indexStep = (int)values[2];
-                for (int index = startIndex; index < endIndex; index += indexStep)
-                    values2.Add(index.ToString(), index.ToString());
-                return values2;
-            });
-        }
-
-        #endregion
-
-        static ServiceCache()
-        {
-            var registrar = ServiceCacheRegistrar.Get(typeof(ServiceCache));
-            registrar.Register(Primitives.YesNo);
-            registrar.Register(Primitives.Gender);
-            registrar.Register(Primitives.Integer);
-        }
-
-        public static string GetNamespace(IEnumerable<object> values)
-        {
+		public static string GetNamespace(IEnumerable<object> values)
+		{
 			if ((values == null) || !values.Any())
 				return null;
-            // add one additional item, so join ends with scope character.
-            var valuesAsObject = values.ToArray();
-            string[] valuesAsText = new string[valuesAsObject.Length + 1];
-            for (int valueIndex = 0; valueIndex < valuesAsObject.Length; valueIndex++)
-            {
-                object value = valuesAsObject[valueIndex];
-                valuesAsText[valueIndex] = (value != null ? "." + value.ToString() : string.Empty);
-            }
-            // set additional item to null incase declaration does not clear value
-            valuesAsText[valuesAsText.Length - 1] = null;
-            return string.Join("::", valuesAsText);
-        }
-    }
+			var b = new StringBuilder();
+			foreach (var x in values)
+			{
+				if (x != null)
+					b.Append(x.ToString());
+				b.Append("\\");
+			}
+			return b.ToString();
+		}
+	}
 }

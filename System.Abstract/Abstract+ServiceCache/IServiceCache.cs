@@ -66,13 +66,24 @@ namespace System.Abstract
 		/// <returns></returns>
 		object Set(object tag, string name, CacheItemPolicy itemPolicy, object value);
 
-		/// <summary>
-		/// Touches the specified names.
-		/// </summary>
-		/// <param name="tag">The tag.</param>
-		/// <param name="names">The names.</param>
-		void Touch(object tag, params string[] names);
+		///// <summary>
+		///// Touches the specified names.
+		///// </summary>
+		///// <param name="tag">The tag.</param>
+		///// <param name="names">The names.</param>
+		//void Touch(object tag, params string[] names);
 
+		///// <summary>
+		///// Makes dependency for the specified names.
+		///// </summary>
+		///// <param name="tag">The tag.</param>
+		///// <param name="names">The names.</param>
+		///// /// <returns></returns>
+		//CacheItemDependency MakeDependency(object tag, params string[] names);
+
+		/// <summary>
+		/// Settings
+		/// </summary>
 		ServiceCacheSettings Settings { get; }
 	}
 
@@ -113,7 +124,26 @@ namespace System.Abstract
 					cache.Add(null, name, new CacheItemPolicy { AbsoluteExpiration = ServiceCache.InfiniteAbsoluteExpiration }, string.Empty);
 		}
 
-		public static void Touch(this IServiceCache cache, params string[] names) { cache.Touch(null, names); }
+		public static void Touch(this IServiceCache cache, params string[] names) { Touch(cache, null, names); }
+		public static void Touch(this IServiceCache cache, object tag, params string[] names)
+		{
+			if (cache == null)
+				throw new ArgumentNullException("cache");
+			var touchable = cache.Settings.Touchable;
+			if (touchable == null)
+				throw new NotSupportedException("Touchables are not supported");
+			touchable.Touch(tag, names);
+		}
+
+		public static CacheItemDependency MakeDependency(this IServiceCache cache, params string[] names)
+		{
+			if (cache == null)
+				throw new ArgumentNullException("cache");
+			var touchable = cache.Settings.Touchable;
+			if (touchable == null)
+				throw new NotSupportedException("Touchables are not supported");
+			return (c, tag) => touchable.MakeDependency(tag, names);
+		}
 
 		public static IServiceCache Wrap(this IServiceCache cache, IEnumerable<object> values, out string @namespace)
 		{
@@ -305,10 +335,10 @@ namespace System.Abstract
 
 		#region Lazy Setup
 
-		public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> service) { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator(null); return service; }
-		public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> service, string name) { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator(name); return service; }
-		public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> service, Func<IServiceLocator> locator) { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator(locator, null); return service; }
-		public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> service, Func<IServiceLocator> locator, string name) { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator(locator, name); return service; }
+		public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> service) { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, null); return service; }
+		public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> service, string name) { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, name); return service; }
+		public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> service, Lazy<IServiceLocator> locator) { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, locator, null); return service; }
+		public static Lazy<IServiceCache> RegisterWithServiceLocator(this Lazy<IServiceCache> service, Lazy<IServiceLocator> locator, string name) { ServiceCacheManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, locator, name); return service; }
 
 		#endregion
 	}

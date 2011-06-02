@@ -199,8 +199,11 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\DefaultServiceCacheRegistrationDispatcher.cs">
       <Link>Abstract+ServiceCache+Impl\DefaultServiceCacheRegistrationDispatcher.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\FileTouchableCacheItem.cs">
-      <Link>Abstract+ServiceCache+Impl\FileTouchableCacheItem.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\ServiceCache+FileTouchableCacheItemBase.cs">
+      <Link>Abstract+ServiceCache+Impl\ServiceCache+FileTouchableCacheItemBase.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\ServiceCache+Primitives.cs">
+      <Link>Abstract+ServiceCache+Impl\ServiceCache+Primitives.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\ServiceCache.cs">
       <Link>Abstract+ServiceCache+Impl\ServiceCache.cs</Link>

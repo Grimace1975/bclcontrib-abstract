@@ -30,8 +30,7 @@ namespace System.Abstract
 	/// </summary>
 	public interface ITouchableCacheItem
 	{
-		bool CanTouch(object tag, ref string name);
-		void Touch(object tag, params string[] names);
-		CacheItemDependency MakeDependency(object tag, params string[] names);
+		void Touch(object tag, string[] names);
+		object MakeDependency(object tag, string[] names);
 	}
 }

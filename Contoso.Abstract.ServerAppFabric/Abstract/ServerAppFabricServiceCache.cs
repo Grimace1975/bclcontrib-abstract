@@ -63,7 +63,7 @@ namespace Contoso.Abstract
 		public ServerAppFabricServiceCache(DataCache cache)
 		{
 			Cache = cache;
-			Settings = new ServiceCacheSettings();
+			Settings = new ServiceCacheSettings(new DefaultTouchableCacheItem(this, null));
 		}
 
 		public object GetService(Type serviceType) { throw new NotImplementedException(); }
@@ -244,12 +244,36 @@ namespace Contoso.Abstract
 			return value;
 		}
 
-		public void Touch(object tag, params string[] name)
+		public ServiceCacheSettings Settings { get; private set; }
+
+		#region TouchableCacheItem
+
+		/// <summary>
+		/// DefaultTouchableCacheItem
+		/// </summary>
+		public class DefaultTouchableCacheItem : ITouchableCacheItem
 		{
-			throw new NotSupportedException();
+			private ServerAppFabricServiceCache _parent;
+			private ITouchableCacheItem _base;
+			public DefaultTouchableCacheItem(ServerAppFabricServiceCache parent, ITouchableCacheItem @base) { _parent = parent; _base = @base; }
+
+			public void Touch(object tag, string[] names)
+			{
+				if ((names == null) || (names.Length == 0))
+					return;
+				throw new NotSupportedException();
+			}
+
+			public object MakeDependency(object tag, string[] names)
+			{
+				if ((names == null) || (names.Length == 0))
+					return null;
+				var dataCacheTags = names.Select(x => new DataCacheTag(x));
+				return (_base == null ? dataCacheTags : dataCacheTags.Union(_base.MakeDependency(tag, names) as IEnumerable<DataCacheTag>));
+			}
 		}
 
-		public ServiceCacheSettings Settings { get; private set; }
+		#endregion
 
 		#region Domain-specific
 
@@ -288,15 +312,9 @@ namespace Contoso.Abstract
 			if ((dependency == null) || ((value = dependency(this, tag)) == null))
 				return null;
 			//
-			var touchable = Settings.Touchable;
 			string[] names = (value as string[]);
-			if ((names != null) && (names.Length > 0))
-			{
-				if ((touchable != null) && names.Any(x => touchable.CanTouch(tag, ref x)))
-					throw new NotSupportedException("Unsupported.");
-				return names.Select(x => new DataCacheTag(x));
-			}
-			return null;
+			var touchable = Settings.Touchable;
+			return (((touchable != null) && (names != null) ? touchable.MakeDependency(tag, names) : value) as IEnumerable<DataCacheTag>);
 		}
 
 		private static TimeSpan GetTimeout(DateTime absoluteExpiration) { return (absoluteExpiration == ServiceCache.InfiniteAbsoluteExpiration ? TimeSpan.Zero : DateTime.Now - absoluteExpiration); }

@@ -27,12 +27,12 @@ using System;
 using System.Linq;
 using System.Abstract;
 using System.Web;
+using System.Collections.Generic;
 using WebCache = System.Web.Caching.Cache;
 using WebCacheDependency = System.Web.Caching.CacheDependency;
 using WebCacheItemPriority = System.Web.Caching.CacheItemPriority;
 using WebCacheItemRemovedCallback = System.Web.Caching.CacheItemRemovedCallback;
 using WebCacheItemRemovedReason = System.Web.Caching.CacheItemRemovedReason;
-using System.Collections.Generic;
 namespace Contoso.Abstract
 {
 	/// <summary>
@@ -52,7 +52,7 @@ namespace Contoso.Abstract
 		public WebServiceCache()
 		{
 			Cache = HttpRuntime.Cache;
-			Settings = new ServiceCacheSettings((tag, filePaths) => (cache2, tag2) => (object)new WebCacheDependency(filePaths.ToArray()));
+			Settings = new ServiceCacheSettings(new DefaultFileTouchableCacheItem(this, new DefaultTouchableCacheItem(this, null)));
 		}
 
 		public object GetService(Type serviceType) { throw new NotImplementedException(); }
@@ -154,23 +154,52 @@ namespace Contoso.Abstract
 
 		public object Remove(object tag, string name) { return Cache.Remove(name); }
 
-		public void Touch(object tag, params string[] names)
+		public ServiceCacheSettings Settings { get; private set; }
+
+		#region TouchableCacheItem
+
+		/// <summary>
+		/// DefaultTouchableCacheItem
+		/// </summary>
+		public class DefaultTouchableCacheItem : ITouchableCacheItem
 		{
-			var touchable = Settings.Touchable;
-			var touchNames = (touchable != null ? new List<string>() : null);
-			if ((names != null) && (names.Length > 0))
+			private WebServiceCache _parent;
+			private ITouchableCacheItem _base;
+			public DefaultTouchableCacheItem(WebServiceCache parent, ITouchableCacheItem @base) { _parent = parent; _base = @base; }
+
+			public void Touch(object tag, string[] names)
+			{
+				if ((names == null) || (names.Length == 0))
+					return;
+				var cache = _parent.Cache;
 				foreach (var name in names)
-				{
-					var touchName = name;
-					if ((touchable != null) && touchable.CanTouch(tag, ref touchName))
-						touchNames.Add(touchName);
-					Cache.Insert(touchName, string.Empty, null, ServiceCache.InfiniteAbsoluteExpiration, ServiceCache.NoSlidingExpiration, WebCacheItemPriority.Normal, null);
-				}
-			if ((touchNames != null) && (touchNames.Count > 0))
-				touchable.Touch(touchNames);
+					cache.Insert(name, string.Empty, null, ServiceCache.InfiniteAbsoluteExpiration, ServiceCache.NoSlidingExpiration, WebCacheItemPriority.Normal, null);
+				if (_base != null)
+					_base.Touch(tag, names);
+			}
+
+			public object MakeDependency(object tag, string[] names)
+			{
+				if ((names == null) || (names.Length == 0))
+					return null;
+				return (_base == null ? new WebCacheDependency(null, names) : new WebCacheDependency(null, names, _base.MakeDependency(tag, names) as WebCacheDependency));
+			}
 		}
 
-		public ServiceCacheSettings Settings { get; private set; }
+		/// <summary>
+		/// DefaultFileTouchableCacheItem
+		/// </summary>
+		public class DefaultFileTouchableCacheItem : ServiceCache.FileTouchableCacheItemBase
+		{
+			public DefaultFileTouchableCacheItem(WebServiceCache parent, ITouchableCacheItem @base)
+				: base(parent, @base) { }
+
+			protected override object MakeDependencyInternal(object tag, string[] names) { return new WebCacheDependency(names.Select(x => GetFilePathForName(x)).ToArray()); }
+			//    var touchablesDependency = (touchables.Count > 0 ? (WebCacheDependency)touchable.MakeDependency(tag, touchables.ToArray())(this, tag) : null);
+			//    return (touchablesDependency == null ? new WebCacheDependency(null, cacheKeys.ToArray()) : new WebCacheDependency(null, cacheKeys.ToArray(), touchablesDependency));
+		}
+
+		#endregion
 
 		#region Domain-specific
 
@@ -184,26 +213,9 @@ namespace Contoso.Abstract
 			if ((dependency == null) || ((value = dependency(this, tag)) == null))
 				return null;
 			//
-			var touchable = Settings.Touchable;
 			string[] names = (value as string[]);
-			if ((names != null) && (names.Length > 0))
-			{
-				if (touchable == null)
-					return new WebCacheDependency(null, names);
-				// has touchable
-				var touchables = new List<string>();
-				var cacheKeys = new List<string>();
-				foreach (var name in names)
-				{
-					var touchName = name;
-					if (touchable.CanTouch(tag, ref touchName))
-						touchables.Add(touchName);
-					cacheKeys.Add(touchName);
-				}
-				var touchablesDependency = (touchables.Count > 0 ? (WebCacheDependency)touchable.MakeDependency(tag, touchables.ToArray())(this, tag) : null);
-				return (touchablesDependency == null ? new WebCacheDependency(null, cacheKeys.ToArray()) : new WebCacheDependency(null, cacheKeys.ToArray(), touchablesDependency));
-			}
-			return (value as WebCacheDependency);
+			var touchable = Settings.Touchable;
+			return (((touchable != null) && (names != null) ? touchable.MakeDependency(tag, names) : value) as WebCacheDependency);
 		}
 	}
 }
