@@ -82,9 +82,6 @@
     <Compile Include="..\+fromcoreex\reflection\AssemblyExtensions.cs">
       <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\+fromcoreex\runtime\compilerservices\CompilerServicesExtensions.cs">
-      <Link>+FromCoreEx\Runtime\CompilerServices\CompilerServicesExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\System.Abstract\+Kludge\Lazy.cs">
       <Link>+Kludge\Lazy.cs</Link>
     </Compile>
