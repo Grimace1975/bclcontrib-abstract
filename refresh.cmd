@@ -14,7 +14,6 @@ xcopy %SRC%\Configuration\ConfigurationElementsEx.cs Configuration\ /Y/Q
 xcopy %SRC%\Configuration\ConfigurationSectionEx.cs Configuration\ /Y/Q
 xcopy %SRC%\Linq\Expressions\ExpressionEx.cs Linq\Expressions\ /Y/Q
 xcopy %SRC%\Reflection\AssemblyExtensions.cs Reflection\ /Y/Q
-xcopy %SRC%\Runtime\CompilerServices\CompilerServicesExtensions.cs Runtime\CompilerServices\ /Y/Q
 xcopy %SRC%\ExceptionEx.cs .\ /Y/Q
 xcopy %SRC%\EnvironmentEx.cs .\ /Y/Q
 xcopy %SRC%\LazyExtensions.cs .\ /Y/Q

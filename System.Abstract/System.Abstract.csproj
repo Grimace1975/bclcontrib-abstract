@@ -88,9 +88,6 @@
       <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
     </Compile>
     <Compile Include="+Nparams+Impl\NparamsManager.cs" />
-    <Compile Include="..\+FromCoreEx\Runtime\CompilerServices\CompilerServicesExtensions.cs">
-      <Link>+FromCoreEx\Runtime\CompilerServices\CompilerServicesExtensions.cs</Link>
-    </Compile>
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCache+Primitives.cs" />
     <Compile Include="Abstract+ServiceCache\ITouchableCacheItem.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheOptions.cs" />
