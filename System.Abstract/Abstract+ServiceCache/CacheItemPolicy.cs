@@ -41,7 +41,7 @@ namespace System.Abstract
         /// <param name="key">The key.</param>
 		public CacheItemPolicy()
         {
-            FloatingAbsoluteExpiration = new TimeSpan(1, 0, 0, 0);
+            FloatingAbsoluteExpiration = new TimeSpan(1, 0, 0);
 			SlidingExpiration = ServiceCache.NoSlidingExpiration;
         }
         /// <summary>

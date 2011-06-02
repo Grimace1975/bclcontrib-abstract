@@ -38,6 +38,9 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Contoso.Abstract.MvcTurbine\Abstract\Blades\CoreBlade.cs">
+      <Link>Abstract\Blades\CoreBlade.cs</Link>
+    </Compile>
     <Compile Include="..\Contoso.Abstract.MvcTurbine\Abstract\RegistrationStub.cs">
       <Link>Abstract\RegistrationStub.cs</Link>
     </Compile>

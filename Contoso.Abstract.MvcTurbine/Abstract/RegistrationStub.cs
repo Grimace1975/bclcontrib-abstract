@@ -30,6 +30,9 @@ using System.Collections.Generic;
 
 namespace Contoso.Abstract
 {
+	/// <summary>
+	/// RegistrationStub
+	/// </summary
 	internal sealed class RegistrationStub : IServiceRegistrar, IDisposable
 	{
 		public void Dispose() { }
