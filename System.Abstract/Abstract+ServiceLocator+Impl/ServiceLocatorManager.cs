@@ -72,11 +72,5 @@ namespace System.Abstract
 		{
 			return ((type == null) || (_wantToSkipServiceRegistrationType.IsAssignableFrom(type)));
 		}
-
-		public static Lazy<IServiceLocator> GetDefaultServiceLocator()
-		{
-			try { return ServiceLocatorManager.Lazy; }
-			catch (InvalidOperationException) { throw new InvalidOperationException(Local.InvalidDefaultServiceLocator); }
-		}
 	}
 }

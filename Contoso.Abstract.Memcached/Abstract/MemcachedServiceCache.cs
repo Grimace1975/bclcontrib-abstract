@@ -36,7 +36,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// IMemcachedServiceCache
     /// </summary>
-    public interface IMemcachedServiceCache : IServiceCache
+	public interface IMemcachedServiceCache : IDistributedServiceCache
     {
         IMemcachedClient Cache { get; }
         void FlushAll();

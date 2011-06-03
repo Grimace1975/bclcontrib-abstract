@@ -23,34 +23,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Abstract.Parts;
-namespace System.Abstract
+namespace System
 {
 	/// <summary>
-	/// ServiceLogManager
+	/// PlatformProductID
 	/// </summary>
-	public class ServiceLogManager : ServiceManagerBase<IServiceLog, Action<IServiceLog>>
+	public enum PlatformProductID
 	{
-		public static readonly Lazy<IServiceLog> EmptyServiceLog = new Lazy<IServiceLog>(() => new EmptyServiceLog());
-
-		static ServiceLogManager()
-		{
-			Registration = new SetupRegistration
-			{
-				OnSetup = (service, descriptor) =>
-				{
-					if (descriptor != null)
-						foreach (var action in descriptor.Actions)
-							action(service);
-					return service;
-				},
-			};
-		}
-
-		public static void EnsureRegistration() { }
-		public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLog> service) { return ProtectedGetSetupDescriptor(service); }
-
-		public static IServiceLog Get<T>() { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get<T>(); }
-		public static IServiceLog Get(string name) { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get(name); }
+		Workstation = 1,
+		DomainController = 2, 
+		Server = 3
 	}
 }

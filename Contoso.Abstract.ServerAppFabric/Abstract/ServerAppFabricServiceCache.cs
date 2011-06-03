@@ -36,7 +36,7 @@ namespace Contoso.Abstract
 	/// <summary>
 	/// IServerAppFabricServiceCache
 	/// </summary>
-	public interface IServerAppFabricServiceCache : IServiceCache
+	public interface IServerAppFabricServiceCache : IDistributedServiceCache
 	{
 		DataCache Cache { get; }
 		//

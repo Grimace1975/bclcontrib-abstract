@@ -54,6 +54,14 @@ namespace System.Abstract.Parts
 			get { return Lazy.Value; }
 		}
 
+		public static Lazy<TIService> GetDefaultService()
+		{
+			try { return Lazy; }
+			catch (InvalidOperationException) { return null; }
+		}
+
+		#region Setup
+
 		/// <summary>
 		/// SetupRegistration
 		/// </summary
@@ -81,6 +89,8 @@ namespace System.Abstract.Parts
 			else
 				registrar.RegisterInstance<T>(service, name);
 		}
+
+		#endregion
 
 		#region IServiceSetup
 
@@ -153,7 +163,7 @@ namespace System.Abstract.Parts
 				_actions.Add(action);
 			}
 
-			void ISetupDescriptor.RegisterWithServiceLocator(Lazy<TIService> service, string name) { ((ISetupDescriptor)this).RegisterWithServiceLocator(service, ServiceLocatorManager.GetDefaultServiceLocator(), name); }
+			void ISetupDescriptor.RegisterWithServiceLocator(Lazy<TIService> service, string name) { ((ISetupDescriptor)this).RegisterWithServiceLocator(service, ServiceLocatorManager.GetDefaultService(), name); }
 			void ISetupDescriptor.RegisterWithServiceLocator(Lazy<TIService> service, Lazy<IServiceLocator> locator, string name)
 			{
 				if (locator == null)

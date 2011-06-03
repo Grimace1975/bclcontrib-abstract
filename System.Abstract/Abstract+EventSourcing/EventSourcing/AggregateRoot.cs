@@ -30,10 +30,18 @@ using System.Collections.ObjectModel;
 using System.Threading;
 namespace System.Abstract.EventSourcing
 {
+	/// <summary>
+	/// IAggregateRoot
+	/// </summary>
+	public interface IAggregateRoot
+	{
+		object AggregateId { get; }
+	}
+
     /// <summary>
     /// AggregateRoot
     /// </summary>
-    public abstract class AggregateRoot : IAccessAggregateRootState
+	public abstract class AggregateRoot : IAggregateRoot, IAccessAggregateRootState
     {
         public static readonly IAggregateRootEventDispatcher EmptyEventDispatcher = new EmptyAggregateRootEventDispatcher();
         private readonly List<Event> _changes = new List<Event>();

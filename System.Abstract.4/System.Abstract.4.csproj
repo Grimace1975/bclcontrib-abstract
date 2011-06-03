@@ -82,11 +82,26 @@
     <Compile Include="..\+fromcoreex\reflection\AssemblyExtensions.cs">
       <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\+EnvironmentEx2\EnvironmentEx2+OSVersion.cs">
+      <Link>+EnvironmentEx2\EnvironmentEx2+OSVersion.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\+EnvironmentEx2\EnvironmentEx2.cs">
+      <Link>+EnvironmentEx2\EnvironmentEx2.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\+EnvironmentEx2\OperatingSystemEx.cs">
+      <Link>+EnvironmentEx2\OperatingSystemEx.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\+EnvironmentEx2\PlatformProductID.cs">
+      <Link>+EnvironmentEx2\PlatformProductID.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\+EnvironmentEx2\PlatformSuites.cs">
+      <Link>+EnvironmentEx2\PlatformSuites.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\+Kludge\Lazy.cs">
       <Link>+Kludge\Lazy.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\+Kludge\LazyDebugView.cs">
-      <Link>+Kludge\LazyDebugView.cs</Link>
+    <Compile Include="..\System.Abstract\+Kludge\System_LazyDebugView.cs">
+      <Link>+Kludge\System_LazyDebugView.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\+Kludge\Threading\LazyThreadSafetyMode.cs">
       <Link>+Kludge\Threading\LazyThreadSafetyMode.cs</Link>
@@ -229,6 +244,9 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\CacheItemPriority.cs">
       <Link>Abstract+ServiceCache\CacheItemPriority.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache\IDistributedServiceCache.cs">
+      <Link>Abstract+ServiceCache\IDistributedServiceCache.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\IServiceCache.cs">
       <Link>Abstract+ServiceCache\IServiceCache.cs</Link>
     </Compile>
@@ -273,6 +291,9 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceLocatorResolutionException.cs">
       <Link>Abstract+ServiceLocator\ServiceLocatorResolutionException.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLog+Impl\EmpyServiceLog.cs">
+      <Link>Abstract+ServiceLog+Impl\EmpyServiceLog.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLog+Impl\ServiceLog.cs">
       <Link>Abstract+ServiceLog+Impl\ServiceLog.cs</Link>
@@ -333,9 +354,6 @@
     </Compile>
     <Compile Include="..\System.Abstract\DateTimeEx2.cs">
       <Link>DateTimeEx2.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\EnvironmentEx2.cs">
-      <Link>EnvironmentEx2.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\IO\+Mock\DirectoryMock.cs">
       <Link>IO\+Mock\DirectoryMock.cs</Link>

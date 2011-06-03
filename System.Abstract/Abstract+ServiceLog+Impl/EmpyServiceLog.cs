@@ -23,34 +23,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Abstract.Parts;
 namespace System.Abstract
 {
 	/// <summary>
-	/// ServiceLogManager
+	/// EmptyServiceLog
 	/// </summary>
-	public class ServiceLogManager : ServiceManagerBase<IServiceLog, Action<IServiceLog>>
+	public class EmptyServiceLog : IServiceLog
 	{
-		public static readonly Lazy<IServiceLog> EmptyServiceLog = new Lazy<IServiceLog>(() => new EmptyServiceLog());
+		public IServiceLog Get(Type type) { return ServiceLogManager.EmptyServiceLog.Value; }
+		public IServiceLog Get(string name) { return ServiceLogManager.EmptyServiceLog.Value; }
 
-		static ServiceLogManager()
+		public object GetService(Type serviceType)
 		{
-			Registration = new SetupRegistration
-			{
-				OnSetup = (service, descriptor) =>
-				{
-					if (descriptor != null)
-						foreach (var action in descriptor.Actions)
-							action(service);
-					return service;
-				},
-			};
+			throw new NotImplementedException();
 		}
 
-		public static void EnsureRegistration() { }
-		public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLog> service) { return ProtectedGetSetupDescriptor(service); }
-
-		public static IServiceLog Get<T>() { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get<T>(); }
-		public static IServiceLog Get(string name) { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get(name); }
+		public void Error(string s, params object[] args) { }
+		public void Error(string s, Exception ex) { }
+		public void Warning(string s, params object[] args) { }
+		public void Warning(string s, Exception ex) { }
+		public void Debug(string s, params object[] args) { }
+		public void Debug(string s, Exception ex) { }
 	}
 }

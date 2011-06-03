@@ -23,34 +23,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Abstract.Parts;
-namespace System.Abstract
+namespace System
 {
 	/// <summary>
-	/// ServiceLogManager
+	/// PlatformSuites
 	/// </summary>
-	public class ServiceLogManager : ServiceManagerBase<IServiceLog, Action<IServiceLog>>
+	public enum PlatformSuites
 	{
-		public static readonly Lazy<IServiceLog> EmptyServiceLog = new Lazy<IServiceLog>(() => new EmptyServiceLog());
-
-		static ServiceLogManager()
-		{
-			Registration = new SetupRegistration
-			{
-				OnSetup = (service, descriptor) =>
-				{
-					if (descriptor != null)
-						foreach (var action in descriptor.Actions)
-							action(service);
-					return service;
-				},
-			};
-		}
-
-		public static void EnsureRegistration() { }
-		public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLog> service) { return ProtectedGetSetupDescriptor(service); }
-
-		public static IServiceLog Get<T>() { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get<T>(); }
-		public static IServiceLog Get(string name) { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get(name); }
+		BackOffice = 0x00000004,
+		Blade = 0x00000400,
+		ComputeServer = 0x00004000,
+		DataCenter = 0x00000080,
+		Enterprise = 0x00000002,
+		EmbeddedNT = 0x00000040,
+		Personal = 0x00000200,
+		SingleUserTS = 0x00000100,
+		SmallBusiness = 0x00000001,
+		SmallBusinessRestricted = 0x00000020,
+		StorageServer = 0x00002000,
+		Terminal = 0x00000010,
+		WHServer = 0x00008000,
 	}
 }

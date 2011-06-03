@@ -49,6 +49,42 @@ namespace System.Abstract
 				cache = cache.Wrap(values, out @namespace);
 			else
 				@namespace = null;
+			var distributedServiceCache = (cache as IDistributedServiceCache);
+			if (distributedServiceCache == null)
+				return GetUsingLock<T>(cache, registration, tag, values, itemPolicy, name, @namespace);
+			return GetUsingCas<T>(distributedServiceCache, registration, tag, values, itemPolicy, name, @namespace);
+		}
+
+		private static T GetUsingNoLock<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace)
+		{
+			T value = (T)cache.Get(tag, name);
+			if (value == null)
+			{
+				// create
+				value = CreateData<T>(@namespace, registration, tag, values);
+				cache.Add(tag, name, itemPolicy, value);
+			}
+			return value;
+		}
+
+		private static T GetUsingLock<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace)
+		{
+			T value = (T)cache.Get(tag, name);
+			if (value == null)
+				lock (_rwLock)
+				{
+					value = (T)cache.Get(tag, name);
+					if (value != null)
+						return value;
+					// create
+					value = CreateData<T>(@namespace, registration, tag, values);
+					cache.Add(tag, name, itemPolicy, value);
+				}
+			return value;
+		}
+
+		private static T GetUsingRwLock<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace)
+		{
 			_rwLock.EnterUpgradeableReadLock();
 			try
 			{
@@ -70,6 +106,18 @@ namespace System.Abstract
 				return value;
 			}
 			finally { _rwLock.ExitUpgradeableReadLock(); }
+		}
+
+		private static T GetUsingCas<T>(IDistributedServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace)
+		{
+			T value = (T)cache.Get(tag, name);
+			if (value == null)
+			{
+				// create
+				value = CreateData<T>(@namespace, registration, tag, values);
+				cache.Add(tag, name, itemPolicy, value);
+			}
+			return value;
 		}
 
 		public void Remove(IServiceCache cache, ServiceCacheRegistration registration)

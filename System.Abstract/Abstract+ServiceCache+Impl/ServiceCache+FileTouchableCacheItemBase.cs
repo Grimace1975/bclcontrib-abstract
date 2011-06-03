@@ -48,7 +48,7 @@ namespace System.Abstract
 				_base = @base;
 			}
 
-			public void Touch(object tag, string[] names)
+			public virtual void Touch(object tag, string[] names)
 			{
 				if (string.IsNullOrEmpty(Directory))
 				{
@@ -93,7 +93,7 @@ namespace System.Abstract
 
 			protected virtual void WriteBodyForName(string name, string path) { File.WriteAllText(path, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\r\n"); }
 
-			public object MakeDependency(object tag, string[] names)
+			public virtual object MakeDependency(object tag, string[] names)
 			{
 				if (string.IsNullOrEmpty(Directory))
 					return (_base != null ? _base.MakeDependency(tag, names) : null);

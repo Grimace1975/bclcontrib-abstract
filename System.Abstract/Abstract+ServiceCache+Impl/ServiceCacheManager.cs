@@ -42,10 +42,17 @@ namespace System.Abstract
 							action(service);
 					return service;
 				},
+				OnServiceRegistrar = (service, registar, locator, name) =>
+				{
+					RegisterInstance(service, registar, locator, name);
+					var distributedServiceCache = (service as IDistributedServiceCache);
+					if (distributedServiceCache != null)
+						RegisterInstance(distributedServiceCache, registar, locator, name);
+				},
             };
         }
 
-        public static void EnsureRegistration() { }
+		public static void EnsureRegistration() { }
 		public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceCache> service) { return ProtectedGetSetupDescriptor(service); }
     }
 }

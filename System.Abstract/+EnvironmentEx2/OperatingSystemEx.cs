@@ -23,34 +23,36 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Abstract.Parts;
-namespace System.Abstract
+namespace System
 {
 	/// <summary>
-	/// ServiceLogManager
+	/// OperatingSystemEx
 	/// </summary>
-	public class ServiceLogManager : ServiceManagerBase<IServiceLog, Action<IServiceLog>>
+	public class OperatingSystemEx
 	{
-		public static readonly Lazy<IServiceLog> EmptyServiceLog = new Lazy<IServiceLog>(() => new EmptyServiceLog());
+		private OperatingSystem _parent;
+		public OperatingSystemEx(OperatingSystem parent) { _parent = parent; }
 
-		static ServiceLogManager()
+		public virtual PlatformID Platform
 		{
-			Registration = new SetupRegistration
-			{
-				OnSetup = (service, descriptor) =>
-				{
-					if (descriptor != null)
-						foreach (var action in descriptor.Actions)
-							action(service);
-					return service;
-				},
-			};
+			get { return (_parent != null ? _parent.Platform : (PlatformID)0); }
 		}
+		public virtual string ServicePack
+		{
+			get { return (_parent != null ? _parent.ServicePack : null); }
+		}
+		public virtual Version Version
+		{
+			get { return (_parent != null ? _parent.Version : null); }
+		}
+		public virtual string VersionString
+		{
+			get { return (_parent != null ? _parent.VersionString : null); }
+		}
+		public override string ToString() { return (_parent != null ? _parent.ToString() : null); }
 
-		public static void EnsureRegistration() { }
-		public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLog> service) { return ProtectedGetSetupDescriptor(service); }
+		public virtual PlatformSuites PlatformSuites { get; set; }
 
-		public static IServiceLog Get<T>() { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get<T>(); }
-		public static IServiceLog Get(string name) { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get(name); }
+		public virtual PlatformProductID PlatformProductID { get; set; }		
 	}
 }

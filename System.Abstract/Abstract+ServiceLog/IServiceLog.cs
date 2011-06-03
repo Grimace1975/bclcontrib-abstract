@@ -25,28 +25,39 @@ THE SOFTWARE.
 #endregion
 namespace System.Abstract
 {
-    /// <summary>
-    /// IServiceLog
-    /// </summary>
-    public interface IServiceLog : IServiceProvider
-    {
-        object GetLogger(object tag);
-        void LogEvent(object logger, ServiceLogEventType eventType, string module, string text, params object[] args);
-        void LogEvent(object logger, ServiceLogEventType eventType, string module, Exception e);
-    }
+	/// <summary>
+	/// IServiceLog
+	/// </summary>
+	public interface IServiceLog : IServiceProvider
+	{
+		IServiceLog Get(Type type);
+		IServiceLog Get(string name);
+		void Warning(string s, params object[] args);
+		void Warning(string s, Exception ex);
+		void Error(string s, params object[] args);
+		void Error(string s, Exception ex);
+		void Debug(string s, params object[] args);
+		void Debug(string s, Exception ex);
+	}
 
-    /// <summary>
-    /// IServiceLogExtensions
-    /// </summary>
-    public static class IServiceLogExtensions
-    {
-        #region Lazy Setup
+	/// <summary>
+	/// IServiceLogExtensions
+	/// </summary>
+	public static class IServiceLogExtensions
+	{
+		public static IServiceLog Get<T>(this IServiceLog service) { return service.Get(typeof(T)); }
+
+		//public static IServiceLog Warning(this IServiceLog service) { return service.Get(typeof(T)); }
+		//public static IServiceLog Error(this IServiceLog service) { return service.Get(typeof(T)); }
+		//public static IServiceLog Debug(this IServiceLog service, string) { return service.Get(typeof(T)); }
+
+		#region Lazy Setup
 
 		public static Lazy<IServiceLog> RegisterWithServiceLocator(this Lazy<IServiceLog> service) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, null); return service; }
 		public static Lazy<IServiceLog> RegisterWithServiceLocator(this Lazy<IServiceLog> service, string name) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, name); return service; }
 		public static Lazy<IServiceLog> RegisterWithServiceLocator(this Lazy<IServiceLog> service, Lazy<IServiceLocator> locator) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, locator, null); return service; }
 		public static Lazy<IServiceLog> RegisterWithServiceLocator(this Lazy<IServiceLog> service, Lazy<IServiceLocator> locator, string name) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, locator, name); return service; }
 
-        #endregion
-    }
+		#endregion
+	}
 }

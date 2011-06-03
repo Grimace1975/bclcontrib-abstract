@@ -51,6 +51,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="+EnvironmentEx2\PlatformProductID.cs" />
     <Compile Include="..\+FromCoreEx\+Kludge\Collections\HashHelpers.cs">
       <Link>+FromCoreEx\+Kludge\Collections\HashHelpers.cs</Link>
     </Compile>
@@ -88,7 +89,9 @@
       <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
     </Compile>
     <Compile Include="+Nparams+Impl\NparamsManager.cs" />
+    <Compile Include="Abstract+EventSourcing\EventSourcing\IEventHandler.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCache+Primitives.cs" />
+    <Compile Include="Abstract+ServiceCache\IDistributedServiceCache.cs" />
     <Compile Include="Abstract+ServiceCache\ITouchableCacheItem.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheOptions.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheSettings.cs" />
@@ -102,15 +105,20 @@
     <Compile Include="Abstract+ServiceCache\CacheItemPolicy.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemDependency.cs" />
     <Compile Include="Abstract+ServiceLocator\IWantToSkipServiceRegistration.cs" />
+    <Compile Include="Abstract+ServiceLog+Impl\EmpyServiceLog.cs" />
     <Compile Include="Abstract+ServiceLog+Impl\ServiceLog.cs" />
     <Compile Include="Abstract+ServiceLog\ServiceLogEventType.cs" />
     <Compile Include="++ToFile\ServiceLog.cs" />
     <Compile Include="Abstract+ServiceLog+Impl\ServiceLogManager.cs" />
     <Compile Include="Abstract+ServiceLog\IServiceLog.cs" />
+    <Compile Include="Abstract\Configuration\AbstractSection.cs" />
     <Compile Include="Abstract\Parts\ServiceManagerBase.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceCache\SystemServiceCache.cs" />
     <Compile Include="Contoso.Abstract+Impl\EmptyNparams.cs" />
-    <Compile Include="EnvironmentEx2.cs" />
+    <Compile Include="+EnvironmentEx2\PlatformSuites.cs" />
+    <Compile Include="+EnvironmentEx2\OperatingSystemEx.cs" />
+    <Compile Include="+EnvironmentEx2\EnvironmentEx2+OSVersion.cs" />
+    <Compile Include="+EnvironmentEx2\EnvironmentEx2.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCache+FileTouchableCacheItemBase.cs" />
     <Compile Include="Abstract+ServiceCache\CacheEntryUpdateCallback.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemPriority.cs" />
@@ -196,7 +204,7 @@
     <Compile Include="++ToFile\AssemblyTypeCatalog.cs" />
     <Compile Include="Abstract\Parts+TypeSerializer\ITypeSerializer.cs" />
     <Compile Include="++ToFile\ITypeCatalog.cs" />
-    <Compile Include="+Kludge\LazyDebugView.cs" />
+    <Compile Include="+Kludge\System_LazyDebugView.cs" />
     <Compile Include="+Kludge\Threading\LazyThreadSafetyMode.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -211,9 +219,7 @@
   <ItemGroup>
     <Content Include="Changelog.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Abstract\Configuration\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

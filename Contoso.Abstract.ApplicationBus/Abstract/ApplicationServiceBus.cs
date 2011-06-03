@@ -107,5 +107,8 @@ namespace Contoso.Abstract
                 .Where(m => m.GetInterfaces().Any(x => (x == serviceMessageType) || (x == applicationServiceMessageType)))
                 .SingleOrDefault();
         }
-    }
+
+		public void Reply(params IServiceMessage[] messages) { throw new NotImplementedException(); }
+		public void Return<T>(T value) { throw new NotImplementedException(); }
+	}
 }

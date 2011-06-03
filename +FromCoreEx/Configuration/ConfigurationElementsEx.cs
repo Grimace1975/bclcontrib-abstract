@@ -23,9 +23,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Configuration;
 using System.Collections;
-namespace System.Patterns.Configuration
+namespace System.Configuration
 {
     /// <summary>
     /// A generic hash-based class extending <see cref="T:System.Configuration.ConfigurationElementCollection"/>. 
