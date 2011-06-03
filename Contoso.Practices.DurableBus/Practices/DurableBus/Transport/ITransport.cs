@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /*
 The MIT License
 
@@ -23,34 +23,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Abstract.Parts;
-namespace System.Abstract
+using System;
+namespace Contoso.Practices.DurableBus.Transport
 {
 	/// <summary>
-	/// ServiceLogManager
+	/// ITransport
 	/// </summary>
-	public class ServiceLogManager : ServiceManagerBase<IServiceLog, Action<IServiceLog>>
+	public interface ITransport : IDisposable
 	{
-		public static readonly Lazy<IServiceLog> EmptyServiceLog = new Lazy<IServiceLog>(() => new EmptyServiceLog());
-
-		static ServiceLogManager()
-		{
-			Registration = new SetupRegistration
-			{
-				OnSetup = (service, descriptor) =>
-				{
-					if (descriptor != null)
-						foreach (var action in descriptor.Actions)
-							action(service);
-					return service;
-				},
-			};
-		}
-
-		public static void EnsureRegistration() { }
-		public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLog> service) { return ProtectedGetSetupDescriptor(service); }
-
-		public static IServiceLog Get<T>() { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get<T>(); }
-		public static IServiceLog Get(string name) { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get(name); }
+		event EventHandler<MessageReceivedEventArgs> MessageReceived;
+		event EventHandler MessageProcessing;
+		event EventHandler MessageProcessingFailed;
+		event EventHandler MessageProcessed;
+		void AbortHandlingCurrentMessage();
+		void ChangeNumberOfWorkerThreads(int targetNumberOfWorkerThreads);
+		int GetNumberOfPendingMessages();
+		void ReceiveMessageLater(TransportMessage m);
+		void Send(TransportMessage m, string destination);
+		void Start();
+		string Address { get; }
+		int NumberOfWorkerThreads { get; }
 	}
 }

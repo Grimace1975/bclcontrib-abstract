@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /*
 The MIT License
 
@@ -23,34 +23,38 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Abstract.Parts;
-namespace System.Abstract
+using System;
+using System.Abstract;
+using System.Abstract.EventSourcing;
+namespace Contoso.Practices.Cqrs
 {
 	/// <summary>
-	/// ServiceLogManager
+	/// CommandHandler
 	/// </summary>
-	public class ServiceLogManager : ServiceManagerBase<IServiceLog, Action<IServiceLog>>
+	public abstract class CommandHandler<TCommand, TAggregate> : CommandHandler<TCommand>
+		where TCommand : ICommandWithAggregate
+		where TAggregate : AggregateRoot
 	{
-		public static readonly Lazy<IServiceLog> EmptyServiceLog = new Lazy<IServiceLog>(() => new EmptyServiceLog());
-
-		static ServiceLogManager()
+		public override void Handle(TCommand command)
 		{
-			Registration = new SetupRegistration
+			var aggregateRepository = GetAggregateRepository();
+			if (aggregateRepository == null)
+				throw new NullReferenceException("aggregateRepository");
+			var aggregate = aggregateRepository.GetById<TAggregate>(command.AggregateId);
+			if (aggregate != null)
 			{
-				OnSetup = (service, descriptor) =>
-				{
-					if (descriptor != null)
-						foreach (var action in descriptor.Actions)
-							action(service);
-					return service;
-				},
-			};
+				Handle(command, aggregate);
+				if (aggregate.HasChanged)
+					aggregateRepository.Save(aggregate);
+			}
+			HandleError(command, HandlerErrorIntent.NullAggregate, command.AggregateId);
 		}
 
-		public static void EnsureRegistration() { }
-		public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLog> service) { return ProtectedGetSetupDescriptor(service); }
+		protected abstract void Handle(TCommand command, TAggregate aggregate);
 
-		public static IServiceLog Get<T>() { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get<T>(); }
-		public static IServiceLog Get(string name) { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get(name); }
+		private static IAggregateRootRepository GetAggregateRepository()
+		{
+			return null;
+		}
 	}
 }

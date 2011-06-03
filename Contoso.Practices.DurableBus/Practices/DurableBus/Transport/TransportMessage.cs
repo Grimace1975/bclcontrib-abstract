@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /*
 The MIT License
 
@@ -23,34 +23,56 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Abstract.Parts;
-namespace System.Abstract
+using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Abstract;
+using System.Security.Principal;
+namespace Contoso.Practices.DurableBus.Transport
 {
 	/// <summary>
-	/// ServiceLogManager
+	/// TransportMessage
 	/// </summary>
-	public class ServiceLogManager : ServiceManagerBase<IServiceLog, Action<IServiceLog>>
+	[Serializable]
+	public class TransportMessage
 	{
-		public static readonly Lazy<IServiceLog> EmptyServiceLog = new Lazy<IServiceLog>(() => new EmptyServiceLog());
+		private IServiceMessage[] _body;
 
-		static ServiceLogManager()
+		public TransportMessage()
 		{
-			Registration = new SetupRegistration
-			{
-				OnSetup = (service, descriptor) =>
-				{
-					if (descriptor != null)
-						foreach (var action in descriptor.Actions)
-							action(service);
-					return service;
-				},
-			};
+			Lifetime = TimeSpan.MaxValue;
 		}
 
-		public static void EnsureRegistration() { }
-		public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLog> service) { return ProtectedGetSetupDescriptor(service); }
+		public List<KeyValuePair<string, string>> Headers { get; set; }
+		public string Id { get; set; }
+		public MessageIntent MessageIntent { get; set; }
+		public List<object> Messages { get; set; }
+		public bool Recoverable { get; set; }
+		public string ReturnInfo { get; set; }
+		public DateTime TimeSent { get; set; }
+		public TimeSpan Lifetime { get; set; }
+		public IIdentity Identity { get; set; }
 
-		public static IServiceLog Get<T>() { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get<T>(); }
-		public static IServiceLog Get(string name) { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get(name); }
+		#region Body
+
+		public void CopyMessagesToBody()
+		{
+			_body = new IServiceMessage[Messages.Count];
+			Messages.CopyTo(_body);
+		}
+
+		public IServiceMessage[] Body
+		{
+			get { return _body; }
+			set
+			{
+				_body = value;
+				Messages = new List<object>(_body);
+			}
+		}
+
+		public Stream BodyStream { get; set; }
+
+		#endregion
 	}
 }

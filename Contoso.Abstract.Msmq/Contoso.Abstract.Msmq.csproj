@@ -40,8 +40,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Transactions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Practices\DurableBus\Transport\MsmqTransport+AAA.cs" />
+    <Compile Include="Practices\DurableBus\Transport\MsmqTransport+Process.cs" />
+    <Compile Include="Practices\DurableBus\Transport\MsmqTransport+Workers.cs" />
+    <Compile Include="Practices\DurableBus\Transport\MsmqTransport+Events.cs" />
+    <Compile Include="Practices\DurableBus\Transport\MsmqTransport.cs" />
+    <Compile Include="Practices\DurableBus\Utilities\ProcessUtil.cs" />
+    <Compile Include="Practices\DurableBus\Utilities\MsmqInstallation.cs" />
+    <Compile Include="Practices\DurableBus\Utilities\MsmqUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -49,6 +59,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Changelog.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Contoso.Practices.DurableBus\Contoso.Practices.DurableBus.csproj">
+      <Project>{1AE81111-2088-4963-BBFC-27C7D098FD80}</Project>
+      <Name>Contoso.Practices.DurableBus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Abstract\System.Abstract.csproj">
+      <Project>{A44E9D89-BFF2-41A4-AADC-3C2BDFDAEEB1}</Project>
+      <Name>System.Abstract</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

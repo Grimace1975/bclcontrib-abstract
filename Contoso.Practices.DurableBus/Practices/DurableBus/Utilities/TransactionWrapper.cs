@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /*
 The MIT License
 
@@ -23,34 +23,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Abstract.Parts;
-namespace System.Abstract
+using System;
+using System.Diagnostics;
+using System.Transactions;
+
+namespace Contoso.Practices.DurableBus.Utilities
 {
 	/// <summary>
-	/// ServiceLogManager
+	/// TransactionWrapper
 	/// </summary>
-	public class ServiceLogManager : ServiceManagerBase<IServiceLog, Action<IServiceLog>>
+	public class TransactionWrapper
 	{
-		public static readonly Lazy<IServiceLog> EmptyServiceLog = new Lazy<IServiceLog>(() => new EmptyServiceLog());
+		public void RunInTransaction(Action callback) { RunInTransaction(callback, IsolationLevel.Serializable, TimeSpan.FromSeconds(30.0)); }
 
-		static ServiceLogManager()
+		[DebuggerNonUserCode]
+		public void RunInTransaction(Action callback, IsolationLevel isolationLevel, TimeSpan transactionTimeout)
 		{
-			Registration = new SetupRegistration
+			var options = new TransactionOptions { IsolationLevel = isolationLevel, Timeout = transactionTimeout };
+			using (var scope = new TransactionScope(TransactionScopeOption.Required, options))
 			{
-				OnSetup = (service, descriptor) =>
-				{
-					if (descriptor != null)
-						foreach (var action in descriptor.Actions)
-							action(service);
-					return service;
-				},
-			};
+				callback();
+				scope.Complete();
+			}
 		}
-
-		public static void EnsureRegistration() { }
-		public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLog> service) { return ProtectedGetSetupDescriptor(service); }
-
-		public static IServiceLog Get<T>() { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get<T>(); }
-		public static IServiceLog Get(string name) { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get(name); }
 	}
 }

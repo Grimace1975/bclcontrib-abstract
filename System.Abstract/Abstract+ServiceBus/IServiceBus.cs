@@ -32,6 +32,8 @@ namespace System.Abstract
     {
         TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder) where TMessage : IServiceMessage;
         IServiceBusCallback Send(IServiceBusLocation destination, params IServiceMessage[] messages);
+		void Reply(params IServiceMessage[] messages);
+		void Return<T>(T value);
     }
 
     /// <summary>
@@ -45,9 +47,10 @@ namespace System.Abstract
             where TMessage : IServiceMessage { return serviceBus.Send(null, serviceBus.CreateMessage<TMessage>(messageBuilder)); }
         public static IServiceBusCallback Send<TMessage>(this IServiceBus serviceBus, string destination, Action<TMessage> messageBuilder)
             where TMessage : IServiceMessage { return serviceBus.Send(new LiteralServiceBusLocation(destination), serviceBus.CreateMessage<TMessage>(messageBuilder)); }
-        // send
         public static IServiceBusCallback Send(this IServiceBus serviceBus, params IServiceMessage[] messages) { return serviceBus.Send(null, messages); }
         public static IServiceBusCallback Send(this IServiceBus serviceBus, string destination, params IServiceMessage[] messages) { return serviceBus.Send(new LiteralServiceBusLocation(destination), messages); }
+		public static void Reply<TMessage>(this IServiceBus serviceBus, Action<TMessage> messageBuilder)
+			where TMessage : IServiceMessage { serviceBus.Reply(serviceBus.CreateMessage(messageBuilder)); }
 
         #region Lazy Setup
 
@@ -55,7 +58,6 @@ namespace System.Abstract
 		public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> service, string name) { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, name); return service; }
 		public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> service, Lazy<IServiceLocator> locator) { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, locator, null); return service; }
 		public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> service, Lazy<IServiceLocator> locator, string name) { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, locator, name); return service; }
-
 		public static Lazy<IServiceBus> AddEndpoint(this Lazy<IServiceBus> service, string endpoint) { return service; }
 
         #endregion

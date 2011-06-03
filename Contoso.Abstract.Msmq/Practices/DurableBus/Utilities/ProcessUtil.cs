@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /*
 The MIT License
 
@@ -23,34 +23,32 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Abstract.Parts;
-namespace System.Abstract
+using System.Abstract;
+using System;
+using System.ServiceProcess;
+namespace Contoso.Practices.DurableBus.Utilities
 {
 	/// <summary>
-	/// ServiceLogManager
+	/// ProcessUtil
 	/// </summary>
-	public class ServiceLogManager : ServiceManagerBase<IServiceLog, Action<IServiceLog>>
+	public static class ProcessUtil
 	{
-		public static readonly Lazy<IServiceLog> EmptyServiceLog = new Lazy<IServiceLog>(() => new EmptyServiceLog());
+		private static readonly IServiceLog ServiceLog = ServiceLogManager.Get("NServiceBus.Utils");
 
-		static ServiceLogManager()
+		public static void ChangeServiceStatus(ServiceController controller, ServiceControllerStatus status, Action changeStatus)
 		{
-			Registration = new SetupRegistration
+			if (controller.Status == status)
+				ServiceLog.Debug(controller.ServiceName + " status is good: " + Enum.GetName(typeof(ServiceControllerStatus), status));
+			else
 			{
-				OnSetup = (service, descriptor) =>
-				{
-					if (descriptor != null)
-						foreach (var action in descriptor.Actions)
-							action(service);
-					return service;
-				},
-			};
+				ServiceLog.Debug(controller.ServiceName + " status is NOT " + Enum.GetName(typeof(ServiceControllerStatus), status) + ". Changing status...");
+				changeStatus();
+				var timeout = TimeSpan.FromSeconds(3.0);
+				controller.WaitForStatus(status, timeout);
+				if (controller.Status != status)
+					throw new InvalidOperationException("Unable to change " + controller.ServiceName + " status to " + Enum.GetName(typeof(ServiceControllerStatus), status));
+				ServiceLog.Debug(controller.ServiceName + " status changed successfully.");
+			}
 		}
-
-		public static void EnsureRegistration() { }
-		public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLog> service) { return ProtectedGetSetupDescriptor(service); }
-
-		public static IServiceLog Get<T>() { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get<T>(); }
-		public static IServiceLog Get(string name) { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get(name); }
 	}
 }

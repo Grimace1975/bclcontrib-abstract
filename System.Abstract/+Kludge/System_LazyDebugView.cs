@@ -5,12 +5,12 @@
 using System.Threading;
 namespace System
 {
-	internal sealed class LazyDebugView<T>
+	internal sealed class System_LazyDebugView<T>
 	{
 		private readonly Lazy<T> _lazy;
 
 		//[TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
-		public LazyDebugView(Lazy<T> lazy)
+		public System_LazyDebugView(Lazy<T> lazy)
 		{
 			_lazy = lazy;
 		}
