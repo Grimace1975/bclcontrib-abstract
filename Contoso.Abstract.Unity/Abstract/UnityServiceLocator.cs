@@ -42,7 +42,7 @@ namespace Contoso.Abstract
     /// UnityServiceLocator
     /// </summary>
     [Serializable]
-    public class UnityServiceLocator : IUnityServiceLocator, IDisposable
+    public class UnityServiceLocator : IUnityServiceLocator, IDisposable, ServiceLocatorManager.ISetupRegistration
     {
         private IUnityContainer _container;
         private UnityServiceRegistrar _registrar;
@@ -67,10 +67,18 @@ namespace Contoso.Abstract
             }
         }
 
+        Action<IServiceRegistrar, IServiceLocator, string> ServiceLocatorManager.ISetupRegistration.OnServiceRegistrar
+        {
+            get { return (registrar, locator, name) => ServiceLocatorManager.RegisterInstance<IUnityServiceLocator>(this, registrar, locator, name); }
+        }
+
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         // registrar
-        public IServiceRegistrar GetRegistrar() { return _registrar; }
+        public IServiceRegistrar Registrar
+        {
+            get { return _registrar; }
+        }
         public TServiceRegistrar GetRegistrar<TServiceRegistrar>()
             where TServiceRegistrar : class, IServiceRegistrar { return (_registrar as TServiceRegistrar); }
 

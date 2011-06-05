@@ -43,7 +43,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// ApplicationServiceBus
     /// </summary>
-    public class ApplicationServiceBus : Collection<ApplicationServiceBusRegistration>, IApplicationServiceBus
+    public class ApplicationServiceBus : Collection<ApplicationServiceBusRegistration>, IApplicationServiceBus, ServiceBusManager.ISetupRegistration
     {
         private readonly IServiceMessageHandlerFactory _messageHandlerFactory;
 
@@ -53,6 +53,11 @@ namespace Contoso.Abstract
         public ApplicationServiceBus(IServiceMessageHandlerFactory messageHandlerFactory)
         {
             _messageHandlerFactory = messageHandlerFactory;
+        }
+
+        Action<IServiceRegistrar, IServiceLocator, string> ServiceBusManager.ISetupRegistration.OnServiceRegistrar
+        {
+            get { return (registrar, locator, name) => ServiceBusManager.RegisterInstance<IApplicationServiceBus>(this, registrar, locator, name); }
         }
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }

@@ -24,28 +24,28 @@ THE SOFTWARE.
 */
 #endregion
 using System.Collections;
+#if COREINTERNAL
+using System.Configuration;
+namespace System.Abstract.Configuration
+{
+    public partial class ServiceCacheConfiguration : ConfigurationElement
+    {
+        public ServiceCacheConfiguration() { _attributeIndex = new AttributeIndex(this); }
+#else
 namespace System.Configuration
 {
     /// <summary>
-    /// An abstract class representing a simplified configuration section object. This provides a basic
-    /// facade over the <see cref="T:System.Configuration.ConfigurationSection">ConfigurationSection</see> class.
+    /// An abstract class representing a simplified configuration setting object. This provides a basic
+    /// facade over the <see cref="T:System.Configuration.ConfigurationElement">ConfigurationElement</see> class.
     /// </summary>
-#if COREINTERNAL
-    internal
-#else
-    public
-#endif
- abstract class ConfigurationSectionEx : ConfigurationSection
+    public abstract class ConfigurationElementEx : ConfigurationElement
     {
-        private AttributeIndex _attributeIndex;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurationSectionBase"/> class.
+        /// Initializes a new instance of the <see cref="Configuration"/> class.
         /// </summary>
-        protected ConfigurationSectionEx()
-        {
-            _attributeIndex = new AttributeIndex(this);
-        }
+        protected ConfigurationElementEx() { _attributeIndex = new AttributeIndex(this); }
+#endif
+        private AttributeIndex _attributeIndex;
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="T:System.Configuration.ConfigurationElement"/> object is read-only.
@@ -55,11 +55,23 @@ namespace System.Configuration
         /// </returns>
         public override bool IsReadOnly() { return false; }
 
+#if !COREINTERNAL
+        /// <summary>
+        /// Gets or sets the name of the configuration setting.
+        /// </summary>
+        /// <value>The name.</value>
+        public virtual string Name
+        {
+            get { return string.Empty; }
+            set { }
+        }
+#endif
+
         ///// <summary>
         ///// Gets the property collection of the underlying ConfigurationElement instance.
         ///// </summary>
         ///// <value>The property collection.</value>
-        //public System.Configuration.ConfigurationPropertyCollection PropertyCollection
+        //public ConfigurationPropertyCollection PropertyCollection
         //{
         //    get { return base.Properties; }
         //}
@@ -70,7 +82,7 @@ namespace System.Configuration
         /// Applies the configuration.
         /// </summary>
         /// <param name="inherit">The inherit.</param>
-        public void ApplyConfiguration(ConfigurationSection inheritConfiguration)
+        public void ApplyConfiguration(ConfigurationElement inheritConfiguration)
         {
             ApplyConfigurationValues(inheritConfiguration);
             ApplyConfigurationElements(inheritConfiguration);
@@ -80,13 +92,13 @@ namespace System.Configuration
         /// Applies the configuration values.
         /// </summary>
         /// <param name="inheritConfiguration">The inherit configuration.</param>
-        protected virtual void ApplyConfigurationValues(ConfigurationSection inheritConfiguration) { }
+        protected virtual void ApplyConfigurationValues(ConfigurationElement inheritConfiguration) { }
 
         /// <summary>
         /// Applies the configuration elements.
         /// </summary>
         /// <param name="inherit">The inherit.</param>
-        protected virtual void ApplyConfigurationElements(ConfigurationSection inheritConfiguration) { }
+        protected virtual void ApplyConfigurationElements(ConfigurationElement inheritConfiguration) { }
 
         /// <summary>
         /// Applies the default values.
@@ -97,6 +109,16 @@ namespace System.Configuration
 
         #region Attribute
 
+#if COREINTERNAL
+        public AttributeIndex Attribute
+        {
+            get { return _attributeIndex; }
+        }
+        public class AttributeIndex
+        {
+            private ServiceCacheConfiguration _parent;
+            public AttributeIndex(ServiceCacheConfiguration parent) { _parent = parent; }
+#else
         /// <summary>
         /// Gets the AttributeIndex of this class.
         /// </summary>
@@ -105,20 +127,19 @@ namespace System.Configuration
         {
             get { return _attributeIndex; }
         }
-
-        /// <summary>
-        /// AttributeIndex
-        /// </summary>
         private class AttributeIndex : IIndexer<ConfigurationProperty, object>
         {
-            private ConfigurationSectionEx _parent;
+            private ConfigurationElementEx _parent;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="AttributeIndex"/> class.
             /// </summary>
             /// <param name="config">The config.</param>
-            public AttributeIndex(ConfigurationSectionEx parent) { _parent = parent; }
-
+            public AttributeIndex(ConfigurationElementEx parent)
+            {
+                _parent = parent;
+            }
+#endif
             /// <summary>
             /// Gets or sets the <see cref="System.Object"/> with the specified key.
             /// </summary>
@@ -135,7 +156,10 @@ namespace System.Configuration
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        public object GetAttribute(string name) { return (!Properties.Contains(name) ? this[name] : null); }
+        public object GetAttribute(string name)
+        {
+            return (!Properties.Contains(name) ? this[name] : null);
+        }
 
         /// <summary>
         /// Sets the attribute.

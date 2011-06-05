@@ -7,7 +7,8 @@ namespace Example
     {
         static void Main(string[] args)
         {
-            var service = new Lazy<IServiceCache>(() => new StaticServiceCache());
+            var service = new Lazy<IServiceCache>(() => new StaticServiceCache())
+                .LoadFromConfiguration(null);
             var actions = ServiceCacheManager.GetSetupDescriptor(service);
             actions.Do(x => Console.Write("Here"));
             //

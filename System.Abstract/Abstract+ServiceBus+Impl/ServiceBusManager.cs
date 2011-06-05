@@ -42,12 +42,16 @@ namespace System.Abstract
 							action(service);
 					return service;
 				},
-				OnServiceRegistrar = (service, registar, locator, name) =>
+                OnServiceRegistrar = (service, registrar, locator, name) =>
 				{
-					RegisterInstance(service, registar, locator, name);
+                    RegisterInstance(service, registrar, locator, name);
 					var publishingServiceBus = (service as IPublishingServiceBus);
 					if (publishingServiceBus != null)
-						RegisterInstance(publishingServiceBus, registar, locator, name);
+                        RegisterInstance(publishingServiceBus, registrar, locator, name);
+                    // specific registration
+                    var setupRegistration = (service as ISetupRegistration);
+                    if (setupRegistration != null)
+                        setupRegistration.OnServiceRegistrar(registrar, locator, name);
 				},
 			};
 		}

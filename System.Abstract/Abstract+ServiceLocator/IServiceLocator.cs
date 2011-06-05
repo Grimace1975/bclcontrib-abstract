@@ -36,7 +36,7 @@ namespace System.Abstract
     public interface IServiceLocator : IServiceProvider
     {
         // registrar
-        IServiceRegistrar GetRegistrar();
+        IServiceRegistrar Registrar { get; }
         TServiceRegistrar GetRegistrar<TServiceRegistrar>()
             where TServiceRegistrar : class, IServiceRegistrar;
 
@@ -103,12 +103,19 @@ namespace System.Abstract
             return locator.ResolveAll(serviceType).Cast<TService>();
         }
 
+        public static IServiceLocator Wrap(this IServiceLocator locator, string @namespace)
+        {
+            if (@namespace == null)
+                throw new ArgumentNullException("@namespace");
+            return new ServiceLocatorNamespaceWrapper(locator, @namespace);
+        }
+
         #region Lazy Setup
 
-		public static Lazy<IServiceLocator> RegisterWithServiceLocator(this Lazy<IServiceLocator> service) { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, null); return service; }
-		public static Lazy<IServiceLocator> RegisterWithServiceLocator(this Lazy<IServiceLocator> service, string name) { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, name); return service; }
-		public static Lazy<IServiceLocator> RegisterWithServiceLocator(this Lazy<IServiceLocator> service, Lazy<IServiceLocator> locator) { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, locator, null); return service; }
-		public static Lazy<IServiceLocator> RegisterWithServiceLocator(this Lazy<IServiceLocator> service, Lazy<IServiceLocator> locator, string name) { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, locator, name); return service; }
+        public static Lazy<IServiceLocator> RegisterWithServiceLocator(this Lazy<IServiceLocator> service) { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, null); return service; }
+        public static Lazy<IServiceLocator> RegisterWithServiceLocator(this Lazy<IServiceLocator> service, string name) { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, name); return service; }
+        public static Lazy<IServiceLocator> RegisterWithServiceLocator(this Lazy<IServiceLocator> service, Lazy<IServiceLocator> locator) { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, locator, null); return service; }
+        public static Lazy<IServiceLocator> RegisterWithServiceLocator(this Lazy<IServiceLocator> service, Lazy<IServiceLocator> locator, string name) { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, locator, name); return service; }
         public static Lazy<IServiceLocator> RegisterByIServiceRegistration(this Lazy<IServiceLocator> service, params Assembly[] assemblies) { ServiceLocatorManager.GetSetupDescriptor(service).Do((r, l) => RegisterByIServiceRegistration(r, l, null, assemblies)); return service; }
         public static Lazy<IServiceLocator> RegisterByIServiceRegistration(this Lazy<IServiceLocator> service, Predicate<Type> predicate, params Assembly[] assemblies) { ServiceLocatorManager.GetSetupDescriptor(service).Do((r, l) => RegisterByIServiceRegistration(r, l, predicate, assemblies)); return service; }
         public static Lazy<IServiceLocator> RegisterByNamingConvention(this Lazy<IServiceLocator> service) { ServiceLocatorManager.GetSetupDescriptor(service).Do((r, l) => RegisterByNamingConvention(r, l, null, new[] { GetPreviousCallingMethodAssembly() })); return service; }

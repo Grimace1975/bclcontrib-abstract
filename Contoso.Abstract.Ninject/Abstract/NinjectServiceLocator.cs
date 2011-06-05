@@ -44,7 +44,7 @@ namespace Contoso.Abstract
     /// NinjectServiceLocator
     /// </summary>
     [Serializable]
-    public class NinjectServiceLocator : INinjectServiceLocator, IDisposable
+    public class NinjectServiceLocator : INinjectServiceLocator, IDisposable, ServiceLocatorManager.ISetupRegistration
     {
         private IKernel _container;
         private NinjectServiceRegistrar _registrar;
@@ -68,10 +68,18 @@ namespace Contoso.Abstract
             }
         }
 
+        Action<IServiceRegistrar, IServiceLocator, string> ServiceLocatorManager.ISetupRegistration.OnServiceRegistrar
+        {
+            get { return (registrar, locator, name) => ServiceLocatorManager.RegisterInstance<INinjectServiceLocator>(this, registrar, locator, name); }
+        }
+
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         // registrar
-        public IServiceRegistrar GetRegistrar() { return _registrar; }
+        public IServiceRegistrar Registrar
+        {
+            get { return _registrar; }
+        }
         public TServiceRegistrar GetRegistrar<TServiceRegistrar>()
             where TServiceRegistrar : class, IServiceRegistrar { return (_registrar as TServiceRegistrar); }
 
@@ -106,7 +114,7 @@ namespace Contoso.Abstract
             try { return _container.Get(serviceType, name, new IParameter[0]); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
-//
+        //
         public IEnumerable<TService> ResolveAll<TService>()
               where TService : class
         {
@@ -118,7 +126,7 @@ namespace Contoso.Abstract
             try { return new List<object>(_container.GetAll(serviceType, new IParameter[0])); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
-  
+
         // inject
         public TService Inject<TService>(TService instance)
             where TService : class

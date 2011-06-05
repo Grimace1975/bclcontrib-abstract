@@ -45,7 +45,7 @@ namespace System.Abstract
         }
         public static IServiceRegistrar Registrar
         {
-            get { return ServiceLocatorManager.Current.GetRegistrar(); }
+            get { return ServiceLocatorManager.Current.Registrar; }
         }
         public static IServiceLog Log
         {

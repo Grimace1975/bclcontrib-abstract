@@ -44,7 +44,7 @@ namespace Contoso.Abstract
 	/// <summary>
 	/// SystemServiceCache
 	/// </summary>
-	public class SystemServiceCache : ISystemServiceCache
+	public class SystemServiceCache : ISystemServiceCache, ServiceCacheManager.ISetupRegistration
 	{
 		static SystemServiceCache() { ServiceCacheManager.EnsureRegistration(); }
 		public SystemServiceCache(string name)
@@ -54,6 +54,11 @@ namespace Contoso.Abstract
 			Cache = cache;
 			Settings = new ServiceCacheSettings(new DefaultFileTouchableCacheItem(this, new DefaultTouchableCacheItem(this, null)));
 		}
+
+        Action<IServiceRegistrar, IServiceLocator, string> ServiceCacheManager.ISetupRegistration.OnServiceRegistrar
+        {
+            get { return (registrar, locator, name) => ServiceCacheManager.RegisterInstance<ISystemServiceCache>(this, registrar, locator, name); }
+        }
 
 		public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
@@ -220,6 +225,6 @@ namespace Contoso.Abstract
 			var touchable = Settings.Touchable;
 			return (((touchable != null) && (names != null) ? touchable.MakeDependency(tag, names) : value) as IEnumerable<SystemCaching.ChangeMonitor>);
 		}
-	}
+    }
 }
 #endif

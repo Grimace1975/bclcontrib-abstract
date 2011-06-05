@@ -40,7 +40,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.XML" />
@@ -58,15 +57,6 @@
     <Compile Include="..\+fromcoreex\collections\IIndexer.cs">
       <Link>+FromCoreEx\Collections\IIndexer.cs</Link>
     </Compile>
-    <Compile Include="..\+fromcoreex\configuration\ConfigurationElementEx.cs">
-      <Link>+FromCoreEx\Configuration\ConfigurationElementEx.cs</Link>
-    </Compile>
-    <Compile Include="..\+fromcoreex\configuration\ConfigurationElementsEx.cs">
-      <Link>+FromCoreEx\Configuration\ConfigurationElementsEx.cs</Link>
-    </Compile>
-    <Compile Include="..\+fromcoreex\configuration\ConfigurationSectionEx.cs">
-      <Link>+FromCoreEx\Configuration\ConfigurationSectionEx.cs</Link>
-    </Compile>
     <Compile Include="..\+fromcoreex\EnvironmentEx.cs">
       <Link>+FromCoreEx\EnvironmentEx.cs</Link>
     </Compile>
@@ -82,20 +72,20 @@
     <Compile Include="..\+fromcoreex\reflection\AssemblyExtensions.cs">
       <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\+EnvironmentEx2\EnvironmentEx2+OSVersion.cs">
-      <Link>+EnvironmentEx2\EnvironmentEx2+OSVersion.cs</Link>
+    <Compile Include="..\System.Abstract\+EnvironmentEx\EnvironmentEx+OSVersion.cs">
+      <Link>+EnvironmentEx\EnvironmentEx+OSVersion.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\+EnvironmentEx2\EnvironmentEx2.cs">
-      <Link>+EnvironmentEx2\EnvironmentEx2.cs</Link>
+    <Compile Include="..\System.Abstract\+EnvironmentEx\EnvironmentEx.cs">
+      <Link>+EnvironmentEx\EnvironmentEx.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\+EnvironmentEx2\OperatingSystemEx.cs">
-      <Link>+EnvironmentEx2\OperatingSystemEx.cs</Link>
+    <Compile Include="..\System.Abstract\+EnvironmentEx\OperatingSystemEx.cs">
+      <Link>+EnvironmentEx\OperatingSystemEx.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\+EnvironmentEx2\PlatformProductID.cs">
-      <Link>+EnvironmentEx2\PlatformProductID.cs</Link>
+    <Compile Include="..\System.Abstract\+EnvironmentEx\PlatformProductID.cs">
+      <Link>+EnvironmentEx\PlatformProductID.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\+EnvironmentEx2\PlatformSuites.cs">
-      <Link>+EnvironmentEx2\PlatformSuites.cs</Link>
+    <Compile Include="..\System.Abstract\+EnvironmentEx\PlatformSuites.cs">
+      <Link>+EnvironmentEx\PlatformSuites.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\+Kludge\Lazy.cs">
       <Link>+Kludge\Lazy.cs</Link>
@@ -114,6 +104,9 @@
     </Compile>
     <Compile Include="..\System.Abstract\+Nparams\ParamObject.cs">
       <Link>+Nparams\ParamObject.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventBus.cs">
+      <Link>Abstract+EventSourcing\EventBus.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing+Impl\RegistryEventDispatcher.cs">
       <Link>Abstract+EventSourcing\EventSourcing+Impl\RegistryEventDispatcher.cs</Link>
@@ -171,6 +164,12 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\IOfflineSnaphotQuery.cs">
       <Link>Abstract+EventSourcing\EventSourcing\IOfflineSnaphotQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\IEvent.cs">
+      <Link>Abstract+EventSourcing\IEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\IEventHandler.cs">
+      <Link>Abstract+EventSourcing\IEventHandler.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus+Impl\ServiceBus.cs">
       <Link>Abstract+ServiceBus+Impl\ServiceBus.cs</Link>
@@ -289,8 +288,14 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IWantToSkipServiceRegistration.cs">
       <Link>Abstract+ServiceLocator\IWantToSkipServiceRegistration.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceLocatorNamespaceWrapper.cs">
+      <Link>Abstract+ServiceLocator\ServiceLocatorNamespaceWrapper.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceLocatorResolutionException.cs">
       <Link>Abstract+ServiceLocator\ServiceLocatorResolutionException.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceRegistrarNamespaceWrapper.cs">
+      <Link>Abstract+ServiceLocator\ServiceRegistrarNamespaceWrapper.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLog+Impl\EmpyServiceLog.cs">
       <Link>Abstract+ServiceLog+Impl\EmpyServiceLog.cs</Link>

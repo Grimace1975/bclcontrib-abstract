@@ -30,23 +30,8 @@ namespace System
     /// <summary>
     /// EnvironmentEx
     /// </summary>
-#if COREINTERNAL
-    internal
-#else
-    using System.Patterns.ReleaseManagement.Configuration;
-    public
-#endif
- static class EnvironmentEx
+ static partial class EnvironmentEx
     {
-#if !COREINTERNAL
-        public static void LoadFromConfiguration(ReleaseManagementConfiguration configuration)
-        {
-            if (configuration == null)
-                throw new ArgumentNullException("configuration");
-            EnvironmentEx2.DeploymentEnvironment = configuration.DeploymentEnvironment;
-            EnvironmentEx2.DevelopmentStage = configuration.DevelopmentStage;
-        }
-#endif
 
         [SecurityCritical]
         internal static string GetResourceFromDefault(string key) { return key; }

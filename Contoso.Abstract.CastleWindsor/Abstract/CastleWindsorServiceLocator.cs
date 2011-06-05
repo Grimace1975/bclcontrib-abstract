@@ -44,7 +44,7 @@ namespace Contoso.Abstract
     /// WindsorServiceLocator
     /// </summary>
     [Serializable]
-    public class CastleWindsorServiceLocator : ICastleWindsorServiceLocator, IDisposable
+    public class CastleWindsorServiceLocator : ICastleWindsorServiceLocator, IDisposable, ServiceLocatorManager.ISetupRegistration
     {
         private IWindsorContainer _container;
         private IKernel _kernel;
@@ -70,10 +70,18 @@ namespace Contoso.Abstract
             }
         }
 
+        Action<IServiceRegistrar, IServiceLocator, string> ServiceLocatorManager.ISetupRegistration.OnServiceRegistrar
+        {
+            get { return (registrar, locator, name) => ServiceLocatorManager.RegisterInstance<ICastleWindsorServiceLocator>(this, registrar, locator, name); }
+        }
+
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         // registrar
-        public IServiceRegistrar GetRegistrar() { return _registrar; }
+        public IServiceRegistrar Registrar
+        {
+            get { return _registrar; }
+        }
         public TServiceRegistrar GetRegistrar<TServiceRegistrar>()
             where TServiceRegistrar : class, IServiceRegistrar { return (_registrar as TServiceRegistrar); }
 

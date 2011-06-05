@@ -49,7 +49,7 @@ namespace Contoso.Abstract
 	/// <summary>
 	/// ServerAppFabricServiceCache
 	/// </summary>
-	public class ServerAppFabricServiceCache : IServerAppFabricServiceCache
+    public class ServerAppFabricServiceCache : IServerAppFabricServiceCache, ServiceCacheManager.ISetupRegistration
 	{
 		static ServerAppFabricServiceCache() { ServiceCacheManager.EnsureRegistration(); }
 		public ServerAppFabricServiceCache()
@@ -65,6 +65,11 @@ namespace Contoso.Abstract
 			Cache = cache;
 			Settings = new ServiceCacheSettings(new DefaultTouchableCacheItem(this, null));
 		}
+
+        Action<IServiceRegistrar, IServiceLocator, string> ServiceCacheManager.ISetupRegistration.OnServiceRegistrar
+        {
+            get { return (registrar, locator, name) => ServiceCacheManager.RegisterInstance<IServerAppFabricServiceCache>(this, registrar, locator, name); }
+        }
 
 		public object GetService(Type serviceType) { throw new NotImplementedException(); }
 

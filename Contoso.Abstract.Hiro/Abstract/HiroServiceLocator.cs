@@ -44,7 +44,7 @@ namespace Contoso.Abstract
     /// HiroServiceLocator
     /// </summary>
     [Serializable]
-    public class HiroServiceLocator : IHiroServiceLocator, IDisposable
+    public class HiroServiceLocator : IHiroServiceLocator, IDisposable, ServiceLocatorManager.ISetupRegistration
     {
         private IMicroContainer _container;
         private HiroServiceRegistrar _registrar;
@@ -77,10 +77,18 @@ namespace Contoso.Abstract
             }
         }
 
+        Action<IServiceRegistrar, IServiceLocator, string> ServiceLocatorManager.ISetupRegistration.OnServiceRegistrar
+        {
+            get { return (registrar, locator, name) => ServiceLocatorManager.RegisterInstance<IHiroServiceLocator>(this, registrar, locator, name); }
+        }
+
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         // registrar
-        public IServiceRegistrar GetRegistrar() { return _registrar; }
+        public IServiceRegistrar Registrar
+        {
+            get { return _registrar; }
+        }
         public TServiceRegistrar GetRegistrar<TServiceRegistrar>()
             where TServiceRegistrar : class, IServiceRegistrar { return (_registrar as TServiceRegistrar); }
 

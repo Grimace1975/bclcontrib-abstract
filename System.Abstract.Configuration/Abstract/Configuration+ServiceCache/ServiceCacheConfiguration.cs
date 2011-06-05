@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
 The MIT License
 
@@ -23,12 +23,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Abstract.EventSourcing;
-namespace Contoso.Practices.Cqrs
+using System.Configuration;
+namespace System.Abstract.Configuration
 {
-	public interface IEventHandler<TEvent>
-		where TEvent : Event
-	{
-		void Handle(TEvent @event);
-	}
+    /// <summary>
+    /// ServiceCacheConfiguration
+    /// </summary>
+    public partial class ServiceCacheConfiguration
+    {
+        public static void LoadFromConfiguration()
+        {
+        }
+    }
 }

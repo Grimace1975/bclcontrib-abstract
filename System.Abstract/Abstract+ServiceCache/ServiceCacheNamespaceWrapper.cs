@@ -29,7 +29,7 @@ namespace System.Abstract
     /// <summary>
     /// ServiceCacheNamespaceWrapper
     /// </summary>
-    public struct ServiceCacheNamespaceWrapper : IServiceCache
+    internal struct ServiceCacheNamespaceWrapper : IServiceCache
     {
         private IServiceCache _parent;
         private string _namespace;

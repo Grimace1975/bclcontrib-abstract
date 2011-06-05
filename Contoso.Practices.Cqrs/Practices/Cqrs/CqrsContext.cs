@@ -82,7 +82,7 @@ namespace Contoso.Practices.Cqrs
 				throw new InvalidOperationException("Already started");
 			Locator = _lazyLocator.Value;
 			LoadServices();
-			var registrar = Locator.GetRegistrar();
+			var registrar = Locator.Registrar;
 			RegisterWithServiceLocator(registrar);
 			IsStarted = true;
 		}

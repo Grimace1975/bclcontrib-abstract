@@ -24,7 +24,10 @@ namespace Contoso.Abstract
         }
 
         // locator
-        public IServiceLocator GetLocator() { return _parent; }
+        public IServiceLocator Locator
+        {
+            get { return _parent; }
+        }
         public TServiceLocator GetLocator<TServiceLocator>()
             where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 

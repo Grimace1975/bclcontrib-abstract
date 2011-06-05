@@ -24,39 +24,42 @@ THE SOFTWARE.
 */
 #endregion
 using System.Collections;
+#if COREINTERNAL
+using System.Configuration;
+namespace System.Abstract.Configuration.ServiceBus
+{
+    public partial class EndpointElementCollection : ConfigurationElementCollection
+    {
+        public EndpointElementCollection() { _collectionType = ConfigurationElementCollectionType.AddRemoveClearMap; _attributeIndex = new AttributeIndex(this); }
+#else
 namespace System.Configuration
 {
     /// <summary>
-    /// A generic hash-based class extending <see cref="T:System.Configuration.ConfigurationElementCollection"/>. 
+    /// A generic hash-based class extending <see cref="EndpointElement:System.Configuration.ConfigurationElementCollection"/>. 
     /// This class is used as the basis for all objects in Instinct that provide object wrappers over groupings
     /// of configuration settings.
     /// </summary>
-    /// <typeparam name="T">Specific type contained within the generic hash instance.</typeparam>
-#if COREINTERNAL
-    internal
-#else
-    public
-#endif
- abstract class ConfigurationElementsEx<T> : ConfigurationElementCollection
-    where T : ConfigurationElementEx, new()
+    /// <typeparam name="EndpointElement">Specific type contained within the generic hash instance.</typeparam>
+    public abstract class ConfigurationElementCollectionEx<EndpointElement> : ConfigurationElementCollection
+        where EndpointElement : ConfigurationElementEx, new()
     {
-        private AttributeIndex _attributeIndex;
-        private ConfigurationElementCollectionType _collectionType;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurationSet&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="ConfigurationSet&lt;EndpointElement&gt;"/> class.
         /// </summary>
-        protected ConfigurationElementsEx()
+        protected ConfigurationElementCollectionEx()
             : this(ConfigurationElementCollectionType.AddRemoveClearMap) { }
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurationSet&lt;T&gt;"/> class.
+        /// Initializes a new instance of the <see cref="ConfigurationSet&lt;EndpointElement&gt;"/> class.
         /// </summary>
         /// <param name="collectionType">Type of the collection.</param>
-        protected ConfigurationElementsEx(ConfigurationElementCollectionType collectionType)
+        protected ConfigurationElementCollectionEx(ConfigurationElementCollectionType collectionType)
         {
             _collectionType = collectionType;
             _attributeIndex = new AttributeIndex(this);
         }
+#endif
+        private AttributeIndex _attributeIndex;
+        private ConfigurationElementCollectionType _collectionType;
 
         /// <summary>
         /// Gets or sets the <see cref="System.Configuration.ConfigurationSection"/> or
@@ -65,9 +68,9 @@ namespace System.Configuration
         /// <value>
         /// An instance of a class that derives from <see cref="System.Configuration.ConfigurationElement"/>
         /// </value>
-        public T this[int index]
+        public EndpointElement this[int index]
         {
-            get { return (T)BaseGet(index); }
+            get { return (EndpointElement)BaseGet(index); }
             set
             {
                 if (BaseGet(index) != null)
@@ -82,9 +85,9 @@ namespace System.Configuration
         /// <value>
         /// An instance of a class that derives from <see cref="System.Configuration.ConfigurationElement"/>
         /// </value>
-        public new T this[string name]
+        public new EndpointElement this[string name]
         {
-            get { return (T)BaseGet(name); }
+            get { return (EndpointElement)BaseGet(name); }
         }
 
         /// <summary>
@@ -92,7 +95,7 @@ namespace System.Configuration
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        public T AddIfUndefined(string name)
+        public EndpointElement AddIfUndefined(string name)
         {
             bool isNew;
             return AddIfUndefined(name, out isNew);
@@ -103,12 +106,12 @@ namespace System.Configuration
         /// <param name="name">The name.</param>
         /// <param name="wasAdded">if set to <c>true</c> [is new].</param>
         /// <returns></returns>
-        public T AddIfUndefined(string name, out bool wasAdded)
+        public EndpointElement AddIfUndefined(string name, out bool wasAdded)
         {
-            T t = (T)BaseGet(name);
+            EndpointElement t = (EndpointElement)BaseGet(name);
             if (t == null)
             {
-                t = (T)CreateNewElement();
+                t = (EndpointElement)CreateNewElement();
                 t.Name = name;
                 BaseAdd(t);
                 wasAdded = true;
@@ -119,10 +122,10 @@ namespace System.Configuration
         }
 
         /// <summary>
-        /// Gets a value indicating whether the <see cref="T:System.Configuration.ConfigurationElementCollection"/> object is read only.
+        /// Gets a value indicating whether the <see cref="EndpointElement:System.Configuration.ConfigurationElementCollection"/> object is read only.
         /// </summary>
         /// <returns>
-        /// true if the <see cref="T:System.Configuration.ConfigurationElementCollection"/> object is read only; otherwise, false.
+        /// true if the <see cref="EndpointElement:System.Configuration.ConfigurationElementCollection"/> object is read only; otherwise, false.
         /// </returns>
         public override bool IsReadOnly() { return false; }
 
@@ -142,11 +145,11 @@ namespace System.Configuration
         /// <param name="value">When this method returns, contains the value associated with the specified key, if the key is found;
         /// otherwise, the default value for the type of the value parameter. This parameter is passed uninitialized.</param>
         /// <returns>
-        /// 	<c>true</c> if the <see cref="T:Hash`2">Hash</see> contains an element with the specified key; otherwise, <c>false</c>
+        /// 	<c>true</c> if the <see cref="EndpointElement:Hash`2">Hash</see> contains an element with the specified key; otherwise, <c>false</c>
         /// </returns>
-        public bool TryGetValue(object key, out T value)
+        public bool TryGetValue(object key, out EndpointElement value)
         {
-            value = (T)BaseGet(key);
+            value = (EndpointElement)BaseGet(key);
             return (value != null);
         }
 
@@ -184,44 +187,54 @@ namespace System.Configuration
         #region ConfigurationElementCollection
 
         /// <summary>
-        /// Adds a configuration element to the <see cref="T:System.Configuration.ConfigurationElementCollection">ConfigurationElementCollection</see>.
+        /// Adds a configuration element to the <see cref="EndpointElement:System.Configuration.ConfigurationElementCollection">ConfigurationElementCollection</see>.
         /// </summary>
-        /// <param name="element">The <see cref="T:System.Configuration.ConfigurationElement"></see> to add.</param>
+        /// <param name="element">The <see cref="EndpointElement:System.Configuration.ConfigurationElement"></see> to add.</param>
         protected override void BaseAdd(ConfigurationElement element) { BaseAdd(element, false); }
 
         /// <summary>
-        /// Gets the type of the <see cref="T:System.Configuration.ConfigurationElementCollection">ConfigurationElementCollection</see>
+        /// Gets the type of the <see cref="EndpointElement:System.Configuration.ConfigurationElementCollection">ConfigurationElementCollection</see>
         /// returned by accessing <see cref="P:System.Configuration.ConfigurationElementCollectionType.AddRemoveClearMap">AddRemoveClearMap</see>.
         /// </summary>
         /// <value></value>
-        /// <returns>The <see cref="T:System.Configuration.ConfigurationElementCollectionType"></see> of this collection.</returns>
+        /// <returns>The <see cref="EndpointElement:System.Configuration.ConfigurationElementCollectionType"></see> of this collection.</returns>
         public override ConfigurationElementCollectionType CollectionType
         {
             get { return _collectionType; }
         }
 
         /// <summary>
-        /// When overridden in a derived class, creates a new <see cref="T:System.Configuration.ConfigurationElement">ConfigurationElement</see>
-        /// of the generic parameter type T.
+        /// When overridden in a derived class, creates a new <see cref="EndpointElement:System.Configuration.ConfigurationElement">ConfigurationElement</see>
+        /// of the generic parameter type EndpointElement.
         /// </summary>
         /// <returns>
-        /// A new <see cref="T:System.Configuration.ConfigurationElement"></see>.
+        /// A new <see cref="EndpointElement:System.Configuration.ConfigurationElement"></see>.
         /// </returns>
-        protected override ConfigurationElement CreateNewElement() { return new T(); }
+        protected override ConfigurationElement CreateNewElement() { return new EndpointElement(); }
 
         /// <summary>
         /// Gets the Name for a specified configuration element when overridden in a derived class.
         /// </summary>
-        /// <param name="element">The <see cref="T:System.Configuration.ConfigurationElement"></see> to return the key for.</param>
+        /// <param name="element">The <see cref="EndpointElement:System.Configuration.ConfigurationElement"></see> to return the key for.</param>
         /// <returns>
-        /// An <see cref="T:System.Object"></see> that acts as the key for the specified <see cref="T:System.Configuration.ConfigurationElement"></see>.
+        /// An <see cref="EndpointElement:System.Object"></see> that acts as the key for the specified <see cref="EndpointElement:System.Configuration.ConfigurationElement"></see>.
         /// </returns>
-        protected override object GetElementKey(ConfigurationElement element) { return ((T)element).Name; }
+        protected override object GetElementKey(ConfigurationElement element) { return ((EndpointElement)element).Name; }
 
         #endregion
 
         #region Attribute
 
+#if COREINTERNAL
+        public AttributeIndex Attribute
+        {
+            get { return _attributeIndex; }
+        }
+        public class AttributeIndex
+        {
+            private EndpointElementCollection _parent;
+            public AttributeIndex(EndpointElementCollection parent) { _parent = parent; }
+#else
         /// <summary>
         /// Gets the AttributeIndex of this class.
         /// </summary>
@@ -230,20 +243,16 @@ namespace System.Configuration
         {
             get { return _attributeIndex; }
         }
-
-        /// <summary>
-        /// AttributeIndex
-        /// </summary>
         private class AttributeIndex : IIndexer<string, object>
         {
-            private ConfigurationElementsEx<T> _parent;
+            private ConfigurationElementCollectionEx<EndpointElement> _parent;
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="ConfigurationHashBase&lt;T&gt;.AttributeIndex"/> class.
+            /// Initializes a new instance of the <see cref="ConfigurationHashBase&lt;EndpointElement&gt;.AttributeIndex"/> class.
             /// </summary>
             /// <param name="configCollection">The config collection.</param>
-            public AttributeIndex(ConfigurationElementsEx<T> parent) { _parent = parent; }
-
+            public AttributeIndex(ConfigurationElementCollectionEx<EndpointElement> parent) { _parent = parent; }
+#endif
             /// <summary>
             /// Gets or sets the <see cref="System.Object"/> with the specified key.
             /// </summary>

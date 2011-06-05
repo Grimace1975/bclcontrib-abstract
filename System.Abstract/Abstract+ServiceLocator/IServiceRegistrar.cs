@@ -31,7 +31,7 @@ namespace System.Abstract
     public interface IServiceRegistrar
     {
         // locator
-        IServiceLocator GetLocator();
+        IServiceLocator Locator { get; }
         TServiceLocator GetLocator<TServiceLocator>()
             where TServiceLocator : class, IServiceLocator;
 
