@@ -41,6 +41,7 @@
       <HintPath>..\Contoso.Abstract.Unity\bin\Debug\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationBus\ConstructorExamples.cs" />
@@ -141,6 +142,10 @@
     <ProjectReference Include="..\Contoso.Abstract.Web\Contoso.Abstract.Web.csproj">
       <Project>{D1EBE7A3-1CFD-438C-A007-FF281F0B1D2A}</Project>
       <Name>Contoso.Abstract.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Abstract.Configuration\System.Abstract.Configuration.csproj">
+      <Project>{DB612EDF-A832-4E85-BC2A-73FFF7BB91E1}</Project>
+      <Name>System.Abstract.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\System.Abstract\System.Abstract.csproj">
       <Project>{A44E9D89-BFF2-41A4-AADC-3C2BDFDAEEB1}</Project>

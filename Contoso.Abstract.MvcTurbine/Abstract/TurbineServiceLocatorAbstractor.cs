@@ -45,7 +45,7 @@ namespace Contoso.Abstract
 			if (locator == null)
 				throw new ArgumentNullException("locator");
 			_locator = locator;
-			_registrar = locator.GetRegistrar();
+			_registrar = locator.Registrar;
 		}
 
 		public void Dispose() { }

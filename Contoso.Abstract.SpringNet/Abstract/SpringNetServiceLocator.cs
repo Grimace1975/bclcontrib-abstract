@@ -44,9 +44,9 @@ namespace Contoso.Abstract
     /// SpringNetServiceLocator
     /// </summary>
     [Serializable]
-    public class SpringNetServiceLocator : ISpringNetServiceLocator, IDisposable
+    public class SpringNetServiceLocator : ISpringNetServiceLocator, IDisposable, ServiceLocatorManager.ISetupRegistration
     {
-        private GenericApplicationContext  _container;
+        private GenericApplicationContext _container;
         private SpringNetServiceRegistrar _registrar;
 
         static SpringNetServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
@@ -68,10 +68,18 @@ namespace Contoso.Abstract
             }
         }
 
+        Action<IServiceRegistrar, IServiceLocator, string> ServiceLocatorManager.ISetupRegistration.OnServiceRegistrar
+        {
+            get { return (registrar, locator, name) => ServiceLocatorManager.RegisterInstance<ISpringNetServiceLocator>(this, registrar, locator, name); }
+        }
+
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         // registrar
-        public IServiceRegistrar GetRegistrar() { return _registrar; }
+        public IServiceRegistrar Registrar
+        {
+            get { return _registrar; }
+        }
         public TServiceRegistrar GetRegistrar<TServiceRegistrar>()
             where TServiceRegistrar : class, IServiceRegistrar { return (_registrar as TServiceRegistrar); }
 

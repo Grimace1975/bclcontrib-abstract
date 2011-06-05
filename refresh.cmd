@@ -19,5 +19,4 @@ xcopy %SRC%\EnvironmentEx.cs .\ /Y/Q
 xcopy %SRC%\LazyExtensions.cs .\ /Y/Q
 popd
 
-
 pause

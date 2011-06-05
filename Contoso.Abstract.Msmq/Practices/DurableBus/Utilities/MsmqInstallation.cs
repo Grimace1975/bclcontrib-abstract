@@ -60,7 +60,7 @@ namespace Contoso.Practices.DurableBus.Utilities
 		}
 		private static OperatingSystem GetOperatingSystem()
 		{
-			var osVersionEx = EnvironmentEx2.OSVersionEx;
+			var osVersionEx = EnvironmentEx.OSVersionEx;
 			switch (osVersionEx.Version.Major)
 			{
 				case 5:

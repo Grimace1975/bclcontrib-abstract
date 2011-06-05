@@ -24,12 +24,12 @@ THE SOFTWARE.
 */
 #endregion
 using System.Configuration;
-namespace System.Abstract.Parts
+namespace System.Abstract.Configuration
 {
-	/// <summary>
-	/// AbstractSection
-	/// </summary>
-	public class AbstractSection : ConfigurationSection
-	{
-	}
+    /// <summary>
+    /// ServiceLocatorConfiguration
+    /// </summary>
+    public partial class ServiceLocatorConfiguration
+    {
+    }
 }

@@ -35,7 +35,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// NServiceBusAbstractor
     /// </summary>
-    public class NServiceBusAbstractor : INServiceBus
+    public class NServiceBusAbstractor : INServiceBus, ServiceBusManager.ISetupRegistration
     {
         private static readonly Type s_domainServiceMessageType = typeof(INServiceMessage);
         private IBus _bus;
@@ -53,6 +53,11 @@ namespace Contoso.Abstract
             if (bus == null)
                 throw new ArgumentNullException("bus", "The specified NServiceBus bus cannot be null.");
             Bus = bus;
+        }
+
+        Action<IServiceRegistrar, IServiceLocator, string> ServiceBusManager.ISetupRegistration.OnServiceRegistrar
+        {
+            get { return (registrar, locator, name) => ServiceBusManager.RegisterInstance<INServiceBus>(this, registrar, locator, name); }
         }
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }

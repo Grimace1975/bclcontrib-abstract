@@ -42,12 +42,16 @@ namespace System.Abstract
 							action(service);
 					return service;
 				},
-				OnServiceRegistrar = (service, registar, locator, name) =>
+				OnServiceRegistrar = (service, registrar, locator, name) =>
 				{
-					RegisterInstance(service, registar, locator, name);
+					RegisterInstance(service, registrar, locator, name);
 					var distributedServiceCache = (service as IDistributedServiceCache);
 					if (distributedServiceCache != null)
-						RegisterInstance(distributedServiceCache, registar, locator, name);
+						RegisterInstance(distributedServiceCache, registrar, locator, name);
+                    // specific registration
+                    var setupRegistration = (service as ISetupRegistration);
+                    if (setupRegistration != null)
+                        setupRegistration.OnServiceRegistrar(registrar, locator, name);
 				},
             };
         }

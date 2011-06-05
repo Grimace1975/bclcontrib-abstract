@@ -40,14 +40,13 @@ namespace System.Abstract
 			{
 				OnSetup = (service, descriptor) =>
 				{
-					var registrar = service.GetRegistrar();
+					var registrar = service.Registrar;
 					RegisterSelfInLocator(registrar, service);
 					if (descriptor != null)
 						foreach (var action in descriptor.Actions)
 							action(registrar, service);
 					return service;
 				},
-				OnServiceRegistrar = RegisterInstance,
 			};
 		}
 

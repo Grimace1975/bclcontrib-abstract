@@ -32,12 +32,19 @@ namespace System.Abstract
 	{
 		IServiceLog Get(Type type);
 		IServiceLog Get(string name);
+        //void Trace(string s, params object[] args);
+        void Debug(string s, params object[] args);
+        void Debug(string s, Exception ex);
 		void Warning(string s, params object[] args);
 		void Warning(string s, Exception ex);
 		void Error(string s, params object[] args);
 		void Error(string s, Exception ex);
-		void Debug(string s, params object[] args);
-		void Debug(string s, Exception ex);
+
+        //public static void Log(params object[] args) { }
+        //public static void Info(params object[] args) { }
+        //public static void Warn(params object[] args) { }
+        //public static void Error(params object[] args) { }
+
 	}
 
 	/// <summary>

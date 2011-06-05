@@ -42,7 +42,7 @@ namespace Contoso.Abstract
     /// AutofacServiceLocator
     /// </summary>
     [Serializable]
-    public class AutofacServiceLocator : IAutofacServiceLocator, IDisposable
+    public class AutofacServiceLocator : IAutofacServiceLocator, IDisposable, ServiceLocatorManager.ISetupRegistration
     {
         private IContainer _container;
         private AutofacServiceRegistrar _registrar;
@@ -68,10 +68,18 @@ namespace Contoso.Abstract
             }
         }
 
+        Action<IServiceRegistrar, IServiceLocator, string> ServiceLocatorManager.ISetupRegistration.OnServiceRegistrar
+        {
+            get { return (registrar, locator, name) => ServiceLocatorManager.RegisterInstance<IAutofacServiceLocator>(this, registrar, locator, name); }
+        }
+
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         // registrar
-        public IServiceRegistrar GetRegistrar() { return _registrar; }
+        public IServiceRegistrar Registrar
+        {
+            get { return _registrar; }
+        }
         public TServiceRegistrar GetRegistrar<TServiceRegistrar>()
             where TServiceRegistrar : class, IServiceRegistrar { return (_registrar as TServiceRegistrar); }
 

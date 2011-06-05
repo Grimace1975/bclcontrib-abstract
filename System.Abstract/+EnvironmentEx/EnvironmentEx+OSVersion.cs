@@ -26,7 +26,7 @@ THE SOFTWARE.
 using System.Runtime.InteropServices;
 namespace System
 {
-	public static partial class EnvironmentEx2
+	public static partial class EnvironmentEx
 	{
 		private static OperatingSystemEx _osVersionEx;
 		[ThreadStatic]

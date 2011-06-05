@@ -29,7 +29,7 @@ namespace System.Abstract.EventSourcing
     /// Event
     /// </summary>
     [Serializable]
-	public abstract class Event : IServiceMessage
+	public abstract class Event : IEvent
     {
         public object AggregateId { get; set; }
         public DateTime EventDate { get; set; }

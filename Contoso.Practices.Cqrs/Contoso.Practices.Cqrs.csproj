@@ -38,6 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Practices\Cqrs\+Command\HandlerErrorIntent.cs" />
+    <Compile Include="Practices\Cqrs\+Command\CommandBus.cs" />
     <Compile Include="Practices\Cqrs\CqrsContext.cs" />
     <Compile Include="Practices\Cqrs\+Command\CommandHandler2.cs" />
     <Compile Include="Practices\Cqrs\+Command\CommandHandler.cs" />

@@ -35,187 +35,192 @@ using WebCacheItemRemovedCallback = System.Web.Caching.CacheItemRemovedCallback;
 using WebCacheItemRemovedReason = System.Web.Caching.CacheItemRemovedReason;
 namespace Contoso.Abstract
 {
-	/// <summary>
-	/// IWebServiceCache
-	/// </summary>
-	public interface IWebServiceCache : IServiceCache
-	{
-		WebCache Cache { get; }
-	}
+    /// <summary>
+    /// IWebServiceCache
+    /// </summary>
+    public interface IWebServiceCache : IServiceCache
+    {
+        WebCache Cache { get; }
+    }
 
-	/// <summary>
-	/// WebServiceCache
-	/// </summary>
-	public class WebServiceCache : IWebServiceCache
-	{
-		static WebServiceCache() { ServiceCacheManager.EnsureRegistration(); }
-		public WebServiceCache()
-		{
-			Cache = HttpRuntime.Cache;
-			Settings = new ServiceCacheSettings(new DefaultFileTouchableCacheItem(this, new DefaultTouchableCacheItem(this, null)));
-		}
+    /// <summary>
+    /// WebServiceCache
+    /// </summary>
+    public class WebServiceCache : IWebServiceCache, ServiceCacheManager.ISetupRegistration
+    {
+        static WebServiceCache() { ServiceCacheManager.EnsureRegistration(); }
+        public WebServiceCache()
+        {
+            Cache = HttpRuntime.Cache;
+            Settings = new ServiceCacheSettings(new DefaultFileTouchableCacheItem(this, new DefaultTouchableCacheItem(this, null)));
+        }
 
-		public object GetService(Type serviceType) { throw new NotImplementedException(); }
+        Action<IServiceRegistrar, IServiceLocator, string> ServiceCacheManager.ISetupRegistration.OnServiceRegistrar
+        {
+            get { return (registrar, locator, name) => ServiceCacheManager.RegisterInstance<IWebServiceCache>(this, registrar, locator, name); }
+        }
 
-		public object this[string name]
-		{
-			get { return Get(null, name); }
-			set { Set(null, name, CacheItemPolicy.Default, value); }
-		}
+        public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
-		public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value)
-		{
-			if (itemPolicy == null)
-				throw new ArgumentNullException("itemPolicy");
-			var updateCallback = itemPolicy.UpdateCallback;
-			if (updateCallback != null)
-				updateCallback(name, value);
-			// item priority
-			WebCacheItemPriority itemPriority;
-			switch (itemPolicy.Priority)
-			{
-				case CacheItemPriority.AboveNormal:
-					itemPriority = WebCacheItemPriority.AboveNormal;
-					break;
-				case CacheItemPriority.BelowNormal:
-					itemPriority = WebCacheItemPriority.BelowNormal;
-					break;
-				case CacheItemPriority.High:
-					itemPriority = WebCacheItemPriority.High;
-					break;
-				case CacheItemPriority.Low:
-					itemPriority = WebCacheItemPriority.Low;
-					break;
-				case CacheItemPriority.Normal:
-					itemPriority = WebCacheItemPriority.Normal;
-					break;
-				case CacheItemPriority.NotRemovable:
-					itemPriority = WebCacheItemPriority.NotRemovable;
-					break;
-				default:
-					itemPriority = WebCacheItemPriority.Default;
-					break;
-			}
-			// item removed callback
-			var removedCallback = (itemPolicy.RemovedCallback == null ? null : new WebCacheItemRemovedCallback((n, v, c) => { itemPolicy.RemovedCallback(n, v); }));
-			return Cache.Add(name, value, GetCacheDependency(tag, itemPolicy.Dependency), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, itemPriority, removedCallback);
-		}
+        public object this[string name]
+        {
+            get { return Get(null, name); }
+            set { Set(null, name, CacheItemPolicy.Default, value); }
+        }
 
-		public object Get(object tag, string name) { return Cache.Get(name); }
-		public object Get(object tag, IEnumerable<string> names)
-		{
-			if (names == null)
-				throw new ArgumentNullException("names");
-			return names.Select(name => new { name, value = Cache.Get(name) }).ToDictionary(x => x.name, x => x.value);
-		}
-		public bool TryGet(object tag, string name, out object value)
-		{
-			throw new NotSupportedException();
-		}
+        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value)
+        {
+            if (itemPolicy == null)
+                throw new ArgumentNullException("itemPolicy");
+            var updateCallback = itemPolicy.UpdateCallback;
+            if (updateCallback != null)
+                updateCallback(name, value);
+            // item priority
+            WebCacheItemPriority itemPriority;
+            switch (itemPolicy.Priority)
+            {
+                case CacheItemPriority.AboveNormal:
+                    itemPriority = WebCacheItemPriority.AboveNormal;
+                    break;
+                case CacheItemPriority.BelowNormal:
+                    itemPriority = WebCacheItemPriority.BelowNormal;
+                    break;
+                case CacheItemPriority.High:
+                    itemPriority = WebCacheItemPriority.High;
+                    break;
+                case CacheItemPriority.Low:
+                    itemPriority = WebCacheItemPriority.Low;
+                    break;
+                case CacheItemPriority.Normal:
+                    itemPriority = WebCacheItemPriority.Normal;
+                    break;
+                case CacheItemPriority.NotRemovable:
+                    itemPriority = WebCacheItemPriority.NotRemovable;
+                    break;
+                default:
+                    itemPriority = WebCacheItemPriority.Default;
+                    break;
+            }
+            // item removed callback
+            var removedCallback = (itemPolicy.RemovedCallback == null ? null : new WebCacheItemRemovedCallback((n, v, c) => { itemPolicy.RemovedCallback(n, v); }));
+            return Cache.Add(name, value, GetCacheDependency(tag, itemPolicy.Dependency), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, itemPriority, removedCallback);
+        }
 
-		public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value)
-		{
-			if (itemPolicy == null)
-				throw new ArgumentNullException("itemPolicy");
-			var updateCallback = itemPolicy.UpdateCallback;
-			if (updateCallback != null)
-				updateCallback(name, value);
-			// item priority
-			WebCacheItemPriority cacheItemPriority;
-			switch (itemPolicy.Priority)
-			{
-				case CacheItemPriority.AboveNormal:
-					cacheItemPriority = WebCacheItemPriority.AboveNormal;
-					break;
-				case CacheItemPriority.BelowNormal:
-					cacheItemPriority = WebCacheItemPriority.BelowNormal;
-					break;
-				case CacheItemPriority.High:
-					cacheItemPriority = WebCacheItemPriority.High;
-					break;
-				case CacheItemPriority.Low:
-					cacheItemPriority = WebCacheItemPriority.Low;
-					break;
-				case CacheItemPriority.Normal:
-					cacheItemPriority = WebCacheItemPriority.Normal;
-					break;
-				case CacheItemPriority.NotRemovable:
-					cacheItemPriority = WebCacheItemPriority.NotRemovable;
-					break;
-				default:
-					cacheItemPriority = WebCacheItemPriority.Default;
-					break;
-			}
-			// item removed callback
-			var removedCallback = (itemPolicy.RemovedCallback == null ? null : new WebCacheItemRemovedCallback((n, v, c) => { itemPolicy.RemovedCallback(n, v); }));
-			Cache.Insert(name, value, GetCacheDependency(tag, itemPolicy.Dependency), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, removedCallback);
-			return value;
-		}
+        public object Get(object tag, string name) { return Cache.Get(name); }
+        public object Get(object tag, IEnumerable<string> names)
+        {
+            if (names == null)
+                throw new ArgumentNullException("names");
+            return names.Select(name => new { name, value = Cache.Get(name) }).ToDictionary(x => x.name, x => x.value);
+        }
+        public bool TryGet(object tag, string name, out object value)
+        {
+            throw new NotSupportedException();
+        }
 
-		public object Remove(object tag, string name) { return Cache.Remove(name); }
+        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value)
+        {
+            if (itemPolicy == null)
+                throw new ArgumentNullException("itemPolicy");
+            var updateCallback = itemPolicy.UpdateCallback;
+            if (updateCallback != null)
+                updateCallback(name, value);
+            // item priority
+            WebCacheItemPriority cacheItemPriority;
+            switch (itemPolicy.Priority)
+            {
+                case CacheItemPriority.AboveNormal:
+                    cacheItemPriority = WebCacheItemPriority.AboveNormal;
+                    break;
+                case CacheItemPriority.BelowNormal:
+                    cacheItemPriority = WebCacheItemPriority.BelowNormal;
+                    break;
+                case CacheItemPriority.High:
+                    cacheItemPriority = WebCacheItemPriority.High;
+                    break;
+                case CacheItemPriority.Low:
+                    cacheItemPriority = WebCacheItemPriority.Low;
+                    break;
+                case CacheItemPriority.Normal:
+                    cacheItemPriority = WebCacheItemPriority.Normal;
+                    break;
+                case CacheItemPriority.NotRemovable:
+                    cacheItemPriority = WebCacheItemPriority.NotRemovable;
+                    break;
+                default:
+                    cacheItemPriority = WebCacheItemPriority.Default;
+                    break;
+            }
+            // item removed callback
+            var removedCallback = (itemPolicy.RemovedCallback == null ? null : new WebCacheItemRemovedCallback((n, v, c) => { itemPolicy.RemovedCallback(n, v); }));
+            Cache.Insert(name, value, GetCacheDependency(tag, itemPolicy.Dependency), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, removedCallback);
+            return value;
+        }
 
-		public ServiceCacheSettings Settings { get; private set; }
+        public object Remove(object tag, string name) { return Cache.Remove(name); }
 
-		#region TouchableCacheItem
+        public ServiceCacheSettings Settings { get; private set; }
 
-		/// <summary>
-		/// DefaultTouchableCacheItem
-		/// </summary>
-		public class DefaultTouchableCacheItem : ITouchableCacheItem
-		{
-			private WebServiceCache _parent;
-			private ITouchableCacheItem _base;
-			public DefaultTouchableCacheItem(WebServiceCache parent, ITouchableCacheItem @base) { _parent = parent; _base = @base; }
+        #region TouchableCacheItem
 
-			public void Touch(object tag, string[] names)
-			{
-				if ((names == null) || (names.Length == 0))
-					return;
-				var cache = _parent.Cache;
-				foreach (var name in names)
-					cache.Insert(name, string.Empty, null, ServiceCache.InfiniteAbsoluteExpiration, ServiceCache.NoSlidingExpiration, WebCacheItemPriority.Normal, null);
-				if (_base != null)
-					_base.Touch(tag, names);
-			}
+        /// <summary>
+        /// DefaultTouchableCacheItem
+        /// </summary>
+        public class DefaultTouchableCacheItem : ITouchableCacheItem
+        {
+            private WebServiceCache _parent;
+            private ITouchableCacheItem _base;
+            public DefaultTouchableCacheItem(WebServiceCache parent, ITouchableCacheItem @base) { _parent = parent; _base = @base; }
 
-			public object MakeDependency(object tag, string[] names)
-			{
-				if ((names == null) || (names.Length == 0))
-					return null;
-				return (_base == null ? new WebCacheDependency(null, names) : new WebCacheDependency(null, names, _base.MakeDependency(tag, names) as WebCacheDependency));
-			}
-		}
+            public void Touch(object tag, string[] names)
+            {
+                if ((names == null) || (names.Length == 0))
+                    return;
+                var cache = _parent.Cache;
+                foreach (var name in names)
+                    cache.Insert(name, string.Empty, null, ServiceCache.InfiniteAbsoluteExpiration, ServiceCache.NoSlidingExpiration, WebCacheItemPriority.Normal, null);
+                if (_base != null)
+                    _base.Touch(tag, names);
+            }
 
-		/// <summary>
-		/// DefaultFileTouchableCacheItem
-		/// </summary>
-		public class DefaultFileTouchableCacheItem : ServiceCache.FileTouchableCacheItemBase
-		{
-			public DefaultFileTouchableCacheItem(WebServiceCache parent, ITouchableCacheItem @base)
-				: base(parent, @base) { }
+            public object MakeDependency(object tag, string[] names)
+            {
+                if ((names == null) || (names.Length == 0))
+                    return null;
+                return (_base == null ? new WebCacheDependency(null, names) : new WebCacheDependency(null, names, _base.MakeDependency(tag, names) as WebCacheDependency));
+            }
+        }
 
-			protected override object MakeDependencyInternal(object tag, string[] names) { return new WebCacheDependency(names.Select(x => GetFilePathForName(x)).ToArray()); }
-			//    var touchablesDependency = (touchables.Count > 0 ? (WebCacheDependency)touchable.MakeDependency(tag, touchables.ToArray())(this, tag) : null);
-			//    return (touchablesDependency == null ? new WebCacheDependency(null, cacheKeys.ToArray()) : new WebCacheDependency(null, cacheKeys.ToArray(), touchablesDependency));
-		}
+        /// <summary>
+        /// DefaultFileTouchableCacheItem
+        /// </summary>
+        public class DefaultFileTouchableCacheItem : ServiceCache.FileTouchableCacheItemBase
+        {
+            public DefaultFileTouchableCacheItem(WebServiceCache parent, ITouchableCacheItem @base)
+                : base(parent, @base) { }
 
-		#endregion
+            protected override object MakeDependencyInternal(object tag, string[] names) { return new WebCacheDependency(names.Select(x => GetFilePathForName(x)).ToArray()); }
+            //    var touchablesDependency = (touchables.Count > 0 ? (WebCacheDependency)touchable.MakeDependency(tag, touchables.ToArray())(this, tag) : null);
+            //    return (touchablesDependency == null ? new WebCacheDependency(null, cacheKeys.ToArray()) : new WebCacheDependency(null, cacheKeys.ToArray(), touchablesDependency));
+        }
 
-		#region Domain-specific
+        #endregion
 
-		public WebCache Cache { get; private set; }
+        #region Domain-specific
 
-		#endregion
+        public WebCache Cache { get; private set; }
 
-		private WebCacheDependency GetCacheDependency(object tag, CacheItemDependency dependency)
-		{
-			object value;
-			if ((dependency == null) || ((value = dependency(this, tag)) == null))
-				return null;
-			//
-			string[] names = (value as string[]);
-			var touchable = Settings.Touchable;
-			return (((touchable != null) && (names != null) ? touchable.MakeDependency(tag, names) : value) as WebCacheDependency);
-		}
-	}
+        #endregion
+
+        private WebCacheDependency GetCacheDependency(object tag, CacheItemDependency dependency)
+        {
+            object value;
+            if ((dependency == null) || ((value = dependency(this, tag)) == null))
+                return null;
+            //
+            string[] names = (value as string[]);
+            var touchable = Settings.Touchable;
+            return (((touchable != null) && (names != null) ? touchable.MakeDependency(tag, names) : value) as WebCacheDependency);
+        }
+    }
 }

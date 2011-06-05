@@ -29,9 +29,9 @@ using System.Security;
 namespace System
 {
     /// <summary>
-    /// EnvironmentEx2
+    /// EnvironmentEx
     /// </summary>
-    public static partial class EnvironmentEx2
+    public static partial class EnvironmentEx
     {
         private static DeploymentEnvironment _deploymentEnvironment = DeploymentEnvironment.Production;
         private static DevelopmentStage _developmentStage = DevelopmentStage.Release;
@@ -62,7 +62,7 @@ namespace System
 
         #endregion
 
-		static EnvironmentEx2()
+        static EnvironmentEx()
         {
             ApplicationID = "NONE";
         }

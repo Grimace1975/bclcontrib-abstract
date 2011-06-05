@@ -36,7 +36,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// IMemcachedServiceCache
     /// </summary>
-	public interface IMemcachedServiceCache : IDistributedServiceCache
+    public interface IMemcachedServiceCache : IDistributedServiceCache
     {
         IMemcachedClient Cache { get; }
         void FlushAll();
@@ -49,7 +49,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// MemcachedServiceCache
     /// </summary>
-    public partial class MemcachedServiceCache : IMemcachedServiceCache, IDisposable
+    public partial class MemcachedServiceCache : IMemcachedServiceCache, IDisposable, ServiceCacheManager.ISetupRegistration
     {
         private ITagMapper _tagMapper;
 
@@ -82,7 +82,7 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("client");
             Cache = client;
             _tagMapper = tagMapper;
-			Settings = new ServiceCacheSettings();
+            Settings = new ServiceCacheSettings();
         }
         ~MemcachedServiceCache()
         {
@@ -98,6 +98,11 @@ namespace Contoso.Abstract
                 try { Cache.Dispose(); }
                 finally { Cache = null; }
             }
+        }
+
+        Action<IServiceRegistrar, IServiceLocator, string> ServiceCacheManager.ISetupRegistration.OnServiceRegistrar
+        {
+            get { return (registrar, locator, name) => ServiceCacheManager.RegisterInstance<IMemcachedServiceCache>(this, registrar, locator, name); }
         }
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
@@ -233,35 +238,35 @@ namespace Contoso.Abstract
             throw new InvalidOperationException("absoluteExpiration && slidingExpiration");
         }
 
-		public ServiceCacheSettings Settings { get; private set; }
+        public ServiceCacheSettings Settings { get; private set; }
 
-		#region TouchableCacheItem
+        #region TouchableCacheItem
 
-		///// <summary>
-		///// DefaultTouchableCacheItem
-		///// </summary>
-		//public class DefaultTouchableCacheItem : ITouchableCacheItem
-		//{
-		//    private MemcachedServiceCache _parent;
-		//    private ITouchableCacheItem _base;
-		//    public DefaultTouchableCacheItem(MemcachedServiceCache parent, ITouchableCacheItem @base) { _parent = parent; _base = @base; }
+        ///// <summary>
+        ///// DefaultTouchableCacheItem
+        ///// </summary>
+        //public class DefaultTouchableCacheItem : ITouchableCacheItem
+        //{
+        //    private MemcachedServiceCache _parent;
+        //    private ITouchableCacheItem _base;
+        //    public DefaultTouchableCacheItem(MemcachedServiceCache parent, ITouchableCacheItem @base) { _parent = parent; _base = @base; }
 
-		//    public void Touch(object tag, string[] names)
-		//    {
-		//        if ((names == null) || (names.Length == 0))
-		//            return;
-		//        throw new NotSupportedException();
-		//    }
+        //    public void Touch(object tag, string[] names)
+        //    {
+        //        if ((names == null) || (names.Length == 0))
+        //            return;
+        //        throw new NotSupportedException();
+        //    }
 
-		//    public object MakeDependency(object tag, string[] names)
-		//    {
-		//        if ((names == null) || (names.Length == 0))
-		//            return null;
-		//        throw new NotSupportedException();
-		//    }
-		//}
+        //    public object MakeDependency(object tag, string[] names)
+        //    {
+        //        if ((names == null) || (names.Length == 0))
+        //            return null;
+        //        throw new NotSupportedException();
+        //    }
+        //}
 
-		#endregion
+        #endregion
 
         #region Domain-specific
 
