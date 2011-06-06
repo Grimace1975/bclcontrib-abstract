@@ -38,7 +38,7 @@ namespace Contoso.Practices.DurableBus.Utilities
 	/// </summary>
 	public static class MsmqInstallation
 	{
-		private static readonly IServiceLog ServiceLog = ServiceLogManager.Get("NServiceBus.Utils");
+        private static readonly IServiceLog ServiceLog = ServiceLogManager.Get("DurableBus.Utilities");
 		private const string OcSetup = "OCSETUP";
 		private static readonly List<string> RequiredMsmqComponentsXp = new List<string>(new string[] { "msmq_Core", "msmq_LocalStorage" });
 		private const string Server2008OcSetupParams = "MSMQ-Server /passive";
@@ -122,7 +122,7 @@ namespace Contoso.Practices.DurableBus.Utilities
 		{
 			var path = Path.GetTempFileName();
 			ServiceLog.Debug("Creating installation instruction file.");
-			using (StreamWriter sw = File.CreateText(path))
+			using (var sw = File.CreateText(path))
 			{
 				sw.WriteLine("[Version]");
 				sw.WriteLine("Signature = \"$Windows NT$\"");
@@ -164,22 +164,18 @@ namespace Contoso.Practices.DurableBus.Utilities
 
 		private static void PerformFunctionDependingOnOS(Func<Process> vistaFunc, Func<Process> server2008Func, Func<Process> xpAndServer2003Func)
 		{
-			OperatingSystem os = GetOperatingSystem();
 			Process process = null;
-			switch (os)
+			switch (GetOperatingSystem())
 			{
 				case OperatingSystem.XpOrServer2003:
 					process = xpAndServer2003Func();
 					break;
-
 				case OperatingSystem.Vista:
 					process = vistaFunc();
 					break;
-
 				case OperatingSystem.Server2008:
 					process = server2008Func();
 					break;
-
 				default:
 					ServiceLog.Warning("OS not supported.");
 					break;
@@ -194,11 +190,7 @@ namespace Contoso.Practices.DurableBus.Utilities
 		public static void StartMsmqIfNecessary()
 		{
 			InstallMsmqIfNecessary();
-			var controller = new ServiceController
-			{
-				ServiceName = "MSMQ",
-				MachineName = "."
-			};
+			var controller = new ServiceController { ServiceName = "MSMQ", MachineName = "." };
 			ProcessUtil.ChangeServiceStatus(controller, ServiceControllerStatus.Running, new Action(controller.Start));
 		}
 	}

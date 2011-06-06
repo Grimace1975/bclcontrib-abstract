@@ -24,6 +24,7 @@ THE SOFTWARE.
 */
 #endregion
 using System.Abstract.Parts;
+using Contoso.Abstract;
 namespace System.Abstract
 {
 	/// <summary>

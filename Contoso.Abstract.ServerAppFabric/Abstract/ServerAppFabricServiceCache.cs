@@ -70,7 +70,6 @@ namespace Contoso.Abstract
         {
             get { return (registrar, locator, name) => ServiceCacheManager.RegisterInstance<IServerAppFabricServiceCache>(this, registrar, locator, name); }
         }
-
 		public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
 		public object this[string name]

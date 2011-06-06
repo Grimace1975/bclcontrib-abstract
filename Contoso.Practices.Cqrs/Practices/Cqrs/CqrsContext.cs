@@ -36,8 +36,8 @@ namespace Contoso.Practices.Cqrs
 		void Start();
 		void Stop();
 		IAggregateRootRepository AggregateRepository { get; }
-		IServiceBus CommandBus { get; }
-		IServiceBus EventBus { get; }
+        ICommandBus CommandBus { get; }
+        IEventBus EventBus { get; }
 		IServiceLocator Locator { get; }
 	}
 
@@ -68,8 +68,8 @@ namespace Contoso.Practices.Cqrs
 		}
 		
 		public IAggregateRootRepository AggregateRepository { get; protected set; }
-		public IServiceBus CommandBus { get; protected set; }
-		public IServiceBus EventBus { get; protected set; }
+        public ICommandBus CommandBus { get; protected set; }
+		public IEventBus EventBus { get; protected set; }
 		public IServiceLocator Locator { get; protected set; }
 
 		#region Start/Stop
@@ -97,8 +97,8 @@ namespace Contoso.Practices.Cqrs
 		{
 			registrar.RegisterInstance<ICqrsContext>(this, _name);
 		}
-		protected virtual IServiceBus GetEventBus() { return Locator.Resolve<IServiceBus>("EventBus"); }
-		protected virtual IServiceBus GetCommandBus() { return Locator.Resolve<IServiceBus>("CommandBus"); }
+        protected virtual ICommandBus GetCommandBus() { return Locator.Resolve<ICommandBus>(); }
+        protected virtual IEventBus GetEventBus() { return Locator.Resolve<IEventBus>(); }
 		protected virtual IAggregateRootRepository GetAggregateRepository() { return Locator.Resolve<IAggregateRootRepository>(); }
 
 		public void Stop()

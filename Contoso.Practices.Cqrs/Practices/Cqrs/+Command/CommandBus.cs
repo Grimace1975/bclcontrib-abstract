@@ -29,9 +29,14 @@ using System.Collections.Generic;
 namespace Contoso.Practices.Cqrs
 {
     /// <summary>
+    /// ICommandBus
+    /// </summary>
+    public interface ICommandBus : IServiceBus { }
+
+    /// <summary>
     /// CommandBus
     /// </summary>
-    public struct CommandBus : IServiceBus
+    public struct CommandBus : ICommandBus
     {
         private IServiceBus _parent;
 
