@@ -38,11 +38,11 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Contoso.Abstract.MvcTurbine\Abstract\Blades\CoreBlade.cs">
-      <Link>Abstract\Blades\CoreBlade.cs</Link>
-    </Compile>
     <Compile Include="..\Contoso.Abstract.MvcTurbine\Abstract\RegistrationStub.cs">
       <Link>Abstract\RegistrationStub.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.MvcTurbine\Abstract\TurbineAbstractApplication.cs">
+      <Link>Abstract\TurbineAbstractApplication.cs</Link>
     </Compile>
     <Compile Include="..\Contoso.Abstract.MvcTurbine\Abstract\TurbineServiceLocatorAbstractor.cs">
       <Link>Abstract\TurbineServiceLocatorAbstractor.cs</Link>
@@ -56,6 +56,8 @@
     <Reference Include="MvcTurbine.Web">
       <HintPath>..\packages\MVCTurbine.3.2\lib\MvcTurbine.Web.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BclContrib.snk" />

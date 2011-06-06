@@ -31,5 +31,17 @@ namespace System.Abstract
     /// </summary>
     public static class ServiceLog
     {
+        /// <summary>
+        /// LogLevel
+        /// </summary>
+        public enum LogLevel
+        {
+            None,
+            Fatal,
+            Error,
+            Warning,
+            Information,
+            Debug
+        }
     }
 }

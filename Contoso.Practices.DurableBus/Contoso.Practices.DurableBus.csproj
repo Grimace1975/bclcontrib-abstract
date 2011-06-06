@@ -38,6 +38,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Practices\DurableBus\DurableBusContext.cs" />
+    <Compile Include="Practices\DurableBus\Transport\TransportBase+Events.cs" />
+    <Compile Include="Practices\DurableBus\Transport\TransportBase+Workers.cs" />
+    <Compile Include="Practices\DurableBus\Transport\TransportBase.cs" />
     <Compile Include="Practices\DurableBus\Transport\MessageReceivedEventArgs.cs" />
     <Compile Include="Practices\DurableBus\Transport\MessageIntent.cs" />
     <Compile Include="Practices\DurableBus\Transport\TransportMessage.cs" />

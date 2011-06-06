@@ -37,6 +37,9 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Contoso.Practices.Cqrs\Practices\Cqrs\+Command\CommandBus.cs">
+      <Link>Practices\Cqrs\+Command\CommandBus.cs</Link>
+    </Compile>
     <Compile Include="..\Contoso.Practices.Cqrs\Practices\Cqrs\+Command\CommandHandler.cs">
       <Link>Practices\Cqrs\+Command\CommandHandler.cs</Link>
     </Compile>

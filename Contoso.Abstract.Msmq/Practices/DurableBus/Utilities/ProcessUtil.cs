@@ -33,7 +33,7 @@ namespace Contoso.Practices.DurableBus.Utilities
 	/// </summary>
 	public static class ProcessUtil
 	{
-		private static readonly IServiceLog ServiceLog = ServiceLogManager.Get("NServiceBus.Utils");
+        private static readonly IServiceLog ServiceLog = ServiceLogManager.Get("DurableBus.Utilities");
 
 		public static void ChangeServiceStatus(ServiceController controller, ServiceControllerStatus status, Action changeStatus)
 		{

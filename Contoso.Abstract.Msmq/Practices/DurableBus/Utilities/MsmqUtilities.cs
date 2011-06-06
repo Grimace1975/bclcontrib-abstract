@@ -23,135 +23,128 @@
 //THE SOFTWARE.
 //*/
 //#endregion
+//using System.Abstract;
+//using System.Security.Principal;
+//using System;
+//using System.Net;
 //namespace Contoso.Practices.DurableBus.Utilities
 //{
 //    /// <summary>
-//    /// IDurableBusContext
+//    /// MsmqUtilities
 //    /// </summary>
 //    public class MsmqUtilities
-//{
-//    // Fields
-//    private const string DIRECTPREFIX = "DIRECT=OS:";
-//    private static readonly string DIRECTPREFIX_TCP = "DIRECT=TCP:";
-//    private static readonly string LocalAdministratorsGroupName = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null).Translate(typeof(NTAccount)).ToString();
-//    private static readonly string LocalAnonymousLogonName = new SecurityIdentifier(WellKnownSidType.AnonymousSid, null).Translate(typeof(NTAccount)).ToString();
-//    private static readonly string LocalEveryoneGroupName = new SecurityIdentifier(WellKnownSidType.WorldSid, null).Translate(typeof(NTAccount)).ToString();
-//    private static readonly ILog Logger = LogManager.GetLogger(typeof(MsmqUtilities));
-//    private static readonly string PREFIX = "FormatName:DIRECT=OS:";
-//    private static readonly string PREFIX_TCP = ("FormatName:" + DIRECTPREFIX_TCP);
-//    private const string PRIVATE = @"\private$\";
-
-//    // Methods
-//    public static void CreateQueue(string queueName)
 //    {
-//        MessageQueue createdQueue = MessageQueue.Create(queueName, true);
-//        createdQueue.SetPermissions(LocalAdministratorsGroupName, MessageQueueAccessRights.FullControl, AccessControlEntryType.Allow);
-//        createdQueue.SetPermissions(LocalEveryoneGroupName, MessageQueueAccessRights.WriteMessage, AccessControlEntryType.Allow);
-//        createdQueue.SetPermissions(LocalAnonymousLogonName, MessageQueueAccessRights.WriteMessage, AccessControlEntryType.Allow);
-//        Logger.Debug("Queue created: " + queueName);
-//    }
+//        private static readonly IServiceLog ServiceLog = ServiceLogManager.Get<MsmqUtilities>();
+//        private const string DIRECTPREFIX = "DIRECT=OS:";
+//        private static readonly string DIRECTPREFIX_TCP = "DIRECT=TCP:";
+//        private static readonly string PREFIX = "FormatName:DIRECT=OS:";
+//        private static readonly string PREFIX_TCP = "FormatName:" + DIRECTPREFIX_TCP;
+//        private const string PRIVATE = "\\private$\\";
 
-//    public static void CreateQueueIfNecessary(string queueName)
-//    {
-//        if (!string.IsNullOrEmpty(queueName))
+//        public static void CreateQueue(string queueName)
 //        {
-//            string q = GetFullPathWithoutPrefix(queueName);
-//            if (GetMachineNameFromLogicalName(queueName) != Environment.MachineName)
+//            var localAdministratorsGroupName = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null).Translate(typeof(NTAccount)).ToString();
+//            var localAnonymousLogonName = new SecurityIdentifier(WellKnownSidType.AnonymousSid, null).Translate(typeof(NTAccount)).ToString();
+//            var localEveryoneGroupName = new SecurityIdentifier(WellKnownSidType.WorldSid, null).Translate(typeof(NTAccount)).ToString();
+//            //
+//            MessageQueue createdQueue = MessageQueue.Create(queueName, true);
+//            createdQueue.SetPermissions(localAdministratorsGroupName, MessageQueueAccessRights.FullControl, AccessControlEntryType.Allow);
+//            createdQueue.SetPermissions(localEveryoneGroupName, MessageQueueAccessRights.WriteMessage, AccessControlEntryType.Allow);
+//            createdQueue.SetPermissions(localAnonymousLogonName, MessageQueueAccessRights.WriteMessage, AccessControlEntryType.Allow);
+//            ServiceLog.Debug("Queue created: " + queueName);
+//        }
+
+//        public static void CreateQueueIfNecessary(string queueName)
+//        {
+//            var logicalName = new LogicalName(queueName);
+//            if (!string.IsNullOrEmpty(queueName))
 //            {
-//                Logger.Debug("Queue is on remote machine.");
-//                Logger.Debug("If this does not succeed (like if the remote machine is disconnected), processing will continue.");
+//                string q = logicalName.FullPathWithoutPrefix;
+//                if (!logicalName.IsLocal)
+//                {
+//                    ServiceLog.Debug("Queue is on remote machine.");
+//                    ServiceLog.Debug("If this does not succeed (like if the remote machine is disconnected), processing will continue.");
+//                }
+//                ServiceLog.Debug(string.Format("Checking if queue exists: {0}.", queueName));
+//                try
+//                {
+//                    if (!MessageQueue.Exists(q))
+//                    {
+//                        ServiceLog.Warning("Queue " + q + " does not exist.");
+//                        ServiceLog.Debug("Going to create queue: " + q);
+//                        CreateQueue(q);
+//                    }
+//                }
+//                catch (Exception ex) { ServiceLog.Error(string.Format("Could not create queue {0} or check its existence. Processing will still continue.", queueName), ex); }
 //            }
-//            Logger.Debug(string.Format("Checking if queue exists: {0}.", queueName));
+//        }
+
+//        public static string GetIndependentAddressForQueue(MessageQueue q)
+//        {
+//            string address;
+//            if (q == null)
+//                return null;
+//            string[] arr = q.FormatName.Split(new char[] { '\\' });
+//            string queueName = arr[arr.Length - 1];
+//            int directPrefixIndex = arr[0].IndexOf("DIRECT=OS:");
+//            if (directPrefixIndex >= 0)
+//                return (queueName + '@' + arr[0].Substring(directPrefixIndex + "DIRECT=OS:".Length));
 //            try
 //            {
-//                if (!MessageQueue.Exists(q))
+//                arr = q.QueueName.Split(new char[] { '\\' });
+//                queueName = arr[arr.Length - 1];
+//                address = queueName + '@' + q.MachineName;
+//            }
+//            catch { throw new Exception("MessageQueueException: '" + "DIRECT=OS:" + "' is missing. " + "FormatName='" + q.FormatName + "'"); }
+//            return address;
+//        }
+
+//        public class LogicalName
+//        {
+//            public LogicalName(string name) { Name = name; }
+//            public string Name { get; private set; }
+
+//            public string FullPath
+//            {
+//                get { IPAddress ipAddress; return (IPAddress.TryParse(MachineName, out ipAddress) ? PREFIX_TCP : PREFIX) + FullPathWithoutPrefix; }
+//            }
+
+//            public string FullPathWithoutPrefix
+//            {
+//                get { return MachineName + PRIVATE + QueueName; }
+//            }
+
+//            public string MachineName
+//            {
+//                get
 //                {
-//                    Logger.Warn("Queue " + q + " does not exist.");
-//                    Logger.Debug("Going to create queue: " + q);
-//                    CreateQueue(q);
+//                    string machine = Environment.MachineName;
+//                    var parts = Name.Split(new char[] { '@' });
+//                    return (((parts.Length >= 2) && (parts[1] != ".")) && (parts[1].ToLowerInvariant() != "localhost") ? parts[1] : machine);
 //                }
 //            }
-//            catch (Exception ex)
+
+//            public string QueueName
 //            {
-//                Logger.Error(string.Format("Could not create queue {0} or check its existence. Processing will still continue.", queueName), ex);
+//                get
+//                {
+//                    var parts = Name.Split(new char[] { '@' });
+//                    return (parts.Length >= 1 ? parts[0] : null);
+//                }
+//            }
+
+//            public bool IsLocal
+//            {
+//                get
+//                {
+//                    string machineName = Environment.MachineName.ToLowerInvariant();
+//                    var normalizedName = Name.ToLowerInvariant().Replace(PREFIX.ToLowerInvariant(), string.Empty);
+//                    int index = normalizedName.IndexOf('\\');
+//                    string queueMachineName = normalizedName.Substring(0, index);
+//                    return ((machineName == queueMachineName) || (queueMachineName == "localhost") || (queueMachineName == "."));
+//                }
 //            }
 //        }
-//    }
 
-//    public static string GetFullPath(string value)
-//    {
-//        IPAddress ipAddress;
-//        if (IPAddress.TryParse(GetMachineNameFromLogicalName(value), out ipAddress))
-//        {
-//            return (PREFIX_TCP + GetFullPathWithoutPrefix(value));
-//        }
-//        return (PREFIX + GetFullPathWithoutPrefix(value));
 //    }
-
-//    public static string GetFullPathWithoutPrefix(string value)
-//    {
-//        return (GetMachineNameFromLogicalName(value) + @"\private$\" + GetQueueNameFromLogicalName(value));
-//    }
-
-//    public static string GetIndependentAddressForQueue(MessageQueue q)
-//    {
-//        string CS$1$0000;
-//        if (q == null)
-//        {
-//            return null;
-//        }
-//        string[] arr = q.FormatName.Split(new char[] { '\\' });
-//        string queueName = arr[arr.Length - 1];
-//        int directPrefixIndex = arr[0].IndexOf("DIRECT=OS:");
-//        if (directPrefixIndex >= 0)
-//        {
-//            return (queueName + '@' + arr[0].Substring(directPrefixIndex + "DIRECT=OS:".Length));
-//        }
-//        try
-//        {
-//            arr = q.QueueName.Split(new char[] { '\\' });
-//            queueName = arr[arr.Length - 1];
-//            CS$1$0000 = queueName + '@' + q.MachineName;
-//        }
-//        catch
-//        {
-//            throw new Exception("MessageQueueException: '" + "DIRECT=OS:" + "' is missing. " + "FormatName='" + q.FormatName + "'");
-//        }
-//        return CS$1$0000;
-//    }
-
-//    public static string GetMachineNameFromLogicalName(string logicalName)
-//    {
-//        string[] arr = logicalName.Split(new char[] { '@' });
-//        string machine = Environment.MachineName;
-//        if (((arr.Length >= 2) && (arr[1] != ".")) && (arr[1].ToLower() != "localhost"))
-//        {
-//            machine = arr[1];
-//        }
-//        return machine;
-//    }
-
-//    public static string GetQueueNameFromLogicalName(string logicalName)
-//    {
-//        string[] arr = logicalName.Split(new char[] { '@' });
-//        if (arr.Length >= 1)
-//        {
-//            return arr[0];
-//        }
-//        return null;
-//    }
-
-//    public static bool QueueIsLocal(string value)
-//    {
-//        string machineName = Environment.MachineName.ToLower();
-//        value = value.ToLower().Replace(PREFIX.ToLower(), "");
-//        int index = value.IndexOf('\\');
-//        string queueMachineName = value.Substring(0, index).ToLower();
-//        if (!(machineName == queueMachineName) && !(queueMachineName == "localhost"))
-//        {
-//            return (queueMachineName == ".");
-//        }
-//        return true;
-//    }
-//}
 //}

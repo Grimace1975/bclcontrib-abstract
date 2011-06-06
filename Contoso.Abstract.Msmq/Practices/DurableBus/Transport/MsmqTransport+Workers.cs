@@ -43,7 +43,7 @@ namespace Contoso.Practices.DurableBus.Transport
 		{
 			lock (_workerThreads)
 			{
-				var result = new WorkerThread(new Action(Process));
+				var result = new WorkerThread(Process);
 				_workerThreads.Add(result);
 				result.Stopped += (sender, e) =>
 				{

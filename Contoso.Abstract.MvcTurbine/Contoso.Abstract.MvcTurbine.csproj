@@ -39,7 +39,8 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Abstract\Blades\CoreBlade.cs" />
+    <Compile Include="Abstract\z\CoreBlade.cs" />
+    <Compile Include="Abstract\TurbineAbstractApplication.cs" />
     <Compile Include="Abstract\RegistrationStub.cs" />
     <Compile Include="Abstract\TurbineServiceLocatorAbstractor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
