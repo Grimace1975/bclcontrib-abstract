@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /*
 The MIT License
 
@@ -23,27 +23,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Collections.Generic;
-namespace System.Abstract
+using System.Abstract;
+namespace Contoso.Practices.DurableBus.Transport
 {
-    /// <summary>
-    /// EventBus
-    /// </summary>
-    public struct EventBus : IServiceBus
-    {
-        private IServiceBus _parent;
-
-        public EventBus(IServiceBus parent)
-        {
-            if (parent == null)
-                throw new ArgumentNullException("parent");
-            _parent = parent;
-        }
-        public object GetService(Type serviceType) { return _parent.GetService(serviceType); }
-        public TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder)
-            where TMessage : IServiceMessage { return _parent.CreateMessage(messageBuilder); }
-        public IServiceBusCallback Send(IServiceBusLocation destination, params IServiceMessage[] messages) { return _parent.Send(destination, messages); }
-        public void Reply(params IServiceMessage[] messages) { _parent.Send(messages); }
-        public void Return<T>(T value) { _parent.Return(value); }
-    }
+	/// <summary>
+    /// TransportBase
+	/// </summary>
+	public abstract partial class TransportBase<T>
+	{
+        private static readonly IServiceLog ServiceLog = ServiceLogManager.Get<T>();
+	}
 }

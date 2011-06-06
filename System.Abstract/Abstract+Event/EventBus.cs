@@ -23,26 +23,32 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System.Collections.Generic;
 namespace System.Abstract
 {
-	/// <summary>
-	/// EmptyServiceLog
-	/// </summary>
-	public class EmptyServiceLog : IServiceLog
-	{
-		public IServiceLog Get(Type type) { return ServiceLogManager.EmptyServiceLog.Value; }
-		public IServiceLog Get(string name) { return ServiceLogManager.EmptyServiceLog.Value; }
+    /// <summary>
+    /// IEventBus
+    /// </summary>
+    public interface IEventBus : IServiceBus { }
 
-		public object GetService(Type serviceType)
-		{
-			throw new NotImplementedException();
-		}
+    /// <summary>
+    /// EventBus
+    /// </summary>
+    public struct EventBus : IEventBus
+    {
+        private IServiceBus _parent;
 
-		public void Error(string s, params object[] args) { }
-		public void Error(string s, Exception ex) { }
-		public void Warning(string s, params object[] args) { }
-		public void Warning(string s, Exception ex) { }
-		public void Debug(string s, params object[] args) { }
-		public void Debug(string s, Exception ex) { }
-	}
+        public EventBus(IServiceBus parent)
+        {
+            if (parent == null)
+                throw new ArgumentNullException("parent");
+            _parent = parent;
+        }
+        public object GetService(Type serviceType) { return _parent.GetService(serviceType); }
+        public TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder)
+            where TMessage : IServiceMessage { return _parent.CreateMessage(messageBuilder); }
+        public IServiceBusCallback Send(IServiceBusLocation destination, params IServiceMessage[] messages) { return _parent.Send(destination, messages); }
+        public void Reply(params IServiceMessage[] messages) { _parent.Send(messages); }
+        public void Return<T>(T value) { _parent.Return(value); }
+    }
 }
