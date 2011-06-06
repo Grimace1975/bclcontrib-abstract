@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System.Runtime.Serialization;
 namespace System.Abstract
 {
     /// <summary>
@@ -35,6 +36,8 @@ namespace System.Abstract
             : base(string.Format(Local.InvalidMessageTypeA, message)) { MessageType = message; }
         public ServiceBusMessageException(Type message, Exception innerException)
             : base(string.Format(Local.InvalidMessageTypeA, message), innerException) { MessageType = message; }
+        protected ServiceBusMessageException(SerializationInfo info, StreamingContext context)
+            : base(info, context) { }
 
         public Type MessageType { get; set; }
     }
