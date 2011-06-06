@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /*
 The MIT License
 
@@ -23,24 +23,22 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System;
 using System.Runtime.Serialization;
-namespace System.Abstract
+namespace Contoso.Practices.Cqrs.Command
 {
     /// <summary>
-    /// ServiceLocatorResolutionException
+    /// CommandHandlerNotFoundException
     /// </summary>
-    [Serializable]
-    public class ServiceLocatorResolutionException : Exception
+    public class CommandHandlerNotFoundException : Exception
     {
-        public ServiceLocatorResolutionException(Type service)
-            : base(string.Format(Local.InvalidServiceTypeA, service)) { ServiceType = service; }
-        public ServiceLocatorResolutionException(Type service, string arg0)
-            : base(string.Format(Local.InvalidServiceTypeAB, service, arg0)) { ServiceType = service; }
-        public ServiceLocatorResolutionException(Type service, Exception innerException)
-            : base(string.Format(Local.InvalidServiceTypeA, service), innerException) { ServiceType = service; }
-        protected ServiceLocatorResolutionException(SerializationInfo info, StreamingContext context)
+        public CommandHandlerNotFoundException(Type commandType)
+            : base(string.Format(Local.UndefinedCommandHandlerA, commandType)) { CommandType = commandType; }
+        public CommandHandlerNotFoundException(Type commandType, Exception innerException)
+            : base(string.Format(Local.UndefinedCommandHandlerA, commandType), innerException) { CommandType = commandType; }
+        protected CommandHandlerNotFoundException(SerializationInfo info, StreamingContext context)
             : base(info, context) { }
 
-        public Type ServiceType { get; set; }
+        public Type CommandType { get; set; }
     }
 }

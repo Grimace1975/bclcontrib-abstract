@@ -37,6 +37,9 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Contoso.Practices.Cqrs\Local.Designer.cs">
+      <Link>Local.Designer.cs</Link>
+    </Compile>
     <Compile Include="..\Contoso.Practices.Cqrs\Practices\Cqrs\+Command\CommandBus.cs">
       <Link>Practices\Cqrs\+Command\CommandBus.cs</Link>
     </Compile>
@@ -46,8 +49,14 @@
     <Compile Include="..\Contoso.Practices.Cqrs\Practices\Cqrs\+Command\CommandHandler2.cs">
       <Link>Practices\Cqrs\+Command\CommandHandler2.cs</Link>
     </Compile>
+    <Compile Include="..\Contoso.Practices.Cqrs\Practices\Cqrs\+Command\CommandHandlerNotFoundException.cs">
+      <Link>Practices\Cqrs\+Command\CommandHandlerNotFoundException.cs</Link>
+    </Compile>
     <Compile Include="..\Contoso.Practices.Cqrs\Practices\Cqrs\+Command\CommandWithAggregate.cs">
       <Link>Practices\Cqrs\+Command\CommandWithAggregate.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Practices.Cqrs\Practices\Cqrs\+Command\DuplicateCommandHandlerFoundException.cs">
+      <Link>Practices\Cqrs\+Command\DuplicateCommandHandlerFoundException.cs</Link>
     </Compile>
     <Compile Include="..\Contoso.Practices.Cqrs\Practices\Cqrs\+Command\HandlerErrorIntent.cs">
       <Link>Practices\Cqrs\+Command\HandlerErrorIntent.cs</Link>
@@ -63,12 +72,24 @@
   <ItemGroup>
     <None Include="BclContrib.snk" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="..\Contoso.Practices.Cqrs\Local.resx">
+      <Link>Local.resx</Link>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\System.Abstract.4\System.Abstract.4.csproj">
       <Project>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</Project>
       <Name>System.Abstract.4</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Contoso.Practices.Cqrs\Changelog.txt">
+      <Link>Changelog.txt</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

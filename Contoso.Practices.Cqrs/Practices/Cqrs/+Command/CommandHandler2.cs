@@ -35,6 +35,9 @@ namespace Contoso.Practices.Cqrs
 		where TCommand : ICommandWithAggregate
 		where TAggregate : AggregateRoot
 	{
+        public CommandHandler(ICqrsContext context)
+            : base(context) { }
+
 		public override void Handle(TCommand command)
 		{
 			var aggregateRepository = GetAggregateRepository();
@@ -52,9 +55,9 @@ namespace Contoso.Practices.Cqrs
 
 		protected abstract void Handle(TCommand command, TAggregate aggregate);
 
-		private static IAggregateRootRepository GetAggregateRepository()
+		private IAggregateRootRepository GetAggregateRepository()
 		{
-			return null;
-		}
+            return Context.AggregateRepository;
+        }
 	}
 }

@@ -37,6 +37,9 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Contoso.Practices.DurableBus\Local.Designer.cs">
+      <Link>Local.Designer.cs</Link>
+    </Compile>
     <Compile Include="..\Contoso.Practices.DurableBus\Practices\DurableBus\DurableBusContext.cs">
       <Link>Practices\DurableBus\DurableBusContext.cs</Link>
     </Compile>
@@ -53,6 +56,19 @@
       <Project>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</Project>
       <Name>System.Abstract.4</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Contoso.Practices.DurableBus\Changelog.txt">
+      <Link>Changelog.txt</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Contoso.Practices.DurableBus\Local.resx">
+      <Link>Local.resx</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

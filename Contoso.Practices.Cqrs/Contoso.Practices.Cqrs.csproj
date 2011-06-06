@@ -37,19 +37,23 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Local.Designer.cs">
+      <DependentUpon>Local.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Practices\Cqrs\+Command\HandlerErrorIntent.cs" />
     <Compile Include="Practices\Cqrs\+Command\CommandBus.cs" />
+    <Compile Include="Practices\Cqrs\+Command\ICommandDispatcher.cs" />
     <Compile Include="Practices\Cqrs\CqrsContext.cs" />
     <Compile Include="Practices\Cqrs\+Command\CommandHandler2.cs" />
     <Compile Include="Practices\Cqrs\+Command\CommandHandler.cs" />
-    <Compile Include="Practices\Cqrs\x\CommandHandlerNotFoundException.cs" />
-    <Compile Include="Practices\Cqrs\x\CommandInvokerDictionaryBuilderHelpers.cs" />
+    <Compile Include="Practices\Cqrs\+Command\CommandHandlerNotFoundException.cs" />
+    <Compile Include="Practices\Cqrs\+Command+Impl\RegistryCommandDispatcher.cs" />
     <Compile Include="Practices\Cqrs\+Command\CommandWithAggregate.cs" />
-    <Compile Include="Practices\Cqrs\x\DuplicateCommandHandlersException.cs" />
-    <Compile Include="Practices\Cqrs\x\ExecuteTimeoutException.cs" />
+    <Compile Include="Practices\Cqrs\+Command\DuplicateCommandHandlerFoundException.cs" />
     <Compile Include="Practices\Cqrs\+Command\ICommand.cs" />
     <Compile Include="Practices\Cqrs\x\LocalCommandBus.cs" />
-    <Compile Include="Practices\Cqrs\x\EventHandlerFactory.cs" />
     <Compile Include="Practices\Cqrs\x\LocalEventBus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -66,7 +70,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Practices\Cqrs\+Event\" />
+    <EmbeddedResource Include="Local.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Local.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

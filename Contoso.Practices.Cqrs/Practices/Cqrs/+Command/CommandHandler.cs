@@ -27,30 +27,39 @@ using System;
 using System.Abstract;
 namespace Contoso.Practices.Cqrs
 {
-	/// <summary>
-	/// ICommandHandler
-	/// </summary>
-	public interface ICommandHandler<TCommand> : IServiceMessageHandler<TCommand>
-		where TCommand : ICommand { }
+    /// <summary>
+    /// ICommandHandler
+    /// </summary>
+    public interface ICommandHandler<TCommand> : IServiceMessageHandler<TCommand>
+        where TCommand : ICommand { }
 
-	/// <summary>
-	/// CommandHandler
-	/// </summary>
-	public abstract class CommandHandler<TCommand> : ICommandHandler<TCommand>
-		where TCommand : ICommand
-	{
-		void IServiceMessageHandler<TCommand>.Handle(TCommand command)
-		{
-			var validateResult = Validate(command);
-			if (validateResult == null)
-				Handle(command);
-			else
-				HandleError(command, HandlerErrorIntent.ValidationFailure, validateResult);
-		}
+    /// <summary>
+    /// CommandHandler
+    /// </summary>
+    public abstract class CommandHandler<TCommand> : ICommandHandler<TCommand>
+        where TCommand : ICommand
+    {
+        public CommandHandler(ICqrsContext context)
+        {
+            if (context == null)
+                throw new ArgumentNullException("context");
+            Context = context;
+        }
 
-		protected virtual object Validate(TCommand command) { return null; }
+        void IServiceMessageHandler<TCommand>.Handle(TCommand command)
+        {
+            var validateResult = Validate(command);
+            if (validateResult == null)
+                Handle(command);
+            else
+                HandleError(command, HandlerErrorIntent.ValidationFailure, validateResult);
+        }
 
-		public abstract void Handle(TCommand command);
-		protected virtual void HandleError(TCommand command, HandlerErrorIntent errorIntent, object value) { throw new InvalidOperationException(); }
-	}
+        public ICqrsContext Context { get; private set; }
+
+        protected virtual object Validate(TCommand command) { return null; }
+
+        public abstract void Handle(TCommand command);
+        protected virtual void HandleError(TCommand command, HandlerErrorIntent errorIntent, object value) { throw new InvalidOperationException(); }
+    }
 }
