@@ -5,11 +5,16 @@ echo refreshing packages:
 echo Abstract
 pushd BclContrib-Abstract
 set SRC=..\..\System.Abstract
+set SRC2=..\..\System.Abstract.Configuration
 xcopy %SRC%\Changelog.txt . /Y/Q
 xcopy %SRC%\bin\Release\System.Abstract.dll lib\NET35\ /Y/Q
 xcopy %SRC%\bin\Release\System.Abstract.xml lib\NET35\ /Y/Q
+xcopy %SRC2%\bin\Release\System.Abstract.Configuration.dll lib\NET35\ /Y/Q
+xcopy %SRC2%\bin\Release\System.Abstract.Configuration.xml lib\NET35\ /Y/Q
 xcopy %SRC%.4\bin\Release\System.Abstract.dll lib\NET40\ /Y/Q
 xcopy %SRC%.4\bin\Release\System.Abstract.xml lib\NET40\ /Y/Q
+xcopy %SRC2%.4\bin\Release\System.Abstract.Configuration.dll lib\NET40\ /Y/Q
+xcopy %SRC2%.4\bin\Release\System.Abstract.Configuration.xml lib\NET40\ /Y/Q
 popd
 
 ::
