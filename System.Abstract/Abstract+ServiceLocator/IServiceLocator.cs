@@ -60,7 +60,6 @@ namespace System.Abstract
         void Release(object instance);
         void TearDown<TService>(TService instance)
             where TService : class;
-        void Reset();
     }
 
     /// <summary>

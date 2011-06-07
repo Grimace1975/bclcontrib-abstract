@@ -129,6 +129,10 @@ set SRC=..\..\Contoso.Abstract.MvcTurbine
 xcopy %SRC%\Changelog.txt . /Y/Q
 xcopy %SRC%\bin\Release\Contoso.Abstract.MvcTurbine.dll lib\NET35\ /Y/Q
 xcopy %SRC%\bin\Release\Contoso.Abstract.MvcTurbine.xml lib\NET35\ /Y/Q
+xcopy %SRC%\lib\MvcTurbine.dll lib\NET35\ /Y/Q
+xcopy %SRC%\lib\MvcTurbine.xml lib\NET35\ /Y/Q
+xcopy %SRC%\lib\MvcTurbine.Web.dll lib\NET35\ /Y/Q
+xcopy %SRC%\lib\MvcTurbine.Web.xml lib\NET35\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.MvcTurbine.dll lib\NET40\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.MvcTurbine.xml lib\NET40\ /Y/Q
 popd

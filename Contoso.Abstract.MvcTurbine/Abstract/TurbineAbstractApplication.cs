@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if CLR4
 using System;
 using MvcTurbine.Web;
 using MvcTurbine.ComponentModel;
@@ -42,4 +41,3 @@ namespace Contoso.Abstract
         }
 	}
 }
-#endif

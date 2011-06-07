@@ -125,12 +125,9 @@ namespace Contoso.Abstract
             where TService : class { return Container.InjectProperties(instance); }
 
         // release and teardown
-        [Obsolete("Not used for any real purposes.")]
         public void Release(object instance) { throw new NotSupportedException(); }
-        [Obsolete("Not used for any real purposes.")]
         public void TearDown<TService>(TService instance)
             where TService : class { throw new NotSupportedException(); }
-        public void Reset() { Dispose(); }
 
         #region Domain specific
 
