@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if CLR4
 using System;
 using MvcTurbine.ComponentModel;
 using System.Collections.Generic;
@@ -51,7 +50,7 @@ namespace Contoso.Abstract
 		public void Dispose() { }
 		public IServiceRegistrar Batch() { return new RegistrationStub(); }
 
-		// Register
+		// register
 		public void Register<Interface>(Func<Interface> factoryMethod)
 			where Interface : class { _registrar.Register(l => factoryMethod()); }
 		public void Register<Interface>(Interface instance)
@@ -71,7 +70,7 @@ namespace Contoso.Abstract
 			_registrar.Register(typeof(Interface), implType);
 		}
 
-		// Resolve
+		// resolve
 		public object Resolve(Type type)
 		{
 			try { return _locator.Resolve(type); }
@@ -95,8 +94,7 @@ namespace Contoso.Abstract
 			try { return _locator.Resolve<T>(); }
 			catch (System.Abstract.ServiceLocatorResolutionException ex) { throw RepackException(ex); }
 		}
-
-		// ResolveAll
+        //
 		public IList<object> ResolveServices(Type type)
 		{
 			try { return (IList<object>)_locator.ResolveAll(type); }
@@ -109,7 +107,18 @@ namespace Contoso.Abstract
 			catch (System.Abstract.ServiceLocatorResolutionException ex) { throw RepackException(ex); }
 		}
 
-		private static ServiceResolutionException RepackException(System.Abstract.ServiceLocatorResolutionException ex) { return new ServiceResolutionException(ex.ServiceType, ex.InnerException); }
-	}
-}
+#if !CLR4
+        // inject
+        public TService Inject<TService>(TService instance)
+            where TService : class { return _locator.Inject<TService>(instance); }
+
+        // release and teardown
+        public void Release(object instance) { _locator.Release(instance); }
+        public void TearDown<TService>(TService instance)
+            where TService : class { _locator.TearDown<TService>(instance); }
+        public void Reset() { Dispose(); }
 #endif
+
+        private static ServiceResolutionException RepackException(System.Abstract.ServiceLocatorResolutionException ex) { return new ServiceResolutionException(ex.ServiceType, ex.InnerException); }
+    }
+}

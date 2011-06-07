@@ -138,12 +138,9 @@ namespace Contoso.Abstract
         }
 
         // release and teardown
-        [Obsolete("Not used with this implementation of IServiceLocator.")]
         public void Release(object instance) { throw new NotSupportedException(); }
-        [Obsolete("Not used with this implementation of IServiceLocator.")]
         public void TearDown<TService>(TService instance)
             where TService : class { throw new NotSupportedException(); }
-        public void Reset() { Dispose(); }
 
         #region Domain specific
 

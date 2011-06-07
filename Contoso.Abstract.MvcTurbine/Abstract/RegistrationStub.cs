@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if CLR4
 using System;
 using MvcTurbine.ComponentModel;
 using System.Collections.Generic;
@@ -51,4 +50,3 @@ namespace Contoso.Abstract
 		public void RegisterAll<Interface>() { throw new NotImplementedException(); }
 	}
 }
-#endif

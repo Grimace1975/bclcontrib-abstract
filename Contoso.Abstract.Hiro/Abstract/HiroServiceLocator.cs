@@ -137,10 +137,9 @@ namespace Contoso.Abstract
             where TService : class { return null; }
 
         // release and teardown
-        public void Release(object instance) { }
+        public void Release(object instance) { throw new NotSupportedException(); }
         public void TearDown<TService>(TService instance)
-            where TService : class { }
-        public void Reset() { Dispose(); }
+            where TService : class { throw new NotSupportedException(); }
 
         #region Domain specific
 

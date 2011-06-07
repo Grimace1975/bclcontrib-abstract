@@ -134,7 +134,6 @@ namespace Contoso.Abstract
             if (instance != null)
                 _container.Teardown(instance);
         }
-        public void Reset() { Dispose(); }
 
         #region Domain specific
 

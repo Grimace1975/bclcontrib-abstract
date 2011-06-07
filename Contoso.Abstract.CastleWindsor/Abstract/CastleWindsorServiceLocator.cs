@@ -145,7 +145,6 @@ namespace Contoso.Abstract
                 foreach (var property in instance.GetType().GetProperties().Where(x => _kernel.HasComponent(x.PropertyType)))
                     _container.Release(property.GetValue(instance, null));
         }
-        public void Reset() { Dispose(); }
 
         #region Domain specific
 
