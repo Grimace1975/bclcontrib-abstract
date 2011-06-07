@@ -99,6 +99,9 @@
     <Compile Include="Abstract+ServiceLocator\ServiceRegistrarNamespaceWrapper.cs" />
     <Compile Include="Abstract+ServiceLocator\IWantToSkipServiceRegistration.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceLocatorNamespaceWrapper.cs" />
+    <Compile Include="Abstract\Parts+TypeGrapher\ITypeCacheSerializer.cs" />
+    <Compile Include="Abstract\Parts+TypeGrapher\ITypeCache.cs" />
+    <Compile Include="Abstract\Parts+TypeGrapher+Impl\BuildManagerTypeCache.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceLog\TraceSourceServiceLog.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceLog\StreamServiceLog.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceLog\EmptyServiceLog.cs" />

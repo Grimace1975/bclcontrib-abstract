@@ -46,6 +46,28 @@ xcopy %SRC%.4\bin\Release\Contoso.Abstract.CastleWindsor.xml lib\NET40\ /Y/Q
 popd
 
 ::
+echo Abstract.DurableBus
+pushd BclContrib-Abstract.DurableBus
+set SRC=..\..\Contoso.Practices.DurableBus
+xcopy %SRC%\Changelog.txt . /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Practices.DurableBus.dll lib\NET35\ /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Practices.DurableBus.xml lib\NET35\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Practices.DurableBus.dll lib\NET40\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Practices.DurableBus.xml lib\NET40\ /Y/Q
+popd
+
+::
+echo Abstract.Cqrs
+pushd BclContrib-Abstract.Cqrs
+set SRC=..\..\Contoso.Practices.Cqrs
+xcopy %SRC%\Changelog.txt . /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Practices.Cqrs.dll lib\NET35\ /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Practices.Cqrs.xml lib\NET35\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Practices.Cqrs.dll lib\NET40\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Practices.Cqrs.xml lib\NET40\ /Y/Q
+popd
+
+::
 echo Abstract.Hiro
 pushd BclContrib-Abstract.Hiro
 set SRC=..\..\Contoso.Abstract.Hiro
@@ -164,28 +186,6 @@ xcopy %SRC%\bin\Release\Contoso.Abstract.ServerAppFabric.dll lib\NET35\ /Y/Q
 xcopy %SRC%\bin\Release\Contoso.Abstract.ServerAppFabric.xml lib\NET35\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.ServerAppFabric.dll lib\NET40\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.ServerAppFabric.xml lib\NET40\ /Y/Q
-popd
-
-::
-echo Abstract.SimpleBus
-pushd BclContrib-Abstract.SimpleBus
-set SRC=..\..\Contoso.Practices.SimpleBus
-xcopy %SRC%\Changelog.txt . /Y/Q
-xcopy %SRC%\bin\Release\Contoso.Practices.SimpleBus.dll lib\NET35\ /Y/Q
-xcopy %SRC%\bin\Release\Contoso.Practices.SimpleBus.xml lib\NET35\ /Y/Q
-xcopy %SRC%.4\bin\Release\Contoso.Practices.SimpleBus.dll lib\NET40\ /Y/Q
-xcopy %SRC%.4\bin\Release\Contoso.Practices.SimpleBus.xml lib\NET40\ /Y/Q
-popd
-
-::
-echo Abstract.SimpleCqrs
-pushd BclContrib-Abstract.SimpleCqrs
-set SRC=..\..\Contoso.Practices.SimpleCqrs
-xcopy %SRC%\Changelog.txt . /Y/Q
-xcopy %SRC%\bin\Release\Contoso.Practices.SimpleCqrs.dll lib\NET35\ /Y/Q
-xcopy %SRC%\bin\Release\Contoso.Practices.SimpleCqrs.xml lib\NET35\ /Y/Q
-xcopy %SRC%.4\bin\Release\Contoso.Practices.SimpleCqrs.dll lib\NET40\ /Y/Q
-xcopy %SRC%.4\bin\Release\Contoso.Practices.SimpleCqrs.xml lib\NET40\ /Y/Q
 popd
 
 ::

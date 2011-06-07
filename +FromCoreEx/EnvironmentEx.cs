@@ -30,9 +30,8 @@ namespace System
     /// <summary>
     /// EnvironmentEx
     /// </summary>
- static partial class EnvironmentEx
+    static partial class EnvironmentEx
     {
-
         [SecurityCritical]
         internal static string GetResourceFromDefault(string key) { return key; }
 

@@ -31,25 +31,16 @@ using System.Reflection;
 namespace System.Abstract.Parts
 {
     /// <summary>
-    /// ITypeCacheSerializer
-    /// </summary>
-    public interface ITypeCacheSerializer
-    {
-        IEnumerable<Type> DeserializeTypes(TextReader input);
-        void SerializeTypes(IEnumerable<Type> types, TextWriter output);
-    }
-
-    /// <summary>
     /// TypeCacheSerializer
     /// </summary>
     public class TypeCacheSerializer : ITypeCacheSerializer
     {
         private static readonly Guid _versionId = typeof(TypeCacheSerializer).Module.ModuleVersionId;
 
-        public IEnumerable<Type> DeserializeTypes(TextReader input)
+        public IEnumerable<Type> DeserializeTypes(TextReader i)
         {
             var document = new XmlDocument();
-            document.Load(input);
+            document.Load(i);
             var documentElement = document.DocumentElement;
             var guid = new Guid(documentElement.Attributes["versionId"].Value);
             if (guid != _versionId)
@@ -74,7 +65,7 @@ namespace System.Abstract.Parts
             return list;
         }
 
-        public void SerializeTypes(IEnumerable<Type> types, TextWriter output)
+        public void SerializeTypes(IEnumerable<Type> types, TextWriter o)
         {
             var document = new XmlDocument();
             document.AppendChild(document.CreateComment("TypeCache_DoNotModify"));
@@ -102,7 +93,7 @@ namespace System.Abstract.Parts
                     }
                 }
             }
-            document.Save(output);
+            document.Save(o);
         }
 
         private DateTime CurrentDate

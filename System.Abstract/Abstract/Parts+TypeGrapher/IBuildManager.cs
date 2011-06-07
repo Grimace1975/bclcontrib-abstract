@@ -25,6 +25,8 @@ THE SOFTWARE.
 #endregion
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
 namespace System.Abstract.Parts
 {
     /// <summary>
@@ -34,7 +36,7 @@ namespace System.Abstract.Parts
     {
         Stream CreateCachedFile(string fileName);
         object CreateInstanceFromVirtualPath(string virtualPath, Type requiredBaseType);
-        ICollection GetReferencedAssemblies();
+        IEnumerable<Assembly> GetReferencedAssemblies();
         Stream ReadCachedFile(string fileName);
     }
 }

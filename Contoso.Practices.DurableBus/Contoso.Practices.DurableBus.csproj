@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Contoso.Practices</RootNamespace>
-    <AssemblyName>Contoso.Practices.SimpleBus</AssemblyName>
+    <AssemblyName>Contoso.Practices.DurableBus</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
