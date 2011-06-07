@@ -130,9 +130,7 @@ xcopy %SRC%\Changelog.txt . /Y/Q
 xcopy %SRC%\bin\Release\Contoso.Abstract.MvcTurbine.dll lib\NET35\ /Y/Q
 xcopy %SRC%\bin\Release\Contoso.Abstract.MvcTurbine.xml lib\NET35\ /Y/Q
 xcopy %SRC%\lib\MvcTurbine.dll lib\NET35\ /Y/Q
-xcopy %SRC%\lib\MvcTurbine.xml lib\NET35\ /Y/Q
 xcopy %SRC%\lib\MvcTurbine.Web.dll lib\NET35\ /Y/Q
-xcopy %SRC%\lib\MvcTurbine.Web.xml lib\NET35\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.MvcTurbine.dll lib\NET40\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.MvcTurbine.xml lib\NET40\ /Y/Q
 popd
@@ -267,6 +265,20 @@ xcopy %SRC%\bin\Release\Contoso.Abstract.Web.Mvc.dll lib\NET35\ /Y/Q
 xcopy %SRC%\bin\Release\Contoso.Abstract.Web.Mvc.xml lib\NET35\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.Web.Mvc.dll lib\NET40\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.Web.Mvc.xml lib\NET40\ /Y/Q
+popd
+
+::
+echo Hiro
+pushd Hiro
+set SRC=..\Library_\Hiro
+xcopy %SRC%\* lib\ /Y/Q
+popd
+
+::
+echo ServerAppFabric.Client
+pushd ServerAppFabric.Client
+set SRC=..\Library_\ServerAppFabric.Client
+xcopy %SRC%\* lib\ /Y/Q
 popd
 
 pause

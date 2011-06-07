@@ -39,8 +39,13 @@ namespace System.Abstract.Parts
         private static readonly object _lock = new object();
 
         public static Lazy<TIService> Lazy { get; private set; }
-        public static Lazy<TIService> SetProvider(Func<TIService> provider) { return Lazy = new Lazy<TIService>(provider); }
-        public static Lazy<TIService> SetProvider(Func<TIService> provider, ISetupDescriptor setup) { return Lazy = new Lazy<TIService>(provider); }
+        public static Lazy<TIService> SetProvider(Func<TIService> provider)
+        {
+            if (provider == null)
+                throw new ArgumentNullException("provider");
+            return Lazy = new Lazy<TIService>(provider);
+        }
+        public static Lazy<TIService> SetProvider(Func<TIService> provider, ISetupDescriptor setupDescriptor) { SetSetupDescriptor(SetProvider(provider), setupDescriptor); return Lazy; }
         protected static SetupRegistration Registration { get; set; }
 
         // Force "precise" initialization
@@ -128,6 +133,21 @@ namespace System.Abstract.Parts
             ISetupDescriptor setupDescriptor;
             _setupDescriptors.TryGetValue(service, out setupDescriptor);
             return onSetup(instance, setupDescriptor);
+        }
+
+        /// <summary>
+        /// SetSetupDescriptor
+        /// </summary>
+        protected static void SetSetupDescriptor(Lazy<TIService> service, ISetupDescriptor setupDescriptor)
+        {
+            if (service == null)
+                throw new ArgumentNullException("service");
+            if (setupDescriptor == null)
+                throw new ArgumentNullException("setupDescriptor");
+            ISetupDescriptor setupDescriptor2;
+            if (_setupDescriptors.TryGetValue(service, out setupDescriptor2))
+                throw new InvalidOperationException(string.Format(Local.RedefineSetupDescriptorA, service.ToString()));
+            _setupDescriptors.Add(service, setupDescriptor);
         }
 
         /// <summary>

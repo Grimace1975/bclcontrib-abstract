@@ -124,7 +124,7 @@ namespace System.Abstract {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RedefineDataCacheAB.
+        ///   Looks up a localized string similar to RedefineDataCacheAB {0} {1}.
         /// </summary>
         internal static string RedefineDataCacheAB {
             get {
@@ -133,16 +133,34 @@ namespace System.Abstract {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to RedefineIDA.
+        ///   Looks up a localized string similar to RedefineIDA {0}.
         /// </summary>
-        internal static string RedefineNameA {
+        internal static string RedefineIDA {
             get {
                 return ResourceManager.GetString("RedefineIDA", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ScopeCharacterNotAllowedA.
+        ///   Looks up a localized string similar to RedefineNameA {0}.
+        /// </summary>
+        internal static string RedefineNameA {
+            get {
+                return ResourceManager.GetString("RedefineNameA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to RedefineSetupDescriptorA {0}.
+        /// </summary>
+        internal static string RedefineSetupDescriptorA {
+            get {
+                return ResourceManager.GetString("RedefineSetupDescriptorA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ScopeCharacterNotAllowedA {0}.
         /// </summary>
         internal static string ScopeCharacterNotAllowedA {
             get {
@@ -151,7 +169,7 @@ namespace System.Abstract {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UndefinedServiceCacheRegistrationA.
+        ///   Looks up a localized string similar to UndefinedServiceCacheRegistrationA {0}.
         /// </summary>
         internal static string UndefinedServiceCacheRegistrationA {
             get {
@@ -160,7 +178,7 @@ namespace System.Abstract {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UndefinedServiceCacheRegistrationAB.
+        ///   Looks up a localized string similar to UndefinedServiceCacheRegistrationAB {0} {1}.
         /// </summary>
         internal static string UndefinedServiceCacheRegistrationAB {
             get {
@@ -169,7 +187,7 @@ namespace System.Abstract {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to UndefinedServiceProviderA.
+        ///   Looks up a localized string similar to UndefinedServiceProviderA {0}.
         /// </summary>
         internal static string UndefinedServiceProviderA {
             get {

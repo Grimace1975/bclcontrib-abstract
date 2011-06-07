@@ -139,21 +139,27 @@
     <value>RedefineCacheDependency</value>
   </data>
   <data name="RedefineDataCacheAB" xml:space="preserve">
-    <value>RedefineDataCacheAB</value>
+    <value>RedefineDataCacheAB {0} {1}</value>
   </data>
   <data name="RedefineIDA" xml:space="preserve">
-    <value>RedefineIDA</value>
+    <value>RedefineIDA {0}</value>
   </data>
   <data name="ScopeCharacterNotAllowedA" xml:space="preserve">
-    <value>ScopeCharacterNotAllowedA</value>
+    <value>ScopeCharacterNotAllowedA {0}</value>
   </data>
   <data name="UndefinedServiceCacheRegistrationA" xml:space="preserve">
-    <value>UndefinedServiceCacheRegistrationA</value>
+    <value>UndefinedServiceCacheRegistrationA {0}</value>
   </data>
   <data name="UndefinedServiceCacheRegistrationAB" xml:space="preserve">
-    <value>UndefinedServiceCacheRegistrationAB</value>
+    <value>UndefinedServiceCacheRegistrationAB {0} {1}</value>
   </data>
   <data name="UndefinedServiceProviderA" xml:space="preserve">
-    <value>UndefinedServiceProviderA</value>
+    <value>UndefinedServiceProviderA {0}</value>
+  </data>
+  <data name="RedefineSetupDescriptorA" xml:space="preserve">
+    <value>RedefineSetupDescriptorA {0}</value>
+  </data>
+  <data name="RedefineNameA" xml:space="preserve">
+    <value>RedefineNameA {0}</value>
   </data>
 </root>

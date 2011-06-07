@@ -39,20 +39,13 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Hiro">
-      <HintPath>..\packages\Hiro.1.0.1\lib\Hiro.dll</HintPath>
+    <Reference Include="Hiro, Version=0.1.0.19167, Culture=neutral, PublicKeyToken=f0efb83db47c0105, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Hiro.1.0.2\lib\Hiro.dll</HintPath>
     </Reference>
-    <Reference Include="Hiro.Containers">
-      <HintPath>..\packages\Hiro.1.0.1\lib\Hiro.Containers.dll</HintPath>
-    </Reference>
-    <Reference Include="LinFu.Finders">
-      <HintPath>..\packages\Hiro.1.0.1\lib\LinFu.Finders.dll</HintPath>
-    </Reference>
-    <Reference Include="Mono.Cecil">
-      <HintPath>..\packages\Hiro.1.0.1\lib\Mono.Cecil.dll</HintPath>
-    </Reference>
-    <Reference Include="NGenerics">
-      <HintPath>..\packages\Hiro.1.0.1\lib\NGenerics.dll</HintPath>
+    <Reference Include="Hiro.Containers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0efb83db47c0105, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Packages\Hiro.1.0.2\lib\Hiro.Containers.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>

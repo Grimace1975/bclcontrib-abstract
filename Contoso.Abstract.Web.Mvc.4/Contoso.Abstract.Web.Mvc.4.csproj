@@ -80,7 +80,11 @@
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="..\Contoso.Abstract.Web.Mvc\Changelog.txt">
+      <Link>Changelog.txt</Link>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\System.Abstract.4\System.Abstract.4.csproj">
       <Project>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</Project>
