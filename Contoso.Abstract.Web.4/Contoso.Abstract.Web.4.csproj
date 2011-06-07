@@ -43,6 +43,9 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Contoso.Abstract.Web\Abstract\Parts\BuildManagerWrapper.cs">
+      <Link>Abstract\Parts\BuildManagerWrapper.cs</Link>
+    </Compile>
     <Compile Include="..\Contoso.Abstract.Web\Abstract\WebServiceCache.cs">
       <Link>Abstract\WebServiceCache.cs</Link>
     </Compile>

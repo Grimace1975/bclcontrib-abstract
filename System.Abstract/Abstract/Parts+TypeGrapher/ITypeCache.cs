@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
 The MIT License
 
@@ -23,24 +23,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
-namespace Contoso.Practices.DurableBus.Transport
+using System.Collections.Generic;
+using System.Reflection;
+namespace System.Abstract.Parts
 {
     /// <summary>
-    /// ITransport
+    /// ITypeCache
     /// </summary>
-    public interface ITransport : IDisposable
+    public interface ITypeCache
     {
-        event EventHandler<MessageReceivedEventArgs> MessageReceived;
-        event EventHandler MessageProcessing;
-        event EventHandler MessageProcessingFailed;
-        event EventHandler MessageProcessed;
-        void AbortCurrentMessage();
-        int PendingMessages { get; }
-        void ReceiveMessageLater(TransportMessage m);
-        void Send(TransportMessage m, string destination);
-        void Start();
-        string Address { get; }
-        int WorkerThreads { get; set; }
+        IEnumerable<Type> GetFilteredTypesFromAssemblies(string cacheName, Predicate<Type> predicate);
+        IEnumerable<Type> GetFilteredTypesFromAssemblies(string cacheName, Predicate<Type> predicate, IEnumerable<Assembly> assemblies);
     }
 }

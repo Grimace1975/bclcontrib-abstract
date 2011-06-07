@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Contoso.Practices</RootNamespace>
-    <AssemblyName>Contoso.Practices.SimpleCqrs</AssemblyName>
+    <AssemblyName>Contoso.Practices.Cqrs</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

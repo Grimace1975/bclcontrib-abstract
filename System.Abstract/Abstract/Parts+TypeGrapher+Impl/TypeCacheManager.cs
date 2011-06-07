@@ -34,34 +34,9 @@ namespace System.Abstract.Parts
     /// </summary>
     public class TypeCacheManager
     {
-        private static IEnumerable<Type> FilterTypesInAssemblies(IBuildManager buildManager, Predicate<Type> predicate)
+        public static IEnumerable<Type> ReadTypesFromCache(IBuildManager buildManager, string cacheName, Predicate<Type> predicate, ITypeCacheSerializer serializer)
         {
-            IEnumerable<Type> emptyTypes = Type.EmptyTypes;
-            foreach (Assembly assembly in buildManager.GetReferencedAssemblies())
-            {
-                Type[] types;
-                try { types = assembly.GetTypes(); }
-                catch (ReflectionTypeLoadException exception) { types = exception.Types; }
-                emptyTypes = emptyTypes.Concat(types);
-            }
-            return emptyTypes.Where(type => TypeIsPublicClass(type) && predicate(type));
-        }
-
-        public static IEnumerable<Type> GetFilteredTypesFromAssemblies(IBuildManager buildManager, string cacheName, Predicate<Type> predicate) { return GetFilteredTypesFromAssemblies(buildManager, cacheName, predicate, new TypeCacheSerializer()); }
-        public static IEnumerable<Type> GetFilteredTypesFromAssemblies(IBuildManager buildManager, string cacheName, Predicate<Type> predicate, ITypeCacheSerializer serializer)
-        {
-            var matchingTypes = ReadTypesFromCache(buildManager, cacheName, predicate, serializer);
-            if (matchingTypes == null)
-            {
-                matchingTypes = FilterTypesInAssemblies(buildManager, predicate).ToList();
-                SaveTypesToCache(buildManager, cacheName, matchingTypes, serializer);
-            }
-            return matchingTypes;
-        }
-
-        private static IEnumerable<Type> ReadTypesFromCache(IBuildManager buildManager, string cacheName, Predicate<Type> predicate, ITypeCacheSerializer serializer)
-        {
-            Func<Type, bool> func = null;
+            Func<Type, bool> func = type => (TypeIsPublicClass(type) && predicate(type));
             try
             {
                 using (var s = buildManager.ReadCachedFile(cacheName))
@@ -70,19 +45,15 @@ namespace System.Abstract.Parts
                         {
                             var source = serializer.DeserializeTypes(r);
                             if (source != null)
-                            {
-                                if (func == null)
-                                    func = type => (TypeIsPublicClass(type) && predicate(type));
                                 if (source.All(func))
                                     return source;
-                            }
                         }
             }
             catch { }
             return null;
         }
 
-        private static void SaveTypesToCache(IBuildManager buildManager, string cacheName, IEnumerable<Type> matchingTypes, ITypeCacheSerializer serializer)
+        public static void SaveTypesToCache(IBuildManager buildManager, string cacheName, IEnumerable<Type> matchingTypes, ITypeCacheSerializer serializer)
         {
             try
             {
@@ -94,7 +65,7 @@ namespace System.Abstract.Parts
             catch { }
         }
 
-        private static bool TypeIsPublicClass(Type type)
+        public static bool TypeIsPublicClass(Type type)
         {
             return ((type != null) && type.IsPublic && type.IsClass && !type.IsAbstract);
         }

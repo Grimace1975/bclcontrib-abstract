@@ -312,6 +312,9 @@
     <Compile Include="..\System.Abstract\Abstract\AService.cs">
       <Link>Abstract\AService.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract\Parts+TypeGrapher+Impl\BuildManagerTypeCache.cs">
+      <Link>Abstract\Parts+TypeGrapher+Impl\BuildManagerTypeCache.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract\Parts+TypeGrapher+Impl\TypeCacheManager.cs">
       <Link>Abstract\Parts+TypeGrapher+Impl\TypeCacheManager.cs</Link>
     </Compile>
@@ -320,6 +323,12 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract\Parts+TypeGrapher\IBuildManager.cs">
       <Link>Abstract\Parts+TypeGrapher\IBuildManager.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract\Parts+TypeGrapher\ITypeCache.cs">
+      <Link>Abstract\Parts+TypeGrapher\ITypeCache.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract\Parts+TypeGrapher\ITypeCacheSerializer.cs">
+      <Link>Abstract\Parts+TypeGrapher\ITypeCacheSerializer.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract\Parts+TypeSerializer\ITypeSerializer.cs">
       <Link>Abstract\Parts+TypeSerializer\ITypeSerializer.cs</Link>

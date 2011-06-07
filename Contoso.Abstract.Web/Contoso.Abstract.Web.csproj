@@ -41,6 +41,7 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\Parts\BuildManagerWrapper.cs" />
     <Compile Include="Abstract\WebServiceCache.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
