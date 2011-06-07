@@ -12,7 +12,7 @@
     <language>en-US</language>
     <dependencies>
       <dependency id="BclContrib-Abstract" version="0.1.5" />
-      <dependency id="Hiro" version="1.0.1" />
+      <dependency id="Hiro" version="1.0.2" />
     </dependencies>
   </metadata>
 </package>
