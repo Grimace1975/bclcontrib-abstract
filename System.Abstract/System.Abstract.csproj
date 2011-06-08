@@ -107,7 +107,7 @@
     <Compile Include="Contoso.Abstract+Impl\+ServiceLog\EmptyServiceLog.cs" />
     <Compile Include="Abstract+ServiceLog+Impl\ServiceLog.cs" />
     <Compile Include="Abstract+ServiceLog\ServiceLogEventType.cs" />
-    <Compile Include="++ToFile\ServiceLog.cs" />
+    <Compile Include="_Unsorted_\ServiceLog.cs" />
     <Compile Include="Abstract+ServiceLog+Impl\ServiceLogManager.cs" />
     <Compile Include="Abstract+ServiceLog\IServiceLog.cs" />
     <Compile Include="Abstract\Parts\ServiceManagerBase.cs" />
@@ -149,7 +149,7 @@
     <Compile Include="Abstract+EventSourcing\EventSourcing\IAccessAggregateRootState.cs" />
     <Compile Include="+Nparams\ParamObject.cs" />
     <Compile Include="+Nparams\Nparams.cs" />
-    <Compile Include="++ToFile\NewAttrib.cs" />
+    <Compile Include="_Unsorted_\NewAttrib.cs" />
     <Compile Include="Abstract+ServiceBus\AggregateServiceMessage.cs" />
     <Compile Include="Abstract+ServiceBus\IServiceMessageHandlerFactory.cs" />
     <Compile Include="Abstract+ServiceBus\LiteralServiceBusLocation.cs" />
@@ -201,9 +201,9 @@
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocatorManager.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceLocatorResolutionException.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceRegistration.cs" />
-    <Compile Include="++ToFile\AssemblyTypeCatalog.cs" />
+    <Compile Include="_Unsorted_\AssemblyTypeCatalog.cs" />
     <Compile Include="Abstract\Parts+TypeSerializer\ITypeSerializer.cs" />
-    <Compile Include="++ToFile\ITypeCatalog.cs" />
+    <Compile Include="_Unsorted_\ITypeCatalog.cs" />
     <Compile Include="+Kludge\System_LazyDebugView.cs" />
     <Compile Include="+Kludge\Threading\LazyThreadSafetyMode.cs" />
   </ItemGroup>
