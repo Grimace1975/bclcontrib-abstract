@@ -26,124 +26,127 @@ THE SOFTWARE.
 using System.Threading;
 namespace System.Abstract
 {
-	/// <summary>
-	/// DefaultServiceCacheRegistrationDispatcher
-	/// </summary>
-	public class DefaultServiceCacheRegistrationDispatcher : ServiceCacheRegistration.IDispatcher
-	{
-		private static readonly ReaderWriterLockSlim _rwLock = new ReaderWriterLockSlim();
+    /// <summary>
+    /// DefaultServiceCacheRegistrationDispatcher
+    /// </summary>
+    public class DefaultServiceCacheRegistrationDispatcher : ServiceCacheRegistration.IDispatcher
+    {
+        private static readonly ReaderWriterLockSlim _rwLock = new ReaderWriterLockSlim();
 
-		public T Get<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values)
-		{
-			if (cache == null)
-				throw new ArgumentNullException("cache");
-			if (registration == null)
-				throw new ArgumentNullException("registration");
-			var itemPolicy = registration.ItemPolicy;
-			if (itemPolicy == null)
-				throw new ArgumentNullException("registration.CacheCommand");
-			// fetch from cache
-			string name = registration.AbsoluteName;
-			string @namespace;
-			if ((values != null) && (values.Length > 0))
-				cache = cache.Wrap(values, out @namespace);
-			else
-				@namespace = null;
-			var distributedServiceCache = (cache as IDistributedServiceCache);
-			if (distributedServiceCache == null)
-				return GetUsingLock<T>(cache, registration, tag, values, itemPolicy, name, @namespace);
-			return GetUsingCas<T>(distributedServiceCache, registration, tag, values, itemPolicy, name, @namespace);
-		}
+        public T Get<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values)
+        {
+            if (cache == null)
+                throw new ArgumentNullException("cache");
+            if (registration == null)
+                throw new ArgumentNullException("registration");
+            var itemPolicy = registration.ItemPolicy;
+            if (itemPolicy == null)
+                throw new ArgumentNullException("registration.CacheCommand");
+            // fetch from cache
+            string name = registration.AbsoluteName;
+            string @namespace;
+            if ((values != null) && (values.Length > 0))
+                cache = cache.Wrap(values, out @namespace);
+            else
+                @namespace = null;
+            var useDBNull = ((cache.Settings.Options & ServiceCacheOptions.UseDBNullWithRegistrations) == ServiceCacheOptions.UseDBNullWithRegistrations);
+            var distributedServiceCache = (cache as IDistributedServiceCache);
+            if (distributedServiceCache == null)
+                return GetUsingLock<T>(cache, registration, tag, values, itemPolicy, name, @namespace, useDBNull);
+            return GetUsingCas<T>(distributedServiceCache, registration, tag, values, itemPolicy, name, @namespace, useDBNull);
+        }
 
-		private static T GetUsingNoLock<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace)
-		{
-			T value = (T)cache.Get(tag, name);
-			if (value == null)
-			{
-				// create
-				value = CreateData<T>(@namespace, registration, tag, values);
-				cache.Add(tag, name, itemPolicy, value);
-			}
-			return value;
-		}
+        private static T GetUsingNoLock<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace, bool useDBNull)
+        {
+            var valueAsCache = cache.Get(tag, name);
+            if (valueAsCache != null)
+                return (!useDBNull || !(valueAsCache is DBNull) ? (T)valueAsCache : default(T));
+            // create
+            var value = CreateData<T>(@namespace, registration, tag, values);
+            valueAsCache = (!useDBNull || (value != null) ? (object)value : DBNull.Value);
+            cache.Add(tag, name, itemPolicy, valueAsCache);
+            return value;
+        }
 
-		private static T GetUsingLock<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace)
-		{
-			T value = (T)cache.Get(tag, name);
-			if (value == null)
-				lock (_rwLock)
-				{
-					value = (T)cache.Get(tag, name);
-					if (value != null)
-						return value;
-					// create
-					value = CreateData<T>(@namespace, registration, tag, values);
-					cache.Add(tag, name, itemPolicy, value);
-				}
-			return value;
-		}
+        private static T GetUsingLock<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace, bool useDBNull)
+        {
+            var valueAsCache = cache.Get(tag, name);
+            if (valueAsCache != null)
+                return (!useDBNull || !(valueAsCache is DBNull) ? (T)valueAsCache : default(T));
+            lock (_rwLock)
+            {
+                valueAsCache = cache.Get(tag, name);
+                if (valueAsCache != null)
+                    return (!useDBNull || !(valueAsCache is DBNull) ? (T)valueAsCache : default(T));
+                // create
+                var value = CreateData<T>(@namespace, registration, tag, values);
+                valueAsCache = (!useDBNull || (value != null) ? (object)value : DBNull.Value);
+                cache.Add(tag, name, itemPolicy, valueAsCache);
+                return value;
+            }
+        }
 
-		private static T GetUsingRwLock<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace)
-		{
-			_rwLock.EnterUpgradeableReadLock();
-			try
-			{
-				T value;
-				if ((value = (T)cache.Get(tag, name)) == null)
-				{
-					_rwLock.EnterWriteLock();
-					try
-					{
-						if ((value = (T)cache.Get(tag, name)) == null)
-						{
-							// create
-							value = CreateData<T>(@namespace, registration, tag, values);
-							cache.Add(tag, name, itemPolicy, value);
-						}
-					}
-					finally { _rwLock.ExitWriteLock(); }
-				}
-				return value;
-			}
-			finally { _rwLock.ExitUpgradeableReadLock(); }
-		}
+        private static T GetUsingRwLock<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace, bool useDBNull)
+        {
+            _rwLock.EnterUpgradeableReadLock();
+            try
+            {
+                var valueAsCache = cache.Get(tag, name);
+                if (valueAsCache != null)
+                    return (!useDBNull || !(valueAsCache is DBNull) ? (T)valueAsCache : default(T));
+                _rwLock.EnterWriteLock();
+                try
+                {
+                    valueAsCache = cache.Get(tag, name);
+                    if (valueAsCache != null)
+                        return (!useDBNull || !(valueAsCache is DBNull) ? (T)valueAsCache : default(T));
+                    // create
+                    var value = CreateData<T>(@namespace, registration, tag, values);
+                    valueAsCache = (!useDBNull || (value != null) ? (object)value : DBNull.Value);
+                    cache.Add(tag, name, itemPolicy, valueAsCache);
+                    return value;
+                }
+                finally { _rwLock.ExitWriteLock(); }
+            }
+            finally { _rwLock.ExitUpgradeableReadLock(); }
+        }
 
-		private static T GetUsingCas<T>(IDistributedServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace)
-		{
-			T value = (T)cache.Get(tag, name);
-			if (value == null)
-			{
-				// create
-				value = CreateData<T>(@namespace, registration, tag, values);
-				cache.Add(tag, name, itemPolicy, value);
-			}
-			return value;
-		}
+        private static T GetUsingCas<T>(IDistributedServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace, bool useDBNull)
+        {
+            var valueAsCache = cache.Get(tag, name);
+            if (valueAsCache != null)
+                return (!useDBNull || !(valueAsCache is DBNull) ? (T)valueAsCache : default(T));
+            // create
+            var value = CreateData<T>(@namespace, registration, tag, values);
+            valueAsCache = (!useDBNull || (value != null) ? (object)value : DBNull.Value);
+            cache.Add(tag, name, itemPolicy, valueAsCache);
+            return value;
+        }
 
-		public void Remove(IServiceCache cache, ServiceCacheRegistration registration)
-		{
-			if (cache == null)
-				throw new ArgumentNullException("cache");
-			if (registration == null)
-				throw new ArgumentNullException("registration");
-			// remove from cache
-			var name = registration.AbsoluteName;
-			cache.Remove(name, null);
-			var namespaces = registration.Namespaces;
-			if (namespaces != null)
-				foreach (string n in namespaces)
-					cache.Remove(n + name, null);
-		}
+        public void Remove(IServiceCache cache, ServiceCacheRegistration registration)
+        {
+            if (cache == null)
+                throw new ArgumentNullException("cache");
+            if (registration == null)
+                throw new ArgumentNullException("registration");
+            // remove from cache
+            var name = registration.AbsoluteName;
+            cache.Remove(name, null);
+            var namespaces = registration.Namespaces;
+            if (namespaces != null)
+                foreach (string n in namespaces)
+                    cache.Remove(n + name, null);
+        }
 
-		private static T CreateData<T>(string @namespace, ServiceCacheRegistration registration, object tag, object[] values)
-		{
-			if (@namespace != null)
-			{
-				var namespaces = registration.Namespaces;
-				if (!namespaces.Contains(@namespace))
-					namespaces.Add(@namespace);
-			}
-			return (T)registration.Builder(tag, values);
-		}
-	}
+        private static T CreateData<T>(string @namespace, ServiceCacheRegistration registration, object tag, object[] values)
+        {
+            if (@namespace != null)
+            {
+                var namespaces = registration.Namespaces;
+                if (!namespaces.Contains(@namespace))
+                    namespaces.Add(@namespace);
+            }
+            return (T)registration.Builder(tag, values);
+        }
+    }
 }

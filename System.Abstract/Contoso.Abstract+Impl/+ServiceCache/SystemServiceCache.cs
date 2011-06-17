@@ -47,6 +47,8 @@ namespace Contoso.Abstract
 	public class SystemServiceCache : ISystemServiceCache, ServiceCacheManager.ISetupRegistration
 	{
 		static SystemServiceCache() { ServiceCacheManager.EnsureRegistration(); }
+        public SystemServiceCache()
+            : this(SystemCaching.MemoryCache.Default) { }
 		public SystemServiceCache(string name)
 			: this(new SystemCaching.MemoryCache(name)) { }
 		public SystemServiceCache(SystemCaching.ObjectCache cache)
