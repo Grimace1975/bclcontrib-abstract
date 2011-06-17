@@ -36,6 +36,7 @@ namespace System.Abstract
 		{
 			RegionMarker = "@";
 			RegistrationDispatcher = new DefaultServiceCacheRegistrationDispatcher();
+            Options = ServiceCacheOptions.UseDBNullWithRegistrations;
 		}
 		public ServiceCacheSettings(ITouchableCacheItem touchable)
 			: this() { Touchable = touchable; }

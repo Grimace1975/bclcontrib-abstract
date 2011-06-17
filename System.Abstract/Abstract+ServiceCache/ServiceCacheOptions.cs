@@ -29,9 +29,10 @@ namespace System.Abstract
     /// <summary>
     /// ServiceCacheOptions
     /// </summary>
-	[Flags]
+    [Flags]
     public enum ServiceCacheOptions
     {
-		ReturnsCachedValueOnRemove,
+        ReturnsCachedValueOnRemove = 0x01,
+        UseDBNullWithRegistrations = 0x02,
     }
 }
