@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /*
 The MIT License
 
@@ -23,13 +23,32 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-namespace System.Abstract
+using System.Threading;
+namespace System
 {
     /// <summary>
-    /// IServiceRegistration
+    /// Lazy
     /// </summary>
-    public interface IServiceRegistration
+    [Serializable]
+    public class Lazy<T, TMetadata> : Lazy<T>
     {
-        void Register(IServiceRegistrar registrar);
+        private TMetadata _metadata;
+
+        public Lazy(TMetadata metadata) { _metadata = metadata; }
+        public Lazy(Func<T> valueFactory, TMetadata metadata)
+            : base(valueFactory) { _metadata = metadata; }
+        public Lazy(TMetadata metadata, bool isThreadSafe)
+            : base(isThreadSafe) { _metadata = metadata; }
+        public Lazy(TMetadata metadata, LazyThreadSafetyMode mode)
+            : base(mode) { _metadata = metadata; }
+        public Lazy(Func<T> valueFactory, TMetadata metadata, bool isThreadSafe)
+            : base(valueFactory, isThreadSafe) { _metadata = metadata; }
+        public Lazy(Func<T> valueFactory, TMetadata metadata, LazyThreadSafetyMode mode)
+            : base(valueFactory, mode) { _metadata = metadata; }
+
+        public TMetadata Metadata
+        {
+            get { return _metadata; }
+        }
     }
 }

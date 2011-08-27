@@ -29,6 +29,7 @@ using System.Abstract;
 using System.Collections.Generic;
 using Autofac;
 using Autofac.Builder;
+using Autofac.Core;
 namespace Contoso.Abstract
 {
     /// <summary>
@@ -61,6 +62,36 @@ namespace Contoso.Abstract
         }
         public TServiceLocator GetLocator<TServiceLocator>()
             where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
+
+        // enumerate
+        public bool HasRegistered<TService>()
+        {
+            // parent container will ensure build
+            return _parent.Container.IsRegistered<TService>();
+        }
+        public bool HasRegistered(Type serviceType)
+        {
+            // parent container will ensure build
+            return _parent.Container.IsRegistered(serviceType);
+        }
+        public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType)
+        {
+            // parent container will ensure build
+            return _parent.Container.ComponentRegistry.Registrations
+                .SelectMany(x => x.Services.OfType<TypedService>())
+                .Where(x => serviceType.IsAssignableFrom(x.ServiceType))
+                .Select(x => new ServiceRegistration { ServiceType = x.ServiceType, ServiceName = x.Description });
+        }
+        public IEnumerable<ServiceRegistration> Registrations
+        {
+            get
+            {
+                // parent container will ensure build
+                return _parent.Container.ComponentRegistry.Registrations
+                    .SelectMany(x => x.Services.OfType<TypedService>())
+                    .Select(x => new ServiceRegistration { ServiceType = x.ServiceType, ServiceName = x.Description });
+            }
+        }
 
         // register type
         public void Register(Type serviceType)
@@ -134,7 +165,7 @@ namespace Contoso.Abstract
             where TService : class
         {
             if (_container == null)
-                _builder.RegisterInstance(instance);
+                _builder.RegisterInstance(instance).As<TService>();
             else
                 throw new NotSupportedException();
         }
@@ -146,13 +177,34 @@ namespace Contoso.Abstract
             else
                 throw new NotSupportedException();
         }
+        public void RegisterInstance(Type serviceType, object instance)
+        {
+            if (_container == null)
+                _builder.RegisterInstance(instance).As(serviceType);
+            else
+                throw new NotSupportedException();
+        }
+        public void RegisterInstance(Type serviceType, object instance, string name)
+        {
+            if (_container == null)
+                _builder.RegisterInstance(instance).Named(name, serviceType);
+            else
+                throw new NotSupportedException();
+        }
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class
         {
             if (_container == null)
-                _builder.Register(x => factoryMethod(_parent));
+                _builder.Register(x => factoryMethod(_parent)).As<TService>();
+            else
+                throw new NotSupportedException();
+        }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod)
+        {
+            if (_container == null)
+                _builder.Register(x => factoryMethod(_parent)).As(serviceType);
             else
                 throw new NotSupportedException();
         }

@@ -31,24 +31,24 @@ namespace System.Abstract
 {
     public class NewAttrib : Dictionary<string, object>
     {
-        private static Type s_type = typeof(Dictionary<string, object>);
-        private static FieldInfo s_comparerField = s_type.GetField("comparer", BindingFlags.Instance | BindingFlags.NonPublic);
+        private static Type _type = typeof(Dictionary<string, object>);
+        private static FieldInfo _comparerField = _type.GetField("comparer", BindingFlags.Instance | BindingFlags.NonPublic);
 
         public NewAttrib()
         {
-            s_comparerField.SetValue(this, StringComparer.OrdinalIgnoreCase);
+            _comparerField.SetValue(this, StringComparer.OrdinalIgnoreCase);
         }
 
         public NewAttrib(IDictionary<string, object> dictionary)
         {
-            s_comparerField.SetValue(this, StringComparer.OrdinalIgnoreCase);
+            _comparerField.SetValue(this, StringComparer.OrdinalIgnoreCase);
             foreach (KeyValuePair<string, object> pair in dictionary)
                 Add(pair.Key, pair.Value);
         }
 
         public NewAttrib(object values)
         {
-            s_comparerField.SetValue(this, StringComparer.OrdinalIgnoreCase);
+            _comparerField.SetValue(this, StringComparer.OrdinalIgnoreCase);
             AddValues(values);
         }
 

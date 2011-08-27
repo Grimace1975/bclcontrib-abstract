@@ -35,7 +35,7 @@ namespace Contoso.Abstract
         {
             TagMapper.AddOpcode ToAddOpcode(object tag, ref string name, out ulong cas, out object opvalue);
             TagMapper.SetOpcode ToSetOpcode(object tag, ref string name, out ulong cas, out object opvalue, out StoreMode storeMode);
-            TagMapper.GetManyOpcode ToGetManyOpcode(object tag, out object opvalue);
+            TagMapper.GetOpcode ToGetOpcode(object tag, out object opvalue);
         }
 
         public class TagMapper : ITagMapper
@@ -60,10 +60,10 @@ namespace Contoso.Abstract
                 IncrementCas
             }
 
-            public enum GetManyOpcode
+            public enum GetOpcode
             {
                 Get,
-                PerformMultiGet,
+                //PerformMultiGet,
             }
 
             public AddOpcode ToAddOpcode(object tag, ref string name, out ulong cas, out object opvalue)
@@ -98,7 +98,7 @@ namespace Contoso.Abstract
                 }
                 else if (tag is CasResult<ArraySegment<byte>>)
                 {
-                    var appendCas = (CasResult<DecrementTag>)tag;
+                    var appendCas = (CasResult<ArraySegment<byte>>)tag;
                     cas = appendCas.Cas;
                     opvalue = appendCas.Result;
                     return AddOpcode.AppendCas;
@@ -143,7 +143,7 @@ namespace Contoso.Abstract
                 }
                 else if (tag is CasResult<ArraySegment<byte>>)
                 {
-                    var appendCas = (CasResult<DecrementTag>)tag;
+                    var appendCas = (CasResult<ArraySegment<byte>>)tag;
                     cas = appendCas.Cas;
                     opvalue = appendCas.Result;
                     return SetOpcode.PrependCas;
@@ -179,12 +179,11 @@ namespace Contoso.Abstract
                 throw new InvalidOperationException();
             }
 
-            public GetManyOpcode ToGetManyOpcode(object tag, out object opvalue)
+            public GetOpcode ToGetOpcode(object tag, out object opvalue)
             {
                 opvalue = tag;
-                return (tag is Func<IMultiGetOperation, KeyValuePair<string, CacheItem>, object> ? GetManyOpcode.PerformMultiGet : GetManyOpcode.Get);
+                return GetOpcode.Get; // (tag is Func<IMultiGetOperation, KeyValuePair<string, CacheItem>, object> ? GetOpcode.PerformMultiGet : GetOpcode.Get);
             }
         }
-
     }
 }

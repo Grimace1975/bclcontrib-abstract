@@ -24,8 +24,10 @@ THE SOFTWARE.
 */
 #endregion
 using System;
+using System.Linq;
 using System.Abstract;
 using Microsoft.Practices.Unity;
+using System.Collections.Generic;
 namespace Contoso.Abstract
 {
     /// <summary>
@@ -57,6 +59,24 @@ namespace Contoso.Abstract
         public TServiceLocator GetLocator<TServiceLocator>()
             where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
+        // enumerate
+        public bool HasRegistered<TService>() { return _container.IsRegistered<TService>(); }
+        public bool HasRegistered(Type serviceType) { return _container.IsRegistered(serviceType); }
+        public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType)
+        {
+            return _container.Registrations
+                .Where(x => serviceType.IsAssignableFrom(x.MappedToType))
+                .Select(x => new ServiceRegistration { ServiceType = x.RegisteredType, ServiceName = x.Name });
+        }
+        public IEnumerable<ServiceRegistration> Registrations
+        {
+            get
+            {
+                return _container.Registrations
+                    .Select(x => new ServiceRegistration { ServiceType = x.RegisteredType, ServiceName = x.Name });
+            }
+        }
+
         // register type
         public void Register(Type serviceType) { _container.RegisterType(serviceType, new InjectionMember[0]); }
         public void Register(Type serviceType, string name) { _container.RegisterType(serviceType, name, new InjectionMember[0]); }
@@ -78,10 +98,13 @@ namespace Contoso.Abstract
             where TService : class { _container.RegisterInstance<TService>(instance); }
         public void RegisterInstance<TService>(TService instance, string name)
             where TService : class { _container.RegisterInstance<TService>(name, instance); }
+        public void RegisterInstance(Type serviceType, object instance) { _container.RegisterInstance(serviceType, instance); }
+        public void RegisterInstance(Type serviceType, object instance, string name) { _container.RegisterInstance(serviceType, name, instance); }
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { _container.RegisterType<TService>(new InjectionFactory(c => factoryMethod(_parent))); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { _container.RegisterType(serviceType, new InjectionFactory(c => factoryMethod(_parent))); }
 
         //private string MakeId(Type serviceType, Type implementationType) { return serviceType.Name + "->" + implementationType.FullName; }
     }

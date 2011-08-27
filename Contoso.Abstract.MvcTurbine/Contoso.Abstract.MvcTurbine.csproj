@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="BclContrib.snk" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Changelog.txt" />
@@ -59,10 +60,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MvcTurbine">
-      <HintPath>lib\MvcTurbine.dll</HintPath>
+      <HintPath>..\packages\MVCTurbine.2.1\lib\MvcTurbine.dll</HintPath>
     </Reference>
     <Reference Include="MvcTurbine.Web">
-      <HintPath>lib\MvcTurbine.Web.dll</HintPath>
+      <HintPath>..\packages\MVCTurbine.2.1\lib\MvcTurbine.Web.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Web" />

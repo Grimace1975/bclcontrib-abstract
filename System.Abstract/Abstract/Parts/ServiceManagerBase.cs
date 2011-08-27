@@ -43,7 +43,7 @@ namespace System.Abstract.Parts
         {
             if (provider == null)
                 throw new ArgumentNullException("provider");
-            return Lazy = new Lazy<TIService>(provider);
+            return (Lazy = new Lazy<TIService>(provider));
         }
         public static Lazy<TIService> SetProvider(Func<TIService> provider, ISetupDescriptor setupDescriptor) { SetSetupDescriptor(SetProvider(provider), setupDescriptor); return Lazy; }
         protected static SetupRegistration Registration { get; set; }
@@ -56,7 +56,12 @@ namespace System.Abstract.Parts
         /// </summary
         public static TIService Current
         {
-            get { return Lazy.Value; }
+            get
+            {
+                if (Lazy == null)
+                    throw new InvalidOperationException("Service undefined. Ensure SetProvider");
+                return Lazy.Value;
+            }
         }
 
         public static Lazy<TIService> GetDefaultService()

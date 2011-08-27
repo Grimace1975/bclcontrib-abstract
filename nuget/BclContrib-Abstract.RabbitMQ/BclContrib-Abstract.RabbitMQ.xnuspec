@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>BclContrib-Abstract.RabbitMQ</id>
-    <version>0.1.5</version>
+    <version>0.1.6</version>
     <authors>Sky Morey</authors>
     <owners>Sky Morey</owners>
     <description>This package contains a RabbitMQ implementation of the abstract ServiceBus.</description>
@@ -11,8 +11,8 @@
     <tags>rabbitmq servicebus bclcontrib</tags>
     <language>en-US</language>
     <dependencies>
-      <dependency id="BclContrib-Abstract" version="0.1.5" />
-      <dependency id="RabbitMQ-Client" version="2.4.1" />
+      <dependency id="BclContrib-Abstract" version="0.1.6" />
+      <dependency id="RabbitMQ.Client" version="2.5.1" />
     </dependencies>
   </metadata>
 </package>

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>BclContrib-Abstract.NLog</id>
-    <version>0.1.5</version>
+    <version>0.1.6</version>
     <authors>Sky Morey</authors>
     <owners>Sky Morey</owners>
     <description>This package contains a Log4Net implementation of the abstract ServiceLog.</description>
@@ -11,7 +11,7 @@
     <tags>nlog servicelog log logging bclcontrib</tags>
     <language>en-US</language>
     <dependencies>
-      <dependency id="BclContrib-Abstract" version="0.1.5" />
+      <dependency id="BclContrib-Abstract" version="0.1.6" />
       <dependency id="NLog" version="2.0.0.0" />
     </dependencies>
   </metadata>

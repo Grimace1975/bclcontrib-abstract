@@ -276,11 +276,11 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceLocator.cs">
       <Link>Abstract+ServiceLocator\IServiceLocator.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceRegistrant.cs">
+      <Link>Abstract+ServiceLocator\IServiceRegistrant.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceRegistrar.cs">
       <Link>Abstract+ServiceLocator\IServiceRegistrar.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceRegistration.cs">
-      <Link>Abstract+ServiceLocator\IServiceRegistration.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IWantToSkipServiceLocator.cs">
       <Link>Abstract+ServiceLocator\IWantToSkipServiceLocator.cs</Link>
@@ -296,6 +296,9 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceRegistrarNamespaceWrapper.cs">
       <Link>Abstract+ServiceLocator\ServiceRegistrarNamespaceWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceRegistration.cs">
+      <Link>Abstract+ServiceLocator\ServiceRegistration.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLog+Impl\ServiceLog.cs">
       <Link>Abstract+ServiceLog+Impl\ServiceLog.cs</Link>
@@ -407,6 +410,9 @@
     </Compile>
     <Compile Include="..\System.Abstract\IO\PathEx2.cs">
       <Link>IO\PathEx2.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Lazy.cs">
+      <Link>Lazy.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Local.Designer.cs">
       <Link>Local.Designer.cs</Link>

@@ -31,7 +31,8 @@ namespace System.Abstract
     /// </summary>
     public class CacheItemPolicy
     {
-		public static readonly CacheItemPolicy Default = new CacheItemPolicy { };
+        public static readonly CacheItemPolicy Default = new CacheItemPolicy { };
+        public static readonly CacheItemPolicy Infinite = new CacheItemPolicy(-1);
         private DateTime _absoluteExpiration;
         private TimeSpan _floatingAbsoluteExpiration;
 
@@ -39,25 +40,20 @@ namespace System.Abstract
         /// Initializes a new instance of the <see cref="CacheItemPolicy"/> class.
         /// </summary>
         /// <param name="key">The key.</param>
-		public CacheItemPolicy()
-        {
-            FloatingAbsoluteExpiration = new TimeSpan(1, 0, 0);
-			SlidingExpiration = ServiceCache.NoSlidingExpiration;
-        }
+        public CacheItemPolicy() { }
         /// <summary>
         /// Initializes a new instance of the <see cref="CacheItemPolicy"/> class.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="floatingMinuteTimeout">The floating minute timeout.</param>
-		public CacheItemPolicy(int floatingAbsoluteMinuteTimeout)
+        public CacheItemPolicy(int floatingAbsoluteMinuteTimeout)
         {
             if (floatingAbsoluteMinuteTimeout < -1)
                 throw new ArgumentOutOfRangeException("floatingMinuteTimeout");
             if (floatingAbsoluteMinuteTimeout >= 0)
-                FloatingAbsoluteExpiration = new TimeSpan(0, floatingAbsoluteMinuteTimeout, 0);
+                _floatingAbsoluteExpiration = new TimeSpan(0, floatingAbsoluteMinuteTimeout, 0);
             else
-				AbsoluteExpiration = ServiceCache.InfiniteAbsoluteExpiration;
-			SlidingExpiration = ServiceCache.NoSlidingExpiration;
+                _absoluteExpiration = ServiceCache.InfiniteAbsoluteExpiration;
         }
 
         /// <summary>
@@ -72,7 +68,14 @@ namespace System.Abstract
         /// <value>The absolute expiration.</value>
         public DateTime AbsoluteExpiration
         {
-            get { return (_floatingAbsoluteExpiration != TimeSpan.Zero ? DateTime.Now.Add(_floatingAbsoluteExpiration) : _absoluteExpiration); }
+            get
+            {
+                if (SlidingExpiration != TimeSpan.Zero)
+                    return DateTime.MinValue;
+                if ((_absoluteExpiration == DateTime.MinValue) && (_floatingAbsoluteExpiration == TimeSpan.Zero))
+                    return DateTime.Now.Add(new TimeSpan(1, 0, 0));
+                return (_floatingAbsoluteExpiration != TimeSpan.Zero ? DateTime.Now.Add(_floatingAbsoluteExpiration) : _absoluteExpiration);
+            }
             set
             {
                 if (_floatingAbsoluteExpiration != TimeSpan.Zero)
@@ -87,7 +90,12 @@ namespace System.Abstract
         /// <value>The absolute expiration.</value>
         public TimeSpan FloatingAbsoluteExpiration
         {
-            get { return _floatingAbsoluteExpiration; }
+            get
+            {
+                if (SlidingExpiration != TimeSpan.Zero)
+                    return TimeSpan.Zero;
+                return _floatingAbsoluteExpiration;
+            }
             set
             {
                 if (_absoluteExpiration != DateTime.MinValue)

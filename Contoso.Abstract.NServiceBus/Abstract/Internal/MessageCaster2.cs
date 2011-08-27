@@ -33,26 +33,26 @@
 //    internal class MessageCaster<TMessage>
 //        where TMessage : IServiceMessage
 //    {
-//        //private static readonly Type s_wrappedType = new DynamicProxyBuilder().CreateProxiedType(typeof(TMessage), new[] { typeof(INServiceMessage) });
-//        //private static readonly MethodInfo s_publishMessageBuilderMethod = MessageCaster.PublishMessageBuilderMethod.MakeGenericMethod(s_wrappedType);
-//        //private static readonly MethodInfo s_publishMessagesMethod = MessageCaster.PublishMessagesMethod.MakeGenericMethod(s_wrappedType);
-//        //private static readonly MethodInfo s_replyMessageBuilderMethod = MessageCaster.ReplyMessageBuilderMethod.MakeGenericMethod(s_wrappedType);
-//        //private static readonly MethodInfo s_sendMessageBuilderMethod = MessageCaster.SendMessageBuilderMethod.MakeGenericMethod(s_wrappedType);
-//        //private static readonly MethodInfo s_sendMessagesMethod = MessageCaster.SendMessagesMethod.MakeGenericMethod(s_wrappedType);
-//        //private static readonly MethodInfo s_sendLocalMessageBuilderMethod = MessageCaster.SendLocalMessageBuilderMethod.MakeGenericMethod(s_wrappedType);
-//        //private static readonly MethodInfo s_subscribeMethod = MessageCaster.SubscribeMethod.MakeGenericMethod(s_wrappedType);
-//        //private static readonly MethodInfo s_subscribeConditionMethod = MessageCaster.SubscribeConditionMethod.MakeGenericMethod(s_wrappedType);
-//        //private static readonly MethodInfo s_unsubscribeMethod = MessageCaster.UnsubscribeMethod.MakeGenericMethod(s_wrappedType);
+//        //private static readonly Type _wrappedType = new DynamicProxyBuilder().CreateProxiedType(typeof(TMessage), new[] { typeof(INServiceMessage) });
+//        //private static readonly MethodInfo _publishMessageBuilderMethod = MessageCaster.PublishMessageBuilderMethod.MakeGenericMethod(_wrappedType);
+//        //private static readonly MethodInfo _publishMessagesMethod = MessageCaster.PublishMessagesMethod.MakeGenericMethod(_wrappedType);
+//        //private static readonly MethodInfo _replyMessageBuilderMethod = MessageCaster.ReplyMessageBuilderMethod.MakeGenericMethod(_wrappedType);
+//        //private static readonly MethodInfo _sendMessageBuilderMethod = MessageCaster.SendMessageBuilderMethod.MakeGenericMethod(_wrappedType);
+//        //private static readonly MethodInfo _sendMessagesMethod = MessageCaster.SendMessagesMethod.MakeGenericMethod(_wrappedType);
+//        //private static readonly MethodInfo _sendLocalMessageBuilderMethod = MessageCaster.SendLocalMessageBuilderMethod.MakeGenericMethod(_wrappedType);
+//        //private static readonly MethodInfo _subscribeMethod = MessageCaster.SubscribeMethod.MakeGenericMethod(_wrappedType);
+//        //private static readonly MethodInfo _subscribeConditionMethod = MessageCaster.SubscribeConditionMethod.MakeGenericMethod(_wrappedType);
+//        //private static readonly MethodInfo _unsubscribeMethod = MessageCaster.UnsubscribeMethod.MakeGenericMethod(_wrappedType);
 //        ////
-//        //public static void Publish(IBus bus, Action<TMessage> messageBuilder) { s_publishMessageBuilderMethod.Invoke(bus, new object[] { Cast(messageBuilder) }); }
-//        //public static void Publish(IBus bus, TMessage[] messages) { s_publishMessagesMethod.Invoke(bus, new object[] { Cast(messages) }); }
-//        //public static void Reply(IBus bus, Action<TMessage> messageBuilder) { s_replyMessageBuilderMethod.Invoke(bus, new object[] { Cast(messageBuilder) }); }
-//        //public static IServiceBusCallback Send(IBus bus, Action<TMessage> messageBuilder) { return MessageCaster.Cast((ICallback)s_sendMessageBuilderMethod.Invoke(bus, new object[] { Cast(messageBuilder) })); }
-//        //public static IServiceBusCallback Send(IBus bus, string destination, Action<TMessage> messageBuilder) { return MessageCaster.Cast((ICallback)s_sendMessagesMethod.Invoke(bus, new object[] { destination, Cast(messageBuilder) })); }
-//        //public static void SendLocal(IBus bus, Action<TMessage> messageBuilder) { s_sendLocalMessageBuilderMethod.Invoke(bus, new object[] { Cast(messageBuilder) }); }
-//        //public static void Subscribe(IBus bus) { s_subscribeMethod.Invoke(bus, null); }
-//        //public static void Subscribe(IBus bus, Predicate<TMessage> condition) { s_subscribeConditionMethod.Invoke(bus, new object[] { Cast(condition) }); }
-//        //public static void Unsubscribe(IBus bus) { s_unsubscribeMethod.Invoke(bus, null); }
+//        //public static void Publish(IBus bus, Action<TMessage> messageBuilder) { _publishMessageBuilderMethod.Invoke(bus, new object[] { Cast(messageBuilder) }); }
+//        //public static void Publish(IBus bus, TMessage[] messages) { _publishMessagesMethod.Invoke(bus, new object[] { Cast(messages) }); }
+//        //public static void Reply(IBus bus, Action<TMessage> messageBuilder) { _replyMessageBuilderMethod.Invoke(bus, new object[] { Cast(messageBuilder) }); }
+//        //public static IServiceBusCallback Send(IBus bus, Action<TMessage> messageBuilder) { return MessageCaster.Cast((ICallback)_sendMessageBuilderMethod.Invoke(bus, new object[] { Cast(messageBuilder) })); }
+//        //public static IServiceBusCallback Send(IBus bus, string destination, Action<TMessage> messageBuilder) { return MessageCaster.Cast((ICallback)_sendMessagesMethod.Invoke(bus, new object[] { destination, Cast(messageBuilder) })); }
+//        //public static void SendLocal(IBus bus, Action<TMessage> messageBuilder) { _sendLocalMessageBuilderMethod.Invoke(bus, new object[] { Cast(messageBuilder) }); }
+//        //public static void Subscribe(IBus bus) { _subscribeMethod.Invoke(bus, null); }
+//        //public static void Subscribe(IBus bus, Predicate<TMessage> condition) { _subscribeConditionMethod.Invoke(bus, new object[] { Cast(condition) }); }
+//        //public static void Unsubscribe(IBus bus) { _unsubscribeMethod.Invoke(bus, null); }
 
 //        //public static Action<IMessage> Cast(Action<TMessage> messageBuilder)
 //        //{
@@ -71,7 +71,7 @@
 
 //        //public static TMessage MakeMessage()
 //        //{
-//        //    return (TMessage)Activator.CreateInstance(s_wrappedType);
+//        //    return (TMessage)Activator.CreateInstance(_wrappedType);
 //        //}
 //    }
 //}
