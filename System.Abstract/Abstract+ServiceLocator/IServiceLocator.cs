@@ -133,13 +133,13 @@ namespace System.Abstract
 
         public static void RegisterByIServiceRegistration(IServiceRegistrar registrar, IServiceLocator locator, Predicate<Type> predicate, params Assembly[] assemblies)
         {
-            var registrationType = typeof(IServiceRegistration);
+            var registrationType = typeof(IServiceRegistrant);
             var matchedTypes = assemblies.SelectMany(a => a.GetTypes())
                 .Where(t => (!t.IsInterface) && (!t.IsAbstract) && (t.GetInterfaces().Contains(registrationType)))
                 .Where(t => (predicate == null) || (predicate(t)))
                 .Where(t => !ServiceLocatorManager.GetWantsToSkipRegistration(t));
             foreach (var matchedType in matchedTypes)
-                locator.Resolve<IServiceRegistration>(matchedType).Register(registrar);
+                locator.Resolve<IServiceRegistrant>(matchedType).Register(registrar);
         }
 
         public static void RegisterByNamingConvention(IServiceRegistrar registrar, IServiceLocator locator, Predicate<Type> predicate, params Assembly[] assemblies) { RegisterByNamingConvention(assemblies, predicate, (interfaceType, type) => registrar.Register(interfaceType, type)); }

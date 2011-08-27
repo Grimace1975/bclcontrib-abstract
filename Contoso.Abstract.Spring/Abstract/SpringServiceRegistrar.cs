@@ -24,25 +24,28 @@ THE SOFTWARE.
 */
 #endregion
 using System;
+using System.Linq;
 using System.Abstract;
 using Spring.Objects.Factory;
 using Spring.Context;
 using Spring.Objects.Factory.Support;
 using Spring.Context.Support;
+using System.Collections.Generic;
+using System.Collections;
 namespace Contoso.Abstract
 {
     /// <summary>
-    /// ISpringNetServiceRegistrar
+    /// ISpringServiceRegistrar
     /// </summary>
-    public interface ISpringNetServiceRegistrar : IServiceRegistrar { }
+    public interface ISpringServiceRegistrar : IServiceRegistrar { }
 
-    public class SpringNetServiceRegistrar : ISpringNetServiceRegistrar
+    public class SpringServiceRegistrar : ISpringServiceRegistrar
     {
-        private SpringNetServiceLocator _parent;
+        private SpringServiceLocator _parent;
         private GenericApplicationContext _container;
         private IObjectDefinitionFactory _factory = new DefaultObjectDefinitionFactory();
 
-        public SpringNetServiceRegistrar(SpringNetServiceLocator parent, GenericApplicationContext container)
+        public SpringServiceRegistrar(SpringServiceLocator parent, GenericApplicationContext container)
         {
             _parent = parent;
             _container = container;
@@ -56,11 +59,29 @@ namespace Contoso.Abstract
         public TServiceLocator GetLocator<TServiceLocator>()
             where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
+        // enumerate
+        public bool HasRegistered<TService>() { return (_container.GetObjectsOfType(typeof(TService)).Count > 0); }
+        public bool HasRegistered(Type serviceType) { return (_container.GetObjectsOfType(serviceType).Count > 0); }
+        public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType)
+        {
+            return _container.GetObjectsOfType(serviceType).Cast<DictionaryEntry>()
+                .Select(x =>
+                {
+                    var objectName = (string)x.Key;
+                    var objectDefinition = _container.GetObjectDefinition(objectName);
+                    return new ServiceRegistration { ServiceType = objectDefinition.ObjectType, ServiceName = objectName };
+                });
+        }
+        public IEnumerable<ServiceRegistration> Registrations
+        {
+            get { throw new NotSupportedException(); }
+        }
+
         // register type
         public void Register(Type serviceType)
         {
             var b = ObjectDefinitionBuilder.RootObjectDefinition(_factory, serviceType);
-            _container.RegisterObjectDefinition(SpringNetServiceLocator.GetName(serviceType), b.ObjectDefinition);
+            _container.RegisterObjectDefinition(SpringServiceLocator.GetName(serviceType), b.ObjectDefinition);
         }
         public void Register(Type serviceType, string name)
         {
@@ -73,7 +94,7 @@ namespace Contoso.Abstract
             where TImplementation : class, TService
         {
             var b = ObjectDefinitionBuilder.RootObjectDefinition(_factory, typeof(TImplementation));
-            _container.RegisterObjectDefinition(SpringNetServiceLocator.GetName(typeof(TImplementation)), b.ObjectDefinition);
+            _container.RegisterObjectDefinition(SpringServiceLocator.GetName(typeof(TImplementation)), b.ObjectDefinition);
         }
         public void Register<TService, TImplementation>(string name)
             where TImplementation : class, TService
@@ -85,7 +106,7 @@ namespace Contoso.Abstract
             where TService : class
         {
             var b = ObjectDefinitionBuilder.RootObjectDefinition(_factory, implementationType);
-            _container.RegisterObjectDefinition(SpringNetServiceLocator.GetName(implementationType), b.ObjectDefinition);
+            _container.RegisterObjectDefinition(SpringServiceLocator.GetName(implementationType), b.ObjectDefinition);
         }
         public void Register<TService>(Type implementationType, string name)
             where TService : class
@@ -96,7 +117,7 @@ namespace Contoso.Abstract
         public void Register(Type serviceType, Type implementationType)
         {
             var b = ObjectDefinitionBuilder.RootObjectDefinition(_factory, implementationType);
-            _container.RegisterObjectDefinition(SpringNetServiceLocator.GetName(implementationType), b.ObjectDefinition);
+            _container.RegisterObjectDefinition(SpringServiceLocator.GetName(implementationType), b.ObjectDefinition);
         }
         public void Register(Type serviceType, Type implementationType, string name)
         {
@@ -106,9 +127,11 @@ namespace Contoso.Abstract
 
         // register instance
         public void RegisterInstance<TService>(TService instance)
-            where TService : class { _container.ObjectFactory.RegisterSingleton(SpringNetServiceLocator.GetName(typeof(TService)), instance); }
+            where TService : class { _container.ObjectFactory.RegisterSingleton(SpringServiceLocator.GetName(typeof(TService)), instance); }
         public void RegisterInstance<TService>(TService instance, string name)
             where TService : class { _container.ObjectFactory.RegisterSingleton(name, instance); }
+        public void RegisterInstance(Type serviceType, object instance) { _container.ObjectFactory.RegisterSingleton(SpringServiceLocator.GetName(serviceType), instance); }
+        public void RegisterInstance(Type serviceType, object instance, string name) { _container.ObjectFactory.RegisterSingleton(name, instance); }
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
@@ -117,5 +140,6 @@ namespace Contoso.Abstract
             throw new NotSupportedException();
             //_container.ObjectFactory.RegisterSingleton(SpringNetServiceLocator.GetName(factoryMethod.GetType()), ((object x) => factoryMethod(_parent)));
         }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { throw new NotSupportedException(); }
     }
 }

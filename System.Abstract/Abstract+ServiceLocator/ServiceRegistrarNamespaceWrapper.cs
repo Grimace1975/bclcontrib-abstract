@@ -54,6 +54,15 @@ namespace System.Abstract
         public TServiceLocator GetLocator<TServiceLocator>()
             where TServiceLocator : class, IServiceLocator { throw new NotSupportedException(); }
 
+        // enumerate
+        public bool HasRegistered<TService>() { return _registrar.HasRegistered<TService>(); }
+        public bool HasRegistered(Type serviceType) { return _registrar.HasRegistered(serviceType); }
+        public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType) { return _registrar.GetRegistrationsFor(serviceType); }
+        public IEnumerable<ServiceRegistration> Registrations
+        {
+            get { return _registrar.Registrations; }
+        }
+
         // register type
         public void Register(Type serviceType) { _registrar.Register(serviceType, _namespace); }
         public void Register(Type serviceType, string name) { _registrar.Register(serviceType, _namespace + "::" + name); }
@@ -75,9 +84,11 @@ namespace System.Abstract
             where TService : class { _registrar.RegisterInstance(instance, _namespace); }
         public void RegisterInstance<TService>(TService instance, string name)
             where TService : class { _registrar.RegisterInstance(instance, _namespace + "::" + name); }
-
+        public void RegisterInstance(Type serviceType, object instance) { _registrar.RegisterInstance(serviceType, instance, _namespace); }
+        public void RegisterInstance(Type serviceType, object instance, string name) { _registrar.RegisterInstance(serviceType, instance, _namespace + "::" + name); }
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { throw new NotSupportedException(); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { throw new NotSupportedException(); }
     }
 }

@@ -64,6 +64,24 @@ namespace Contoso.Abstract
         public TServiceLocator GetLocator<TServiceLocator>()
             where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
+        // enumerate
+        public bool HasRegistered<TService>() { return _builder.Contains(typeof(TService)); }
+        public bool HasRegistered(Type serviceType) { return _builder.Contains(serviceType); }
+        public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType)
+        {
+            return _builder.Dependencies
+                .Where(x => serviceType.IsAssignableFrom(x.ServiceType))
+                .Select(x => new ServiceRegistration { ServiceType = x.ServiceType, ServiceName = x.ServiceName });
+        }
+        public IEnumerable<ServiceRegistration> Registrations
+        {
+            get
+            {
+                return _builder.Dependencies
+                .Select(x => new ServiceRegistration { ServiceType = x.ServiceType, ServiceName = x.ServiceName });
+            }
+        }
+
         // register type
         public void Register(Type serviceType) { _builder.AddService(serviceType, serviceType); }
         public void Register(Type serviceType, string name) { _builder.AddService(name, serviceType, serviceType); }
@@ -85,9 +103,12 @@ namespace Contoso.Abstract
             where TService : class { Func<IMicroContainer, TService> f = (x => instance); _builder.AddService<TService>(f); }
         public void RegisterInstance<TService>(TService instance, string name)
             where TService : class { Func<IMicroContainer, TService> f = (x => instance); _builder.AddService<TService>(name, f); }
+        public void RegisterInstance(Type serviceType, object instance) { Func<IMicroContainer, object> f = (x => instance); _builder.AddService(serviceType, f); }
+        public void RegisterInstance(Type serviceType, object instance, string name) { Func<IMicroContainer, object> f = (x => instance); _builder.AddService(name, serviceType, f); }
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { Func<IMicroContainer, TService> f = (x => factoryMethod(_parent)); _builder.AddService<TService>(f); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { Func<IMicroContainer, object> f = (x => factoryMethod(_parent)); _builder.AddService(serviceType, f); }
     }
 }

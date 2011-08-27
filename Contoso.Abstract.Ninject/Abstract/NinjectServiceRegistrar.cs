@@ -24,9 +24,11 @@ THE SOFTWARE.
 */
 #endregion
 using System;
+using System.Linq;
 using System.Abstract;
 using Ninject;
 using Ninject.Modules;
+using System.Collections.Generic;
 namespace Contoso.Abstract
 {
     /// <summary>
@@ -55,6 +57,23 @@ namespace Contoso.Abstract
         public TServiceLocator GetLocator<TServiceLocator>()
             where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
+        // enumerate
+        public bool HasRegistered<TService>() { return Kernel.GetBindings(typeof(TService)).Any(); }
+        public bool HasRegistered(Type serviceType) { return Kernel.GetBindings(serviceType).Any(); }
+        public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType)
+        {
+            return Kernel.GetBindings(serviceType)
+                .Select(x => new ServiceRegistration { ServiceType = x.Service });
+        }
+        public IEnumerable<ServiceRegistration> Registrations
+        {
+            get
+            {
+                return Bindings
+                    .Select(x => new ServiceRegistration { ServiceType = x.Service });
+            }
+        }
+
         // register type
         public void Register(Type serviceType) { Bind(serviceType).ToSelf(); }
         public void Register(Type serviceType, string name) { Bind(serviceType).ToSelf().Named(name); }
@@ -76,10 +95,13 @@ namespace Contoso.Abstract
             where TService : class { Bind<TService>().ToConstant(instance); }
         public void RegisterInstance<TService>(TService instance, string name)
             where TService : class { Bind<TService>().ToConstant(instance).Named(name); }
+        public void RegisterInstance(Type serviceType, object instance) { Bind(serviceType).ToConstant(instance); }
+        public void RegisterInstance(Type serviceType, object instance, string name) { Bind(serviceType).ToConstant(instance).Named(name); }
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { Bind<TService>().ToMethod(x => factoryMethod(_parent)); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { Bind(serviceType).ToMethod(x => factoryMethod(_parent)); }
 
         #region Domain specific
 

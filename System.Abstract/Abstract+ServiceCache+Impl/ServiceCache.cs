@@ -28,40 +28,40 @@ using System.Collections.Generic;
 using System.Text;
 namespace System.Abstract
 {
-	/// <summary>
-	/// ServiceCache
-	/// </summary>
-	public static partial class ServiceCache
-	{
-		/// <summary>
-		/// Provides <see cref="System.DateTime"/> instance to be used when no absolute expiration value to be set.
-		/// </summary>
-		public static readonly DateTime InfiniteAbsoluteExpiration = DateTime.MaxValue;
-		/// <summary>
-		/// Provides <see cref="System.TimeSpan"/> instance to be used when no sliding expiration value to be set.
-		/// </summary>
-		public static readonly TimeSpan NoSlidingExpiration = TimeSpan.Zero;
+    /// <summary>
+    /// ServiceCache
+    /// </summary>
+    public static partial class ServiceCache
+    {
+        /// <summary>
+        /// Provides <see cref="System.DateTime"/> instance to be used when no absolute expiration value to be set.
+        /// </summary>
+        public static readonly DateTime InfiniteAbsoluteExpiration = DateTime.MaxValue;
+        /// <summary>
+        /// Provides <see cref="System.TimeSpan"/> instance to be used when no sliding expiration value to be set.
+        /// </summary>
+        public static readonly TimeSpan NoSlidingExpiration = TimeSpan.Zero;
 
-		static ServiceCache()
-		{
-			var registrar = ServiceCacheRegistrar.Get(typeof(ServiceCache));
-			registrar.Register(Primitives.YesNo);
-			registrar.Register(Primitives.Gender);
-			registrar.Register(Primitives.Integer);
-		}
+        static ServiceCache()
+        {
+            var registrar = ServiceCacheRegistrar.Get(typeof(ServiceCache));
+            registrar.Register(Primitives.YesNo);
+            registrar.Register(Primitives.Gender);
+            registrar.Register(Primitives.Integer);
+        }
 
-		public static string GetNamespace(IEnumerable<object> values)
-		{
-			if ((values == null) || !values.Any())
-				return null;
-			var b = new StringBuilder();
-			foreach (var x in values)
-			{
-				if (x != null)
-					b.Append(x.ToString());
-				b.Append("\\");
-			}
-			return b.ToString();
-		}
-	}
+        public static string GetNamespace(IEnumerable<object> values)
+        {
+            if ((values == null) || !values.Any())
+                return null;
+            var b = new StringBuilder();
+            foreach (var x in values)
+            {
+                if (x != null)
+                    b.Append(x.ToString());
+                b.Append("\\");
+            }
+            return b.ToString();
+        }
+    }
 }

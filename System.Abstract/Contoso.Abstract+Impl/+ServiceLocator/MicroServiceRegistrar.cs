@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Abstract;
 using System.Collections.Generic;
 using System.Reflection;
@@ -31,6 +32,24 @@ namespace Contoso.Abstract
         public TServiceLocator GetLocator<TServiceLocator>()
             where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
+        // enumerate
+        public bool HasRegistered<TService>() { return HasRegistered(typeof(TService)); }
+        public bool HasRegistered(Type serviceType) { return _container.Any(x => x.Value.Any(y => y.Key == serviceType)); }
+        public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType)
+        {
+            return _container.SelectMany(x => x.Value, (a, b) => new { Name = a.Key, Services = b })
+                .Where(x => serviceType.IsAssignableFrom(x.Services.Key))
+                .Select(x => new ServiceRegistration { ServiceType = x.Services.Key, ServiceName = x.Name });
+        }
+        public IEnumerable<ServiceRegistration> Registrations
+        {
+            get
+            {
+                return _container.SelectMany(x => x.Value, (a, b) => new { Name = a.Key, Services = b })
+                    .Select(x => new ServiceRegistration { ServiceType = x.Services.Key, ServiceName = x.Name });
+            }
+        }
+
         // register type
         public void Register(Type serviceType) { RegisterInternal(serviceType, new MicroServiceLocator.Trampoline { Type = serviceType }, string.Empty); }
         public void Register(Type serviceType, string name) { RegisterInternal(serviceType, new MicroServiceLocator.Trampoline { Type = serviceType }, name); }
@@ -59,10 +78,13 @@ namespace Contoso.Abstract
             where TService : class { RegisterInternal(typeof(TService), instance, string.Empty); }
         public void RegisterInstance<TService>(TService instance, string name)
             where TService : class { RegisterInternal(typeof(TService), instance, name); }
+        public void RegisterInstance(Type serviceType, object instance) { RegisterInternal(serviceType, instance, string.Empty); }
+        public void RegisterInstance(Type serviceType, object instance, string name) { RegisterInternal(serviceType, instance, name); }
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { RegisterInternal(typeof(TService), (Func<IServiceLocator, object>)(l => factoryMethod(l)), string.Empty); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { RegisterInternal(serviceType, (Func<IServiceLocator, object>)(l => factoryMethod(l)), string.Empty); }
     }
 }
 

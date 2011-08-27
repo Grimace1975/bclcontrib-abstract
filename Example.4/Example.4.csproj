@@ -122,10 +122,6 @@
       <Project>{14D5934C-F462-4087-89A9-579E7F7BE704}</Project>
       <Name>Contoso.Practices.Cqrs.4</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.SpringNet.4\Contoso.Abstract.SpringNet.4.csproj">
-      <Project>{AF124673-8996-4EB5-A2E5-AF94C7B8F667}</Project>
-      <Name>Contoso.Abstract.SpringNet.4</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Contoso.Abstract.Sql.4\Contoso.Abstract.Sql.4.csproj">
       <Project>{875FB8E5-8631-42E5-9DA2-8D8037627592}</Project>
       <Name>Contoso.Abstract.Sql.4</Name>

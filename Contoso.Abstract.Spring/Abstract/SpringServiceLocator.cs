@@ -33,26 +33,26 @@ using Spring.Context;
 namespace Contoso.Abstract
 {
     /// <summary>
-    /// ISpringNetServiceLocator
+    /// ISpringServiceLocator
     /// </summary>
-    public interface ISpringNetServiceLocator : IServiceLocator
+    public interface ISpringServiceLocator : IServiceLocator
     {
         GenericApplicationContext Container { get; }
     }
 
     /// <summary>
-    /// SpringNetServiceLocator
+    /// SpringServiceLocator
     /// </summary>
     [Serializable]
-    public class SpringNetServiceLocator : ISpringNetServiceLocator, IDisposable, ServiceLocatorManager.ISetupRegistration
+    public class SpringServiceLocator : ISpringServiceLocator, IDisposable, ServiceLocatorManager.ISetupRegistration
     {
         private GenericApplicationContext _container;
-        private SpringNetServiceRegistrar _registrar;
+        private SpringServiceRegistrar _registrar;
 
-        static SpringNetServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
-        public SpringNetServiceLocator()
+        static SpringServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
+        public SpringServiceLocator()
             : this(new GenericApplicationContext()) { }
-        public SpringNetServiceLocator(GenericApplicationContext container)
+        public SpringServiceLocator(GenericApplicationContext container)
         {
             if (container == null)
                 throw new ArgumentNullException("container");
@@ -70,7 +70,7 @@ namespace Contoso.Abstract
 
         Action<IServiceRegistrar, IServiceLocator, string> ServiceLocatorManager.ISetupRegistration.OnServiceRegistrar
         {
-            get { return (registrar, locator, name) => ServiceLocatorManager.RegisterInstance<ISpringNetServiceLocator>(this, registrar, locator, name); }
+            get { return (registrar, locator, name) => ServiceLocatorManager.RegisterInstance<ISpringServiceLocator>(this, registrar, locator, name); }
         }
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
@@ -137,7 +137,7 @@ namespace Contoso.Abstract
             private set
             {
                 _container = value;
-                _registrar = new SpringNetServiceRegistrar(this, value);
+                _registrar = new SpringServiceRegistrar(this, value);
             }
         }
 

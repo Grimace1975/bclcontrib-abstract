@@ -39,13 +39,11 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Hiro, Version=0.1.0.10311, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Packages\Hiro.1.0.2\lib\Hiro.dll</HintPath>
+    <Reference Include="Hiro">
+      <HintPath>..\packages\Hiro.1.0.3\lib\Hiro.dll</HintPath>
     </Reference>
-    <Reference Include="Hiro.Containers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0efb83db47c0105, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Packages\Hiro.1.0.2\lib\Hiro.Containers.dll</HintPath>
+    <Reference Include="Hiro.Containers">
+      <HintPath>..\packages\Hiro.1.0.3\lib\Hiro.Containers.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>

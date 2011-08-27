@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
@@ -34,6 +35,12 @@ namespace System.Abstract
         IServiceLocator Locator { get; }
         TServiceLocator GetLocator<TServiceLocator>()
             where TServiceLocator : class, IServiceLocator;
+        
+        // enumerate
+        bool HasRegistered<TService>();
+        bool HasRegistered(Type serviceType);
+        IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType);
+        IEnumerable<ServiceRegistration> Registrations { get; }
 
         // register type
         void Register(Type serviceType);
@@ -56,9 +63,12 @@ namespace System.Abstract
             where TService : class;
         void RegisterInstance<TService>(TService instance, string name)
             where TService : class;
+        void RegisterInstance(Type serviceType, object instance);
+        void RegisterInstance(Type serviceType, object instance, string name);
 
         // register method
         void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class;
+        void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod);
     }
 }

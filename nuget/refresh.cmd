@@ -185,6 +185,17 @@ xcopy %SRC%.4\bin\Release\Contoso.Abstract.RabbitMQ.xml lib\NET40\ /Y/Q
 popd
 
 ::
+echo Abstract.RhinoServiceBus
+pushd BclContrib-Abstract.RhinoServiceBus
+set SRC=..\..\Contoso.Abstract.RRhinoServiceBus
+xcopy %SRC%\Changelog.txt . /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Abstract.RhinoServiceBus.dll lib\NET35\ /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Abstract.RhinoServiceBus.xml lib\NET35\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Abstract.RhinoServiceBus.dll lib\NET40\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Abstract.RhinoServiceBus.xml lib\NET40\ /Y/Q
+popd
+
+::
 echo Abstract.ServerAppFabric
 pushd BclContrib-Abstract.ServerAppFabric
 set SRC=..\..\Contoso.Abstract.ServerAppFabric
@@ -196,14 +207,14 @@ xcopy %SRC%.4\bin\Release\Contoso.Abstract.ServerAppFabric.xml lib\NET40\ /Y/Q
 popd
 
 ::
-echo Abstract.SpringNet
-pushd BclContrib-Abstract.SpringNet
-set SRC=..\..\Contoso.Abstract.SpringNet
+echo Abstract.Spring
+pushd BclContrib-Abstract.Spring
+set SRC=..\..\Contoso.Abstract.Spring
 xcopy %SRC%\Changelog.txt . /Y/Q
-xcopy %SRC%\bin\Release\Contoso.Abstract.SpringNet.dll lib\NET35\ /Y/Q
-xcopy %SRC%\bin\Release\Contoso.Abstract.SpringNet.xml lib\NET35\ /Y/Q
-xcopy %SRC%.4\bin\Release\Contoso.Abstract.SpringNet.dll lib\NET40\ /Y/Q
-xcopy %SRC%.4\bin\Release\Contoso.Abstract.SpringNet.xml lib\NET40\ /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Abstract.Spring.dll lib\NET35\ /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Abstract.Spring.xml lib\NET35\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Abstract.Spring.dll lib\NET40\ /Y/Q
+xcopy %SRC%.4\bin\Release\Contoso.Abstract.Spring.xml lib\NET40\ /Y/Q
 popd
 
 ::
@@ -275,14 +286,14 @@ popd
 ::
 echo Hiro
 pushd Hiro
-set SRC=..\Library_\Hiro
+set SRC=..\..\lib\Hiro
 xcopy %SRC%\* lib\ /Y/Q
 popd
 
 ::
 echo ServerAppFabric.Client
 pushd ServerAppFabric.Client
-set SRC=..\Library_\ServerAppFabric.Client
+set SRC=..\..\lib\ServerAppFabric.Client
 xcopy %SRC%\* lib\ /Y/Q
 popd
 

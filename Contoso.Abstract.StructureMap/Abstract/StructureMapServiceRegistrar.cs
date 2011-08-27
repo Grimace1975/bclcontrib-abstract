@@ -24,11 +24,13 @@ THE SOFTWARE.
 */
 #endregion
 using System;
+using System.Linq;
 using System.Abstract;
 using StructureMap.Configuration.DSL;
 using StructureMap;
 using StructureMap.Configuration.DSL.Expressions;
 using StructureMap.Pipeline;
+using System.Collections.Generic;
 namespace Contoso.Abstract
 {
     /// <summary>
@@ -63,13 +65,31 @@ namespace Contoso.Abstract
             HasPendingRegistrations = false;
         }
 
-        // locator
+        // enumerate
         public IServiceLocator Locator
         {
             get { return _parent; }
         }
         public TServiceLocator GetLocator<TServiceLocator>()
             where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
+
+        // enumerate
+        public bool HasRegistered<TService>() { return _container.Model.HasDefaultImplementationFor(typeof(TService)); }
+        public bool HasRegistered(Type serviceType) { return _container.Model.HasDefaultImplementationFor(serviceType); }
+        public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType)
+        {
+            return _container.Model.AllInstances
+                .Where(x => serviceType.IsAssignableFrom(x.ConcreteType))
+                .Select(x => new ServiceRegistration { ServiceType = x.PluginType, ServiceName = x.Description });
+        }
+        public IEnumerable<ServiceRegistration> Registrations
+        {
+            get
+            {
+                return _container.Model.AllInstances
+                    .Select(x => new ServiceRegistration { ServiceType = x.PluginType, ServiceName = x.Description });
+            }
+        }
 
         // register type
         public void Register(Type serviceType) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ConfiguredInstance(serviceType)); HasPendingRegistrations = true; }
@@ -92,10 +112,13 @@ namespace Contoso.Abstract
             where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ObjectInstance(instance)); HasPendingRegistrations = true; }
         public void RegisterInstance<TService>(TService instance, string name)
             where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ObjectInstance(instance) { Name = name }); HasPendingRegistrations = true; }
+        public void RegisterInstance(Type serviceType, object instance) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ObjectInstance(instance)); HasPendingRegistrations = true; }
+        public void RegisterInstance(Type serviceType, object instance, string name) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ObjectInstance(instance) { Name = name }); HasPendingRegistrations = true; }
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent))); HasPendingRegistrations = true; }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { new GenericFamilyExpression(serviceType, this).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent))); HasPendingRegistrations = true; }
 
         #region Domain extents
 

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>BclContrib-Abstract.MongoDB</id>
-    <version>0.1.5</version>
+    <version>0.1.6</version>
     <authors>Sky Morey</authors>
     <owners>Sky Morey</owners>
     <description>This package contains MongoDB implementations of the Event-Sourcing storage for the abstract AggregateRoot.</description>
@@ -11,8 +11,8 @@
     <tags>mongodb nosql aggregateroot bclcontrib</tags>
     <language>en-US</language>
     <dependencies>
-      <dependency id="BclContrib-Abstract" version="0.1.5" />
-      <dependency id="mongocsharpdriver" version="1.0" />
+      <dependency id="BclContrib-Abstract" version="0.1.6" />
+      <dependency id="mongocsharpdriver" version="1.1" />
     </dependencies>
   </metadata>
 </package>

@@ -37,7 +37,7 @@ namespace Contoso.Abstract
     /// </summary>
     public class NServiceBusAbstractor : INServiceBus, ServiceBusManager.ISetupRegistration
     {
-        private static readonly Type s_domainServiceMessageType = typeof(INServiceMessage);
+        private static readonly Type _domainServiceMessageType = typeof(INServiceMessage);
         private IBus _bus;
 
         static NServiceBusAbstractor() { ServiceBusManager.EnsureRegistration(); }

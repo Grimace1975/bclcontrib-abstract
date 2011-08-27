@@ -100,6 +100,32 @@ namespace Contoso.Abstract
             }
         }
 
+        private static ArraySegment<T> OpValueToArraySegment<T>(object opvalue) { return (opvalue is ArraySegment<T> ? (ArraySegment<T>)opvalue : new ArraySegment<T>()); }
+        private static DecrementTag OpValueToDecrementTag(object opvalue)
+        {
+            if (opvalue is DecrementTag)
+                return (DecrementTag)opvalue;
+            if (opvalue is ulong)
+                return new DecrementTag { Delta = (ulong)opvalue, DefaultValue = 0 };
+            if (opvalue is long)
+                return new DecrementTag { Delta = (ulong)opvalue, DefaultValue = 0 };
+            if (opvalue is int)
+                return new DecrementTag { Delta = (ulong)opvalue, DefaultValue = 0 };
+            throw new ArgumentOutOfRangeException("opvalue");
+        }
+        private static IncrementTag OpValueToIncrementTag(object opvalue)
+        {
+            if (opvalue is IncrementTag)
+                return (IncrementTag)opvalue;
+            if (opvalue is ulong)
+                return new IncrementTag { Delta = (ulong)opvalue, DefaultValue = 0 };
+            if (opvalue is long)
+                return new IncrementTag { Delta = (ulong)opvalue, DefaultValue = 0 };
+            if (opvalue is int)
+                return new IncrementTag { Delta = (ulong)opvalue, DefaultValue = 0 };
+            throw new ArgumentOutOfRangeException("opvalue");
+        }
+
         Action<IServiceRegistrar, IServiceLocator, string> ServiceCacheManager.ISetupRegistration.OnServiceRegistrar
         {
             get { return (registrar, locator, name) => ServiceCacheManager.RegisterInstance<IMemcachedServiceCache>(this, registrar, locator, name); }
@@ -125,16 +151,16 @@ namespace Contoso.Abstract
             var slidingExpiration = itemPolicy.SlidingExpiration;
             ulong cas;
             object opvalue;
-            if ((absoluteExpiration == ServiceCache.InfiniteAbsoluteExpiration) && (slidingExpiration == ServiceCache.NoSlidingExpiration))
+            if ((absoluteExpiration == DateTime.MaxValue) && (slidingExpiration == TimeSpan.Zero))
                 switch (_tagMapper.ToAddOpcode(tag, ref name, out cas, out opvalue))
                 {
-                    case TagMapper.AddOpcode.Append: return Cache.Append(name, (ArraySegment<byte>)opvalue);
-                    case TagMapper.AddOpcode.AppendCas: return Cache.Append(name, cas, (ArraySegment<byte>)opvalue);
+                    case TagMapper.AddOpcode.Append: return Cache.Append(name, OpValueToArraySegment<byte>(opvalue));
+                    case TagMapper.AddOpcode.AppendCas: return Cache.Append(name, cas, OpValueToArraySegment<byte>(opvalue));
                     case TagMapper.AddOpcode.Store: return Cache.Store(StoreMode.Add, name, value);
                     case TagMapper.AddOpcode.Cas: return Cache.Cas(StoreMode.Add, name, value, cas);
                     default: throw new InvalidOperationException();
                 }
-            if ((absoluteExpiration != ServiceCache.InfiniteAbsoluteExpiration) && (slidingExpiration == ServiceCache.NoSlidingExpiration))
+            if ((absoluteExpiration != DateTime.MinValue) && (slidingExpiration == TimeSpan.Zero))
                 switch (_tagMapper.ToAddOpcode(tag, ref name, out cas, out opvalue))
                 {
                     case TagMapper.AddOpcode.Append:
@@ -144,7 +170,7 @@ namespace Contoso.Abstract
                     case TagMapper.AddOpcode.Cas: return Cache.Cas(StoreMode.Add, name, value, absoluteExpiration, cas);
                     default: throw new InvalidOperationException();
                 }
-            if ((absoluteExpiration == ServiceCache.InfiniteAbsoluteExpiration) && (slidingExpiration != ServiceCache.NoSlidingExpiration))
+            if ((absoluteExpiration == DateTime.MinValue) && (slidingExpiration != TimeSpan.Zero))
                 switch (_tagMapper.ToAddOpcode(tag, ref name, out cas, out opvalue))
                 {
                     case TagMapper.AddOpcode.Append:
@@ -161,16 +187,16 @@ namespace Contoso.Abstract
         public object Get(object tag, IEnumerable<string> names)
         {
             object opvalue;
-            switch (_tagMapper.ToGetManyOpcode(tag, out opvalue))
+            switch (_tagMapper.ToGetOpcode(tag, out opvalue))
             {
-                case TagMapper.GetManyOpcode.Get: return Cache.Get(names);
-                case TagMapper.GetManyOpcode.PerformMultiGet:
-                    {
-                        var cache2 = (MemcachedClient)Cache;
-                        if (cache2 == null)
-                            throw new InvalidOperationException("Must be a MemcachedClient for PerformMultiGet");
-                        return cache2.PerformMultiGet<object>(names, (Func<IMultiGetOperation, KeyValuePair<string, CacheItem>, object>)opvalue);
-                    }
+                case TagMapper.GetOpcode.Get: return Cache.Get(names);
+                //case TagMapper.GetManyOpcode.PerformMultiGet:
+                //    {
+                //        var cache2 = (MemcachedClient)Cache;
+                //        if (cache2 == null)
+                //            throw new InvalidOperationException("Must be a MemcachedClient for PerformMultiGet");
+                //        return cache2.PerformMultiGet<object>(names, (Func<IMultiGetOperation, KeyValuePair<string, CacheItem>, object>)opvalue);
+                //    }
                 default: throw new InvalidOperationException();
             }
         }
@@ -193,21 +219,21 @@ namespace Contoso.Abstract
             StoreMode storeMode;
             IncrementTag increment;
             DecrementTag decrement;
-            if ((absoluteExpiration == ServiceCache.InfiniteAbsoluteExpiration) && (slidingExpiration == ServiceCache.NoSlidingExpiration))
+            if ((absoluteExpiration == DateTime.MaxValue) && (slidingExpiration == TimeSpan.Zero))
                 switch (_tagMapper.ToSetOpcode(tag, ref name, out cas, out opvalue, out storeMode))
                 {
-                    case TagMapper.SetOpcode.Prepend: return Cache.Prepend(name, (ArraySegment<byte>)opvalue);
-                    case TagMapper.SetOpcode.PrependCas: return Cache.Prepend(name, cas, (ArraySegment<byte>)opvalue);
+                    case TagMapper.SetOpcode.Prepend: return Cache.Prepend(name, OpValueToArraySegment<byte>(opvalue));
+                    case TagMapper.SetOpcode.PrependCas: return Cache.Prepend(name, cas, OpValueToArraySegment<byte>(opvalue));
                     //
                     case TagMapper.SetOpcode.Store: return Cache.Store(storeMode, name, value);
                     case TagMapper.SetOpcode.Cas: return Cache.Cas(storeMode, name, value, cas);
-                    case TagMapper.SetOpcode.Decrement: decrement = (DecrementTag)opvalue; return Cache.Decrement(name, decrement.DefaultValue, decrement.Delta);
-                    case TagMapper.SetOpcode.DecrementCas: decrement = (DecrementTag)opvalue; return Cache.Decrement(name, decrement.DefaultValue, decrement.Delta, cas);
-                    case TagMapper.SetOpcode.Increment: increment = (IncrementTag)opvalue; return Cache.Increment(name, increment.DefaultValue, increment.Delta);
-                    case TagMapper.SetOpcode.IncrementCas: increment = (IncrementTag)opvalue; return Cache.Increment(name, increment.DefaultValue, increment.Delta, cas);
+                    case TagMapper.SetOpcode.Decrement: decrement = OpValueToDecrementTag(opvalue); return Cache.Decrement(name, decrement.DefaultValue, decrement.Delta);
+                    case TagMapper.SetOpcode.DecrementCas: decrement = OpValueToDecrementTag(opvalue); return Cache.Decrement(name, decrement.DefaultValue, decrement.Delta, cas);
+                    case TagMapper.SetOpcode.Increment: increment = OpValueToIncrementTag(opvalue); return Cache.Increment(name, increment.DefaultValue, increment.Delta);
+                    case TagMapper.SetOpcode.IncrementCas: increment = OpValueToIncrementTag(opvalue); return Cache.Increment(name, increment.DefaultValue, increment.Delta, cas);
                     default: throw new InvalidOperationException();
                 }
-            if ((absoluteExpiration != ServiceCache.InfiniteAbsoluteExpiration) && (slidingExpiration == ServiceCache.NoSlidingExpiration))
+            if ((absoluteExpiration != DateTime.MinValue) && (slidingExpiration == TimeSpan.Zero))
                 switch (_tagMapper.ToSetOpcode(tag, ref name, out cas, out opvalue, out storeMode))
                 {
                     case TagMapper.SetOpcode.Prepend:
@@ -215,13 +241,13 @@ namespace Contoso.Abstract
                         throw new NotSupportedException("Operation not supported with absoluteExpiration && slidingExpiration");
                     case TagMapper.SetOpcode.Store: return Cache.Store(storeMode, name, value, absoluteExpiration);
                     case TagMapper.SetOpcode.Cas: return Cache.Cas(storeMode, name, value, absoluteExpiration, cas);
-                    case TagMapper.SetOpcode.Decrement: decrement = (DecrementTag)opvalue; return Cache.Decrement(name, decrement.DefaultValue, decrement.Delta, absoluteExpiration);
-                    case TagMapper.SetOpcode.DecrementCas: decrement = (DecrementTag)opvalue; return Cache.Decrement(name, decrement.DefaultValue, decrement.Delta, absoluteExpiration, cas);
-                    case TagMapper.SetOpcode.Increment: increment = (IncrementTag)opvalue; return Cache.Increment(name, increment.DefaultValue, increment.Delta, absoluteExpiration);
-                    case TagMapper.SetOpcode.IncrementCas: increment = (IncrementTag)opvalue; return Cache.Increment(name, increment.DefaultValue, increment.Delta, absoluteExpiration, cas);
+                    case TagMapper.SetOpcode.Decrement: decrement = OpValueToDecrementTag(opvalue); return Cache.Decrement(name, decrement.DefaultValue, decrement.Delta, absoluteExpiration);
+                    case TagMapper.SetOpcode.DecrementCas: decrement = OpValueToDecrementTag(opvalue); return Cache.Decrement(name, decrement.DefaultValue, decrement.Delta, absoluteExpiration, cas);
+                    case TagMapper.SetOpcode.Increment: increment = OpValueToIncrementTag(opvalue); return Cache.Increment(name, increment.DefaultValue, increment.Delta, absoluteExpiration);
+                    case TagMapper.SetOpcode.IncrementCas: increment = OpValueToIncrementTag(opvalue); return Cache.Increment(name, increment.DefaultValue, increment.Delta, absoluteExpiration, cas);
                     default: throw new InvalidOperationException();
                 }
-            if ((absoluteExpiration == ServiceCache.InfiniteAbsoluteExpiration) && (slidingExpiration != ServiceCache.NoSlidingExpiration))
+            if ((absoluteExpiration == DateTime.MinValue) && (slidingExpiration != TimeSpan.Zero))
                 switch (_tagMapper.ToSetOpcode(tag, ref name, out cas, out opvalue, out storeMode))
                 {
                     case TagMapper.SetOpcode.Prepend:
@@ -229,10 +255,10 @@ namespace Contoso.Abstract
                         throw new NotSupportedException("Operation not supported with absoluteExpiration && slidingExpiration");
                     case TagMapper.SetOpcode.Store: return Cache.Store(storeMode, name, value, slidingExpiration);
                     case TagMapper.SetOpcode.Cas: return Cache.Cas(storeMode, name, value, slidingExpiration, cas);
-                    case TagMapper.SetOpcode.Decrement: decrement = (DecrementTag)opvalue; return Cache.Decrement(name, decrement.DefaultValue, decrement.Delta, slidingExpiration);
-                    case TagMapper.SetOpcode.DecrementCas: decrement = (DecrementTag)opvalue; return Cache.Decrement(name, decrement.DefaultValue, decrement.Delta, slidingExpiration, cas);
-                    case TagMapper.SetOpcode.Increment: increment = (IncrementTag)opvalue; return Cache.Increment(name, increment.DefaultValue, increment.Delta, slidingExpiration);
-                    case TagMapper.SetOpcode.IncrementCas: increment = (IncrementTag)opvalue; return Cache.Increment(name, increment.DefaultValue, increment.Delta, slidingExpiration, cas);
+                    case TagMapper.SetOpcode.Decrement: decrement = OpValueToDecrementTag(opvalue); return Cache.Decrement(name, decrement.DefaultValue, decrement.Delta, slidingExpiration);
+                    case TagMapper.SetOpcode.DecrementCas: decrement = OpValueToDecrementTag(opvalue); return Cache.Decrement(name, decrement.DefaultValue, decrement.Delta, slidingExpiration, cas);
+                    case TagMapper.SetOpcode.Increment: increment = OpValueToIncrementTag(opvalue); return Cache.Increment(name, increment.DefaultValue, increment.Delta, slidingExpiration);
+                    case TagMapper.SetOpcode.IncrementCas: increment = OpValueToIncrementTag(opvalue); return Cache.Increment(name, increment.DefaultValue, increment.Delta, slidingExpiration, cas);
                     default: throw new InvalidOperationException();
                 }
             throw new InvalidOperationException("absoluteExpiration && slidingExpiration");
@@ -276,7 +302,7 @@ namespace Contoso.Abstract
         public IDictionary<string, CasResult<object>> GetWithCas(IEnumerable<string> keys) { return Cache.GetWithCas(keys); }
         public CasResult<object> GetWithCas(string key) { return Cache.GetWithCas(key); }
         public CasResult<T> GetWithCas<T>(string key) { return Cache.GetWithCas<T>(key); }
-        public bool TryGetWithCas(string key, out CasResult<object> value) { return TryGetWithCas(key, out value); }
+        public bool TryGetWithCas(string key, out CasResult<object> value) { return Cache.TryGetWithCas(key, out value); }
 
         #endregion
     }
