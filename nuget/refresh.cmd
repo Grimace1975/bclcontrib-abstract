@@ -134,8 +134,8 @@ set SRC=..\..\Contoso.Abstract.MvcTurbine
 xcopy %SRC%\Changelog.txt . /Y/Q
 xcopy %SRC%\bin\Release\Contoso.Abstract.MvcTurbine.dll lib\NET35\ /Y/Q
 xcopy %SRC%\bin\Release\Contoso.Abstract.MvcTurbine.xml lib\NET35\ /Y/Q
-xcopy %SRC%\lib\MvcTurbine.dll lib\NET35\ /Y/Q
-xcopy %SRC%\lib\MvcTurbine.Web.dll lib\NET35\ /Y/Q
+xcopy %SRC%\bin\Release\MvcTurbine.dll lib\NET35\ /Y/Q
+xcopy %SRC%\bin\Release\MvcTurbine.Web.dll lib\NET35\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.MvcTurbine.dll lib\NET40\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.MvcTurbine.xml lib\NET40\ /Y/Q
 popd
@@ -187,7 +187,7 @@ popd
 ::
 echo Abstract.RhinoServiceBus
 pushd BclContrib-Abstract.RhinoServiceBus
-set SRC=..\..\Contoso.Abstract.RRhinoServiceBus
+set SRC=..\..\Contoso.Abstract.RhinoServiceBus
 xcopy %SRC%\Changelog.txt . /Y/Q
 xcopy %SRC%\bin\Release\Contoso.Abstract.RhinoServiceBus.dll lib\NET35\ /Y/Q
 xcopy %SRC%\bin\Release\Contoso.Abstract.RhinoServiceBus.xml lib\NET35\ /Y/Q
