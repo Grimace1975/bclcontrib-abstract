@@ -105,6 +105,12 @@
     <Compile Include="..\System.Abstract\+Nparams\ParamObject.cs">
       <Link>+Nparams\ParamObject.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\+ParseFormat\IConvertFormatter.cs">
+      <Link>+ParseFormat\IConvertFormatter.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\+ParseFormat\IConvertParser.cs">
+      <Link>+ParseFormat\IConvertParser.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing+Impl\RegistryEventDispatcher.cs">
       <Link>Abstract+EventSourcing\EventSourcing+Impl\RegistryEventDispatcher.cs</Link>
     </Compile>

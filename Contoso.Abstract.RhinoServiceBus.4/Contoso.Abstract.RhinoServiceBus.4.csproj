@@ -8,8 +8,8 @@
     <ProjectGuid>{3CD3880F-DDEB-453D-895B-5E90AC66FE4A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Contoso.Abstract.RhinoServiceBus._4</RootNamespace>
-    <AssemblyName>Contoso.Abstract.RhinoServiceBus.4</AssemblyName>
+    <RootNamespace>Contoso.Abstract</RootNamespace>
+    <AssemblyName>Contoso.Abstract.RhinoServiceBus</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -29,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Contoso.Abstract.RhinoServiceBus.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
