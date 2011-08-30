@@ -100,7 +100,7 @@ namespace System.Abstract.Parts
         {
             get
             {
-                DateTime? currentDateOverride = CurrentDateOverride;
+                var currentDateOverride = CurrentDateOverride;
                 return (!currentDateOverride.HasValue ? DateTime.Now : currentDateOverride.GetValueOrDefault());
             }
         }
