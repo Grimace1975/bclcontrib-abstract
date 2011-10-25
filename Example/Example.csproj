@@ -34,8 +34,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Enyim.Caching">
-      <HintPath>..\Contoso.Abstract.Memcached.4\bin\Debug\Enyim.Caching.dll</HintPath>
+    <Reference Include="Enyim.Caching, Version=2.7.0.0, Culture=neutral, PublicKeyToken=cec98615db04012e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EnyimMemcached.2.11\lib\net35\Enyim.Caching.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.Unity">
       <HintPath>..\Contoso.Abstract.Unity\bin\Debug\Microsoft.Practices.Unity.dll</HintPath>
