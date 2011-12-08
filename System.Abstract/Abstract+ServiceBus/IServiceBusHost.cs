@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
 The MIT License
 
@@ -23,31 +23,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Collections.Generic;
-namespace System
+namespace System.Abstract
 {
     /// <summary>
-    /// NparamsManager
+    /// IServiceBusHost
     /// </summary>
-    public class NparamsManager
+    public interface IServiceBusHost
     {
-        public static Nparams Parse(IDictionary<string, object> args)
-        {
-            if (args == null)
-                throw new ArgumentNullException("args");
-            return new StdParams(args);
-        }
-        public static Nparams Parse(string[] args)
-        {
-            if (args == null)
-                throw new ArgumentNullException("args");
-            return new StdParams(args);
-        }
-        public static Nparams Parse(object args)
-        {
-            if (args == null)
-                throw new ArgumentNullException("args");
-            return new StdParams(args);
-        }
+    }
+
+    /// <summary>
+    /// IServiceBusHostExtensions
+    /// </summary>
+    public static class IServiceBusHostExtensions
+    {
     }
 }

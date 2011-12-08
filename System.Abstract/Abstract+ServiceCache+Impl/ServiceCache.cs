@@ -50,7 +50,7 @@ namespace System.Abstract
             registrar.Register(Primitives.Integer);
         }
 
-        public static string GetNamespace(IEnumerable<object> values)
+        internal static string GetNamespace(IEnumerable<object> values)
         {
             if ((values == null) || !values.Any())
                 return null;
@@ -63,5 +63,95 @@ namespace System.Abstract
             }
             return b.ToString();
         }
+
+        #region Registrations
+
+        /// <summary>
+        /// Gets the specified cached item.
+        /// </summary>
+        /// <param name="registration">The registration.</param>
+        /// <returns></returns>
+        public static object Get(ServiceCacheRegistration registration) { return ServiceCacheManager.Current.Get<object>(registration, null, null); }
+        public static T Get<T>(ServiceCacheRegistration registration) { return ServiceCacheManager.Current.Get<T>(registration, null, null); }
+        public static IEnumerable<T> GetMany<T>(ServiceCacheRegistration registration) { return ServiceCacheManager.Current.Get<IEnumerable<T>>(registration, null, null); }
+        public static IQueryable<T> GetQuery<T>(ServiceCacheRegistration registration) { return ServiceCacheManager.Current.Get<IQueryable<T>>(registration, null, null); }
+        /// <summary>
+        /// Gets the specified cached item.
+        /// </summary>
+        /// <param name="registration">The registration.</param>
+        /// <param name="values">The values.</param>
+        /// <returns></returns>
+        public static object Get(ServiceCacheRegistration registration, object[] values) { return ServiceCacheManager.Current.Get<object>(registration, null, values); }
+        public static T Get<T>(ServiceCacheRegistration registration, object[] values) { return ServiceCacheManager.Current.Get<T>(registration, null, values); }
+        public static IEnumerable<T> GetMany<T>(ServiceCacheRegistration registration, object[] values) { return ServiceCacheManager.Current.Get<IEnumerable<T>>(registration, null, values); }
+        public static IQueryable<T> GetQuery<T>(ServiceCacheRegistration registration, object[] values) { return ServiceCacheManager.Current.Get<IQueryable<T>>(registration, null, values); }
+        /// <summary>
+        /// Gets the specified cached item.
+        /// </summary>
+        /// <param name="registration">The registration.</param>
+        /// <param name="tag">The tag.</param>
+        /// <returns></returns>
+        public static object Get(ServiceCacheRegistration registration, object tag) { return ServiceCacheManager.Current.Get<object>(registration, tag, null); }
+        public static T Get<T>(ServiceCacheRegistration registration, object tag) { return ServiceCacheManager.Current.Get<T>(registration, tag, null); }
+        public static IEnumerable<T> GetMany<T>(ServiceCacheRegistration registration, object tag) { return ServiceCacheManager.Current.Get<IEnumerable<T>>(registration, tag, null); }
+        public static IQueryable<T> GetQuery<T>(ServiceCacheRegistration registration, object tag) { return ServiceCacheManager.Current.Get<IQueryable<T>>(registration, tag, null); }
+        /// <summary>
+        /// Gets the specified cached item.
+        /// </summary>
+        /// <param name="registration">The registration.</param>
+        /// <param name="tag">The tag.</param>
+        /// <param name="values">The values.</param>
+        /// <returns></returns>
+        public static object Get(ServiceCacheRegistration registration, object tag, object[] values) { return ServiceCacheManager.Current.Get<object>(registration, tag, values); }
+        public static T Get<T>(ServiceCacheRegistration registration, object tag, object[] values) { return ServiceCacheManager.Current.Get<T>(registration, tag, values); }
+        public static IEnumerable<T> GetMany<T>(ServiceCacheRegistration registration, object tag, object[] values) { return ServiceCacheManager.Current.Get<IEnumerable<T>>(registration, tag, values); }
+        public static IQueryable<T> GetQuery<T>(ServiceCacheRegistration registration, object tag, object[] values) { return ServiceCacheManager.Current.Get<IQueryable<T>>(registration, tag, values); }
+
+        /// <summary>
+        /// Gets the specified cached item.
+        /// </summary>
+        /// <param name="anchorType">The type.</param>
+        /// <param name="registrationName">The registration id.</param>
+        /// <returns></returns>
+        public static object Get(Type anchorType, string registrationName) { return ServiceCacheManager.Current.Get<object>(anchorType, registrationName, null, null); }
+        public static T Get<T>(Type anchorType, string registrationName) { return ServiceCacheManager.Current.Get<T>(anchorType, registrationName, null, null); }
+        public static IEnumerable<T> GetMany<T>(Type anchorType, string registrationName) { return ServiceCacheManager.Current.Get<IEnumerable<T>>(anchorType, registrationName, null, null); }
+        public static IQueryable<T> GetQuery<T>(Type anchorType, string registrationName) { return ServiceCacheManager.Current.Get<IQueryable<T>>(anchorType, registrationName, null, null); }
+        /// <summary>
+        /// Gets the specified cached item.
+        /// </summary>
+        /// <param name="anchorType">The type.</param>
+        /// <param name="registrationName">The registration id.</param>
+        /// <param name="values">The values.</param>
+        /// <returns></returns>
+        public static object Get(Type anchorType, string registrationName, object[] values) { return ServiceCacheManager.Current.Get<object>(anchorType, registrationName, null, values); }
+        public static T Get<T>(Type anchorType, string registrationName, object[] values) { return ServiceCacheManager.Current.Get<T>(anchorType, registrationName, null, values); }
+        public static IEnumerable<T> GetMany<T>(Type anchorType, string registrationName, object[] values) { return ServiceCacheManager.Current.Get<IEnumerable<T>>(anchorType, registrationName, string.Empty, values); }
+        public static IQueryable<T> GetQuery<T>(Type anchorType, string registrationName, object[] values) { return ServiceCacheManager.Current.Get<IQueryable<T>>(anchorType, registrationName, string.Empty, values); }
+        /// <summary>
+        /// Gets the specified cached item.
+        /// </summary>
+        /// <param name="anchorType">The type.</param>
+        /// <param name="registrationName">The registration id.</param>
+        /// <param name="tag">The tag.</param>
+        /// <returns></returns>
+        public static object Get(Type anchorType, string registrationName, object tag) { return ServiceCacheManager.Current.Get<object>(anchorType, registrationName, tag, null); }
+        public static T Get<T>(Type anchorType, string registrationName, object tag) { return ServiceCacheManager.Current.Get<T>(anchorType, registrationName, tag, null); }
+        public static IEnumerable<T> GetMany<T>(Type anchorType, string registrationName, object tag) { return ServiceCacheManager.Current.Get<IEnumerable<T>>(anchorType, registrationName, tag, null); }
+        public static IQueryable<T> GetQuery<T>(Type anchorType, string registrationName, object tag) { return ServiceCacheManager.Current.Get<IQueryable<T>>(anchorType, registrationName, tag, null); }
+        /// <summary>
+        /// Gets the specified cached item.
+        /// </summary>
+        /// <param name="anchorType">The type.</param>
+        /// <param name="registrationName">The registration id.</param>
+        /// <param name="tag">The tag.</param>
+        /// <param name="values">The values.</param>
+        /// <returns></returns>
+        public static object Get(Type anchorType, string registrationName, object tag, object[] values) { return ServiceCacheManager.Current.Get<object>(anchorType, registrationName, tag, values); }
+        public static T Get<T>(Type anchorType, string registrationName, object tag, object[] values) { return ServiceCacheManager.Current.Get<T>(anchorType, registrationName, tag, values); }
+        public static IEnumerable<T> GetMany<T>(Type anchorType, string registrationName, object tag, object[] values) { return ServiceCacheManager.Current.Get<IEnumerable<T>>(anchorType, registrationName, tag, values); }
+        public static IQueryable<T> GetQuery<T>(Type anchorType, string registrationName, object tag, object[] values) { return ServiceCacheManager.Current.Get<IQueryable<T>>(anchorType, registrationName, tag, values); }
+
+        #endregion
     }
 }

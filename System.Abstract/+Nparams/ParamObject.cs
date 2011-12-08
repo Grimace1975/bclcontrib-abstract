@@ -28,7 +28,5 @@ namespace System
     /// <summary>
 	/// ParamObject
     /// </summary>
-    public class ParamObject
-    {
-    }
+    public class ParamObject { }
 }

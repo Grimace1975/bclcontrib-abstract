@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="+EnvironmentEx\PlatformProductID.cs" />
+    <Compile Include="+Nparams+Impl\StdParams.cs" />
     <Compile Include="+ParseFormat\IConvertFormatter.cs" />
     <Compile Include="+ParseFormat\IConvertParser.cs" />
     <Compile Include="..\+FromCoreEx\+Kludge\Collections\HashHelpers.cs">
@@ -84,6 +85,7 @@
     <Compile Include="Abstract+Event\IEvent.cs" />
     <Compile Include="Abstract+Event\EventBus.cs" />
     <Compile Include="Abstract+Event\IEventHandler.cs" />
+    <Compile Include="Abstract+ServiceBus\IServiceBusHost.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCache+Primitives.cs" />
     <Compile Include="Abstract+ServiceCache\IDistributedServiceCache.cs" />
     <Compile Include="Abstract+ServiceCache\ITouchableCacheItem.cs" />
