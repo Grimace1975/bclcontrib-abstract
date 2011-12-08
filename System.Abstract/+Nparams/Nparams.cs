@@ -29,30 +29,53 @@ namespace System
     /// <summary>
     /// Nparams
     /// </summary>
-    public abstract class Nparams //: IDictionary<string, object>, ICollection<KeyValuePair<string, object>>, IEnumerable<KeyValuePair<string, object>>, IEnumerable
+    public abstract class Nparams : IDictionary<string, object>
     {
         public static Nparams Parse(Nparams args) { return (args != null ? args : null); }
-        public static Nparams Parse(string[] args) { return (args != null ? (Nparams)null : null); }
-        public static Nparams Parse(object args) { return (args != null ? (Nparams)null : null); }
-        //
-        public abstract string[] ToStringArray();
-        public abstract int Count { get; }
-        public abstract IEnumerable<string> Names { get; }
-        public abstract bool Exists(string name);
-        public abstract T Slice<T>(string name, T defaultValue);
-        public abstract T Value<T>(string name, T defaultValue);
-    }
+        public static Nparams Parse(IDictionary<string, object> args) { return (args != null ? NparamsManager.Parse(args) : null); }
+        public static Nparams Parse(string[] args) { return (args != null ? NparamsManager.Parse(args) : null); }
+        public static Nparams Parse(object args) { return (args != null ? NparamsManager.Parse(args) : null); }
 
-    /// <summary>
-    /// NparamsExtensions
-    /// </summary>
-    public static class NparamsExtensions
-    {
-        public static T Slice<T>(this Nparams param, string name) { return param.Slice<T>(name, default(T)); }
-        public static T Value<T>(this Nparams param, string name) { return param.Value<T>(name, default(T)); }
-        public static T Get<T>(this Nparams param)
+        public abstract void Add(string key, object value);
+        public abstract bool ContainsKey(string key);
+        public abstract int Count { get; }
+        public abstract ICollection<string> Keys { get; }
+        public abstract bool Remove(string key);
+        public abstract bool TryGetValue(string key, out object value);
+        public abstract ICollection<object> Values { get; }
+        public abstract object this[string key] { get; set; }
+        public abstract void Clear();
+        public bool IsReadOnly
         {
-            return default(T);
+            get { return false; }
+        }
+        public abstract IEnumerator<KeyValuePair<string, object>> GetEnumerator();
+        public abstract string[] ToStringArray();
+        public T Slice<T>(string key) { return Slice<T>(key, default(T)); }
+        public abstract T Slice<T>(string key, T defaultValue);
+        //public T Value<T>(string key) { return Value<T>(key, default(T)); }
+        //public abstract T Value<T>(string key, T defaultValue);
+        public T Get<T>()
+        {
+            return (T)this[typeof(T).Name];
+        }
+        public void Set<T>(T value)
+        {
+            this[typeof(T).Name] = value;
+        }
+        //
+        Collections.IEnumerator Collections.IEnumerable.GetEnumerator() { return ((Nparams)this).GetEnumerator(); }
+        //
+        public void Add(KeyValuePair<string, object> item) { throw new NotImplementedException(); }
+        public bool Contains(KeyValuePair<string, object> item) { throw new NotImplementedException(); }
+        public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex) { throw new NotImplementedException(); }
+        public bool Remove(KeyValuePair<string, object> item) { throw new NotImplementedException(); }
+        //
+        public void AddRange(IDictionary<string, object> dictionary)
+        {
+            if (dictionary != null)
+                foreach (var pair in dictionary)
+                    Add(pair.Key, pair.Value);
         }
     }
 }

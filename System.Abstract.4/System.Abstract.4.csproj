@@ -99,6 +99,9 @@
     <Compile Include="..\System.Abstract\+Nparams+Impl\NparamsManager.cs">
       <Link>+Nparams+Impl\NparamsManager.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\+Nparams+Impl\StdParams.cs">
+      <Link>+Nparams+Impl\StdParams.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\+Nparams\Nparams.cs">
       <Link>+Nparams\Nparams.cs</Link>
     </Compile>
@@ -194,6 +197,9 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusCallback.cs">
       <Link>Abstract+ServiceBus\IServiceBusCallback.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusHost.cs">
+      <Link>Abstract+ServiceBus\IServiceBusHost.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusLocation.cs">
       <Link>Abstract+ServiceBus\IServiceBusLocation.cs</Link>
