@@ -187,6 +187,10 @@ namespace Contoso.Abstract
             {
                 if ((names == null) || (names.Length == 0))
                     return null;
+                var cache = _parent.Cache;
+                // ensure
+                foreach (string name in names)
+                    cache.Insert(name, string.Empty, null, ServiceCache.InfiniteAbsoluteExpiration, ServiceCache.NoSlidingExpiration, WebCacheItemPriority.Normal, null);
                 return (_base == null ? new WebCacheDependency(null, names) : new WebCacheDependency(null, names, _base.MakeDependency(tag, names) as WebCacheDependency));
             }
         }
