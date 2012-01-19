@@ -97,8 +97,10 @@ namespace Contoso.Abstract
 
         // register implementation
         public void Register<TService, TImplementation>()
+            where TService : class
             where TImplementation : class, TService { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(typeof(TImplementation))); HasPendingRegistrations = true; }
         public void Register<TService, TImplementation>(string name)
+            where TService : class
             where TImplementation : class, TService { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(typeof(TImplementation)) { Name = name }); HasPendingRegistrations = true; }
         public void Register<TService>(Type implementationType)
             where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ConfiguredInstance(implementationType)); HasPendingRegistrations = true; }
@@ -118,7 +120,10 @@ namespace Contoso.Abstract
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent))); HasPendingRegistrations = true; }
+        public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
+            where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent)) { Name = name }); HasPendingRegistrations = true; }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { new GenericFamilyExpression(serviceType, this).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent))); HasPendingRegistrations = true; }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { new GenericFamilyExpression(serviceType, this).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent)) { Name = name }); HasPendingRegistrations = true; }
 
         #region Domain extents
 

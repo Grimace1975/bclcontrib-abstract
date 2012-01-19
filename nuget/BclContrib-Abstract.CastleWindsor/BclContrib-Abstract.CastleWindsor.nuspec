@@ -12,8 +12,8 @@
     <language>en-US</language>
     <dependencies>
       <dependency id="BclContrib-Abstract" version="0.1.6" />
-      <dependency id="Castle.Core" version="2.5.2" />
-      <dependency id="Castle.Windsor" version="2.5.3" />
+      <dependency id="Castle.Core" version="3.0.0.4001" />
+      <dependency id="Castle.Windsor" version="3.0.0.4001" />
     </dependencies>
   </metadata>
 </package>

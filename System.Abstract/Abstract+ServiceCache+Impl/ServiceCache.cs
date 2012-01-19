@@ -52,13 +52,13 @@ namespace System.Abstract
 
         internal static string GetNamespace(IEnumerable<object> values)
         {
-            if ((values == null) || !values.Any())
+            if (values == null || !values.Any())
                 return null;
             var b = new StringBuilder();
-            foreach (var x in values)
+            foreach (var v in values)
             {
-                if (x != null)
-                    b.Append(x.ToString());
+                if (v != null)
+                    b.Append(v.ToString());
                 b.Append("\\");
             }
             return b.ToString();

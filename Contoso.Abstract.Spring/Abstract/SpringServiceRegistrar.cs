@@ -91,12 +91,14 @@ namespace Contoso.Abstract
 
         // register implementation
         public void Register<TService, TImplementation>()
+            where TService : class
             where TImplementation : class, TService
         {
             var b = ObjectDefinitionBuilder.RootObjectDefinition(_factory, typeof(TImplementation));
             _container.RegisterObjectDefinition(SpringServiceLocator.GetName(typeof(TImplementation)), b.ObjectDefinition);
         }
         public void Register<TService, TImplementation>(string name)
+            where TService : class
             where TImplementation : class, TService
         {
             var b = ObjectDefinitionBuilder.RootObjectDefinition(_factory, typeof(TImplementation));
@@ -140,6 +142,9 @@ namespace Contoso.Abstract
             throw new NotSupportedException();
             //_container.ObjectFactory.RegisterSingleton(SpringNetServiceLocator.GetName(factoryMethod.GetType()), ((object x) => factoryMethod(_parent)));
         }
+        public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
+            where TService : class { throw new NotSupportedException(); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { throw new NotSupportedException(); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { throw new NotSupportedException(); }
     }
 }

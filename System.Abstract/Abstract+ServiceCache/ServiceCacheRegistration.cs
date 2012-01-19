@@ -88,7 +88,7 @@ namespace System.Abstract
 				throw new ArgumentNullException("builder");
 			Name = name;
 			Builder = builder;
-			if ((cacheTags != null) && (cacheTags.Length > 0))
+			if (cacheTags != null && cacheTags.Length > 0)
 			{
 				if (itemPolicy.Dependency != null)
 					throw new InvalidOperationException(Local.RedefineCacheDependency);

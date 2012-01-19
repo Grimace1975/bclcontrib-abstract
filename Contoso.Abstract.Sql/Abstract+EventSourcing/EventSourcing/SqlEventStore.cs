@@ -215,7 +215,7 @@ From @xml.nodes(N'/r/e') _xml(item);", _tableName);
         private Event MakeEvent(SqlDataReader r, EventOrdinal ordinal)
         {
             var type = Type.GetType(r.Field<string>(ordinal.Type));
-            string blob = r.Field<string>(ordinal.Blob);
+            var blob = r.Field<string>(ordinal.Blob);
             return _serializer.ReadObject<Event>(type, blob);
         }
 

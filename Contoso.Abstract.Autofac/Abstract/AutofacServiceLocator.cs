@@ -68,9 +68,9 @@ namespace Contoso.Abstract
             }
         }
 
-        Action<IServiceRegistrar, IServiceLocator, string> ServiceLocatorManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> ServiceLocatorManager.ISetupRegistration.OnServiceRegistrar
         {
-            get { return (registrar, locator, name) => ServiceLocatorManager.RegisterInstance<IAutofacServiceLocator>(this, registrar, locator, name); }
+            get { return (locator, name) => ServiceLocatorManager.RegisterInstance<IAutofacServiceLocator>(this, locator, name); }
         }
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }

@@ -1,8 +1,8 @@
 ﻿using Rhino.ServiceBus.Impl;
 using Rhino.ServiceBus.LoadBalancer;
-namespace Contoso.Abstract
+namespace Contoso.Abstract.RhinoServiceBus
 {
-    public sealed class ServiceBusLoadBalancerBootStrapper : ServiceBusBootStrapper
+    public class ServiceLocatorLoadBalancerBootStrapper : ServiceLocatorBootStrapper
     {
         protected override AbstractRhinoServiceBusConfiguration CreateConfiguration()
         {

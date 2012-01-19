@@ -26,6 +26,9 @@ THE SOFTWARE.
 using System;
 namespace Contoso.Abstract
 {
+    /// <summary>
+    /// ApplicationServiceBusRegistration
+    /// </summary>
     public class ApplicationServiceBusRegistration
     {
         public Type MessageHandlerType { get; set; }

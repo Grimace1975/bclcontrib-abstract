@@ -54,9 +54,9 @@ namespace System.Abstract.Parts
                     var guid2 = new Guid(node2.Attributes["versionId"].Value);
                     foreach (XmlNode node3 in node2.ChildNodes)
                     {
-                        string innerText = node3.InnerText;
+                        var innerText = node3.InnerText;
                         var type = assembly.GetType(innerText);
-                        if ((type == null) || (type.Module.ModuleVersionId != guid2))
+                        if (type == null || type.Module.ModuleVersionId != guid2)
                             return null;
                         list.Add(type);
                     }

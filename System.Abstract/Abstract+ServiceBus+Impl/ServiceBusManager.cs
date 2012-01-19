@@ -26,37 +26,37 @@ THE SOFTWARE.
 using System.Abstract.Parts;
 namespace System.Abstract
 {
-	/// <summary>
-	/// ServiceBusManager
-	/// </summary>
-	public class ServiceBusManager : ServiceManagerBase<IServiceBus, Action<IServiceBus>>
-	{
-		static ServiceBusManager()
-		{
-			Registration = new SetupRegistration
-			{
-				OnSetup = (service, descriptor) =>
-				{
-					if (descriptor != null)
-						foreach (var action in descriptor.Actions)
-							action(service);
-					return service;
-				},
-                OnServiceRegistrar = (service, registrar, locator, name) =>
-				{
-                    RegisterInstance(service, registrar, locator, name);
-					var publishingServiceBus = (service as IPublishingServiceBus);
-					if (publishingServiceBus != null)
-                        RegisterInstance(publishingServiceBus, registrar, locator, name);
+    /// <summary>
+    /// ServiceBusManager
+    /// </summary>
+    public class ServiceBusManager : ServiceManagerBase<IServiceBus, Action<IServiceBus>>
+    {
+        static ServiceBusManager()
+        {
+            Registration = new SetupRegistration
+            {
+                OnSetup = (service, descriptor) =>
+                {
+                    if (descriptor != null)
+                        foreach (var action in descriptor.Actions)
+                            action(service);
+                    return service;
+                },
+                OnServiceRegistrar = (service, locator, name) =>
+                {
+                    RegisterInstance(service, locator, name);
+                    var publishingServiceBus = (service as IPublishingServiceBus);
+                    if (publishingServiceBus != null)
+                        RegisterInstance(publishingServiceBus, locator, name);
                     // specific registration
                     var setupRegistration = (service as ISetupRegistration);
                     if (setupRegistration != null)
-                        setupRegistration.OnServiceRegistrar(registrar, locator, name);
-				},
-			};
-		}
+                        setupRegistration.OnServiceRegistrar(locator, name);
+                },
+            };
+        }
 
-		public static void EnsureRegistration() { }
-		public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceBus> service) { return ProtectedGetSetupDescriptor(service); }
-	}
+        public static void EnsureRegistration() { }
+        public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceBus> service) { return ProtectedGetSetupDescriptor(service, null); }
+    }
 }

@@ -63,7 +63,7 @@ namespace System.Abstract.EventSourcing
                 {
                     var parameters = methodInfo.GetParameters();
                     Type derivedEventType;
-                    if ((parameters.Length != 1) || !(derivedEventType = parameters[0].ParameterType).IsSubclassOf(eventType))
+                    if (parameters.Length != 1 || !(derivedEventType = parameters[0].ParameterType).IsSubclassOf(eventType))
                         return null;
                     return new HandlerPair { EventType = derivedEventType, Handler = ((Event e) => methodInfo.Invoke(aggregate, new[] { e })) };
                     //var derivedActionDelegate = Delegate.CreateDelegate(actionType.MakeGenericType(derivedEventType), aggregate, methodInfo);

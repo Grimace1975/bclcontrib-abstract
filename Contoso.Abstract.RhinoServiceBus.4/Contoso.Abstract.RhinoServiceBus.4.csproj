@@ -38,20 +38,20 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\ServiceBusBootStrapper.cs">
-      <Link>Abstract\ServiceBusBootStrapper.cs</Link>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBus\Extensions.cs">
+      <Link>Abstract\RhinoServiceBus\Extensions.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\ServiceBusBuilder.cs">
-      <Link>Abstract\ServiceBusBuilder.cs</Link>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBus\ServiceLocatorAdapter.cs">
+      <Link>Abstract\RhinoServiceBus\ServiceLocatorAdapter.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\ServiceBusConfigurationExtensions.cs">
-      <Link>Abstract\ServiceBusConfigurationExtensions.cs</Link>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBus\ServiceLocatorBootStrapper.cs">
+      <Link>Abstract\RhinoServiceBus\ServiceLocatorBootStrapper.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\ServiceBusLoadBalancerBootStrapper.cs">
-      <Link>Abstract\ServiceBusLoadBalancerBootStrapper.cs</Link>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBus\ServiceLocatorBuilder.cs">
+      <Link>Abstract\RhinoServiceBus\ServiceLocatorBuilder.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\ServiceLocatorAdapter.cs">
-      <Link>Abstract\ServiceLocatorAdapter.cs</Link>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBus\ServiceLocatorLoadBalancerBootStrapper.cs">
+      <Link>Abstract\RhinoServiceBus\ServiceLocatorLoadBalancerBootStrapper.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -62,41 +62,38 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core">
-      <HintPath>..\packages\Castle.Core.2.5.2\lib\NET35\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Esent.Interop">
-      <HintPath>..\packages\Rhino.ServiceBus.References.2.1.0.0\lib\Esent.Interop.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.PersistentHashTable">
+    <Reference Include="Rhino.PersistentHashTable, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <HintPath>..\packages\Rhino.PersistentHashTable.1.7.0.0\lib\4.0\Rhino.PersistentHashTable.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.Queues">
-      <HintPath>..\packages\Rhino.Queues.1.3.0.0\lib\4.0\Rhino.Queues.dll</HintPath>
+    <Reference Include="Rhino.Queues, Version=1.4.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rhino.Queues.1.4.0.0\lib\4.0\Rhino.Queues.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.ServiceBus">
-      <HintPath>..\packages\Rhino.ServiceBus.2.1.1.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
+    <Reference Include="Rhino.ServiceBus, Version=2.2.2.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rhino.ServiceBus.2.2.2.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.ServiceBus.Host">
-      <HintPath>..\packages\Rhino.ServiceBus.Host.2.1.1.0\lib\4.0\Rhino.ServiceBus.Host.exe</HintPath>
+    <Reference Include="Rhino.ServiceBus.Host, Version=2.2.2.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rhino.ServiceBus.Host.2.2.2.0\lib\4.0\Rhino.ServiceBus.Host.exe</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="Wintellect.Threading">
-      <HintPath>..\packages\Rhino.ServiceBus.References.2.1.0.0\lib\Wintellect.Threading.dll</HintPath>
-    </Reference>
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.Transactions" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BclContrib.snk" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Contoso.Abstract.RhinoServiceBus\Changelog.txt">
       <Link>Changelog.txt</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

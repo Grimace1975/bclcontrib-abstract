@@ -42,7 +42,7 @@ namespace Contoso.Practices.DurableBus.Transport
                 if (messageReceived != null)
                     messageReceived(this, new MessageReceivedEventArgs(m));
             }
-            catch (Exception e) { ServiceLog.Warning("Failed raising 'transport message received' event for message with ID=" + m.Id, e); return false; }
+            catch (Exception ex) { ServiceLog.Warning("Failed raising 'transport message received' event for message with ID=" + m.Id, ex); return false; }
             return true;
         }
 

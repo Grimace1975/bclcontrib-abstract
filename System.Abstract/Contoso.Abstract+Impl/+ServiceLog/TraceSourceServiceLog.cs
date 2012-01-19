@@ -54,9 +54,9 @@ namespace Contoso.Abstract
             Log = GetAndCache(name, defaultLevel);
         }
 
-        Action<IServiceRegistrar, IServiceLocator, string> ServiceLogManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.OnServiceRegistrar
         {
-            get { return (registrar, locator, name) => ServiceLogManager.RegisterInstance<ITraceSourceServiceLog>(this, registrar, locator, name); }
+            get { return (locator, name) => ServiceLogManager.RegisterInstance<ITraceSourceServiceLog>(this, locator, name); }
         }
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
@@ -120,7 +120,7 @@ namespace Contoso.Abstract
                 if (!HasDefaultSource(log))
                 {
                     var source = new TraceSource("Default", defaultLevel);
-                    for (string shortName = ShortenName(name); !string.IsNullOrEmpty(shortName); shortName = ShortenName(shortName))
+                    for (var shortName = ShortenName(name); !string.IsNullOrEmpty(shortName); shortName = ShortenName(shortName))
                     {
                         var source2 = new TraceSource(shortName, defaultLevel);
                         if (!HasDefaultSource(source2))
@@ -148,7 +148,7 @@ namespace Contoso.Abstract
 
         private static bool HasDefaultSource(TraceSource source)
         {
-            return (((source.Listeners.Count == 1) && (source.Listeners[0] is DefaultTraceListener)) && (source.Listeners[0].Name == "Default"));
+            return (source.Listeners.Count == 1 && source.Listeners[0] is DefaultTraceListener && source.Listeners[0].Name == "Default");
         }
     }
 }

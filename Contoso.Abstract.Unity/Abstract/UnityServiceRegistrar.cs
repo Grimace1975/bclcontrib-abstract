@@ -83,8 +83,10 @@ namespace Contoso.Abstract
 
         // register implementation
         public void Register<TService, TImplementation>()
+            where TService : class
             where TImplementation : class, TService { _container.RegisterType<TService, TImplementation>(new InjectionMember[0]); }
         public void Register<TService, TImplementation>(string name)
+            where TService : class
             where TImplementation : class, TService { _container.RegisterType<TService, TImplementation>(name, new InjectionMember[0]); }
         public void Register<TService>(Type implementationType)
            where TService : class { _container.RegisterType(typeof(TService), implementationType, new InjectionMember[0]); }
@@ -104,7 +106,10 @@ namespace Contoso.Abstract
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { _container.RegisterType<TService>(new InjectionFactory(c => factoryMethod(_parent))); }
+        public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
+            where TService : class { _container.RegisterType<TService>(name, new InjectionFactory(c => factoryMethod(_parent))); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { _container.RegisterType(serviceType, new InjectionFactory(c => factoryMethod(_parent))); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { _container.RegisterType(serviceType, name, new InjectionFactory(c => factoryMethod(_parent))); }
 
         //private string MakeId(Type serviceType, Type implementationType) { return serviceType.Name + "->" + implementationType.FullName; }
     }

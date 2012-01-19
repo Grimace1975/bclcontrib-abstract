@@ -35,7 +35,7 @@ namespace System.Abstract
         IServiceLocator Locator { get; }
         TServiceLocator GetLocator<TServiceLocator>()
             where TServiceLocator : class, IServiceLocator;
-        
+
         // enumerate
         bool HasRegistered<TService>();
         bool HasRegistered(Type serviceType);
@@ -48,9 +48,11 @@ namespace System.Abstract
 
         // register implementation
         void Register<TService, TImplementation>()
-            where TImplementation : class, TService;
+            where TImplementation : class, TService
+            where TService : class;
         void Register<TService, TImplementation>(string name)
-            where TImplementation : class, TService;
+            where TImplementation : class, TService
+            where TService : class;
         void Register<TService>(Type implementationType)
             where TService : class;
         void Register<TService>(Type implementationType, string name)
@@ -69,6 +71,9 @@ namespace System.Abstract
         // register method
         void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class;
+        void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
+            where TService : class;
         void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod);
+        void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name);
     }
 }

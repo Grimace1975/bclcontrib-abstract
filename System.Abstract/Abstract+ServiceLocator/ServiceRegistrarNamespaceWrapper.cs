@@ -69,8 +69,10 @@ namespace System.Abstract
 
         // register implementation
         public void Register<TService, TImplementation>()
+            where TService : class
             where TImplementation : class, TService { _registrar.Register<TService, TImplementation>(_namespace); }
         public void Register<TService, TImplementation>(string name)
+            where TService : class
             where TImplementation : class, TService { _registrar.Register<TService, TImplementation>(_namespace + "::" + name); }
         public void Register<TService>(Type implementationType)
             where TService : class { _registrar.Register(implementationType, _namespace); }
@@ -89,6 +91,9 @@ namespace System.Abstract
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { throw new NotSupportedException(); }
+        public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
+            where TService : class { throw new NotSupportedException(); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { throw new NotSupportedException(); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { throw new NotSupportedException(); }
     }
 }

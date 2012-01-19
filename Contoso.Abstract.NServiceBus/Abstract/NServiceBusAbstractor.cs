@@ -55,9 +55,9 @@ namespace Contoso.Abstract
             Bus = bus;
         }
 
-        Action<IServiceRegistrar, IServiceLocator, string> ServiceBusManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> ServiceBusManager.ISetupRegistration.OnServiceRegistrar
         {
-            get { return (registrar, locator, name) => ServiceBusManager.RegisterInstance<INServiceBus>(this, registrar, locator, name); }
+            get { return (locator, name) => ServiceBusManager.RegisterInstance<INServiceBus>(this, locator, name); }
         }
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
@@ -75,7 +75,7 @@ namespace Contoso.Abstract
         {
             if (location == null)
                 throw new ArgumentNullException("location");
-            if ((messages == null) || (messages.Length == 0))
+            if (messages == null || messages.Length == 0)
                 throw new ArgumentNullException("messages");
             var firstMessage = messages[0];
             if (firstMessage == null)
@@ -96,7 +96,7 @@ namespace Contoso.Abstract
 
         public void Publish(params IServiceMessage[] messages)
         {
-            if ((messages == null) || (messages.Length == 0))
+            if (messages == null || messages.Length == 0)
                 throw new ArgumentNullException("messages");
             var firstMessage = messages[0];
             if (firstMessage == null)

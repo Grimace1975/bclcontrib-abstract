@@ -29,6 +29,7 @@ using System.Abstract;
 using System.Collections.Generic;
 using Castle.Windsor;
 using Castle.MicroKernel.Registration;
+using System.Reflection;
 namespace Contoso.Abstract
 {
     /// <summary>
@@ -69,7 +70,7 @@ namespace Contoso.Abstract
         public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType)
         {
             return _container.Kernel.GetAssignableHandlers(serviceType)
-                .Select(x => new ServiceRegistration { ServiceType = x.Service });
+                .Select(x => new ServiceRegistration { ServiceType = x.ComponentModel.Implementation });
         }
         public IEnumerable<ServiceRegistration> Registrations
         {
@@ -82,8 +83,10 @@ namespace Contoso.Abstract
 
         // register implementation
         public void Register<TService, TImplementation>()
+            where TService : class
             where TImplementation : class, TService { _container.Register(Component.For<TService>().ImplementedBy<TImplementation>().LifeStyle.Transient); }
         public void Register<TService, TImplementation>(string name)
+            where TService : class
             where TImplementation : class, TService { _container.Register(Component.For<TService>().Named(name).ImplementedBy<TImplementation>().LifeStyle.Transient); }
         public void Register<TService>(Type implementationType)
              where TService : class { _container.Register(Component.For<TService>().ImplementedBy(implementationType).LifeStyle.Transient); }
@@ -103,7 +106,10 @@ namespace Contoso.Abstract
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { _container.Register(Component.For<TService>().UsingFactoryMethod<TService>(x => factoryMethod(_parent)).LifeStyle.Transient); }
+        public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
+            where TService : class { _container.Register(Component.For<TService>().UsingFactoryMethod<TService>(x => factoryMethod(_parent)).Named(name).LifeStyle.Transient); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { _container.Register(Component.For(serviceType).UsingFactoryMethod(x => factoryMethod(_parent)).LifeStyle.Transient); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { _container.Register(Component.For(serviceType).UsingFactoryMethod(x => factoryMethod(_parent)).Named(name).LifeStyle.Transient); }
 
         #region Domain specific
 

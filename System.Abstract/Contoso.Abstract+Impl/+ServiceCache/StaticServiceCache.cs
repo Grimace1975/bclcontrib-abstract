@@ -51,9 +51,9 @@ namespace Contoso.Abstract
             Settings = new ServiceCacheSettings(new DefaultTouchableCacheItem(this, null));
         }
 
-        Action<IServiceRegistrar, IServiceLocator, string> ServiceCacheManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> ServiceCacheManager.ISetupRegistration.OnServiceRegistrar
         {
-            get { return (registrar, locator, name) => ServiceCacheManager.RegisterInstance<IStaticServiceCache>(this, registrar, locator, name); }
+            get { return (locator, name) => ServiceCacheManager.RegisterInstance<IStaticServiceCache>(this, locator, name); }
         }
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
@@ -156,7 +156,7 @@ namespace Contoso.Abstract
 
             public void Touch(object tag, string[] names)
             {
-                if ((names == null) || (names.Length == 0))
+                if (names == null || names.Length == 0)
                     return;
                 _cache.Clear();
                 if (_base != null)
@@ -165,7 +165,7 @@ namespace Contoso.Abstract
 
             public object MakeDependency(object tag, string[] names)
             {
-                if ((names == null) || (names.Length == 0))
+                if (names == null || names.Length == 0)
                     return null;
                 throw new NotSupportedException();
             }

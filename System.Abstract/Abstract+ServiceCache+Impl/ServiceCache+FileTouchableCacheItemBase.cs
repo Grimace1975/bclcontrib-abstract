@@ -57,14 +57,14 @@ namespace System.Abstract
 					return;
 				}
 				//
-				if ((names == null) || (names.Length == 0))
+				if (names == null || names.Length == 0)
 					return;
 				var newNames = new List<string>();
 				lock (_lock)
 					foreach (var name in names)
 					{
 						var newName = name;
-						bool canTouch = CanTouch(tag, ref newName);
+						var canTouch = CanTouch(tag, ref newName);
 						newNames.Add(newName);
 						if (!canTouch)
 							continue;
@@ -98,7 +98,7 @@ namespace System.Abstract
 				if (string.IsNullOrEmpty(Directory))
 					return (_base != null ? _base.MakeDependency(tag, names) : null);
 				//
-				if ((names == null) || (names.Length == 0))
+				if (names == null || names.Length == 0)
 					return null;
 				string[] newNames;
 				EnsureKeysExist(tag, names, out newNames);
@@ -114,7 +114,7 @@ namespace System.Abstract
 					foreach (var name in names)
 					{
 						var newName = name;
-						bool canTouch = CanTouch(tag, ref newName);
+						var canTouch = CanTouch(tag, ref newName);
 						newNames2.Add(newName);
 						if (!canTouch)
 							continue;
@@ -133,7 +133,7 @@ namespace System.Abstract
 
 			public virtual bool CanTouch(object tag, ref string name)
 			{
-				if ((name == null) || !name.StartsWith("#"))
+				if (name == null || !name.StartsWith("#"))
 					return false;
 				name = name.Substring(1);
 				return true;

@@ -127,7 +127,7 @@ namespace System.Abstract
                 if (_set.Contains(registration))
                     throw new InvalidOperationException(string.Format(Local.RedefineDataCacheAB, AnchorType.ToString(), registration.Name));
                 // add
-                string registrationName = registration.Name;
+                var registrationName = registration.Name;
                 if (string.IsNullOrEmpty(registrationName))
                     throw new ArgumentNullException("registration.Name");
                 if (registrationName.IndexOf("::") > -1)
@@ -218,8 +218,8 @@ namespace System.Abstract
             _rwLock.EnterUpgradeableReadLock();
             try
             {
-                bool exists = _items.TryGetValue(anchorType, out registrar);
-                if ((exists) || (!createIfRequired))
+                var exists = _items.TryGetValue(anchorType, out registrar);
+                if (exists || !createIfRequired)
                     return exists;
                 _rwLock.EnterWriteLock();
                 try

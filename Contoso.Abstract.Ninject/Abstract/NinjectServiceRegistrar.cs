@@ -80,8 +80,10 @@ namespace Contoso.Abstract
 
         // register implementation
         public void Register<TService, TImplementation>()
+            where TService : class
             where TImplementation : class, TService { Bind<TService>().To<TImplementation>(); }
         public void Register<TService, TImplementation>(string name)
+            where TService : class
             where TImplementation : class, TService { Bind<TService>().To(typeof(TImplementation)).Named(name); }
         public void Register<TService>(Type implementationType)
             where TService : class { Bind<TService>().To(implementationType); }
@@ -101,7 +103,10 @@ namespace Contoso.Abstract
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { Bind<TService>().ToMethod(x => factoryMethod(_parent)); }
+        public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
+            where TService : class { Bind<TService>().ToMethod(x => factoryMethod(_parent)).Named(name); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { Bind(serviceType).ToMethod(x => factoryMethod(_parent)); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { Bind(serviceType).ToMethod(x => factoryMethod(_parent)).Named(name); }
 
         #region Domain specific
 

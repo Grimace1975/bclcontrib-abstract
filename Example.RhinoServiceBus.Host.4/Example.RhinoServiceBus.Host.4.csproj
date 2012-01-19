@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5453840C-79D7-4CCD-AE04-1BB00BD0AB52}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Example</RootNamespace>
     <AssemblyName>Example.RhinoServiceBus.Host</AssemblyName>
@@ -34,7 +34,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BootStrapper.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Runtime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -42,35 +43,31 @@
       <Project>{3CD3880F-DDEB-453D-895B-5E90AC66FE4A}</Project>
       <Name>Contoso.Abstract.RhinoServiceBus.4</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.Unity.4\Contoso.Abstract.Unity.4.csproj">
+      <Project>{D8273634-E428-474A-98EB-4D9374F782A2}</Project>
+      <Name>Contoso.Abstract.Unity.4</Name>
+    </ProjectReference>
     <ProjectReference Include="..\System.Abstract.4\System.Abstract.4.csproj">
       <Project>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</Project>
       <Name>System.Abstract.4</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core">
-      <HintPath>..\packages\Castle.Core.2.5.2\lib\NET35\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Esent.Interop">
-      <HintPath>..\packages\Rhino.ServiceBus.References.2.1.0.0\lib\Esent.Interop.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net">
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.PersistentHashTable">
-      <HintPath>..\packages\Rhino.PersistentHashTable.1.7.0.0\lib\4.0\Rhino.PersistentHashTable.dll</HintPath>
+    <Reference Include="Rhino.Queues, Version=1.4.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rhino.Queues.1.4.0.0\lib\4.0\Rhino.Queues.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.Queues">
-      <HintPath>..\packages\Rhino.Queues.1.3.0.0\lib\4.0\Rhino.Queues.dll</HintPath>
+    <Reference Include="Rhino.ServiceBus, Version=2.2.2.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rhino.ServiceBus.2.2.2.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.ServiceBus">
-      <HintPath>..\packages\Rhino.ServiceBus.2.1.1.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.ServiceBus.Host">
-      <HintPath>..\packages\Rhino.ServiceBus.Host.2.1.1.0\lib\4.0\Rhino.ServiceBus.Host.exe</HintPath>
-    </Reference>
-    <Reference Include="Wintellect.Threading">
-      <HintPath>..\packages\Rhino.ServiceBus.References.2.1.0.0\lib\Wintellect.Threading.dll</HintPath>
+    <Reference Include="Rhino.ServiceBus.Host, Version=2.2.2.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rhino.ServiceBus.Host.2.2.2.0\lib\4.0\Rhino.ServiceBus.Host.exe</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
