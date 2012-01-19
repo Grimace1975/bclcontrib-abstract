@@ -48,7 +48,7 @@ namespace Contoso.Abstract.Mvc
         public override object Execute(ControllerContext controllerContext, IDictionary<string, object> parameters)
         {
             Action<ControllerContext> onExecuting;
-            if ((InferredAction != null) && ((onExecuting = InferredAction.OnExecuting) != null))
+            if (InferredAction != null && (onExecuting = InferredAction.OnExecuting) != null)
                 onExecuting(controllerContext);
             return new InferredViewResult { ViewName = ActionName };
         }

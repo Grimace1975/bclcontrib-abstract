@@ -67,7 +67,7 @@ namespace System.Abstract.Parts
 
         public static bool TypeIsPublicClass(Type type)
         {
-            return ((type != null) && type.IsPublic && type.IsClass && !type.IsAbstract);
+            return (type != null && type.IsPublic && type.IsClass && !type.IsAbstract);
         }
     }
 }

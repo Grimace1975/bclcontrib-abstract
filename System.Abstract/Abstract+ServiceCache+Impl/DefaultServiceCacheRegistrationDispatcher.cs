@@ -63,7 +63,7 @@ namespace System.Abstract
                 return (!useDBNull || !(valueAsCache is DBNull) ? (T)valueAsCache : default(T));
             // create
             var value = CreateData<T>(@namespace, registration, tag, values);
-            valueAsCache = (!useDBNull || (value != null) ? (object)value : DBNull.Value);
+            valueAsCache = (!useDBNull || value != null ? (object)value : DBNull.Value);
             cache.Add(tag, name, itemPolicy, valueAsCache);
             return value;
         }
@@ -80,7 +80,7 @@ namespace System.Abstract
                     return (!useDBNull || !(valueAsCache is DBNull) ? (T)valueAsCache : default(T));
                 // create
                 var value = CreateData<T>(@namespace, registration, tag, values);
-                valueAsCache = (!useDBNull || (value != null) ? (object)value : DBNull.Value);
+                valueAsCache = (!useDBNull || value != null ? (object)value : DBNull.Value);
                 cache.Add(tag, name, itemPolicy, valueAsCache);
                 return value;
             }
@@ -102,7 +102,7 @@ namespace System.Abstract
                         return (!useDBNull || !(valueAsCache is DBNull) ? (T)valueAsCache : default(T));
                     // create
                     var value = CreateData<T>(@namespace, registration, tag, values);
-                    valueAsCache = (!useDBNull || (value != null) ? (object)value : DBNull.Value);
+                    valueAsCache = (!useDBNull || value != null ? (object)value : DBNull.Value);
                     cache.Add(tag, name, itemPolicy, valueAsCache);
                     return value;
                 }
@@ -118,7 +118,7 @@ namespace System.Abstract
                 return (!useDBNull || !(valueAsCache is DBNull) ? (T)valueAsCache : default(T));
             // create
             var value = CreateData<T>(@namespace, registration, tag, values);
-            valueAsCache = (!useDBNull || (value != null) ? (object)value : DBNull.Value);
+            valueAsCache = (!useDBNull || value != null ? (object)value : DBNull.Value);
             cache.Add(tag, name, itemPolicy, valueAsCache);
             return value;
         }
@@ -134,7 +134,7 @@ namespace System.Abstract
             cache.Remove(name, null);
             var namespaces = registration.Namespaces;
             if (namespaces != null)
-                foreach (string n in namespaces)
+                foreach (var n in namespaces)
                     cache.Remove(n + name, null);
         }
 

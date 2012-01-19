@@ -55,9 +55,9 @@ namespace Contoso.Abstract
             _messageHandlerFactory = messageHandlerFactory;
         }
 
-        Action<IServiceRegistrar, IServiceLocator, string> ServiceBusManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> ServiceBusManager.ISetupRegistration.OnServiceRegistrar
         {
-            get { return (registrar, locator, name) => ServiceBusManager.RegisterInstance<IApplicationServiceBus>(this, registrar, locator, name); }
+            get { return (locator, name) => ServiceBusManager.RegisterInstance<IApplicationServiceBus>(this, locator, name); }
         }
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
@@ -98,7 +98,7 @@ namespace Contoso.Abstract
 
         private IEnumerable<Type> GetTypesOfMessageHandlers(Type messageType)
         {
-            return Items.Where(x => (x.MessageType == messageType))
+            return Items.Where(x => x.MessageType == messageType)
                 .Select(x => x.MessageHandlerType);
         }
 
@@ -107,13 +107,13 @@ namespace Contoso.Abstract
             var serviceMessageType = typeof(IServiceMessage);
             var applicationServiceMessageType = typeof(IApplicationServiceMessage);
             return messageHandlerType.GetInterfaces()
-                .Where(h => (h.IsGenericType) && (h.FullName.StartsWith("System.Abstract.IServiceMessageHandler`1") || h.FullName.StartsWith("Contoso.Abstract.IApplicationServiceMessageHandler`1")))
+                .Where(h => h.IsGenericType && (h.FullName.StartsWith("System.Abstract.IServiceMessageHandler`1") || h.FullName.StartsWith("Contoso.Abstract.IApplicationServiceMessageHandler`1")))
                 .Select(h => h.GetGenericArguments()[0])
-                .Where(m => m.GetInterfaces().Any(x => (x == serviceMessageType) || (x == applicationServiceMessageType)))
+                .Where(m => m.GetInterfaces().Any(x => x == serviceMessageType || x == applicationServiceMessageType))
                 .SingleOrDefault();
         }
 
-		public void Reply(params IServiceMessage[] messages) { throw new NotImplementedException(); }
-		public void Return<T>(T value) { throw new NotImplementedException(); }
-	}
+        public void Reply(params IServiceMessage[] messages) { throw new NotImplementedException(); }
+        public void Return<T>(T value) { throw new NotImplementedException(); }
+    }
 }

@@ -1,8 +1,9 @@
-﻿using Contoso.Abstract;
-using System.Abstract;
+﻿using System.Abstract;
+using Contoso.Abstract;
+using Contoso.Abstract.RhinoServiceBus;
 namespace Example
 {
-    public class BootStrapper : ServiceBusBootStrapper
+    public class Runtime : ServiceLocatorBootStrapper
     {
         public override void InitializeContainer()
         {

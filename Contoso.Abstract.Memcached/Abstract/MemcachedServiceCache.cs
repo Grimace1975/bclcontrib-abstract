@@ -126,9 +126,9 @@ namespace Contoso.Abstract
             throw new ArgumentOutOfRangeException("opvalue");
         }
 
-        Action<IServiceRegistrar, IServiceLocator, string> ServiceCacheManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> ServiceCacheManager.ISetupRegistration.OnServiceRegistrar
         {
-            get { return (registrar, locator, name) => ServiceCacheManager.RegisterInstance<IMemcachedServiceCache>(this, registrar, locator, name); }
+            get { return (locator, name) => ServiceCacheManager.RegisterInstance<IMemcachedServiceCache>(this, locator, name); }
         }
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
@@ -151,7 +151,7 @@ namespace Contoso.Abstract
             var slidingExpiration = itemPolicy.SlidingExpiration;
             ulong cas;
             object opvalue;
-            if ((absoluteExpiration == DateTime.MaxValue) && (slidingExpiration == TimeSpan.Zero))
+            if (absoluteExpiration == DateTime.MaxValue && slidingExpiration == TimeSpan.Zero)
                 switch (_tagMapper.ToAddOpcode(tag, ref name, out cas, out opvalue))
                 {
                     case TagMapper.AddOpcode.Append: return Cache.Append(name, OpValueToArraySegment<byte>(opvalue));
@@ -160,7 +160,7 @@ namespace Contoso.Abstract
                     case TagMapper.AddOpcode.Cas: return Cache.Cas(StoreMode.Add, name, value, cas);
                     default: throw new InvalidOperationException();
                 }
-            if ((absoluteExpiration != DateTime.MinValue) && (slidingExpiration == TimeSpan.Zero))
+            if (absoluteExpiration != DateTime.MinValue && slidingExpiration == TimeSpan.Zero)
                 switch (_tagMapper.ToAddOpcode(tag, ref name, out cas, out opvalue))
                 {
                     case TagMapper.AddOpcode.Append:
@@ -170,7 +170,7 @@ namespace Contoso.Abstract
                     case TagMapper.AddOpcode.Cas: return Cache.Cas(StoreMode.Add, name, value, absoluteExpiration, cas);
                     default: throw new InvalidOperationException();
                 }
-            if ((absoluteExpiration == DateTime.MinValue) && (slidingExpiration != TimeSpan.Zero))
+            if (absoluteExpiration == DateTime.MinValue && slidingExpiration != TimeSpan.Zero)
                 switch (_tagMapper.ToAddOpcode(tag, ref name, out cas, out opvalue))
                 {
                     case TagMapper.AddOpcode.Append:
@@ -219,7 +219,7 @@ namespace Contoso.Abstract
             StoreMode storeMode;
             IncrementTag increment;
             DecrementTag decrement;
-            if ((absoluteExpiration == DateTime.MaxValue) && (slidingExpiration == TimeSpan.Zero))
+            if (absoluteExpiration == DateTime.MaxValue && slidingExpiration == TimeSpan.Zero)
                 switch (_tagMapper.ToSetOpcode(tag, ref name, out cas, out opvalue, out storeMode))
                 {
                     case TagMapper.SetOpcode.Prepend: return Cache.Prepend(name, OpValueToArraySegment<byte>(opvalue));
@@ -233,7 +233,7 @@ namespace Contoso.Abstract
                     case TagMapper.SetOpcode.IncrementCas: increment = OpValueToIncrementTag(opvalue); return Cache.Increment(name, increment.DefaultValue, increment.Delta, cas);
                     default: throw new InvalidOperationException();
                 }
-            if ((absoluteExpiration != DateTime.MinValue) && (slidingExpiration == TimeSpan.Zero))
+            if (absoluteExpiration != DateTime.MinValue && slidingExpiration == TimeSpan.Zero)
                 switch (_tagMapper.ToSetOpcode(tag, ref name, out cas, out opvalue, out storeMode))
                 {
                     case TagMapper.SetOpcode.Prepend:
@@ -247,7 +247,7 @@ namespace Contoso.Abstract
                     case TagMapper.SetOpcode.IncrementCas: increment = OpValueToIncrementTag(opvalue); return Cache.Increment(name, increment.DefaultValue, increment.Delta, absoluteExpiration, cas);
                     default: throw new InvalidOperationException();
                 }
-            if ((absoluteExpiration == DateTime.MinValue) && (slidingExpiration != TimeSpan.Zero))
+            if (absoluteExpiration == DateTime.MinValue && slidingExpiration != TimeSpan.Zero)
                 switch (_tagMapper.ToSetOpcode(tag, ref name, out cas, out opvalue, out storeMode))
                 {
                     case TagMapper.SetOpcode.Prepend:
@@ -279,14 +279,14 @@ namespace Contoso.Abstract
 
         //    public void Touch(object tag, string[] names)
         //    {
-        //        if ((names == null) || (names.Length == 0))
+        //        if (names == null || names.Length == 0)
         //            return;
         //        throw new NotSupportedException();
         //    }
 
         //    public object MakeDependency(object tag, string[] names)
         //    {
-        //        if ((names == null) || (names.Length == 0))
+        //        if (names == null || names.Length == 0)
         //            return null;
         //        throw new NotSupportedException();
         //    }

@@ -39,7 +39,7 @@ namespace System.Abstract
 			public static readonly ServiceCacheRegistration YesNo = new ServiceCacheRegistration("YesNo", (tag, values) =>
 			{
 				var values2 = new Dictionary<string, string>(3);
-				switch ((values != null) && (values.Length == 0) ? null : values[0] as string)
+				switch (values != null && values.Length == 0 ? null : values[0] as string)
 				{
 					case null:
 					case "": break;
@@ -56,7 +56,7 @@ namespace System.Abstract
 			public static readonly ServiceCacheRegistration Gender = new ServiceCacheRegistration("Gender", (tag, values) =>
 			{
 				var values2 = new Dictionary<string, string>(3);
-				switch ((values != null) && (values.Length == 0) ? null : values[0] as string)
+				switch (values != null && values.Length == 0 ? null : values[0] as string)
 				{
 					case null:
 					case "": break;
@@ -73,17 +73,17 @@ namespace System.Abstract
 			public static readonly ServiceCacheRegistration Integer = new ServiceCacheRegistration("Integer", (tag, values) =>
 			{
 				var values2 = new Dictionary<string, string>(3);
-				switch ((values != null) && (values.Length == 0) ? null : values[0] as string)
+				switch (values != null && values.Length == 0 ? null : values[0] as string)
 				{
 					case null:
 					case "": break;
 					case "--": values2.Add(string.Empty, "--"); break;
 					default: throw new InvalidOperationException();
 				}
-				int startIndex = (int)values[0];
-				int endIndex = (int)values[1];
-				int indexStep = (int)values[2];
-				for (int index = startIndex; index < endIndex; index += indexStep)
+                var startIndex = (int)values[0];
+                var endIndex = (int)values[1];
+                var indexStep = (int)values[2];
+				for (var index = startIndex; index < endIndex; index += indexStep)
 					values2.Add(index.ToString(), index.ToString());
 				return values2;
 			});

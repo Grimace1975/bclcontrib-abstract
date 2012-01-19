@@ -2,25 +2,26 @@
 using Rhino.ServiceBus.Hosting;
 using Rhino.ServiceBus.Impl;
 using Rhino.ServiceBus.Actions;
+using Rhino.ServiceBus.Internal;
 using System.Reflection;
 using System;
 using System.Linq;
-using Rhino.ServiceBus.Internal;
-namespace Contoso.Abstract
+namespace Contoso.Abstract.RhinoServiceBus
 {
-    public class ServiceBusBootStrapper : AbstractBootStrapper
+    public class ServiceLocatorBootStrapper : AbstractBootStrapper
     {
         private System.Abstract.IServiceLocator _locator;
 
-        protected ServiceBusBootStrapper() { }
-        protected ServiceBusBootStrapper(System.Abstract.IServiceLocator locator)
+        protected ServiceLocatorBootStrapper() { }
+        protected ServiceLocatorBootStrapper(System.Abstract.IServiceLocator locator)
         {
             _locator = locator;
         }
 
         protected override void ConfigureBusFacility(AbstractRhinoServiceBusConfiguration configuration)
         {
-            configuration.UseServiceLocator(_locator);
+            configuration.UseAbstractServiceLocator(_locator);
+            base.ConfigureBusFacility(configuration);
         }
 
         protected virtual void ConfigureConsumer(Type type)
@@ -62,7 +63,10 @@ namespace Contoso.Abstract
                 action.Execute();
         }
 
-        public override T GetInstance<T>() { return (T)_locator.Resolve(typeof(T)); }
+        public override T GetInstance<T>()
+        {
+            return (T)_locator.Resolve(typeof(T));
+        }
 
         private void RegisterConsumersFrom(Assembly assemblyToScan)
         {

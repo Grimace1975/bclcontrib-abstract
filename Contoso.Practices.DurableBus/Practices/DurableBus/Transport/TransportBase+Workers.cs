@@ -37,7 +37,7 @@ namespace Contoso.Practices.DurableBus.Transport
 		public void Dispose()
 		{
 			lock (_workerThreads)
-				for (int index = 0; index < _workerThreads.Count; index++)
+				for (var index = 0; index < _workerThreads.Count; index++)
 					_workerThreads[index].Stop();
 		}
 
@@ -64,7 +64,7 @@ namespace Contoso.Practices.DurableBus.Transport
 			{
 				lock (_workerThreads)
 				{
-					int current = _workerThreads.Count;
+					var current = _workerThreads.Count;
 					if (value != current)
 					{
 						if (value < current)

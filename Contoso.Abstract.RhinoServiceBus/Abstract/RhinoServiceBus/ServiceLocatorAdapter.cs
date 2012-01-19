@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Rhino.ServiceBus.Internal;
 using Rhino.ServiceBus.Impl;
-namespace Contoso.Abstract
+namespace Contoso.Abstract.RhinoServiceBus
 {
     internal class ServiceLocatorAdapter : IServiceLocator
     {
@@ -18,10 +18,10 @@ namespace Contoso.Abstract
 
         public IEnumerable<IHandler> GetAllHandlersFor(Type type)
         {
-            return null;
-           //return _locator.All()
-           //     .Where(r=>type.IsAssignableFrom(r.MappedToType))
-           //     .Select(r=> new DefaultHandler(r.RegisteredType, r.MappedToType, () => _locator.Resolve(r.MappedToType));
+            throw new NotImplementedException();
+            //return _locator.All()
+            //     .Where(r=>type.IsAssignableFrom(r.MappedToType))
+            //     .Select(r=> new DefaultHandler(r.RegisteredType, r.MappedToType, () => _locator.Resolve(r.MappedToType));
         }
 
         public void Release(object item) { }
@@ -29,5 +29,4 @@ namespace Contoso.Abstract
         public object Resolve(Type type) { return _locator.Resolve(type); }
         public IEnumerable<T> ResolveAll<T>() { return _locator.ResolveAll(typeof(T)).Cast<T>(); }
     }
-
 }

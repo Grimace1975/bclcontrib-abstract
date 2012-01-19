@@ -111,6 +111,7 @@ namespace Contoso.Abstract
 
         // register implementation
         public void Register<TService, TImplementation>()
+            where TService : class
             where TImplementation : class, TService
         {
             if (_container == null)
@@ -119,6 +120,7 @@ namespace Contoso.Abstract
                 _container.ComponentRegistry.Register(RegistrationBuilder.ForType<TImplementation>().As<TService>().CreateRegistration());
         }
         public void Register<TService, TImplementation>(string name)
+            where TService : class
             where TImplementation : class, TService
         {
             Register<TService, TImplementation>();
@@ -201,10 +203,25 @@ namespace Contoso.Abstract
             else
                 throw new NotSupportedException();
         }
+        public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
+            where TService : class
+        {
+            if (_container == null)
+                _builder.Register(x => factoryMethod(_parent)).Named<TService>(name);
+            else
+                throw new NotSupportedException();
+        }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod)
         {
             if (_container == null)
                 _builder.Register(x => factoryMethod(_parent)).As(serviceType);
+            else
+                throw new NotSupportedException();
+        }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name)
+        {
+            if (_container == null)
+                _builder.Register(x => factoryMethod(_parent)).Named(name, serviceType);
             else
                 throw new NotSupportedException();
         }

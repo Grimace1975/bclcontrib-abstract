@@ -55,9 +55,9 @@ namespace Contoso.Abstract
             Settings = new ServiceCacheSettings(new DefaultFileTouchableCacheItem(this, new DefaultTouchableCacheItem(this, null)));
         }
 
-        Action<IServiceRegistrar, IServiceLocator, string> ServiceCacheManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> ServiceCacheManager.ISetupRegistration.OnServiceRegistrar
         {
-            get { return (registrar, locator, name) => ServiceCacheManager.RegisterInstance<IWebServiceCache>(this, registrar, locator, name); }
+            get { return (locator, name) => ServiceCacheManager.RegisterInstance<IWebServiceCache>(this, locator, name); }
         }
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
@@ -174,7 +174,7 @@ namespace Contoso.Abstract
 
             public void Touch(object tag, string[] names)
             {
-                if ((names == null) || (names.Length == 0))
+                if (names == null || names.Length == 0)
                     return;
                 var cache = _parent.Cache;
                 foreach (var name in names)
@@ -185,11 +185,11 @@ namespace Contoso.Abstract
 
             public object MakeDependency(object tag, string[] names)
             {
-                if ((names == null) || (names.Length == 0))
+                if (names == null || names.Length == 0)
                     return null;
                 var cache = _parent.Cache;
                 // ensure
-                foreach (string name in names)
+                foreach (var name in names)
                     cache.Insert(name, string.Empty, null, ServiceCache.InfiniteAbsoluteExpiration, ServiceCache.NoSlidingExpiration, WebCacheItemPriority.Normal, null);
                 return (_base == null ? new WebCacheDependency(null, names) : new WebCacheDependency(null, names, _base.MakeDependency(tag, names) as WebCacheDependency));
             }
@@ -219,12 +219,12 @@ namespace Contoso.Abstract
         private WebCacheDependency GetCacheDependency(object tag, CacheItemDependency dependency)
         {
             object value;
-            if ((dependency == null) || ((value = dependency(this, tag)) == null))
+            if (dependency == null || (value = dependency(this, tag)) == null)
                 return null;
             //
-            string[] names = (value as string[]);
+            var names = (value as string[]);
             var touchable = Settings.Touchable;
-            return (((touchable != null) && (names != null) ? touchable.MakeDependency(tag, names) : value) as WebCacheDependency);
+            return ((touchable != null && names != null ? touchable.MakeDependency(tag, names) : value) as WebCacheDependency);
         }
     }
 }

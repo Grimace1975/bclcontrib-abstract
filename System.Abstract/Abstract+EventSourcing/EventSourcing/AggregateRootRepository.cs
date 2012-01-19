@@ -104,12 +104,12 @@ namespace System.Abstract.EventSourcing
             if (aggregate == null)
                 throw new InvalidOperationException("aggregate");
             // find snapshot
-            bool loaded = false;
+            var loaded = false;
             AggregateRootSnapshot snapshot = null;
             if (_snapshotStore != null)
             {
                 var snapshoter = (aggregate as ICanAggregateRootSnapshot);
-                if ((snapshoter != null) && ((snapshot = _snapshotStore.GetLatestSnapshot<TAggregateRoot>(aggregateId)) != null))
+                if (snapshoter != null && (snapshot = _snapshotStore.GetLatestSnapshot<TAggregateRoot>(aggregateId)) != null)
                 {
                     loaded = true;
                     snapshoter.LoadSnapshot(snapshot);
@@ -140,7 +140,7 @@ namespace System.Abstract.EventSourcing
                 _eventDispatcher(events);
             accessAggregateState.MarkChangesAsCommitted();
             Func<IAggregateRootRepository, AggregateRoot, bool> inlineSnapshotPredicate;
-            if ((_snapshotStore != null) && ((inlineSnapshotPredicate = _snapshotStore.InlineSnapshotPredicate) != null) && (aggregate is ICanAggregateRootSnapshot))
+            if (_snapshotStore != null && (inlineSnapshotPredicate = _snapshotStore.InlineSnapshotPredicate) != null && aggregate is ICanAggregateRootSnapshot)
                 MakeSnapshot(aggregate, inlineSnapshotPredicate);
         }
         public void Save(IEnumerable<AggregateRoot> aggregates)
@@ -156,11 +156,9 @@ namespace System.Abstract.EventSourcing
             if (aggregate == null)
                 throw new ArgumentNullException("aggregate");
             ICanAggregateRootSnapshot snapshoter;
-            if ((_snapshotStore != null) && ((snapshoter = (aggregate as ICanAggregateRootSnapshot)) != null))
-            {
-                if ((predicate == null) || (predicate(this, aggregate)))
+            if (_snapshotStore != null && (snapshoter = (aggregate as ICanAggregateRootSnapshot)) != null)
+                if (predicate == null || predicate(this, aggregate))
                     _snapshotStore.SaveSnapshot(aggregate.GetType(), snapshoter.GetSnapshot());
-            }
         }
     }
 }

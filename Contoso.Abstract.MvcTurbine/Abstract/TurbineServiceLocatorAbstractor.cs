@@ -26,6 +26,7 @@ THE SOFTWARE.
 using System;
 using MvcTurbine.ComponentModel;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace Contoso.Abstract
 {
@@ -34,6 +35,8 @@ namespace Contoso.Abstract
     /// </summary
     public class TurbineServiceLocatorAbstractor : IServiceLocator
     {
+        private static readonly MethodInfo _coerceRegisterWithKeyMethod = typeof(TurbineServiceLocatorAbstractor).GetMethod("CoerceRegisterWithKey", BindingFlags.NonPublic | BindingFlags.Instance);
+        private static readonly MethodInfo _coerceRegisterMethod = typeof(TurbineServiceLocatorAbstractor).GetMethod("CoerceRegister", BindingFlags.NonPublic | BindingFlags.Instance);
         private System.Abstract.IServiceLocator _locator;
         private System.Abstract.IServiceRegistrar _registrar;
 
@@ -58,8 +61,14 @@ namespace Contoso.Abstract
         public void Register(Type serviceType, Type implType) { _registrar.Register(serviceType, implType); }
         public void Register(string key, Type type) { _registrar.Register(type, key); }
         public void Register<Interface, Implementation>(string key)
-            where Implementation : class, Interface { _registrar.Register<Interface, Implementation>(key); }
+            where Implementation : class, Interface { _coerceRegisterMethod.MakeGenericMethod(typeof(Interface), typeof(Implementation)).Invoke(this, null); }
         public void Register<Interface, Implementation>()
+            where Implementation : class, Interface { _coerceRegisterWithKeyMethod.MakeGenericMethod(typeof(Interface), typeof(Implementation)).Invoke(this, null); }
+        public void CoerceRegisterWithKey<Interface, Implementation>(string key)
+            where Interface : class
+            where Implementation : class, Interface { _registrar.Register<Interface, Implementation>(key); }
+        public void CoerceRegister<Interface, Implementation>()
+            where Interface : class
             where Implementation : class, Interface { _registrar.Register<Interface, Implementation>(); }
         public void Register<Interface>(Type implType)
             where Interface : class

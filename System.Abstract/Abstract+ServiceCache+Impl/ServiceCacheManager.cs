@@ -35,28 +35,28 @@ namespace System.Abstract
         {
             Registration = new SetupRegistration
             {
-				OnSetup = (service, descriptor) =>
-				{
-					if (descriptor != null)
-						foreach (var action in descriptor.Actions)
-							action(service);
-					return service;
-				},
-				OnServiceRegistrar = (service, registrar, locator, name) =>
-				{
-					RegisterInstance(service, registrar, locator, name);
-					var distributedServiceCache = (service as IDistributedServiceCache);
-					if (distributedServiceCache != null)
-						RegisterInstance(distributedServiceCache, registrar, locator, name);
+                OnSetup = (service, descriptor) =>
+                {
+                    if (descriptor != null)
+                        foreach (var action in descriptor.Actions)
+                            action(service);
+                    return service;
+                },
+                OnServiceRegistrar = (service, locator, name) =>
+                {
+                    RegisterInstance(service, locator, name);
+                    var distributedServiceCache = (service as IDistributedServiceCache);
+                    if (distributedServiceCache != null)
+                        RegisterInstance(distributedServiceCache, locator, name);
                     // specific registration
                     var setupRegistration = (service as ISetupRegistration);
                     if (setupRegistration != null)
-                        setupRegistration.OnServiceRegistrar(registrar, locator, name);
-				},
+                        setupRegistration.OnServiceRegistrar(locator, name);
+                },
             };
         }
 
-		public static void EnsureRegistration() { }
-		public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceCache> service) { return ProtectedGetSetupDescriptor(service); }
+        public static void EnsureRegistration() { }
+        public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceCache> service) { return ProtectedGetSetupDescriptor(service, null); }
     }
 }

@@ -78,7 +78,7 @@ namespace Contoso.Abstract
             get
             {
                 return _builder.Dependencies
-                .Select(x => new ServiceRegistration { ServiceType = x.ServiceType, ServiceName = x.ServiceName });
+                    .Select(x => new ServiceRegistration { ServiceType = x.ServiceType, ServiceName = x.ServiceName });
             }
         }
 
@@ -88,8 +88,10 @@ namespace Contoso.Abstract
 
         // register implementation
         public void Register<TService, TImplementation>()
+            where TService : class
             where TImplementation : class, TService { _builder.AddService<TService, TImplementation>(); }
         public void Register<TService, TImplementation>(string name)
+            where TService : class
             where TImplementation : class, TService { _builder.AddService<TService, TImplementation>(name); }
         public void Register<TService>(Type implementationType)
              where TService : class { _builder.AddService(typeof(TService), implementationType); }
@@ -109,6 +111,9 @@ namespace Contoso.Abstract
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { Func<IMicroContainer, TService> f = (x => factoryMethod(_parent)); _builder.AddService<TService>(f); }
+        public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
+            where TService : class { Func<IMicroContainer, TService> f = (x => factoryMethod(_parent)); _builder.AddService<TService>(name, f); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { Func<IMicroContainer, object> f = (x => factoryMethod(_parent)); _builder.AddService(serviceType, f); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { Func<IMicroContainer, object> f = (x => factoryMethod(_parent)); _builder.AddService(name, serviceType, f); }
     }
 }

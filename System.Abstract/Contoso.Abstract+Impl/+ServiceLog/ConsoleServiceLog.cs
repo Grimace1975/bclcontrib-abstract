@@ -49,9 +49,9 @@ namespace Contoso.Abstract
             Log = Console.Out;
         }
 
-        Action<IServiceRegistrar, IServiceLocator, string> ServiceLogManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.OnServiceRegistrar
         {
-            get { return (registrar, locator, name) => ServiceLogManager.RegisterInstance<IConsoleServiceLog>(this, registrar, locator, name); }
+            get { return (locator, name) => ServiceLogManager.RegisterInstance<IConsoleServiceLog>(this, locator, name); }
         }
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }

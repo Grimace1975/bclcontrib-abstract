@@ -111,7 +111,7 @@ namespace System.Abstract
 			if (cache == null)
 				throw new ArgumentNullException("cache");
 			string[] names;
-			if ((dependency == null) || ((names = (dependency(cache, tag) as string[])) == null))
+			if (dependency == null || (names = (dependency(cache, tag) as string[])) == null)
 				return;
 			EnsureCacheDependency(cache, names);
 		}
@@ -120,7 +120,7 @@ namespace System.Abstract
 			if (cache == null)
 				throw new ArgumentNullException("cache");
 			if (names != null)
-				foreach (string name in names)
+				foreach (var name in names)
 					cache.Add(null, name, new CacheItemPolicy { AbsoluteExpiration = ServiceCache.InfiniteAbsoluteExpiration }, string.Empty);
 		}
 
@@ -206,7 +206,7 @@ namespace System.Abstract
 				throw new ArgumentNullException("registration");
 			var registrationDispatcher = GetRegistrationDispatcher(cache);
 			// fetch registration
-			int recurses = 0;
+			var recurses = 0;
 			ServiceCacheRegistration foundRegistration;
 			if (!ServiceCacheRegistrar.TryGetValue(registration, ref recurses, out foundRegistration))
 				throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationAB, (registration.Registrar != null ? registration.Registrar.AnchorType.ToString() : "{unregistered}"), registration.Name));
@@ -266,7 +266,7 @@ namespace System.Abstract
 				throw new ArgumentNullException("registrationName");
 			var registrationDispatcher = GetRegistrationDispatcher(cache);
 			// fetch registration
-			int recurses = 0;
+			var recurses = 0;
 			ServiceCacheRegistration foundRegistration;
 			if (!ServiceCacheRegistrar.TryGetValue(anchorType, registrationName, ref recurses, out foundRegistration))
 				throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationAB, anchorType.ToString(), registrationName));
@@ -294,7 +294,7 @@ namespace System.Abstract
 				throw new ArgumentNullException("registration");
 			var registrationDispatcher = GetRegistrationDispatcher(cache);
 			// fetch registration
-			int recurses = 0;
+			var recurses = 0;
 			ServiceCacheRegistration foundRegistration;
 			if (!ServiceCacheRegistrar.TryGetValue(registration, ref recurses, out foundRegistration))
 				throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationA, registration.ToString()));
@@ -311,7 +311,7 @@ namespace System.Abstract
 				throw new ArgumentNullException("registrationName");
 			var registrationDispatcher = GetRegistrationDispatcher(cache);
 			// fetch registration
-			int recurses = 0;
+			var recurses = 0;
 			ServiceCacheRegistration foundRegistration;
 			if (!ServiceCacheRegistrar.TryGetValue(anchorType, registrationName, ref recurses, out foundRegistration))
 				throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationAB, anchorType.ToString(), registrationName));

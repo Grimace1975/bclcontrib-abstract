@@ -94,7 +94,7 @@ namespace System
         public override T Slice<T>(string key, T defaultValue)
         {
             object value;
-            if (_values.TryGetValue(key, out value) && (value is T))
+            if (_values.TryGetValue(key, out value) && value is T)
             {
                 _values.Remove(key);
                 return (T)value;

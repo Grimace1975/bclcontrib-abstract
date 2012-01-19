@@ -72,7 +72,7 @@ namespace System.Abstract
             {
                 if (SlidingExpiration != TimeSpan.Zero)
                     return DateTime.MinValue;
-                if ((_absoluteExpiration == DateTime.MinValue) && (_floatingAbsoluteExpiration == TimeSpan.Zero))
+                if (_absoluteExpiration == DateTime.MinValue && _floatingAbsoluteExpiration == TimeSpan.Zero)
                     return DateTime.Now.Add(new TimeSpan(1, 0, 0));
                 return (_floatingAbsoluteExpiration != TimeSpan.Zero ? DateTime.Now.Add(_floatingAbsoluteExpiration) : _absoluteExpiration);
             }

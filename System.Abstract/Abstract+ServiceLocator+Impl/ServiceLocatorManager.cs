@@ -26,50 +26,49 @@ THE SOFTWARE.
 using System.Abstract.Parts;
 namespace System.Abstract
 {
-	/// <summary>
-	/// ServiceLocatorManager
-	/// </summary>
-	public class ServiceLocatorManager : ServiceManagerBase<IServiceLocator, Action<IServiceRegistrar, IServiceLocator>>
-	{
-		private static readonly Type _wantToSkipServiceLocatorType = typeof(IWantToSkipServiceLocator);
-		private static readonly Type _wantToSkipServiceRegistrationType = typeof(IWantToSkipServiceRegistration);
+    /// <summary>
+    /// ServiceLocatorManager
+    /// </summary>
+    public class ServiceLocatorManager : ServiceManagerBase<IServiceLocator, Action<IServiceLocator>>
+    {
+        private static readonly Type _wantToSkipServiceLocatorType = typeof(IWantToSkipServiceLocator);
+        private static readonly Type _wantToSkipServiceRegistrationType = typeof(IWantToSkipServiceRegistration);
 
-		static ServiceLocatorManager()
-		{
-			Registration = new SetupRegistration
-			{
-				OnSetup = (service, descriptor) =>
-				{
-					var registrar = service.Registrar;
-					RegisterSelfInLocator(registrar, service);
-					if (descriptor != null)
-						foreach (var action in descriptor.Actions)
-							action(registrar, service);
-					return service;
-				},
-			};
-		}
+        static ServiceLocatorManager()
+        {
+            Registration = new SetupRegistration
+            {
+                OnSetup = (service, descriptor) =>
+                {
+                    RegisterSelfInLocator(service);
+                    if (descriptor != null)
+                        foreach (var action in descriptor.Actions)
+                            action(service);
+                    return service;
+                },
+            };
+        }
 
-		public static void EnsureRegistration() { }
-		public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLocator> service) { return ProtectedGetSetupDescriptor(service); }
+        public static void EnsureRegistration() { }
+        public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLocator> service) { return ProtectedGetSetupDescriptor(service, null); }
 
-		private static void RegisterSelfInLocator(IServiceRegistrar registrar, IServiceLocator locator)
-		{
-			registrar.RegisterInstance<IServiceLocator>(locator);
-		}
+        private static void RegisterSelfInLocator(IServiceLocator locator)
+        {
+            locator.Registrar.RegisterInstance<IServiceLocator>(locator);
+        }
 
-		public static bool GetWantsToSkipLocator(object instance) { return ((instance == null) || (GetWantsToSkipLocator(instance.GetType()))); }
-		public static bool GetWantsToSkipLocator<TService>() { return GetWantsToSkipLocator(typeof(TService)); }
-		public static bool GetWantsToSkipLocator(Type type)
-		{
-			return ((type == null) || (_wantToSkipServiceLocatorType.IsAssignableFrom(type)));
-		}
+        public static bool GetWantsToSkipLocator(object instance) { return (instance == null || GetWantsToSkipLocator(instance.GetType())); }
+        public static bool GetWantsToSkipLocator<TService>() { return GetWantsToSkipLocator(typeof(TService)); }
+        public static bool GetWantsToSkipLocator(Type type)
+        {
+            return (type == null || _wantToSkipServiceLocatorType.IsAssignableFrom(type));
+        }
 
-		public static bool GetWantsToSkipRegistration(object instance) { return ((instance == null) || (GetWantsToSkipRegistration(instance.GetType()))); }
-		public static bool GetWantsToSkipRegistration<TService>() { return GetWantsToSkipRegistration(typeof(TService)); }
-		public static bool GetWantsToSkipRegistration(Type type)
-		{
-			return ((type == null) || (_wantToSkipServiceRegistrationType.IsAssignableFrom(type)));
-		}
-	}
+        public static bool GetWantsToSkipRegistration(object instance) { return (instance == null || GetWantsToSkipRegistration(instance.GetType())); }
+        public static bool GetWantsToSkipRegistration<TService>() { return GetWantsToSkipRegistration(typeof(TService)); }
+        public static bool GetWantsToSkipRegistration(Type type)
+        {
+            return (type == null || _wantToSkipServiceRegistrationType.IsAssignableFrom(type));
+        }
+    }
 }

@@ -64,8 +64,8 @@ namespace Contoso.Abstract.Parts
         private static TDelegate CreateDelegate<TDelegate>(Type targetType, string methodName, object thisParameter)
             where TDelegate : class
         {
-            Type[] types = Array.ConvertAll<ParameterInfo, Type>(typeof(TDelegate).GetMethod("Invoke").GetParameters(), pInfo => pInfo.ParameterType);
-            MethodInfo method = targetType.GetMethod(methodName, types);
+            var types = Array.ConvertAll<ParameterInfo, Type>(typeof(TDelegate).GetMethod("Invoke").GetParameters(), pInfo => pInfo.ParameterType);
+            var method = targetType.GetMethod(methodName, types);
             return (method != null ? Delegate.CreateDelegate(typeof(TDelegate), thisParameter, method, false) as TDelegate : default(TDelegate));
         }
     }

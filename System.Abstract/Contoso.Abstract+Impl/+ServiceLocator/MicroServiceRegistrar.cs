@@ -56,8 +56,10 @@ namespace Contoso.Abstract
 
         // register implementation
         public void Register<TService, TImplementation>()
+            where TService : class
             where TImplementation : class, TService { RegisterInternal(typeof(TService), new MicroServiceLocator.Trampoline { Type = typeof(TImplementation) }, string.Empty); }
         public void Register<TService, TImplementation>(string name)
+            where TService : class
             where TImplementation : class, TService { RegisterInternal(typeof(TService), new MicroServiceLocator.Trampoline { Type = typeof(TImplementation) }, name); }
         public void Register<TService>(Type implementationType)
            where TService : class { RegisterInternal(typeof(TService), new MicroServiceLocator.Trampoline { Type = implementationType }, string.Empty); }
@@ -84,7 +86,10 @@ namespace Contoso.Abstract
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { RegisterInternal(typeof(TService), (Func<IServiceLocator, object>)(l => factoryMethod(l)), string.Empty); }
+        public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
+            where TService : class { RegisterInternal(typeof(TService), (Func<IServiceLocator, object>)(l => factoryMethod(l)), name); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { RegisterInternal(serviceType, (Func<IServiceLocator, object>)(l => factoryMethod(l)), string.Empty); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { RegisterInternal(serviceType, (Func<IServiceLocator, object>)(l => factoryMethod(l)), name); }
     }
 }
 
