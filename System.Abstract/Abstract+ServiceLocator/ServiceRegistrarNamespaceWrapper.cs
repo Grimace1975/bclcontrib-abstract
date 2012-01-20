@@ -51,8 +51,6 @@ namespace System.Abstract
         {
             get { return _parent; }
         }
-        public TServiceLocator GetLocator<TServiceLocator>()
-            where TServiceLocator : class, IServiceLocator { throw new NotSupportedException(); }
 
         // enumerate
         public bool HasRegistered<TService>() { return _registrar.HasRegistered<TService>(); }
@@ -95,5 +93,8 @@ namespace System.Abstract
             where TService : class { throw new NotSupportedException(); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { throw new NotSupportedException(); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { throw new NotSupportedException(); }
+
+        // interceptor
+        public void RegisterInterceptor(IServiceLocatorInterceptor interceptor) { _registrar.RegisterInterceptor(interceptor); }
     }
 }

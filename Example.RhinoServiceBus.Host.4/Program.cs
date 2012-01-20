@@ -11,13 +11,12 @@ namespace Example
         static void Main(string[] args)
         {
             ServiceLocatorManager.SetProvider(() => new UnityServiceLocator());
-                //.RegisterByNamingConvention();
-            //var service = new Lazy<IServiceCache>(() => new StaticServiceCache());
+            var cacheManager = ServiceCacheManager.MakeByProvider(() => new StaticServiceCache());
             //var actions = ServiceCacheManager.GetSetupDescriptor(service);
             //actions.Do(x => Console.WriteLine("Here"));
             //actions.Do(x => Console.WriteLine("Here"));
             //actions.Do(x => Console.WriteLine("Here"));
-            //var cache = service.Value;
+            var cache = cacheManager.Value;
 
             //var castleWinsorService = new Lazy<IServiceBus>(() => new CastleWindsorServiceLocator());
             //var locator = castleWinsorService.Value;
@@ -25,11 +24,17 @@ namespace Example
             //registrar.Register<object, object>();
 
             var serviceLocator = ServiceLocatorManager.Current;
+            //var serviceLocatorMgr = ServiceLocatorManager.MakeByProvider(() => new UnityServiceLocator());
             new RhinoServiceBusConfiguration()
                 .UseAbstractServiceLocator(serviceLocator)
                 .Configure();
                 
             serviceLocator.Resolve<IStartableServiceBus>().Start();
+            //using (var x = serviceLocator.Resolve<ServiceLocatorBootStrapper>())
+            //{
+            ////    x.InitializeContainer();
+            ////    System.Threading.Thread.Sleep(5000);
+            //}
         }
     }
 }

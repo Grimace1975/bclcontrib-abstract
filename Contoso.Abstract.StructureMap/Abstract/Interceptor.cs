@@ -23,16 +23,36 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-namespace System.Abstract
+using System;
+using System.Abstract;
+using StructureMap;
+using StructureMap.Interceptors;
+namespace Contoso.Abstract
 {
     /// <summary>
-    /// IServiceBus
+    /// Interceptor
     /// </summary>
-    public interface IServiceBus : IServiceProvider
+    internal class Interceptor : TypeInterceptor
     {
-        TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder) where TMessage : IServiceMessage;
-        IServiceBusCallback Send(IServiceBusLocation destination, params IServiceMessage[] messages);
-		void Reply(params IServiceMessage[] messages);
-		void Return<T>(T value);
+        private readonly IServiceLocatorInterceptor _interceptor;
+        private readonly IContainer _container;
+
+        public Interceptor(IServiceLocatorInterceptor interceptor, IContainer container)
+        {
+            _interceptor = interceptor;
+            _container = container;
+        }
+
+        public object Process(object target, IContext context)
+        {
+            var type = target.GetType();
+            _interceptor.ItemCreated(type, _container.Model.For(type).Lifecycle == "Transient");
+            return target;
+        }
+
+        public bool MatchesType(Type type)
+        {
+            return _interceptor.Match(type);
+        }
     }
 }

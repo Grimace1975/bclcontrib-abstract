@@ -34,25 +34,4 @@ namespace System.Abstract
         void Subscribe(Type messageType, Predicate<IServiceMessage> condition);
         void Unsubscribe(Type messageType);
     }
-
-    /// <summary>
-    /// IPublishingServiceBusExtensions
-    /// </summary>
-    public static class IPublishingServiceBusExtensions
-    {
-        public static void Publish<TMessage>(this IPublishingServiceBus serviceBus, Action<TMessage> messageBuilder)
-            where TMessage : IServiceMessage { serviceBus.Publish(serviceBus.CreateMessage<TMessage>(messageBuilder)); }
-        //
-        public static void Subscribe<TMessage>(this IPublishingServiceBus serviceBus)
-            where TMessage : IServiceMessage { serviceBus.Subscribe(typeof(TMessage), null); }
-        public static void Subscribe<TMessage>(this IPublishingServiceBus serviceBus, Predicate<TMessage> condition)
-            where TMessage : IServiceMessage
-        {
-            var p = new Predicate<IServiceMessage>(m => (m is TMessage ? condition((TMessage)m) : true));
-            serviceBus.Subscribe(typeof(TMessage), p);
-        }
-        public static void Subscribe(this IPublishingServiceBus serviceBus, Type messageType) { }
-        public static void Unsubscribe<TMessage>(this IPublishingServiceBus serviceBus)
-            where TMessage : IServiceMessage { }
-    }
 }

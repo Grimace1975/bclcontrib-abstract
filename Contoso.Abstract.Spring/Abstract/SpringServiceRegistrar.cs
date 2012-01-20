@@ -42,7 +42,7 @@ namespace Contoso.Abstract
     public class SpringServiceRegistrar : ISpringServiceRegistrar
     {
         private SpringServiceLocator _parent;
-        private GenericApplicationContext _container;
+        private GenericApplicationContext _container; // IConfigurableApplicationContext
         private IObjectDefinitionFactory _factory = new DefaultObjectDefinitionFactory();
 
         public SpringServiceRegistrar(SpringServiceLocator parent, GenericApplicationContext container)
@@ -56,8 +56,6 @@ namespace Contoso.Abstract
         {
             get { return _parent; }
         }
-        public TServiceLocator GetLocator<TServiceLocator>()
-            where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
         // enumerate
         public bool HasRegistered<TService>() { return (_container.GetObjectsOfType(typeof(TService)).Count > 0); }
@@ -146,5 +144,11 @@ namespace Contoso.Abstract
             where TService : class { throw new NotSupportedException(); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { throw new NotSupportedException(); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { throw new NotSupportedException(); }
+
+        // interceptor
+        public void RegisterInterceptor(IServiceLocatorInterceptor interceptor)
+        {
+            _container.ObjectFactory.AddObjectPostProcessor(new Interceptor(interceptor, _container));
+        }
     }
 }

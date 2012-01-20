@@ -53,6 +53,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\Interceptor.cs" />
     <Compile Include="Abstract\Internal\UnityConstructorSelectorPolicy.cs" />
     <Compile Include="Abstract\Internal\UnityPropertySelectorPolicy.cs" />
     <Compile Include="Abstract\Internal\UnityMethodSelectorPolicy.cs" />

@@ -70,8 +70,6 @@ namespace Contoso.Abstract
         {
             get { return _parent; }
         }
-        public TServiceLocator GetLocator<TServiceLocator>()
-            where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
         // enumerate
         public bool HasRegistered<TService>() { return _container.Model.HasDefaultImplementationFor(typeof(TService)); }
@@ -124,6 +122,12 @@ namespace Contoso.Abstract
             where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent)) { Name = name }); HasPendingRegistrations = true; }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { new GenericFamilyExpression(serviceType, this).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent))); HasPendingRegistrations = true; }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { new GenericFamilyExpression(serviceType, this).Use((Instance)new LambdaInstance<object>(x => factoryMethod(_parent)) { Name = name }); HasPendingRegistrations = true; }
+
+        // interceptor
+        public void RegisterInterceptor(IServiceLocatorInterceptor interceptor)
+        {
+            _container.Configure(x => x.RegisterInterceptor(new Interceptor(interceptor, _container)));
+        }
 
         #region Domain extents
 

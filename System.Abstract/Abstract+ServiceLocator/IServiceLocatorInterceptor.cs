@@ -23,16 +23,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
-    /// IServiceBus
+    /// IServiceLocatorInterceptor
     /// </summary>
-    public interface IServiceBus : IServiceProvider
+    public interface IServiceLocatorInterceptor
     {
-        TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder) where TMessage : IServiceMessage;
-        IServiceBusCallback Send(IServiceBusLocation destination, params IServiceMessage[] messages);
-		void Reply(params IServiceMessage[] messages);
-		void Return<T>(T value);
+        void ItemCreated(Type createdItem, bool isTransient);
+        bool Match(Type type);
     }
 }

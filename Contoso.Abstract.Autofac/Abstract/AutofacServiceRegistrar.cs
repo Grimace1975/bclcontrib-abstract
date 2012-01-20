@@ -60,8 +60,6 @@ namespace Contoso.Abstract
         {
             get { return _parent; }
         }
-        public TServiceLocator GetLocator<TServiceLocator>()
-            where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
         // enumerate
         public bool HasRegistered<TService>()
@@ -96,17 +94,15 @@ namespace Contoso.Abstract
         // register type
         public void Register(Type serviceType)
         {
-            if (_container == null)
-                _builder.RegisterType(serviceType);
-            else
-                throw new NotSupportedException();
+            _builder.RegisterType(serviceType);
+            if (_container != null)
+                UpdateAndClearBuilder();
         }
         public void Register(Type serviceType, string name)
         {
-            if (_container == null)
-                _builder.RegisterType(serviceType).Named(name, serviceType);
-            else
-                throw new NotSupportedException();
+            _builder.RegisterType(serviceType).Named(name, serviceType);
+            if (_container != null)
+                UpdateAndClearBuilder();
         }
 
         // register implementation
@@ -166,64 +162,75 @@ namespace Contoso.Abstract
         public void RegisterInstance<TService>(TService instance)
             where TService : class
         {
-            if (_container == null)
-                _builder.RegisterInstance(instance).As<TService>();
-            else
-                throw new NotSupportedException();
+            _builder.RegisterInstance(instance).As<TService>();
+            if (_container != null)
+                UpdateAndClearBuilder();
         }
         public void RegisterInstance<TService>(TService instance, string name)
             where TService : class
         {
-            if (_container == null)
-                _builder.RegisterInstance(instance).Named(name, typeof(TService));
-            else
-                throw new NotSupportedException();
+            _builder.RegisterInstance(instance).Named(name, typeof(TService));
+            if (_container != null)
+                UpdateAndClearBuilder();
         }
         public void RegisterInstance(Type serviceType, object instance)
         {
-            if (_container == null)
-                _builder.RegisterInstance(instance).As(serviceType);
-            else
-                throw new NotSupportedException();
+            _builder.RegisterInstance(instance).As(serviceType);
+            if (_container != null)
+                UpdateAndClearBuilder();
         }
         public void RegisterInstance(Type serviceType, object instance, string name)
         {
-            if (_container == null)
-                _builder.RegisterInstance(instance).Named(name, serviceType);
-            else
-                throw new NotSupportedException();
+            _builder.RegisterInstance(instance).Named(name, serviceType);
+            if (_container != null)
+                UpdateAndClearBuilder();
         }
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class
         {
-            if (_container == null)
-                _builder.Register(x => factoryMethod(_parent)).As<TService>();
-            else
-                throw new NotSupportedException();
+            _builder.Register(x => factoryMethod(_parent)).As<TService>();
+            if (_container != null)
+                UpdateAndClearBuilder();
         }
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
             where TService : class
         {
-            if (_container == null)
-                _builder.Register(x => factoryMethod(_parent)).Named<TService>(name);
-            else
-                throw new NotSupportedException();
+            _builder.Register(x => factoryMethod(_parent)).Named<TService>(name);
+            if (_container != null)
+                UpdateAndClearBuilder();
+
         }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod)
         {
-            if (_container == null)
-                _builder.Register(x => factoryMethod(_parent)).As(serviceType);
-            else
-                throw new NotSupportedException();
+            _builder.Register(x => factoryMethod(_parent)).As(serviceType);
+            if (_container != null)
+                UpdateAndClearBuilder();
         }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name)
         {
-            if (_container == null)
-                _builder.Register(x => factoryMethod(_parent)).Named(name, serviceType);
-            else
-                throw new NotSupportedException();
+            _builder.Register(x => factoryMethod(_parent)).Named(name, serviceType);
+            if (_container != null)
+                UpdateAndClearBuilder();
         }
+
+        // interceptor
+        public void RegisterInterceptor(IServiceLocatorInterceptor interceptor)
+        {
+            _builder.RegisterModule(new Interceptor(interceptor));
+            if (_container != null)
+                UpdateAndClearBuilder();
+        }
+
+        #region Domain specific
+
+        private void UpdateAndClearBuilder()
+        {
+            _builder.Update(_container);
+            _builder = new ContainerBuilder();
+        }
+
+        #endregion
     }
 }

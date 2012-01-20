@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Abstract\AutofacServiceLocator.cs" />
     <Compile Include="Abstract\AutofacServiceRegistrar.cs" />
+    <Compile Include="Abstract\Interceptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

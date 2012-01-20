@@ -23,16 +23,38 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-namespace System.Abstract
+using System;
+using System.Abstract;
+using Microsoft.Practices.Unity;
+namespace Contoso.Abstract
 {
     /// <summary>
-    /// IServiceBus
+    /// Interceptor
     /// </summary>
-    public interface IServiceBus : IServiceProvider
+    internal class Interceptor : UnityContainerExtension
     {
-        TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder) where TMessage : IServiceMessage;
-        IServiceBusCallback Send(IServiceBusLocation destination, params IServiceMessage[] messages);
-		void Reply(params IServiceMessage[] messages);
-		void Return<T>(T value);
+        private readonly IServiceLocatorInterceptor _interceptor;
+
+        public Interceptor(IServiceLocatorInterceptor interceptor)
+        {
+            _interceptor = interceptor;
+        }
+
+        protected override void Initialize()
+        {
+            Context.Registering += TypeRegistering;
+        }
+
+        private void TypeRegistering(object sender, RegisterEventArgs args)
+        {
+            var type = args.TypeTo;
+            if (_interceptor.Match(type))
+                _interceptor.ItemCreated(type, args.LifetimeManager is TransientLifetimeManager);
+        }
+
+        public override void Remove()
+        {
+            Context.Registering -= TypeRegistering;
+        }
     }
 }

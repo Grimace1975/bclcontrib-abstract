@@ -39,14 +39,18 @@ namespace System.Abstract.Parts
         private static readonly object _lock = new object();
 
         public static Lazy<TIService> Lazy { get; private set; }
-        public static Lazy<TIService> SetProvider(Func<TIService> provider) { return SetProvider(provider, null); }
-        public static Lazy<TIService> SetProvider(Func<TIService> provider, ISetupDescriptor setupDescriptor)
+        public static Lazy<TIService> SetProvider(Func<TIService> provider) { return (Lazy = MakeByProvider(provider, null)); }
+        public static Lazy<TIService> SetProvider(Func<TIService> provider, ISetupDescriptor setupDescriptor) { return (Lazy = MakeByProvider(provider, setupDescriptor)); }
+        public static Lazy<TIService> MakeByProvider(Func<TIService> provider) { return MakeByProvider(provider, null); }
+        public static Lazy<TIService> MakeByProvider(Func<TIService> provider, ISetupDescriptor setupDescriptor)
         {
             if (provider == null)
                 throw new ArgumentNullException("provider");
-            ProtectedGetSetupDescriptor(Lazy = new Lazy<TIService>(provider), setupDescriptor);
-            return Lazy;
+            var lazy = new Lazy<TIService>(provider);
+            ProtectedGetSetupDescriptor(lazy, setupDescriptor);
+            return lazy;
         }
+
         protected static SetupRegistration Registration { get; set; }
 
         // Force "precise" initialization

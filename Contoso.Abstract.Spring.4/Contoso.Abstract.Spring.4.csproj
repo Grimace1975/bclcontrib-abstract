@@ -48,6 +48,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Contoso.Abstract.Spring\Abstract\Interceptor.cs">
+      <Link>Abstract\Interceptor.cs</Link>
+    </Compile>
     <Compile Include="..\Contoso.Abstract.Spring\Abstract\SpringServiceLocator.cs">
       <Link>Abstract\SpringServiceLocator.cs</Link>
     </Compile>

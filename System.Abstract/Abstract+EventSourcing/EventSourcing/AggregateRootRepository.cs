@@ -45,19 +45,6 @@ namespace System.Abstract.EventSourcing
     }
 
     /// <summary>
-    /// IAggregateRootRepositoryExtensions
-    /// </summary>
-    public static class IAggregateRootRepositoryExtensions
-    {
-        public static TAggregateRoot GetById<TAggregateRoot>(this IAggregateRootRepository repository, object aggregateId)
-            where TAggregateRoot : AggregateRoot { return repository.GetById<TAggregateRoot>(aggregateId, 0); }
-        public static object GetById(this IAggregateRootRepository repository, Type aggregateType, object aggregateId) { return repository.GetById<AggregateRoot>(aggregateId, 0); }
-        public static AggregateRoot GetById(this IAggregateRootRepository repository, Type aggregateType, object aggregateId, AggregateRootQueryOptions queryOptions) { return repository.GetById<AggregateRoot>(aggregateId, queryOptions); }
-        public static IEnumerable<AggregateRoot> GetManyByIds(this IAggregateRootRepository repository, IEnumerable<object> aggregateIds, Type aggregateType, AggregateRootQueryOptions queryOptions) { return repository.GetManyByIds<AggregateRoot>(aggregateIds, queryOptions); }
-        public static void MakeSnapshot(this IAggregateRootRepository repository, AggregateRoot aggregate) { repository.MakeSnapshot(aggregate, null); }
-    }
-
-    /// <summary>
     /// AggregateRootRepository
     /// </summary>
     public class AggregateRootRepository : IAggregateRootRepository

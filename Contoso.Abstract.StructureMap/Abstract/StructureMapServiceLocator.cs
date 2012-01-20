@@ -73,15 +73,16 @@ namespace Contoso.Abstract
             get { return (locator, name) => ServiceLocatorManager.RegisterInstance<IStructureMapServiceLocator>(this, locator, name); }
         }
 
-        public object GetService(Type serviceType) { throw new NotImplementedException(); }
+        public object GetService(Type serviceType) { return Resolve(serviceType); }
+
+        public TContainer GetUnderlyingContainer<TContainer>()
+            where TContainer : class { return (_container as TContainer); }
 
         // registrar
         public IServiceRegistrar Registrar
         {
             get { return _registrar; }
         }
-        public TServiceRegistrar GetRegistrar<TServiceRegistrar>()
-            where TServiceRegistrar : class, IServiceRegistrar { return (_registrar as TServiceRegistrar); }
 
         // resolve
         public TService Resolve<TService>()

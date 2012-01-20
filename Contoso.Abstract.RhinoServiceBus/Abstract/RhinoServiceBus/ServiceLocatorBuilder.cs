@@ -14,7 +14,7 @@ using Rhino.ServiceBus.Msmq.TransportActions;
 using Rhino.ServiceBus.LoadBalancer;
 using Rhino.ServiceBus.RhinoQueues;
 using Rhino.Queues;
-using System.Abstract;
+using ErrorAction = Rhino.ServiceBus.Msmq.TransportActions.ErrorAction;
 namespace Contoso.Abstract.RhinoServiceBus
 {
     internal class ServiceLocatorBuilder : IBusContainerBuilder
@@ -35,16 +35,15 @@ namespace Contoso.Abstract.RhinoServiceBus
         {
             var config = (RhinoServiceBusConfiguration)_config;
             _registrar.Register<IDeploymentAction, CreateQueuesAction>(Guid.NewGuid().ToString());
-            _registrar.Register<DefaultServiceBus, DefaultServiceBus>();
-            _registrar.Register<IStartableServiceBus>(l => new DefaultServiceBus(l.Resolve<Rhino.ServiceBus.Internal.IServiceLocator>(), l.Resolve<ITransport>(), l.Resolve<ISubscriptionStorage>(), l.Resolve<IReflection>(), l.ResolveAll<IMessageModule>().ToArray(), config.MessageOwners.ToArray(), l.Resolve<IEndpointRouter>()));
-            _registrar.Register<Rhino.ServiceBus.IServiceBus, DefaultServiceBus>();
-            _registrar.Register<IStartable, DefaultServiceBus>();
+            _registrar.Register<IStartableServiceBus>(l => new DefaultServiceBus(l.Resolve<IServiceLocator>(), l.Resolve<ITransport>(), l.Resolve<ISubscriptionStorage>(), l.Resolve<IReflection>(), l.ResolveAll<IMessageModule>().ToArray(), config.MessageOwners.ToArray(), l.Resolve<IEndpointRouter>()));
+            //_registrar.Register<IStartable, IStartableServiceBus>();
+            //_registrar.Register<IServiceBus, IStartableServiceBus>();
         }
 
         public void RegisterDefaultServices()
         {
-            _registrar.Register<Rhino.ServiceBus.Internal.IServiceLocator, ServiceLocatorAdapter>();
-            _registrar.RegisterByTypeMatch<IBusConfigurationAware>(null, typeof(Rhino.ServiceBus.IServiceBus).Assembly);
+            _registrar.Register<IServiceLocator, ServiceLocatorAdapter>();
+            System.Abstract.ServiceLocatorExtensions.RegisterByTypeMatch<IBusConfigurationAware>(_registrar, null, typeof(IServiceBus).Assembly);
             foreach (var aware in _locator.ResolveAll<IBusConfigurationAware>())
                 aware.Configure(_config, this);
             foreach (var messageModule in _config.MessageModules)
@@ -80,11 +79,11 @@ namespace Contoso.Abstract.RhinoServiceBus
             else
                 _registrar.Register<IQueueStrategy>(queueStrategyType);
             _registrar.Register<IMessageBuilder<Message>, MsmqMessageBuilder>();
-            _registrar.Register<IMsmqTransportAction>(l => new Rhino.ServiceBus.Msmq.TransportActions.ErrorAction(_config.NumberOfRetries, l.Resolve<IQueueStrategy>()), Guid.NewGuid().ToString());
+            _registrar.Register<IMsmqTransportAction>(l => new ErrorAction(_config.NumberOfRetries, l.Resolve<IQueueStrategy>()), Guid.NewGuid().ToString());
             _registrar.Register<ISubscriptionStorage>(l => new MsmqSubscriptionStorage(l.Resolve<IReflection>(), l.Resolve<IMessageSerializer>(), _config.Endpoint, l.Resolve<IEndpointRouter>(), l.Resolve<IQueueStrategy>()));
             _registrar.Register<ITransport>(l => new MsmqTransport(l.Resolve<IMessageSerializer>(), l.Resolve<IQueueStrategy>(), _config.Endpoint, _config.ThreadCount, l.Resolve<IMsmqTransportAction[]>(), l.Resolve<IEndpointRouter>(), _config.IsolationLevel, _config.Transactional, _config.ConsumeInTransaction, l.Resolve<IMessageBuilder<Message>>()));
-            var exclude = typeof(Rhino.ServiceBus.Msmq.TransportActions.ErrorAction);
-            _registrar.RegisterByTypeMatch<IMsmqTransportAction>(t => t != exclude, typeof(IMsmqTransportAction).Assembly);
+            var exclude = typeof(ErrorAction);
+            System.Abstract.ServiceLocatorExtensions.RegisterByTypeMatch<IMsmqTransportAction>(_registrar, t => t != exclude, typeof(IMsmqTransportAction).Assembly);
         }
 
         public void RegisterNoSecurity()
@@ -97,13 +96,13 @@ namespace Contoso.Abstract.RhinoServiceBus
         {
             var config = (Rhino.ServiceBus.LoadBalancer.LoadBalancerConfiguration)_config;
             _registrar.Register<MsmqLoadBalancer>(l => new MsmqLoadBalancer(l.Resolve<IMessageSerializer>(), l.Resolve<IQueueStrategy>(), l.Resolve<IEndpointRouter>(), config.Endpoint, config.ThreadCount, config.SecondaryLoadBalancer, config.Transactional, l.Resolve<IMessageBuilder<Message>>()) { ReadyForWorkListener = l.Resolve<MsmqReadyForWorkListener>() });
-            _registrar.Register<IStartable, MsmqLoadBalancer>();
+            //_registrar.Register<IStartable, MsmqLoadBalancer>();
             _registrar.Register<IDeploymentAction, CreateLoadBalancerQueuesAction>(Guid.NewGuid().ToString());
         }
 
         public void RegisterQueueCreation()
         {
-            _registrar.Register<IServiceBusAware, QueueCreationModule>();
+            _registrar.Register<IServiceBusAware, QueueCreationModule>(Guid.NewGuid().ToString());
         }
 
         public void RegisterReadyForWork()
@@ -133,7 +132,7 @@ namespace Contoso.Abstract.RhinoServiceBus
         {
             var config = (Rhino.ServiceBus.LoadBalancer.LoadBalancerConfiguration)_config;
             _registrar.Register<MsmqSecondaryLoadBalancer>(l => new MsmqSecondaryLoadBalancer(l.Resolve<IMessageSerializer>(), l.Resolve<IQueueStrategy>(), l.Resolve<IEndpointRouter>(), config.Endpoint, config.PrimaryLoadBalancer, config.ThreadCount, config.Transactional, l.Resolve<IMessageBuilder<Message>>()));
-            _registrar.Register<IStartable, MsmqSecondaryLoadBalancer>();
+            //_registrar.Register<IStartable, MsmqSecondaryLoadBalancer>();
             _registrar.Register<IDeploymentAction, CreateLoadBalancerQueuesAction>(Guid.NewGuid().ToString());
         }
 
@@ -146,7 +145,7 @@ namespace Contoso.Abstract.RhinoServiceBus
 
         public void WithInterceptor(IConsumerInterceptor interceptor)
         {
-            //_registrar.AddExtension(new ConsumerExtension(interceptor));
+            _registrar.RegisterInterceptor(new ConsumerInterceptorAdapter(interceptor));
         }
     }
 }

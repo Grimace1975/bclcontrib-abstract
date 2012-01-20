@@ -48,6 +48,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\Interceptor.cs" />
     <Compile Include="Abstract\SpringServiceLocator.cs" />
     <Compile Include="Abstract\SpringServiceRegistrar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

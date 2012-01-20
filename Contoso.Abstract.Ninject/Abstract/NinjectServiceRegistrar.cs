@@ -54,8 +54,6 @@ namespace Contoso.Abstract
         {
             get { return _parent; }
         }
-        public TServiceLocator GetLocator<TServiceLocator>()
-            where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
         // enumerate
         public bool HasRegistered<TService>() { return Kernel.GetBindings(typeof(TService)).Any(); }
@@ -107,6 +105,12 @@ namespace Contoso.Abstract
             where TService : class { Bind<TService>().ToMethod(x => factoryMethod(_parent)).Named(name); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { Bind(serviceType).ToMethod(x => factoryMethod(_parent)); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { Bind(serviceType).ToMethod(x => factoryMethod(_parent)).Named(name); }
+
+        // interceptor
+        public void RegisterInterceptor(IServiceLocatorInterceptor interceptor)
+        {
+            throw new NotSupportedException();
+        }
 
         #region Domain specific
 

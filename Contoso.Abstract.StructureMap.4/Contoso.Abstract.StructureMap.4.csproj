@@ -45,6 +45,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Contoso.Abstract.StructureMap\Abstract\Interceptor.cs">
+      <Link>Abstract\Interceptor.cs</Link>
+    </Compile>
     <Compile Include="..\Contoso.Abstract.StructureMap\Abstract\StructureMapServiceLocator.cs">
       <Link>Abstract\StructureMapServiceLocator.cs</Link>
     </Compile>

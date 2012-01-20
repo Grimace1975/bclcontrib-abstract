@@ -29,7 +29,6 @@ using System.Xml.Linq;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
-using System.Abstract;
 using System.Abstract.EventSourcing;
 namespace Contoso.Abstract.EventSourcing
 {
@@ -91,7 +90,7 @@ From dbo.[{1}] _Snapshot
 			And (_Snapshot.LastEventSequence >= _Event.EventSequence)));", 10, _snapshotTableName, _eventTableName);
                 var command = new SqlCommand(sql, connection) { CommandType = CommandType.Text };
                 command.Parameters.AddRange(new[] {
-                    new SqlParameter { ParameterName = "@xml", SqlDbType = SqlDbType.Xml, Value = (xml != null ? xml.ToString() : string.Empty) } });
+                    new SqlParameter { ParameterName = "@xml", SqlDbType = SqlDbType.Xml, Value = xml.ToString() } });
                 connection.Open();
                 var items = new List<AggregateTuple<Type>>();
                 using (var r = command.ExecuteReader())

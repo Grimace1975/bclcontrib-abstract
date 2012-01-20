@@ -46,15 +46,16 @@ namespace System.Abstract
             _registrar = new ServiceRegistrarNamespaceWrapper(this, _parent.Registrar, @namespace);
         }
 
-        public object GetService(Type serviceType) { throw new NotSupportedException(); }
+        public object GetService(Type serviceType) { return _parent.GetService(serviceType); }
+
+        public TContainer GetUnderlyingContainer<TContainer>()
+            where TContainer : class { return _parent.GetUnderlyingContainer<TContainer>(); }
 
         // registrar
         public IServiceRegistrar Registrar
         {
             get { return _registrar; }
         }
-        public TServiceRegistrar GetRegistrar<TServiceRegistrar>()
-            where TServiceRegistrar : class, IServiceRegistrar { throw new NotSupportedException(); }
 
         // resolve
         public TService Resolve<TService>()

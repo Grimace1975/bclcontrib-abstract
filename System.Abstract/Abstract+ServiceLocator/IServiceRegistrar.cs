@@ -33,8 +33,6 @@ namespace System.Abstract
     {
         // locator
         IServiceLocator Locator { get; }
-        TServiceLocator GetLocator<TServiceLocator>()
-            where TServiceLocator : class, IServiceLocator;
 
         // enumerate
         bool HasRegistered<TService>();
@@ -75,5 +73,8 @@ namespace System.Abstract
             where TService : class;
         void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod);
         void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name);
+
+        // interceptor
+        void RegisterInterceptor(IServiceLocatorInterceptor interceptor);
     }
 }

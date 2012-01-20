@@ -120,6 +120,9 @@
     <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\AggregateRoot.cs">
       <Link>Abstract+EventSourcing\EventSourcing\AggregateRoot.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\AggregateRootExtensions.cs">
+      <Link>Abstract+EventSourcing\EventSourcing\AggregateRootExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+EventSourcing\EventSourcing\AggregateRootOfflineSnapshotService.cs">
       <Link>Abstract+EventSourcing\EventSourcing\AggregateRootOfflineSnapshotService.cs</Link>
     </Compile>
@@ -216,6 +219,9 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\LiteralServiceBusLocation.cs">
       <Link>Abstract+ServiceBus\LiteralServiceBusLocation.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\ServiceBusExtensions.cs">
+      <Link>Abstract+ServiceBus\ServiceBusExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\ServiceBusMessageException.cs">
       <Link>Abstract+ServiceBus\ServiceBusMessageException.cs</Link>
     </Compile>
@@ -264,6 +270,9 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\ITouchableCacheItem.cs">
       <Link>Abstract+ServiceCache\ITouchableCacheItem.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheExtensions.cs">
+      <Link>Abstract+ServiceCache\ServiceCacheExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheForeignRegistration.cs">
       <Link>Abstract+ServiceCache\ServiceCacheForeignRegistration.cs</Link>
     </Compile>
@@ -288,6 +297,9 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceLocator.cs">
       <Link>Abstract+ServiceLocator\IServiceLocator.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceLocatorInterceptor.cs">
+      <Link>Abstract+ServiceLocator\IServiceLocatorInterceptor.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceRegistrant.cs">
       <Link>Abstract+ServiceLocator\IServiceRegistrant.cs</Link>
     </Compile>
@@ -299,6 +311,9 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IWantToSkipServiceRegistration.cs">
       <Link>Abstract+ServiceLocator\IWantToSkipServiceRegistration.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceLocatorExtensions.cs">
+      <Link>Abstract+ServiceLocator\ServiceLocatorExtensions.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceLocatorNamespaceWrapper.cs">
       <Link>Abstract+ServiceLocator\ServiceLocatorNamespaceWrapper.cs</Link>
@@ -323,6 +338,9 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLog\ServiceLogEventType.cs">
       <Link>Abstract+ServiceLog\ServiceLogEventType.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLog\ServiceLogExtensions.cs">
+      <Link>Abstract+ServiceLog\ServiceLogExtensions.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract\AService.cs">
       <Link>Abstract\AService.cs</Link>
