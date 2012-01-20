@@ -56,8 +56,6 @@ namespace Contoso.Abstract
         {
             get { return _parent; }
         }
-        public TServiceLocator GetLocator<TServiceLocator>()
-            where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
         // enumerate
         public bool HasRegistered<TService>() { return _container.IsRegistered<TService>(); }
@@ -110,6 +108,12 @@ namespace Contoso.Abstract
             where TService : class { _container.RegisterType<TService>(name, new InjectionFactory(c => factoryMethod(_parent))); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { _container.RegisterType(serviceType, new InjectionFactory(c => factoryMethod(_parent))); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { _container.RegisterType(serviceType, name, new InjectionFactory(c => factoryMethod(_parent))); }
+
+        // interceptor
+        public void RegisterInterceptor(IServiceLocatorInterceptor interceptor)
+        {
+            _container.AddExtension(new Interceptor(interceptor));
+        }
 
         //private string MakeId(Type serviceType, Type implementationType) { return serviceType.Name + "->" + implementationType.FullName; }
     }

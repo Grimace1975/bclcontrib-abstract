@@ -28,27 +28,5 @@ namespace System.Abstract
     /// <summary>
     /// IServiceBusLocation
     /// </summary>
-    public interface IServiceBusLocation
-    {
-    }
-
-    /// <summary>
-    /// IServiceBusLocationExtensions
-    /// </summary>
-    public static class IServiceBusLocationExtensions
-    {
-        public static string ToString(this IServiceBusLocation location, Func<IServiceBusLocation, object, string> builder, object arg)
-        {
-            if (location == null)
-                throw new ArgumentNullException("location");
-            if (builder == null)
-                throw new ArgumentNullException("builder");
-            if (location == ServiceBus.Self)
-                return null;
-            var literal = (location as LiteralServiceBusLocation);
-            if (literal != null)
-                return literal.Value;
-            return builder(location, arg);
-        }
-    }
+    public interface IServiceBusLocation { }
 }

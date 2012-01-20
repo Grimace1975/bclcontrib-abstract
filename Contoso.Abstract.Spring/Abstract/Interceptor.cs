@@ -23,16 +23,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-namespace System.Abstract
+using System;
+using System.Abstract;
+using Spring.Objects.Factory.Config;
+using Spring.Context;
+namespace Contoso.Abstract
 {
     /// <summary>
-    /// IServiceBus
+    /// Interceptor
     /// </summary>
-    public interface IServiceBus : IServiceProvider
+    internal class Interceptor : IObjectPostProcessor
     {
-        TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder) where TMessage : IServiceMessage;
-        IServiceBusCallback Send(IServiceBusLocation destination, params IServiceMessage[] messages);
-		void Reply(params IServiceMessage[] messages);
-		void Return<T>(T value);
+        private readonly IServiceLocatorInterceptor _interceptor;
+        private readonly IConfigurableApplicationContext _applicationContext;
+
+        public Interceptor(IServiceLocatorInterceptor interceptor, IConfigurableApplicationContext applicationContext)
+        {
+            _interceptor = interceptor;
+            _applicationContext = applicationContext;
+        }
+
+        public object PostProcessBeforeInitialization(object instance, string name)
+        {
+            return instance;
+        }
+
+        public object PostProcessAfterInitialization(object instance, string objectName)
+        {
+            var type = instance.GetType();
+            if (_interceptor.Match(type))
+                _interceptor.ItemCreated(type, !_applicationContext.ObjectFactory.GetObjectDefinition(objectName).IsSingleton);
+            return instance;
+        }
     }
 }

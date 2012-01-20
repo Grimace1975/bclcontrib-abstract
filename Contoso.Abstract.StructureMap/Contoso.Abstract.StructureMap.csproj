@@ -49,6 +49,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\Interceptor.cs" />
     <Compile Include="Abstract\StructureMapServiceRegistrar.cs" />
     <Compile Include="Abstract\StructureMapServiceLocator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

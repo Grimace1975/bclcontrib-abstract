@@ -23,16 +23,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-namespace System.Abstract
+using System;
+using Autofac;
+using Autofac.Core;
+using System.Abstract;
+using Autofac.Core.Lifetime;
+namespace Contoso.Abstract
 {
     /// <summary>
-    /// IServiceBus
+    /// Interceptor
     /// </summary>
-    public interface IServiceBus : IServiceProvider
+    internal class Interceptor : Module
     {
-        TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder) where TMessage : IServiceMessage;
-        IServiceBusCallback Send(IServiceBusLocation destination, params IServiceMessage[] messages);
-		void Reply(params IServiceMessage[] messages);
-		void Return<T>(T value);
+        private readonly IServiceLocatorInterceptor _interceptor;
+
+        public Interceptor(IServiceLocatorInterceptor interceptor)
+        {
+            _interceptor = interceptor;
+        }
+
+        protected override void AttachToComponentRegistration(IComponentRegistry componentRegistry, IComponentRegistration registration)
+        {
+            registration.Activating += (sender, e) =>
+            {
+                var type = e.Instance.GetType();
+                if (_interceptor.Match(type))
+                    _interceptor.ItemCreated(type, e.Component.Lifetime.GetType().Equals(typeof(CurrentScopeLifetime)));
+            };
+        }
     }
 }

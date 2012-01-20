@@ -53,6 +53,9 @@
     <Compile Include="..\Contoso.Abstract.Autofac\Abstract\AutofacServiceRegistrar.cs">
       <Link>Abstract\AutofacServiceRegistrar.cs</Link>
     </Compile>
+    <Compile Include="..\Contoso.Abstract.Autofac\Abstract\Interceptor.cs">
+      <Link>Abstract\Interceptor.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

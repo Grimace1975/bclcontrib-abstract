@@ -28,12 +28,9 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
 using System.Xml.Linq;
-using System.Abstract;
 using System.Abstract.Parts;
 using System.Abstract.EventSourcing;
-using Contoso.Abstract;
 using Contoso.Abstract.Parts;
 namespace Contoso.Abstract.EventSourcing
 {
@@ -122,7 +119,7 @@ From dbo.[{0}]
 Order By AggregateId, EventSequence;", _tableName);
                 var command = new SqlCommand(sql, connection) { CommandType = CommandType.Text };
                 command.Parameters.AddRange(new[] {
-                    new SqlParameter { ParameterName = "@xml", SqlDbType = SqlDbType.Xml, Value = (xml != null ? xml.ToString() : string.Empty) } });
+                    new SqlParameter { ParameterName = "@xml", SqlDbType = SqlDbType.Xml, Value = xml.ToString() } });
                 connection.Open();
                 var events = new List<AggregateTuple<IEnumerable<Event>>>();
                 using (var r = command.ExecuteReader())
@@ -163,7 +160,7 @@ Order By AggregateId, EventSequence;", _tableName);
                 {
                     var eventType = x.GetType();
                     return new XElement("e",
-                        new XAttribute("s", x.EventSequence),
+                        (x.EventSequence.HasValue ? new XAttribute("s", x.EventSequence) : null),
                         new XAttribute("d", x.EventDate),
                         new XAttribute("t", eventType.AssemblyQualifiedName),
                         _serializer.WriteObject(eventType, x));
@@ -177,7 +174,7 @@ From @xml.nodes(N'/r/e') _xml(item);", _tableName);
                 var command = new SqlCommand(sql, connection) { CommandType = CommandType.Text };
                 command.Parameters.AddRange(new[] {
                     new SqlParameter { ParameterName = "@id", SqlDbType = SqlDbType.NVarChar, Value = aggregateId },
-                    new SqlParameter { ParameterName = "@xml", SqlDbType = SqlDbType.Xml, Value = (xml != null ? xml.ToString() : string.Empty) } });
+                    new SqlParameter { ParameterName = "@xml", SqlDbType = SqlDbType.Xml, Value = xml.ToString() } });
                 connection.Open();
                 command.ExecuteNonQuery();
             }
@@ -193,7 +190,7 @@ From @xml.nodes(N'/r/e') _xml(item);", _tableName);
                     var eventType = x.GetType();
                     return new XElement("e",
                         new XAttribute("i", m.a),
-                        new XAttribute("s", x.EventSequence),
+                        (x.EventSequence.HasValue ? new XAttribute("s", x.EventSequence) : null),
                         new XAttribute("d", x.EventDate),
                         new XAttribute("t", eventType.AssemblyQualifiedName),
                         _serializer.WriteObject(eventType, x));
@@ -206,7 +203,7 @@ Select _xml.item.value(N'@i', N'nvarchar(100)'), _xml.item.value(N'@s', N'int'),
 From @xml.nodes(N'/r/e') _xml(item);", _tableName);
                 var command = new SqlCommand(sql, connection) { CommandType = CommandType.Text };
                 command.Parameters.AddRange(new[] {
-                    new SqlParameter { ParameterName = "@xml", SqlDbType = SqlDbType.Xml, Value = (xml != null ? xml.ToString() : string.Empty) } });
+                    new SqlParameter { ParameterName = "@xml", SqlDbType = SqlDbType.Xml, Value = xml.ToString() } });
                 connection.Open();
                 command.ExecuteNonQuery();
             }

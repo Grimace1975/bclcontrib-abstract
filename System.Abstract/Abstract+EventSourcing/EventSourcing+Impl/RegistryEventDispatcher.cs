@@ -58,7 +58,7 @@ namespace System.Abstract.EventSourcing
             //var actionEventType = typeof(Action<Event>);
             //var covariantCastMethod = typeof(ExpressionEx).GetMethod("CovariantCast");
             var handlerInfos = aggregate.GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(x => !x.IsGenericMethod && (x.Name == "HandleEvent"))
+                .Where(x => !x.IsGenericMethod && x.Name == "HandleEvent")
                 .Select(methodInfo =>
                 {
                     var parameters = methodInfo.GetParameters();

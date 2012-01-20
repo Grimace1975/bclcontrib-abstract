@@ -52,6 +52,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Contoso.Abstract.Unity\Abstract\Interceptor.cs">
+      <Link>Abstract\Interceptor.cs</Link>
+    </Compile>
     <Compile Include="..\Contoso.Abstract.Unity\Abstract\Internal\UnityConstructorSelectorPolicy.cs">
       <Link>Abstract\Internal\UnityConstructorSelectorPolicy.cs</Link>
     </Compile>

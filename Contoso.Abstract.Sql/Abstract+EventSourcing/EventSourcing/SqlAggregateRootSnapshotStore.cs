@@ -25,16 +25,12 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Data.SqlClient;
 using System.Data;
 using System.Collections.Generic;
 using System.Xml.Linq;
-using System.Abstract;
 using System.Abstract.Parts;
 using System.Abstract.EventSourcing;
-using Contoso.Abstract;
 using Contoso.Abstract.Parts;
 namespace Contoso.Abstract.EventSourcing
 {
@@ -120,7 +116,7 @@ From dbo.[{0}]
                 var command = new SqlCommand(sql, connection) { CommandType = CommandType.Text };
                 command.Parameters.AddRange(new[] {
                     new SqlParameter { ParameterName = "@aType", SqlDbType = SqlDbType.NVarChar, Value = typeof(TAggregateRoot).AssemblyQualifiedName },
-                    new SqlParameter { ParameterName = "@xml", SqlDbType = SqlDbType.Xml, Value = (xml != null ? xml.ToString() : string.Empty) } });
+                    new SqlParameter { ParameterName = "@xml", SqlDbType = SqlDbType.Xml, Value = xml.ToString()  } });
                 connection.Open();
                 var snapshots = new List<AggregateTuple<AggregateRootSnapshot>>();
                 using (var r = command.ExecuteReader())
@@ -204,7 +200,7 @@ When Not Matched By Target Then
                 var command = new SqlCommand(sql, connection) { CommandType = CommandType.Text };
                 command.Parameters.AddRange(new[] {
                     new SqlParameter { ParameterName = "@aType", SqlDbType = SqlDbType.NVarChar, Value = aggregateType.AssemblyQualifiedName },
-                    new SqlParameter { ParameterName = "@xml", SqlDbType = SqlDbType.NVarChar, Value = (xml != null ? xml.ToString() : string.Empty) } });
+                    new SqlParameter { ParameterName = "@xml", SqlDbType = SqlDbType.NVarChar, Value = xml.ToString() } });
                 connection.Open();
                 command.ExecuteNonQuery();
             }

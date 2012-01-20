@@ -61,8 +61,6 @@ namespace Contoso.Abstract
         {
             get { return _parent; }
         }
-        public TServiceLocator GetLocator<TServiceLocator>()
-            where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
         // enumerate
         public bool HasRegistered<TService>() { return _builder.Contains(typeof(TService)); }
@@ -115,5 +113,11 @@ namespace Contoso.Abstract
             where TService : class { Func<IMicroContainer, TService> f = (x => factoryMethod(_parent)); _builder.AddService<TService>(name, f); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { Func<IMicroContainer, object> f = (x => factoryMethod(_parent)); _builder.AddService(serviceType, f); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { Func<IMicroContainer, object> f = (x => factoryMethod(_parent)); _builder.AddService(name, serviceType, f); }
+
+        // interceptor
+        public void RegisterInterceptor(IServiceLocatorInterceptor interceptor)
+        {
+            throw new NotSupportedException();
+        }
     }
 }

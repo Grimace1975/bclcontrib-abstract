@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using Castle.Windsor;
 using Castle.MicroKernel.Registration;
 using System.Reflection;
+using Castle.Core;
 namespace Contoso.Abstract
 {
     /// <summary>
@@ -61,8 +62,6 @@ namespace Contoso.Abstract
         {
             get { return _parent; }
         }
-        public TServiceLocator GetLocator<TServiceLocator>()
-            where TServiceLocator : class, IServiceLocator { return (_parent as TServiceLocator); }
 
         // enumerate
         public bool HasRegistered<TService>() { return HasRegistered(typeof(TService)); }
@@ -110,6 +109,17 @@ namespace Contoso.Abstract
             where TService : class { _container.Register(Component.For<TService>().UsingFactoryMethod<TService>(x => factoryMethod(_parent)).Named(name).LifeStyle.Transient); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { _container.Register(Component.For(serviceType).UsingFactoryMethod(x => factoryMethod(_parent)).LifeStyle.Transient); }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { _container.Register(Component.For(serviceType).UsingFactoryMethod(x => factoryMethod(_parent)).Named(name).LifeStyle.Transient); }
+
+        // interceptor
+        public void RegisterInterceptor(IServiceLocatorInterceptor interceptor)
+        {
+            _container.Kernel.ComponentModelCreated +=
+                model =>
+                {
+                    if (interceptor.Match(model.Implementation))
+                        interceptor.ItemCreated(model.Implementation, model.LifestyleType == LifestyleType.Transient);
+                };
+        }
 
         #region Domain specific
 

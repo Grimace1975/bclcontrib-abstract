@@ -26,16 +26,7 @@ THE SOFTWARE.
 namespace System.Abstract
 {
     /// <summary>
-    /// IPublishingServiceBus
+    /// IDistributedServiceCache
     /// </summary>
-	public interface IDistributedServiceCache : IServiceCache
-    {
-    }
-
-    /// <summary>
-	/// IDistributedServiceCacheExtensions
-    /// </summary>
-	public static class IDistributedServiceCacheExtensions
-    {
-    }
+	public interface IDistributedServiceCache : IServiceCache { }
 }

@@ -28,14 +28,5 @@ namespace System.Abstract
     /// <summary>
     /// IServiceBusHost
     /// </summary>
-    public interface IServiceBusHost
-    {
-    }
-
-    /// <summary>
-    /// IServiceBusHostExtensions
-    /// </summary>
-    public static class IServiceBusHostExtensions
-    {
-    }
+    public interface IServiceBusHost { }
 }

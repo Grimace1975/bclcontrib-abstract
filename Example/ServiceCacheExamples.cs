@@ -130,9 +130,9 @@ namespace Example
 			cache.Set(tag, "name", new CacheItemPolicy { SlidingExpiration = new TimeSpan(1, 0, 0) }, "value");
 
 			// ensuring a cache dependency is ready from a builder
-			IServiceCacheExtensions.EnsureCacheDependency(cache, tag, (a, b) => new[] { "tag", "tag2" });
+			ServiceCacheExtensions.EnsureCacheDependency(cache, tag, (a, b) => new[] { "tag", "tag2" });
 			// ensuring a cache dependency is ready from values
-			IServiceCacheExtensions.EnsureCacheDependency(cache, new[] { "tag", "tag2" });
+			ServiceCacheExtensions.EnsureCacheDependency(cache, new[] { "tag", "tag2" });
 
 			// touch cache tags
 			cache.Touch("tag", "tag2");

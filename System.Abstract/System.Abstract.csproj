@@ -82,11 +82,14 @@
       <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
     </Compile>
     <Compile Include="+Nparams+Impl\NparamsManager.cs" />
+    <Compile Include="Abstract+EventSourcing\EventSourcing\AggregateRootExtensions.cs" />
     <Compile Include="Abstract+Event\IEvent.cs" />
     <Compile Include="Abstract+Event\EventBus.cs" />
     <Compile Include="Abstract+Event\IEventHandler.cs" />
+    <Compile Include="Abstract+ServiceBus\ServiceBusExtensions.cs" />
     <Compile Include="Abstract+ServiceBus\IServiceBusHost.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCache+Primitives.cs" />
+    <Compile Include="Abstract+ServiceCache\ServiceCacheExtensions.cs" />
     <Compile Include="Abstract+ServiceCache\IDistributedServiceCache.cs" />
     <Compile Include="Abstract+ServiceCache\ITouchableCacheItem.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheOptions.cs" />
@@ -100,10 +103,13 @@
     <Compile Include="Abstract+ServiceCache\ServiceCacheRegistration.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemPolicy.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemDependency.cs" />
+    <Compile Include="Abstract+ServiceLocator\IServiceLocatorInterceptor.cs" />
+    <Compile Include="Abstract+ServiceLocator\ServiceLocatorExtensions.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceRegistrant.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceRegistrarNamespaceWrapper.cs" />
     <Compile Include="Abstract+ServiceLocator\IWantToSkipServiceRegistration.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceLocatorNamespaceWrapper.cs" />
+    <Compile Include="Abstract+ServiceLog\ServiceLogExtensions.cs" />
     <Compile Include="Abstract\Parts+TypeGrapher\ITypeCacheSerializer.cs" />
     <Compile Include="Abstract\Parts+TypeGrapher\ITypeCache.cs" />
     <Compile Include="Abstract\Parts+TypeGrapher+Impl\BuildManagerTypeCache.cs" />

@@ -16,13 +16,7 @@ namespace Contoso.Abstract.RhinoServiceBus
 
         public bool CanResolve(Type type) { return _locator.Registrar.HasRegistered(type); }
 
-        public IEnumerable<IHandler> GetAllHandlersFor(Type type)
-        {
-            throw new NotImplementedException();
-            //return _locator.All()
-            //     .Where(r=>type.IsAssignableFrom(r.MappedToType))
-            //     .Select(r=> new DefaultHandler(r.RegisteredType, r.MappedToType, () => _locator.Resolve(r.MappedToType));
-        }
+        public IEnumerable<IHandler> GetAllHandlersFor(Type type) { return _locator.Registrar.GetRegistrationsFor(type).Select(x => x.ServiceType as IHandler).Where(x => x != null); }
 
         public void Release(object item) { }
         public T Resolve<T>() { return (T)_locator.Resolve(typeof(T)); }

@@ -44,9 +44,7 @@ namespace System.Abstract
         /// <summary>
         /// IDispatch
         /// </summary>
-        public interface IDispatch
-        {
-        }
+        public interface IDispatch { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataSourceRegistrar"/> class.
@@ -136,8 +134,8 @@ namespace System.Abstract
                     throw new ArgumentException(string.Format(Local.RedefineNameA, registrationName), "registration");
                 _setAsName.Add(registrationName, registration);
                 _set.Add(registration);
-				// link-in
-				registration.SetRegistrar(this, _namePrefix + registrationName);
+                // link-in
+                registration.SetRegistrar(this, _namePrefix + registrationName);
             }
             finally { _setRwLock.ExitWriteLock(); }
         }
