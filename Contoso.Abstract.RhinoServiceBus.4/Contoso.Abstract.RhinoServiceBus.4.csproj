@@ -38,6 +38,15 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\Data.cs">
+      <Link>Abstract\Data.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\DataHandler.cs">
+      <Link>Abstract\DataHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBusAbstractor.cs">
+      <Link>Abstract\RhinoServiceBusAbstractor.cs</Link>
+    </Compile>
     <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBus\ConsumerInterceptorAdapter.cs">
       <Link>Abstract\RhinoServiceBus\ConsumerInterceptorAdapter.cs</Link>
     </Compile>
