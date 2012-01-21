@@ -38,6 +38,9 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Abstract\DataHandler.cs" />
+    <Compile Include="Abstract\Data.cs" />
+    <Compile Include="Abstract\RhinoServiceBusAbstractor.cs" />
     <Compile Include="Abstract\RhinoServiceBus\ConsumerInterceptorAdapter.cs" />
     <Compile Include="Abstract\RhinoServiceBus\ServiceLocatorLoadBalancerBootStrapper.cs" />
     <Compile Include="Abstract\RhinoServiceBus\ServiceLocatorAdapter.cs" />
