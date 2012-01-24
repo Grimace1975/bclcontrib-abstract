@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9B6D3610-03BE-4D2A-A797-F185503C06E2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Contoso.Abstract</RootNamespace>
+    <AssemblyName>Contoso.Abstract.MTServiceBus</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Magnum">
+      <HintPath>..\packages\Magnum.2.0.0.4\lib\NET40\Magnum.dll</HintPath>
+    </Reference>
+    <Reference Include="MassTransit">
+      <HintPath>..\packages\MassTransit.2.0.1.2\lib\net40\MassTransit.dll</HintPath>
+    </Reference>
+    <Reference Include="MassTransit.Transports.MSMQ">
+      <HintPath>..\packages\MassTransit.2.0.1.2\lib\net40\MassTransit.Transports.MSMQ.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\IMTServiceMessage.cs">
+      <Link>Abstract\IMTServiceMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\IMTServiceMessageHandler.cs">
+      <Link>Abstract\IMTServiceMessageHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\MTServiceBusAbstractor.cs">
+      <Link>Abstract\MTServiceBusAbstractor.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\MTServiceBus\Extensions.cs">
+      <Link>Abstract\MTServiceBus\Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\MTServiceBus\ServiceLocatorConsumerFactory.cs">
+      <Link>Abstract\MTServiceBus\ServiceLocatorConsumerFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\MTServiceBus\ServiceLocatorConsumerFactoryConfigurator.cs">
+      <Link>Abstract\MTServiceBus\ServiceLocatorConsumerFactoryConfigurator.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\MTServiceBus\ServiceLocatorSagaRepositoryFactoryConfigurator.cs">
+      <Link>Abstract\MTServiceBus\ServiceLocatorSagaRepositoryFactoryConfigurator.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\Transport.cs">
+      <Link>Abstract\Transport.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\TransportHandler.cs">
+      <Link>Abstract\TransportHandler.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BclContrib.snk" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Contoso.Abstract.MTServiceBus\Changelog.txt">
+      <Link>Changelog.txt</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.Abstract.4\System.Abstract.4.csproj">
+      <Project>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</Project>
+      <Name>System.Abstract.4</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

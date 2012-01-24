@@ -23,10 +23,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-namespace System.Abstract
+using System;
+using System.Abstract;
+namespace Contoso.Abstract
 {
     /// <summary>
-    /// IServiceBusLocation
+    /// Transport
     /// </summary>
-    public interface IServiceBusLocation { }
+    internal class Transport
+    {
+        public IServiceMessage B { get; set; }
+    }
 }

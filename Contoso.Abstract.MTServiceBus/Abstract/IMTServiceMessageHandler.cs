@@ -23,24 +23,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
-using Rhino.ServiceBus;
+using System.Abstract;
 namespace Contoso.Abstract
 {
     /// <summary>
-    /// DataHandler
+    /// INServiceMessageHandler
     /// </summary>
-    internal class DataHandler : ConsumerOf<Data>
-    {
-        private readonly IServiceBus _bus;
-
-        public DataHandler(IServiceBus bus)
-        {
-            _bus = bus;
-        }
-
-        public void Consume(Data message)
-        {
-        }
-    }
+    public interface INServiceMessageHandler<TMessage> : IServiceMessageHandler<TMessage>
+        where TMessage : IServiceMessage { }
 }

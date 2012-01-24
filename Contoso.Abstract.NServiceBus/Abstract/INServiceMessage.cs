@@ -24,11 +24,10 @@ THE SOFTWARE.
 */
 #endregion
 using System.Abstract;
-using NServiceBus;
 namespace Contoso.Abstract
 {
     /// <summary>
     /// INServiceMessage
     /// </summary>
-    public interface INServiceMessage : IServiceMessage, IMessage { }
+    public interface INServiceMessage : IServiceMessage { }
 }

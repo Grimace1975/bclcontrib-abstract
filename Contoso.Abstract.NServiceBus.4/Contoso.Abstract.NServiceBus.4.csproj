@@ -50,32 +50,20 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\INServiceBus.cs">
-      <Link>Abstract\INServiceBus.cs</Link>
-    </Compile>
     <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\INServiceMessage.cs">
       <Link>Abstract\INServiceMessage.cs</Link>
     </Compile>
     <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\INServiceMessageHandler.cs">
       <Link>Abstract\INServiceMessageHandler.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\Internal\BusWrapper.cs">
-      <Link>Abstract\Internal\BusWrapper.cs</Link>
-    </Compile>
-    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\Internal\MessageCaster.cs">
-      <Link>Abstract\Internal\MessageCaster.cs</Link>
-    </Compile>
-    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\Internal\MessageCaster2.cs">
-      <Link>Abstract\Internal\MessageCaster2.cs</Link>
-    </Compile>
-    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\Internal\TransportMessage.cs">
-      <Link>Abstract\Internal\TransportMessage.cs</Link>
-    </Compile>
-    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\Internal\TransportMessageHandler.cs">
-      <Link>Abstract\Internal\TransportMessageHandler.cs</Link>
-    </Compile>
     <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\NServiceBusAbstractor.cs">
       <Link>Abstract\NServiceBusAbstractor.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\Transport.cs">
+      <Link>Abstract\Transport.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\TransportHandler.cs">
+      <Link>Abstract\TransportHandler.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -91,6 +79,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Abstract\NServiceBus\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Contoso.Abstract.NServiceBus\Changelog.txt">
+      <Link>Changelog.txt</Link>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

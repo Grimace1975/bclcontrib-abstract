@@ -31,9 +31,9 @@ namespace System.Abstract
     /// </summary>
     public static class ServiceBus
     {
-        public readonly static IServiceBusLocation Self = new LiteralServiceBusLocation("#self");
+        public readonly static IServiceBusEndpoint Self = new LiteralServiceBusEndpoint("#self");
         public static IServiceBusCallback Send(params IServiceMessage[] messages) { return ServiceBusManager.Current.Send(messages); }
         public static IServiceBusCallback Send<TMessage>(Action<TMessage> messageBuilder)
-            where TMessage : IServiceMessage { return ServiceBusManager.Current.Send<TMessage>(messageBuilder); }
+            where TMessage : class, IServiceMessage { return ServiceBusManager.Current.Send<TMessage>(messageBuilder); }
     }
 }

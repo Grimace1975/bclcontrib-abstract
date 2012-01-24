@@ -49,6 +49,7 @@ namespace Contoso.Abstract
         {
             _parent = parent;
             _container = container;
+            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
 
         // locator
@@ -76,14 +77,16 @@ namespace Contoso.Abstract
         }
 
         // register type
+        public ServiceRegistrarLifetime LifetimeForRegisters { get; set; }
         public void Register(Type serviceType)
         {
-            var b = ObjectDefinitionBuilder.RootObjectDefinition(_factory, serviceType);
+            var b = SetLifetime(ObjectDefinitionBuilder.RootObjectDefinition(_factory, serviceType));
             _container.RegisterObjectDefinition(SpringServiceLocator.GetName(serviceType), b.ObjectDefinition);
         }
+
         public void Register(Type serviceType, string name)
         {
-            var b = ObjectDefinitionBuilder.RootObjectDefinition(_factory, serviceType);
+            var b = SetLifetime(ObjectDefinitionBuilder.RootObjectDefinition(_factory, serviceType));
             _container.RegisterObjectDefinition(name, b.ObjectDefinition);
         }
 
@@ -92,20 +95,20 @@ namespace Contoso.Abstract
             where TService : class
             where TImplementation : class, TService
         {
-            var b = ObjectDefinitionBuilder.RootObjectDefinition(_factory, typeof(TImplementation));
+            var b = SetLifetime(ObjectDefinitionBuilder.RootObjectDefinition(_factory, typeof(TImplementation)));
             _container.RegisterObjectDefinition(SpringServiceLocator.GetName(typeof(TImplementation)), b.ObjectDefinition);
         }
         public void Register<TService, TImplementation>(string name)
             where TService : class
             where TImplementation : class, TService
         {
-            var b = ObjectDefinitionBuilder.RootObjectDefinition(_factory, typeof(TImplementation));
+            var b = SetLifetime(ObjectDefinitionBuilder.RootObjectDefinition(_factory, typeof(TImplementation)));
             _container.RegisterObjectDefinition(name, b.ObjectDefinition);
         }
         public void Register<TService>(Type implementationType)
             where TService : class
         {
-            var b = ObjectDefinitionBuilder.RootObjectDefinition(_factory, implementationType);
+            var b = SetLifetime(ObjectDefinitionBuilder.RootObjectDefinition(_factory, implementationType));
             _container.RegisterObjectDefinition(SpringServiceLocator.GetName(implementationType), b.ObjectDefinition);
         }
         public void Register<TService>(Type implementationType, string name)
@@ -116,12 +119,12 @@ namespace Contoso.Abstract
         }
         public void Register(Type serviceType, Type implementationType)
         {
-            var b = ObjectDefinitionBuilder.RootObjectDefinition(_factory, implementationType);
+            var b = SetLifetime(ObjectDefinitionBuilder.RootObjectDefinition(_factory, implementationType));
             _container.RegisterObjectDefinition(SpringServiceLocator.GetName(implementationType), b.ObjectDefinition);
         }
         public void Register(Type serviceType, Type implementationType, string name)
         {
-            var b = ObjectDefinitionBuilder.RootObjectDefinition(_factory, implementationType);
+            var b = SetLifetime(ObjectDefinitionBuilder.RootObjectDefinition(_factory, implementationType));
             _container.RegisterObjectDefinition(name, b.ObjectDefinition);
         }
 
@@ -137,18 +140,49 @@ namespace Contoso.Abstract
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class
         {
-            throw new NotSupportedException();
-            //_container.ObjectFactory.RegisterSingleton(SpringNetServiceLocator.GetName(factoryMethod.GetType()), ((object x) => factoryMethod(_parent)));
+            if (LifetimeForRegisters != ServiceRegistrarLifetime.Transient)
+                throw new NotSupportedException();
+            Func<TService> func = () => factoryMethod(_parent);
+            _container.ObjectFactory.RegisterSingleton(SpringServiceLocator.GetName(typeof(TService)), func);
         }
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
-            where TService : class { throw new NotSupportedException(); }
-        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { throw new NotSupportedException(); }
-        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { throw new NotSupportedException(); }
+            where TService : class
+        {
+            if (LifetimeForRegisters != ServiceRegistrarLifetime.Transient)
+                throw new NotSupportedException();
+            Func<TService> func = () => factoryMethod(_parent);
+            _container.ObjectFactory.RegisterSingleton(name, func);
+        }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod)
+        {
+            if (LifetimeForRegisters != ServiceRegistrarLifetime.Transient)
+                throw new NotSupportedException();
+            Func<object> func = () => factoryMethod(_parent);
+            _container.ObjectFactory.RegisterSingleton(SpringServiceLocator.GetName(serviceType), func);
+        }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name)
+        {
+            if (LifetimeForRegisters != ServiceRegistrarLifetime.Transient)
+                throw new NotSupportedException();
+            Func<object> func = () => factoryMethod(_parent);
+            _container.ObjectFactory.RegisterSingleton(name, func);
+        }
 
         // interceptor
         public void RegisterInterceptor(IServiceLocatorInterceptor interceptor)
         {
             _container.ObjectFactory.AddObjectPostProcessor(new Interceptor(interceptor, _container));
+        }
+
+        private ObjectDefinitionBuilder SetLifetime(ObjectDefinitionBuilder b)
+        {
+            switch (LifetimeForRegisters)
+            {
+                case ServiceRegistrarLifetime.Transient: break;
+                case ServiceRegistrarLifetime.Singleton: b.SetSingleton(true); break;
+                default: throw new NotSupportedException();
+            }
+            return b;
         }
     }
 }

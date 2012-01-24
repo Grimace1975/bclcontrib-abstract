@@ -24,32 +24,24 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-using System.Abstract;
-using NServiceBus;
-namespace Contoso.Abstract.Internal
+using Rhino.ServiceBus;
+namespace Contoso.Abstract
 {
     /// <summary>
-    /// ITransportMessage
+    /// TransportHandler
     /// </summary>
-    internal interface ITransportMessage : IMessage
+    internal class TransportHandler : ConsumerOf<Transport>
     {
-        IServiceMessage Body { get; set; }
-        string Header { get; set; }
-    }
+        private readonly IServiceBus _bus;
 
-    /// <summary>
-    /// TransportMessage
-    /// </summary>
-    internal class TransportMessage<TMessage> : ITransportMessage
-        where TMessage : IServiceMessage
-    {
-        public TMessage Body { get; set; }
-        public string Header { get; set; }
-
-        IServiceMessage ITransportMessage.Body
+        public TransportHandler(IServiceBus bus)
         {
-            get { return Body; }
-            set { Body = (TMessage)value; }
+            _bus = bus;
+        }
+
+        public void Consume(Transport message)
+        {
+            var b = message.B;
         }
     }
 }

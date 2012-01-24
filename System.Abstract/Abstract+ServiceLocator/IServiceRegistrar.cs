@@ -41,6 +41,7 @@ namespace System.Abstract
         IEnumerable<ServiceRegistration> Registrations { get; }
 
         // register type
+        ServiceRegistrarLifetime LifetimeForRegisters { get; set; }
         void Register(Type serviceType);
         void Register(Type serviceType, string name);
 

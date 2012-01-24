@@ -201,11 +201,8 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusCallback.cs">
       <Link>Abstract+ServiceBus\IServiceBusCallback.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusHost.cs">
-      <Link>Abstract+ServiceBus\IServiceBusHost.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusLocation.cs">
-      <Link>Abstract+ServiceBus\IServiceBusLocation.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusEndpoint.cs">
+      <Link>Abstract+ServiceBus\IServiceBusEndpoint.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceMessage.cs">
       <Link>Abstract+ServiceBus\IServiceMessage.cs</Link>
@@ -216,8 +213,8 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceMessageHandlerFactory.cs">
       <Link>Abstract+ServiceBus\IServiceMessageHandlerFactory.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceBus\LiteralServiceBusLocation.cs">
-      <Link>Abstract+ServiceBus\LiteralServiceBusLocation.cs</Link>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\LiteralServiceBusEndpoint.cs">
+      <Link>Abstract+ServiceBus\LiteralServiceBusEndpoint.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\ServiceBusExtensions.cs">
       <Link>Abstract+ServiceBus\ServiceBusExtensions.cs</Link>
@@ -320,6 +317,9 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceLocatorResolutionException.cs">
       <Link>Abstract+ServiceLocator\ServiceLocatorResolutionException.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceRegistrarLifetime.cs">
+      <Link>Abstract+ServiceLocator\ServiceRegistrarLifetime.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceRegistrarNamespaceWrapper.cs">
       <Link>Abstract+ServiceLocator\ServiceRegistrarNamespaceWrapper.cs</Link>

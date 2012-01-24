@@ -6,7 +6,7 @@
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{5453840C-79D7-4CCD-AE04-1BB00BD0AB52}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Example</RootNamespace>
     <AssemblyName>Example.RhinoServiceBus.Host</AssemblyName>
@@ -34,7 +34,6 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
     <Compile Include="Runtime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

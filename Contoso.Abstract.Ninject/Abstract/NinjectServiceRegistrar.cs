@@ -29,6 +29,8 @@ using System.Abstract;
 using Ninject;
 using Ninject.Modules;
 using System.Collections.Generic;
+using Ninject.Syntax;
+using Ninject.Infrastructure;
 namespace Contoso.Abstract
 {
     /// <summary>
@@ -47,6 +49,7 @@ namespace Contoso.Abstract
             _parent = parent;
             _container = kernel;
             _container.Load(new INinjectModule[] { this });
+            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
 
         // locator
@@ -73,22 +76,24 @@ namespace Contoso.Abstract
         }
 
         // register type
+        public ServiceRegistrarLifetime LifetimeForRegisters { get; set; }
         public void Register(Type serviceType) { Bind(serviceType).ToSelf(); }
         public void Register(Type serviceType, string name) { Bind(serviceType).ToSelf().Named(name); }
 
         // register implementation
         public void Register<TService, TImplementation>()
             where TService : class
-            where TImplementation : class, TService { Bind<TService>().To<TImplementation>(); }
+            where TImplementation : class, TService { SetLifetime(Bind<TService>().To<TImplementation>()); }
         public void Register<TService, TImplementation>(string name)
             where TService : class
-            where TImplementation : class, TService { Bind<TService>().To(typeof(TImplementation)).Named(name); }
+            where TImplementation : class, TService { SetLifetime(Bind<TService>().To(typeof(TImplementation))).Named(name); }
+
         public void Register<TService>(Type implementationType)
-            where TService : class { Bind<TService>().To(implementationType); }
+            where TService : class { SetLifetime(Bind<TService>().To(implementationType)); }
         public void Register<TService>(Type implementationType, string name)
-            where TService : class { Bind<TService>().To(implementationType).Named(name); }
-        public void Register(Type serviceType, Type implementationType) { Bind(serviceType).To(implementationType); }
-        public void Register(Type serviceType, Type implementationType, string name) { Bind(serviceType).To(implementationType).Named(name); }
+            where TService : class { SetLifetime(Bind<TService>().To(implementationType)).Named(name); }
+        public void Register(Type serviceType, Type implementationType) { SetLifetime(Bind(serviceType).To(implementationType)); }
+        public void Register(Type serviceType, Type implementationType, string name) { SetLifetime(Bind(serviceType).To(implementationType)).Named(name); }
 
         // register instance
         public void RegisterInstance<TService>(TService instance)
@@ -100,11 +105,11 @@ namespace Contoso.Abstract
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
-            where TService : class { Bind<TService>().ToMethod(x => factoryMethod(_parent)); }
+            where TService : class { SetLifetime(Bind<TService>().ToMethod(x => factoryMethod(_parent))); }
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
-            where TService : class { Bind<TService>().ToMethod(x => factoryMethod(_parent)).Named(name); }
-        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { Bind(serviceType).ToMethod(x => factoryMethod(_parent)); }
-        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { Bind(serviceType).ToMethod(x => factoryMethod(_parent)).Named(name); }
+            where TService : class { SetLifetime(Bind<TService>().ToMethod(x => factoryMethod(_parent))).Named(name); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { SetLifetime(Bind(serviceType).ToMethod(x => factoryMethod(_parent))); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { SetLifetime(Bind(serviceType).ToMethod(x => factoryMethod(_parent))).Named(name); }
 
         // interceptor
         public void RegisterInterceptor(IServiceLocatorInterceptor interceptor)
@@ -127,5 +132,17 @@ namespace Contoso.Abstract
         //private string MakeId(Type serviceType, Type implementationType) { return serviceType.Name + "->" + implementationType.FullName; }
 
         #endregion
+
+        private IBindingNamedWithOrOnSyntax<TService> SetLifetime<TService>(IBindingWhenInNamedWithOrOnSyntax<TService> bindingWhenInNamedWithOrOnSyntax)
+        {
+            switch (LifetimeForRegisters)
+            {
+                case ServiceRegistrarLifetime.Transient: return bindingWhenInNamedWithOrOnSyntax.InScope(StandardScopeCallbacks.Transient);
+                case ServiceRegistrarLifetime.Request: return bindingWhenInNamedWithOrOnSyntax.InScope(StandardScopeCallbacks.Request);
+                case ServiceRegistrarLifetime.Singleton: return bindingWhenInNamedWithOrOnSyntax.InScope(StandardScopeCallbacks.Singleton);
+                case ServiceRegistrarLifetime.Thread: return bindingWhenInNamedWithOrOnSyntax.InScope(StandardScopeCallbacks.Thread);
+                default: throw new NotSupportedException();
+            }
+        }
     }
 }

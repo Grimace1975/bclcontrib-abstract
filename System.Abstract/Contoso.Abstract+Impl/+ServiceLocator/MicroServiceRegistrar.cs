@@ -22,6 +22,7 @@ namespace Contoso.Abstract
         {
             _parent = parent;
             _container = container;
+            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
 
         // locator
@@ -49,6 +50,7 @@ namespace Contoso.Abstract
         }
 
         // register type
+        public ServiceRegistrarLifetime LifetimeForRegisters { get; set; }
         public void Register(Type serviceType) { RegisterInternal(serviceType, new MicroServiceLocator.Trampoline { Type = serviceType }, string.Empty); }
         public void Register(Type serviceType, string name) { RegisterInternal(serviceType, new MicroServiceLocator.Trampoline { Type = serviceType }, name); }
 

@@ -63,7 +63,7 @@ namespace Contoso.Abstract
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         public TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder)
-            where TMessage : IServiceMessage { throw new NotImplementedException(); }
+            where TMessage : class, IServiceMessage { throw new NotImplementedException(); }
 
         public IApplicationServiceBus Add<TMessageHandler>()
             where TMessageHandler : class { return Add(typeof(TMessageHandler)); }
@@ -80,7 +80,7 @@ namespace Contoso.Abstract
             return this;
         }
 
-        public IServiceBusCallback Send(IServiceBusLocation destination, params IServiceMessage[] messages)
+        public IServiceBusCallback Send(IServiceBusEndpoint destination, params IServiceMessage[] messages)
         {
             if (messages == null)
                 throw new ArgumentNullException("messages");
