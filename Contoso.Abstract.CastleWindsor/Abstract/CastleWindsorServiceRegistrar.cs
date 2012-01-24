@@ -53,6 +53,7 @@ namespace Contoso.Abstract
         {
             _parent = parent;
             _container = container;
+            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
 
         public void Dispose() { }
@@ -77,22 +78,23 @@ namespace Contoso.Abstract
         }
 
         // register type
-        public void Register(Type serviceType) { _container.Register(Component.For(serviceType).LifeStyle.Transient); }
-        public void Register(Type serviceType, string name) { _container.Register(Component.For(serviceType).Named(name).LifeStyle.Transient); }
+        public ServiceRegistrarLifetime LifetimeForRegisters { get; set; }
+        public void Register(Type serviceType) { _container.Register(Component.For(serviceType).LifeStyle.Is(GetLifetime())); }
+        public void Register(Type serviceType, string name) { _container.Register(Component.For(serviceType).Named(name).LifeStyle.Is(GetLifetime())); }
 
         // register implementation
         public void Register<TService, TImplementation>()
             where TService : class
-            where TImplementation : class, TService { _container.Register(Component.For<TService>().ImplementedBy<TImplementation>().LifeStyle.Transient); }
+            where TImplementation : class, TService { _container.Register(Component.For<TService>().ImplementedBy<TImplementation>().LifeStyle.Is(GetLifetime())); }
         public void Register<TService, TImplementation>(string name)
             where TService : class
-            where TImplementation : class, TService { _container.Register(Component.For<TService>().Named(name).ImplementedBy<TImplementation>().LifeStyle.Transient); }
+            where TImplementation : class, TService { _container.Register(Component.For<TService>().Named(name).ImplementedBy<TImplementation>().LifeStyle.Is(GetLifetime())); }
         public void Register<TService>(Type implementationType)
-             where TService : class { _container.Register(Component.For<TService>().ImplementedBy(implementationType).LifeStyle.Transient); }
+             where TService : class { _container.Register(Component.For<TService>().ImplementedBy(implementationType).LifeStyle.Is(GetLifetime())); }
         public void Register<TService>(Type implementationType, string name)
-             where TService : class { _container.Register(Component.For<TService>().Named(name).ImplementedBy(implementationType).LifeStyle.Transient); }
-        public void Register(Type serviceType, Type implementationType) { _container.Register(Component.For(serviceType).ImplementedBy(implementationType).LifeStyle.Transient); }
-        public void Register(Type serviceType, Type implementationType, string name) { _container.Register(Component.For(serviceType).Named(name).ImplementedBy(implementationType).LifeStyle.Transient); }
+             where TService : class { _container.Register(Component.For<TService>().Named(name).ImplementedBy(implementationType).LifeStyle.Is(GetLifetime())); }
+        public void Register(Type serviceType, Type implementationType) { _container.Register(Component.For(serviceType).ImplementedBy(implementationType).LifeStyle.Is(GetLifetime())); }
+        public void Register(Type serviceType, Type implementationType, string name) { _container.Register(Component.For(serviceType).Named(name).ImplementedBy(implementationType).LifeStyle.Is(GetLifetime())); }
 
         // register instance
         public void RegisterInstance<TService>(TService instance)
@@ -104,11 +106,11 @@ namespace Contoso.Abstract
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
-            where TService : class { _container.Register(Component.For<TService>().UsingFactoryMethod<TService>(x => factoryMethod(_parent)).LifeStyle.Transient); }
+            where TService : class { _container.Register(Component.For<TService>().UsingFactoryMethod<TService>(x => factoryMethod(_parent)).LifeStyle.Is(GetLifetime())); }
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
-            where TService : class { _container.Register(Component.For<TService>().UsingFactoryMethod<TService>(x => factoryMethod(_parent)).Named(name).LifeStyle.Transient); }
-        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { _container.Register(Component.For(serviceType).UsingFactoryMethod(x => factoryMethod(_parent)).LifeStyle.Transient); }
-        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { _container.Register(Component.For(serviceType).UsingFactoryMethod(x => factoryMethod(_parent)).Named(name).LifeStyle.Transient); }
+            where TService : class { _container.Register(Component.For<TService>().UsingFactoryMethod<TService>(x => factoryMethod(_parent)).Named(name).LifeStyle.Is(GetLifetime())); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { _container.Register(Component.For(serviceType).UsingFactoryMethod(x => factoryMethod(_parent)).LifeStyle.Is(GetLifetime())); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { _container.Register(Component.For(serviceType).UsingFactoryMethod(x => factoryMethod(_parent)).Named(name).LifeStyle.Is(GetLifetime())); }
 
         // interceptor
         public void RegisterInterceptor(IServiceLocatorInterceptor interceptor)
@@ -127,5 +129,18 @@ namespace Contoso.Abstract
         //private static string MakeId(Type serviceType, Type implementationType) { return serviceType.Name + "->" + implementationType.FullName; }
 
         #endregion
+
+        private LifestyleType GetLifetime()
+        {
+            switch (LifetimeForRegisters)
+            {
+                case ServiceRegistrarLifetime.Transient: return LifestyleType.Transient;
+                case ServiceRegistrarLifetime.Singleton: return LifestyleType.Singleton;
+                case ServiceRegistrarLifetime.Thread: return LifestyleType.Thread;
+                case ServiceRegistrarLifetime.Pooled: return LifestyleType.Pooled;
+                case ServiceRegistrarLifetime.Request: return LifestyleType.PerWebRequest;
+                default: throw new NotSupportedException();
+            }
+        }
     }
 }

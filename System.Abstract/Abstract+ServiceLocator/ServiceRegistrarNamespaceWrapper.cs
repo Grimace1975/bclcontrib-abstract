@@ -62,6 +62,11 @@ namespace System.Abstract
         }
 
         // register type
+        public ServiceRegistrarLifetime LifetimeForRegisters
+        {
+            get { return _registrar.LifetimeForRegisters; }
+            set { _registrar.LifetimeForRegisters = value; }
+        }
         public void Register(Type serviceType) { _registrar.Register(serviceType, _namespace); }
         public void Register(Type serviceType, string name) { _registrar.Register(serviceType, _namespace + "::" + name); }
 

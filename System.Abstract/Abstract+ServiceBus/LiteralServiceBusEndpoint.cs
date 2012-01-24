@@ -23,27 +23,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Abstract;
-using NServiceBus;
-namespace Contoso.Abstract
+using System.Collections.Generic;
+namespace System.Abstract
 {
     /// <summary>
-    /// INServiceBus
+    /// LiteralServiceBusEndpoint
     /// </summary>
-    public interface INServiceBus : IPublishingServiceBus
+    public class LiteralServiceBusEndpoint : IServiceBusEndpoint
     {
-		//void Reply(params IServiceMessage[] messages);
-		//void Return<T>(T value);
-        IBus Bus { get; }
-    }
-
-    /// <summary>
-    /// INServiceBusExtensions
-    /// </summary>
-    public static class INServiceBusExtensions
-    {
-		//public static void Reply<TMessage>(this INServiceBus serviceBus, Action<TMessage> messageBuilder)
-		//    where TMessage : IServiceMessage { serviceBus.Reply(serviceBus.CreateMessage(messageBuilder)); }
+        public LiteralServiceBusEndpoint(string literal)
+        {
+            if (literal == null)
+                throw new ArgumentNullException("literal");
+            Value = literal;
+        }
+        public string Value { get; private set; }
     }
 }

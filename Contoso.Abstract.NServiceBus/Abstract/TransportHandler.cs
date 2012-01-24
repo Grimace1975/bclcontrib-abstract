@@ -23,20 +23,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Collections.Generic;
-namespace System.Abstract
+using System;
+using NServiceBus;
+namespace Contoso.Abstract
 {
     /// <summary>
-    /// LiteralServiceBusLocation
+    /// TransportHandler
     /// </summary>
-    public class LiteralServiceBusLocation : IServiceBusLocation
+    internal class TransportHandler : IHandleMessages<Transport>
     {
-        public LiteralServiceBusLocation(string literal)
+        private object _bus;
+
+        public TransportHandler(object bus)
         {
-            if (literal == null)
-                throw new ArgumentNullException("literal");
-            Value = literal;
+            _bus = bus;
         }
-        public string Value { get; private set; }
+
+        public void Handle(Transport message)
+        {
+            var b = message.B;
+        }
     }
 }

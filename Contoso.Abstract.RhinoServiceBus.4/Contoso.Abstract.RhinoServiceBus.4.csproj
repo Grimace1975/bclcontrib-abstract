@@ -38,11 +38,11 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\Data.cs">
-      <Link>Abstract\Data.cs</Link>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\IRhinoServiceMessage.cs">
+      <Link>Abstract\IRhinoServiceMessage.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\DataHandler.cs">
-      <Link>Abstract\DataHandler.cs</Link>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\IRhinoServiceMessageHandler.cs">
+      <Link>Abstract\IRhinoServiceMessageHandler.cs</Link>
     </Compile>
     <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBusAbstractor.cs">
       <Link>Abstract\RhinoServiceBusAbstractor.cs</Link>
@@ -64,6 +64,12 @@
     </Compile>
     <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBus\ServiceLocatorLoadBalancerBootStrapper.cs">
       <Link>Abstract\RhinoServiceBus\ServiceLocatorLoadBalancerBootStrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\Transport.cs">
+      <Link>Abstract\Transport.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\TransportHandler.cs">
+      <Link>Abstract\TransportHandler.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

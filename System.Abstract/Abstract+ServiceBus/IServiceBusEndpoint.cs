@@ -23,24 +23,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Abstract;
-using NServiceBus;
-namespace Contoso.Abstract.Internal
+namespace System.Abstract
 {
-    internal class TransportMessageHandler : IHandleMessages<ITransportMessage>
-    {
-        private object _serviceBus;
-
-        public TransportMessageHandler(object serviceBus)
-        {
-            _serviceBus = serviceBus;
-        }
-
-        public void Handle(ITransportMessage message)
-        {
-            var transport = message.Body;
-            //_serviceBus.PublishEvent(domainEvent);
-        }
-    }
+    /// <summary>
+    /// IServiceBusEndpoint
+    /// </summary>
+    public interface IServiceBusEndpoint { }
 }

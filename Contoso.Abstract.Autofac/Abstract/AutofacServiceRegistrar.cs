@@ -51,6 +51,7 @@ namespace Contoso.Abstract
             _parent = parent;
             _builder = builder;
             containerBuilder = (() => _container = _builder.Build());
+            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
 
         public void Dispose() { }
@@ -92,15 +93,16 @@ namespace Contoso.Abstract
         }
 
         // register type
+        public ServiceRegistrarLifetime LifetimeForRegisters { get; set; }
         public void Register(Type serviceType)
         {
-            _builder.RegisterType(serviceType);
+            SetLifestyle(_builder.RegisterType(serviceType));
             if (_container != null)
                 UpdateAndClearBuilder();
         }
         public void Register(Type serviceType, string name)
         {
-            _builder.RegisterType(serviceType).Named(name, serviceType);
+            SetLifestyle(_builder.RegisterType(serviceType).Named(name, serviceType));
             if (_container != null)
                 UpdateAndClearBuilder();
         }
@@ -111,77 +113,78 @@ namespace Contoso.Abstract
             where TImplementation : class, TService
         {
             if (_container == null)
-                _builder.RegisterType<TImplementation>().As<TService>();
+                SetLifestyle(_builder.RegisterType<TImplementation>().As<TService>());
             else
-                _container.ComponentRegistry.Register(RegistrationBuilder.ForType<TImplementation>().As<TService>().CreateRegistration());
+                _container.ComponentRegistry.Register(SetLifestyle(RegistrationBuilder.ForType<TImplementation>().As<TService>()).CreateRegistration());
         }
+
         public void Register<TService, TImplementation>(string name)
             where TService : class
             where TImplementation : class, TService
         {
             Register<TService, TImplementation>();
             if (_container == null)
-                _builder.RegisterType<TImplementation>().Named<TService>(name);
+                SetLifestyle(_builder.RegisterType<TImplementation>().Named<TService>(name));
             else
-                _container.ComponentRegistry.Register(RegistrationBuilder.ForType<TImplementation>().Named<TService>(name).CreateRegistration());
+                _container.ComponentRegistry.Register(SetLifestyle(RegistrationBuilder.ForType<TImplementation>().Named<TService>(name)).CreateRegistration());
         }
         public void Register<TService>(Type implementationType)
              where TService : class
         {
             if (_container == null)
-                _builder.RegisterType(implementationType).As<TService>();
+                SetLifestyle(_builder.RegisterType(implementationType).As<TService>());
             else
-                _container.ComponentRegistry.Register(RegistrationBuilder.ForType(implementationType).As<TService>().CreateRegistration());
+                _container.ComponentRegistry.Register(SetLifestyle(RegistrationBuilder.ForType(implementationType).As<TService>()).CreateRegistration());
         }
         public void Register<TService>(Type implementationType, string name)
              where TService : class
         {
             Register<TService>(implementationType);
             if (_container == null)
-                _builder.RegisterType(implementationType).Named<TService>(name);
+                SetLifestyle(_builder.RegisterType(implementationType).Named<TService>(name));
             else
-                _container.ComponentRegistry.Register(RegistrationBuilder.ForType(implementationType).Named<TService>(name).CreateRegistration());
+                _container.ComponentRegistry.Register(SetLifestyle(RegistrationBuilder.ForType(implementationType).Named<TService>(name)).CreateRegistration());
         }
         public void Register(Type serviceType, Type implementationType)
         {
             if (_container == null)
-                _builder.RegisterType(implementationType).As(serviceType);
+                SetLifestyle(_builder.RegisterType(implementationType).As(serviceType));
             else
-                _container.ComponentRegistry.Register(RegistrationBuilder.ForType(implementationType).As(serviceType).CreateRegistration());
+                _container.ComponentRegistry.Register(SetLifestyle(RegistrationBuilder.ForType(implementationType).As(serviceType)).CreateRegistration());
         }
         public void Register(Type serviceType, Type implementationType, string name)
         {
             Register(serviceType, implementationType);
             if (_container == null)
-                _builder.RegisterType(implementationType).Named(name, serviceType);
+                SetLifestyle(_builder.RegisterType(implementationType).Named(name, serviceType));
             else
-                _container.ComponentRegistry.Register(RegistrationBuilder.ForType(implementationType).Named(name, serviceType).CreateRegistration());
+                _container.ComponentRegistry.Register(SetLifestyle(RegistrationBuilder.ForType(implementationType).Named(name, serviceType)).CreateRegistration());
         }
 
         // register instance
         public void RegisterInstance<TService>(TService instance)
             where TService : class
         {
-            _builder.RegisterInstance(instance).As<TService>();
+            _builder.RegisterInstance(instance).As<TService>().ExternallyOwned();
             if (_container != null)
                 UpdateAndClearBuilder();
         }
         public void RegisterInstance<TService>(TService instance, string name)
             where TService : class
         {
-            _builder.RegisterInstance(instance).Named(name, typeof(TService));
+            _builder.RegisterInstance(instance).Named(name, typeof(TService)).ExternallyOwned();
             if (_container != null)
                 UpdateAndClearBuilder();
         }
         public void RegisterInstance(Type serviceType, object instance)
         {
-            _builder.RegisterInstance(instance).As(serviceType);
+            _builder.RegisterInstance(instance).As(serviceType).ExternallyOwned();
             if (_container != null)
                 UpdateAndClearBuilder();
         }
         public void RegisterInstance(Type serviceType, object instance, string name)
         {
-            _builder.RegisterInstance(instance).Named(name, serviceType);
+            _builder.RegisterInstance(instance).Named(name, serviceType).ExternallyOwned();
             if (_container != null)
                 UpdateAndClearBuilder();
         }
@@ -190,27 +193,27 @@ namespace Contoso.Abstract
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class
         {
-            _builder.Register(x => factoryMethod(_parent)).As<TService>();
+            SetLifestyle(_builder.Register(x => factoryMethod(_parent)).As<TService>());
             if (_container != null)
                 UpdateAndClearBuilder();
         }
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
             where TService : class
         {
-            _builder.Register(x => factoryMethod(_parent)).Named<TService>(name);
+            SetLifestyle(_builder.Register(x => factoryMethod(_parent)).Named<TService>(name));
             if (_container != null)
                 UpdateAndClearBuilder();
 
         }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod)
         {
-            _builder.Register(x => factoryMethod(_parent)).As(serviceType);
+            SetLifestyle(_builder.Register(x => factoryMethod(_parent)).As(serviceType));
             if (_container != null)
                 UpdateAndClearBuilder();
         }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name)
         {
-            _builder.Register(x => factoryMethod(_parent)).Named(name, serviceType);
+            SetLifestyle(_builder.Register(x => factoryMethod(_parent)).Named(name, serviceType));
             if (_container != null)
                 UpdateAndClearBuilder();
         }
@@ -232,5 +235,16 @@ namespace Contoso.Abstract
         }
 
         #endregion
+
+        private IRegistrationBuilder<TLimit, TActivatorData, TRegistrationStyle> SetLifestyle<TLimit, TActivatorData, TRegistrationStyle>(IRegistrationBuilder<TLimit, TActivatorData, TRegistrationStyle> b)
+        {
+            switch (LifetimeForRegisters)
+            {
+                case ServiceRegistrarLifetime.Transient: break; // b.InstancePerDependency();
+                case ServiceRegistrarLifetime.Singleton: b.SingleInstance(); break;
+                default: throw new NotSupportedException();
+            }
+            return b;
+        }
     }
 }

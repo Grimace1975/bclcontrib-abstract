@@ -7,12 +7,12 @@ namespace Example
     {
         static void Main(string[] args)
         {
-            var service = new Lazy<IServiceCache>(() => new StaticServiceCache())
+            var serviceManager = ServiceCacheManager.MakeByProvider(() => new StaticServiceCache())
                 .LoadFromConfiguration(null);
-            var actions = ServiceCacheManager.GetSetupDescriptor(service);
+            var actions = ServiceCacheManager.GetSetupDescriptor(serviceManager);
             actions.Do(x => Console.Write("Here"));
             //
-            var cache = service.Value;
+            var cache = serviceManager.Value;
         }
     }
 }

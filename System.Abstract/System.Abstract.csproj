@@ -87,7 +87,6 @@
     <Compile Include="Abstract+Event\EventBus.cs" />
     <Compile Include="Abstract+Event\IEventHandler.cs" />
     <Compile Include="Abstract+ServiceBus\ServiceBusExtensions.cs" />
-    <Compile Include="Abstract+ServiceBus\IServiceBusHost.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCache+Primitives.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheExtensions.cs" />
     <Compile Include="Abstract+ServiceCache\IDistributedServiceCache.cs" />
@@ -103,6 +102,7 @@
     <Compile Include="Abstract+ServiceCache\ServiceCacheRegistration.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemPolicy.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemDependency.cs" />
+    <Compile Include="Abstract+ServiceLocator\ServiceRegistrarLifetime.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceLocatorInterceptor.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceLocatorExtensions.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceRegistrant.cs" />
@@ -163,11 +163,11 @@
     <Compile Include="_Unsorted_\NewAttrib.cs" />
     <Compile Include="Abstract+ServiceBus\AggregateServiceMessage.cs" />
     <Compile Include="Abstract+ServiceBus\IServiceMessageHandlerFactory.cs" />
-    <Compile Include="Abstract+ServiceBus\LiteralServiceBusLocation.cs" />
+    <Compile Include="Abstract+ServiceBus\LiteralServiceBusEndpoint.cs" />
     <Compile Include="Abstract+ServiceBus+Impl\ServiceBus.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Abstract+ServiceBus\IServiceBusLocation.cs" />
+    <Compile Include="Abstract+ServiceBus\IServiceBusEndpoint.cs" />
     <Compile Include="Abstract+ServiceBus\IServiceBus.cs" />
     <Compile Include="Abstract+ServiceBus\IServiceMessageHandler.cs" />
     <Compile Include="Abstract+ServiceBus+Impl\ServiceBusManager.cs" />
