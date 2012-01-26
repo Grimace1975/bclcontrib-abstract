@@ -29,6 +29,9 @@ using System.Abstract;
 using NServiceBus;
 using System.Linq.Expressions;
 using NServiceBus.Unicast;
+using System.Reflection;
+using NServiceBus.Unicast.Transport;
+using Contoso.Abstract.NServiceBus;
 namespace Contoso.Abstract
 {
     /// <summary>
@@ -36,6 +39,7 @@ namespace Contoso.Abstract
     /// </summary>
     public interface INServiceBus : IPublishingServiceBus
     {
+        int SendWithReturn(int executeTimeout, IServiceBusEndpoint endpoint, params IServiceMessage[] messages);
         void Return<T>(T value);
         IBus Bus { get; }
     }
@@ -48,9 +52,10 @@ namespace Contoso.Abstract
         private IServiceLocator _serviceLocator;
 
         static NServiceBusAbstractor() { ServiceBusManager.EnsureRegistration(); }
-        public NServiceBusAbstractor() { }
-        public NServiceBusAbstractor(IServiceLocator serviceLocator)
-            : this(serviceLocator, DefaultBusCreator(serviceLocator)) { }
+        public NServiceBusAbstractor(params Assembly[] assemblies)
+            : this(ServiceLocatorManager.Current, DefaultBusCreator(null, assemblies)) { }
+        public NServiceBusAbstractor(IServiceLocator serviceLocator, params Assembly[] assemblies)
+            : this(serviceLocator, DefaultBusCreator(serviceLocator, assemblies)) { }
         public NServiceBusAbstractor(IServiceLocator serviceLocator, IStartableBus startableBus)
         {
             if (serviceLocator == null)
@@ -90,25 +95,23 @@ namespace Contoso.Abstract
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
                 throw new ArgumentNullException("messages", "Please include at least one message.");
-            var transports = messages.Select(x => new Transport { B = x }).ToArray();
+            var transports = Caster.Cast(messages);
             try
             {
-                if (endpoint == ServiceBus.Self)
-                {
+                if (endpoint != ServiceBus.SelfEndpoint)
+                    Bus.Send(TransportEndpointMapper(endpoint), transports);
+                else
                     Bus.SendLocal(transports);
-                    return null;
-                }
-                Bus.Send(transports);
-                return null;
             }
             catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
+            return null;
         }
 
         public void Reply(params IServiceMessage[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
                 throw new ArgumentNullException("messages", "Please include at least one message.");
-            var transports = messages.Select(x => new Transport { B = x }).ToArray();
+            var transports = Caster.Cast(messages);
             try { Bus.Reply(transports); }
             catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
         }
@@ -119,7 +122,7 @@ namespace Contoso.Abstract
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
                 throw new ArgumentNullException("messages");
-            var transports = messages.Select(x => new Transport { B = x }).ToArray();
+            var transports = Caster.Cast(messages);
             try { Bus.Publish(transports); }
             catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
         }
@@ -133,7 +136,7 @@ namespace Contoso.Abstract
                 if (predicate == null)
                     Bus.Subscribe(messageType);
                 else
-                    Bus.Subscribe(messageType, Cast(predicate));
+                    Bus.Subscribe(messageType, Caster.Cast(predicate));
             }
             catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
         }
@@ -152,6 +155,25 @@ namespace Contoso.Abstract
 
         public IBus Bus { get; set; }
 
+        public int SendWithReturn(int executeTimeout, IServiceBusEndpoint endpoint, params IServiceMessage[] messages)
+        {
+            if (messages == null || messages.Length == 0 || messages[0] == null)
+                throw new ArgumentNullException("messages", "Please include at least one message.");
+            var transports = Caster.Cast(messages);
+            IAsyncResult asyncResult;
+            try
+            {
+                if (endpoint != ServiceBus.SelfEndpoint)
+                    asyncResult = Bus.Send(TransportEndpointMapper(endpoint), transports).Register(state => { }, null);
+                else
+                    throw new NotSupportedException();
+            }
+            catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
+            if (!asyncResult.AsyncWaitHandle.WaitOne(executeTimeout))
+                throw new TimeoutException();
+            return ((CompletionResult)asyncResult.AsyncState).ErrorCode;
+        }
+
         public void Return<T>(T value)
         {
             if (typeof(T) != typeof(int))
@@ -162,20 +184,51 @@ namespace Contoso.Abstract
 
         #endregion
 
-        public static IStartableBus DefaultBusCreator(IServiceLocator serviceLocator)
+        #region Endpoint-Translation
+
+        private IServiceBusEndpoint EndpointByMessageType(Type messageType)
         {
-            if (serviceLocator == null)
-                serviceLocator = ServiceLocatorManager.Current;
-            return Configure.Instance.Builder.Build<IBus>() as IStartableBus;
+            return null;
         }
 
-        #region Casts
-
-        private static Predicate<IMessage> Cast(Predicate<IServiceMessage> predicate)
+        private string TransportEndpointMapper(IServiceBusEndpoint endpoint)
         {
-            return (c => predicate((INServiceMessage)c));
+            return null;
         }
 
         #endregion
+
+        public static IStartableBus DefaultBusCreator(IServiceLocator serviceLocator, params Assembly[] assemblies)
+        {
+            if (serviceLocator == null)
+                serviceLocator = ServiceLocatorManager.Current;
+            //return Configure.Instance.Builder.Build<IBus>() as IStartableBus;
+            return Configure.With(new[] { typeof(CompletionMessage).Assembly }.Union(assemblies))
+                .AbstractServiceBuilder() //.DefaultBuilder()
+                .XmlSerializer()
+                .MsmqTransport()
+                .UnicastBus()
+                .CreateBus();
+        }
+
+        private class Caster
+        {
+            public static IMessage[] Cast(IServiceMessage[] messages)
+            {
+                return messages.Select(x =>
+                {
+                    var type = typeof(Transport<>).MakeGenericType(x.GetType());
+                    var transport = (IMessage)Activator.CreateInstance(type);
+                    type.GetProperty("B").SetValue(transport, x, null);
+                    return transport;
+                }).ToArray();
+                //return messages.Select(x => new Transport<object> { B = x }).ToArray();
+            }
+
+            public static Predicate<IMessage> Cast(Predicate<IServiceMessage> predicate)
+            {
+                return (c => predicate((INServiceMessage)c));
+            }
+        }
     }
 }

@@ -23,17 +23,27 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Collections.Generic;
-namespace System.Abstract
+using System.Abstract;
+using Contoso.Abstract.RhinoServiceBus;
+namespace Contoso.Abstract
 {
     /// <summary>
-    /// ServiceBus
+    /// BootstrapRhinoServiceBusHost
     /// </summary>
-    public static class ServiceBus
+    public abstract class BootstrapRhinoServiceBusHost : ServiceLocatorBootStrapper
     {
-        public readonly static IServiceBusEndpoint SelfEndpoint = new LiteralServiceBusEndpoint("#local");
-        public static IServiceBusCallback Send(params IServiceMessage[] messages) { return ServiceBusManager.Current.Send(messages); }
-        public static IServiceBusCallback Send<TMessage>(Action<TMessage> messageBuilder)
-            where TMessage : class, IServiceMessage { return ServiceBusManager.Current.Send<TMessage>(messageBuilder); }
+        protected BootstrapRhinoServiceBusHost() { }
+        protected BootstrapRhinoServiceBusHost(IServiceLocator locator)
+            : base(locator) { }
+
+        public virtual void Initialize()
+        {
+        }
+
+        public override void InitializeContainer()
+        {
+            Initialize();
+            base.InitializeContainer();
+        }
     }
 }

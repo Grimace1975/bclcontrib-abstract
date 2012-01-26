@@ -30,10 +30,10 @@ namespace System.Abstract
     /// <summary>
     /// AggregateServiceMessage
     /// </summary>
-    public class AggregateServiceMessage : IServiceMessage
-    {
-        public AggregateServiceMessage(params IServiceMessage[] messages) { Messages = messages; }
-        public IServiceMessage[] Messages { get; private set; }
-    }
+    //public class AggregateServiceMessage : IServiceMessage
+    //{
+    //    public AggregateServiceMessage(params IServiceMessage[] messages) { Messages = messages; }
+    //    public IServiceMessage[] Messages { get; private set; }
+    //}
 }
 #endif

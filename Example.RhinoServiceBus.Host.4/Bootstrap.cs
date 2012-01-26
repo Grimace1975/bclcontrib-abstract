@@ -3,12 +3,11 @@ using Contoso.Abstract;
 using Contoso.Abstract.RhinoServiceBus;
 namespace Example
 {
-    public class Runtime : ServiceLocatorBootStrapper
+    public class Bootstrap : BootstrapRhinoServiceBusHost
     {
-        public override void InitializeContainer()
+        public override void Initialize()
         {
             ServiceLocatorManager.SetProvider(() => new MicroServiceLocator());
-            base.InitializeContainer();
         }
     }
 }

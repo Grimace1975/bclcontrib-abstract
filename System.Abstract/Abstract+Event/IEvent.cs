@@ -28,5 +28,5 @@ namespace System.Abstract
     /// <summary>
     /// IEvent
     /// </summary>
-    public interface IEvent : IServiceMessage { }
+    public interface IEvent { } // IServiceMessage { }
 }

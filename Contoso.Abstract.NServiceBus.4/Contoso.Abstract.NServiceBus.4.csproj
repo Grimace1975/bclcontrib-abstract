@@ -47,6 +47,9 @@
     <Reference Include="NServiceBus.Core, Version=2.6.0.1505, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
       <HintPath>..\packages\NServiceBus.2.6.0.1506\lib\net40\NServiceBus.Core.dll</HintPath>
     </Reference>
+    <Reference Include="NServiceBus.Host">
+      <HintPath>..\packages\NServiceBus.Host.2.6.0.1506\lib\net40\NServiceBus.Host.exe</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
@@ -58,6 +61,12 @@
     </Compile>
     <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\NServiceBusAbstractor.cs">
       <Link>Abstract\NServiceBusAbstractor.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\NServiceBus\Extensions.cs">
+      <Link>Abstract\NServiceBus\Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\NServiceBus\ServiceLocatorObjectBuilder.cs">
+      <Link>Abstract\NServiceBus\ServiceLocatorObjectBuilder.cs</Link>
     </Compile>
     <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\Transport.cs">
       <Link>Abstract\Transport.cs</Link>
@@ -77,9 +86,7 @@
       <Name>System.Abstract.4</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Abstract\NServiceBus\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="..\Contoso.Abstract.NServiceBus\Changelog.txt">
       <Link>Changelog.txt</Link>

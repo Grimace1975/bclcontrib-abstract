@@ -1,5 +1,5 @@
-﻿using Rhino.ServiceBus.Impl;
-using System.Abstract;
+﻿using System.Abstract;
+using Rhino.ServiceBus.Impl;
 namespace Contoso.Abstract.RhinoServiceBus
 {
     public static class Extensions

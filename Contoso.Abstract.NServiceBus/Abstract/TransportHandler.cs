@@ -30,7 +30,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// TransportHandler
     /// </summary>
-    internal class TransportHandler : IHandleMessages<Transport>
+    internal class TransportHandler<T> : IHandleMessages<Transport<T>>
     {
         private object _bus;
 
@@ -39,7 +39,7 @@ namespace Contoso.Abstract
             _bus = bus;
         }
 
-        public void Handle(Transport message)
+        public void Handle(Transport<T> message)
         {
             var b = message.B;
         }

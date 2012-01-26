@@ -23,6 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System.Linq;
+using System.Reflection;
+using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
@@ -65,7 +68,47 @@ namespace System.Abstract
         public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> service, Lazy<IServiceLocator> locator, string name) { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, locator, name); return service; }
         public static Lazy<IServiceBus> AddEndpoint(this Lazy<IServiceBus> service, string endpoint) { return service; }
 
+        public static Lazy<IServiceBus> AddHandler(this Lazy<IServiceBus> service, params Assembly[] assemblies) { ServiceBusManager.GetSetupDescriptor(service).Do(s => AddHandler(s, null, assemblies)); return service; }
+        public static Lazy<IServiceBus> AddHandler(this Lazy<IServiceBus> service, Predicate<Type> predicate, params Assembly[] assemblies) { ServiceBusManager.GetSetupDescriptor(service).Do(s => AddHandler(s, predicate, assemblies)); return service; }
+        public static Lazy<IServiceBus> AddHandler(this Lazy<IServiceBus> service, Type handlerType) { ServiceBusManager.GetSetupDescriptor(service).Do(s => AddHandler(s, handlerType)); return service; }
+
         #endregion
+
+        public static void AddHandler<TMessageHandler>(IServiceBus bus)
+            where TMessageHandler : class { AddHandler(bus, typeof(TMessageHandler)); }
+        public static void AddHandler(IServiceBus bus, Type handlerType)
+        {
+            var messageType = GetMessageTypeFromHandler(handlerType);
+            if (messageType == null)
+                throw new InvalidOperationException("Unable find a message handler");
+        }
+
+        //private IEnumerable<Type> GetTypesOfMessageHandlers(Type messageType)
+        //{
+        //    return Items.Where(x => x.MessageType == messageType)
+        //        .Select(x => x.MessageHandlerType);
+        //}
+
+        private static IEnumerable<Type> GetMessageTypeFromHandler(Type messageHandlerType)
+        {
+            var serviceMessageType = typeof(IServiceMessage);
+            //return messageHandlerType.GetInterfaces()
+            //    .Where(h => h.IsGenericType && (h.FullName.StartsWith("System.Abstract.IServiceMessageHandler`1") || h.FullName.StartsWith("Contoso.Abstract.IApplicationServiceMessageHandler`1")))
+            //    .Select(h => h.GetGenericArguments()[0])
+            //    .Where(m => m.GetInterfaces().Any(x => x == serviceMessageType || x == applicationServiceMessageType));
+            return null;
+        }
+
+        public static void AddHandler(IServiceBus bus, Predicate<Type> predicate, params Assembly[] assemblies)
+        {
+            if (assemblies.Count() == 0)
+                return;
+            //var types = assemblies.SelectMany(a => a.GetTypes())
+            //    .Where(t => typeof(basedOnType.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract && (predicate == null || predicate(t)));
+            //foreach (var type in types)
+            //    action(basedOnType, type, Guid.NewGuid().ToString());
+        }
+
 
         //public static string ToString(this IServiceBusLocation location, Func<IServiceBusLocation, object, string> builder, object arg)
         //{

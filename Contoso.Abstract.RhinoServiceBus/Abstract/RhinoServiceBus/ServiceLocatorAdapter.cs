@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using Rhino.ServiceBus.Internal;
-using Rhino.ServiceBus.Impl;
 namespace Contoso.Abstract.RhinoServiceBus
 {
     internal class ServiceLocatorAdapter : IServiceLocator
