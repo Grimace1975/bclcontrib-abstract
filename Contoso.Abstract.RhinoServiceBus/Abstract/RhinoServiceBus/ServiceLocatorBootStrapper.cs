@@ -1,11 +1,11 @@
-﻿using System.Abstract;
+﻿using System;
+using System.Abstract;
+using System.Linq;
+using System.Reflection;
+using Rhino.ServiceBus.Actions;
 using Rhino.ServiceBus.Hosting;
 using Rhino.ServiceBus.Impl;
-using Rhino.ServiceBus.Actions;
 using Rhino.ServiceBus.Internal;
-using System.Reflection;
-using System;
-using System.Linq;
 namespace Contoso.Abstract.RhinoServiceBus
 {
     public abstract class ServiceLocatorBootStrapper : AbstractBootStrapper

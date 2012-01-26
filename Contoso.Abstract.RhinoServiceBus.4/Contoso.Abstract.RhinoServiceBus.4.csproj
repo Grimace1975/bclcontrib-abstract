@@ -38,6 +38,12 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\BootstrapRhinoServiceBusHost.cs">
+      <Link>Abstract\BootstrapRhinoServiceBusHost.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\BootstrapRhinoServiceBusLoadBalancedHost.cs">
+      <Link>Abstract\BootstrapRhinoServiceBusLoadBalancedHost.cs</Link>
+    </Compile>
     <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\IRhinoServiceMessage.cs">
       <Link>Abstract\IRhinoServiceMessage.cs</Link>
     </Compile>

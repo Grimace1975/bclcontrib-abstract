@@ -51,9 +51,13 @@
     <Reference Include="NServiceBus.Core, Version=2.6.0.1505, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
       <HintPath>..\packages\NServiceBus.2.6.0.1506\lib\net35\NServiceBus.Core.dll</HintPath>
     </Reference>
+    <Reference Include="NServiceBus.Host">
+      <HintPath>..\packages\NServiceBus.Host.2.6.0.1506\lib\net35\NServiceBus.Host.exe</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\BootstrapNServiceBusHost.cs" />
     <Compile Include="Abstract\NServiceBus\Extensions.cs" />
     <Compile Include="Abstract\NServiceBus\ServiceLocatorObjectBuilder.cs" />
     <Compile Include="Abstract\TransportHandler.cs" />

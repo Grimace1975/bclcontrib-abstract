@@ -52,6 +52,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\BootstrapMTServiceBusHost.cs" />
     <Compile Include="Abstract\IMTServiceMessage.cs" />
     <Compile Include="Abstract\IMTServiceMessageHandler.cs" />
     <Compile Include="Abstract\MTServiceBusAbstractor.cs" />

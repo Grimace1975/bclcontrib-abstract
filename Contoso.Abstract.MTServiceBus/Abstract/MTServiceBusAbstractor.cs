@@ -29,6 +29,8 @@ using System.Abstract;
 using MassTransit;
 using IServiceBus = MassTransit.IServiceBus;
 using MassTransit.BusConfigurators;
+using MassTransit.SubscriptionConfigurators;
+using MassTransit.Services.Routing.Configuration;
 namespace Contoso.Abstract
 {
     /// <summary>
@@ -42,6 +44,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// MTServiceBusAbstractor
     /// </summary>
+    /// http://readthedocs.org/docs/masstransit/en/develop/index.html
     /// http://mikehadlow.blogspot.com/2009/07/first-look-at-masstransit.html
     public class MTServiceBusAbstractor : IMTServiceBus, ServiceBusManager.ISetupRegistration
     {
@@ -82,18 +85,15 @@ namespace Contoso.Abstract
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
                 throw new ArgumentNullException("messages", "Please include at least one message.");
-            //var transports = messages.Select(x => new Transport { B = x }).ToArray();
-            //try
-            //{
-            //    if (endpoint == ServiceBus.Self)
-            //    {
-            //        Bus.Endpoint.Send(transports);
-            //        return null;
-            //    }
-            //    Bus.Endpoint.Send(transports);
-            //    return null;
-            //}
-            //catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
+            var transports = Caster.Cast(messages);
+            try
+            {
+                //if (endpoint == ServiceBus.Self)
+                //    Bus.PublishEndpoint.S(transports);
+                //else
+                //    Bus.Endpoint.Send(transports);
+            }
+            catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
             return null;
         }
 
@@ -101,7 +101,7 @@ namespace Contoso.Abstract
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
                 throw new ArgumentNullException("messages", "Please include at least one message.");
-            //var transports = messages.Select(x => new Transport { B = x }).ToArray();
+            var transports = Caster.Cast(messages);
             //try { Bus.Reply(transports); }
             //catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
         }
@@ -112,7 +112,7 @@ namespace Contoso.Abstract
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
                 throw new ArgumentNullException("messages");
-            //var transports = messages.Select(x => new Transport { B = x }).ToArray();
+            var transports = Caster.Cast(messages);
             //try { Bus.Publish(transports); }
             //catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
         }
@@ -151,15 +151,32 @@ namespace Contoso.Abstract
         {
             if (serviceLocator == null)
                 serviceLocator = ServiceLocatorManager.Current;
-            //var bus = ServiceBusConfigurator.New(b =>
-            //{
-            //    b.ReceiveFrom("msmq://localhost/mt_client");
-            //    b.ConfigureService<RoutingConfigurator>(rs =>
-            //    {
-            //        rs.Route<BuyWidget>().To("msmq://localhost/widget_buyer");
-            //    });
-            //});
-            return null;
+            var bus = ServiceBusFactory.New(sbc =>
+            {
+                sbc.UseMsmq();
+                sbc.UseMulticastSubscriptionClient();
+                sbc.ReceiveFrom("msmq://localhost/test_queue");
+                sbc.Subscribe(subs =>
+                {
+                    //subs.Handler<YourMessage>(msg=>Console.WriteLine(msg.Text));
+                });
+            });
+            return bus;
+        }
+
+        private class Caster
+        {
+            public static object[] Cast(IServiceMessage[] messages)
+            {
+                return messages.Select(x =>
+                {
+                    var type = typeof(Transport<>).MakeGenericType(x.GetType());
+                    var transport = Activator.CreateInstance(type);
+                    type.GetProperty("B").SetValue(transport, x, null);
+                    return transport;
+                }).ToArray();
+                //return messages.Select(x => new Transport<object> { B = x }).ToArray();
+            }
         }
     }
 }

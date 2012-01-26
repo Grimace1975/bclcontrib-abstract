@@ -31,8 +31,8 @@ namespace Contoso.Abstract
     /// <summary>
     /// Transport
     /// </summary>
-    internal class Transport : IMessage
+    internal class Transport<T> : IMessage
     {
-        public IServiceMessage B { get; set; }
+        public T B { get; set; }
     }
 }

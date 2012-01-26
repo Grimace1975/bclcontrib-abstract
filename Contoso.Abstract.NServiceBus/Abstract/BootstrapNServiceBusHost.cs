@@ -23,17 +23,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Collections.Generic;
-namespace System.Abstract
+using System.Abstract;
+using NServiceBus;
+namespace Contoso.Abstract
 {
     /// <summary>
-    /// ServiceBus
+    /// BootstrapNServiceBusHost
     /// </summary>
-    public static class ServiceBus
+    public abstract class BootstrapNServiceBusHost : IConfigureThisEndpoint, AsA_Publisher, IWantToRunAtStartup, IWantCustomLogging
     {
-        public readonly static IServiceBusEndpoint SelfEndpoint = new LiteralServiceBusEndpoint("#local");
-        public static IServiceBusCallback Send(params IServiceMessage[] messages) { return ServiceBusManager.Current.Send(messages); }
-        public static IServiceBusCallback Send<TMessage>(Action<TMessage> messageBuilder)
-            where TMessage : class, IServiceMessage { return ServiceBusManager.Current.Send<TMessage>(messageBuilder); }
+        protected BootstrapNServiceBusHost() { }
+        protected BootstrapNServiceBusHost(IServiceLocator locator) { }
+
+        public virtual void Init()
+        {
+            //SetLoggingLibrary.Log4Net(XmlConfigurator.Configure);
+            //Configure.Instance.Log4Net(new RollingFileAppender { AppendToFile = true, File = GetLogFilePath() });
+        }
+
+        public virtual void Run() { }
+
+        public virtual void Stop() { }
     }
 }

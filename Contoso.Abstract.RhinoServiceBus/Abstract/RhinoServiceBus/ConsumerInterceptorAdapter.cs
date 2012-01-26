@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Abstract;
-using Rhino.ServiceBus.Internal;
-using Rhino.ServiceBus.Impl;
 using Rhino.ServiceBus.Config;
-
+using Rhino.ServiceBus.Internal;
 namespace Contoso.Abstract.RhinoServiceBus
 {
     internal class ConsumerInterceptorAdapter : IServiceLocatorInterceptor
