@@ -34,31 +34,31 @@ namespace System.Abstract
     public static class ServiceBusExtensions
     {
         public static IServiceBusCallback Send<TMessage>(this IServiceBus serviceBus, IServiceBusEndpoint destination, Action<TMessage> messageBuilder)
-            where TMessage : class, IServiceMessage { return serviceBus.Send(destination, serviceBus.CreateMessage<TMessage>(messageBuilder)); }
+            where TMessage : class { return serviceBus.Send(destination, serviceBus.CreateMessage<TMessage>(messageBuilder)); }
         public static IServiceBusCallback Send<TMessage>(this IServiceBus serviceBus, Action<TMessage> messageBuilder)
-            where TMessage : class, IServiceMessage { return serviceBus.Send(null, serviceBus.CreateMessage<TMessage>(messageBuilder)); }
+            where TMessage : class { return serviceBus.Send(null, serviceBus.CreateMessage<TMessage>(messageBuilder)); }
         public static IServiceBusCallback Send<TMessage>(this IServiceBus serviceBus, string destination, Action<TMessage> messageBuilder)
-            where TMessage : class, IServiceMessage { return serviceBus.Send(new LiteralServiceBusEndpoint(destination), serviceBus.CreateMessage<TMessage>(messageBuilder)); }
-        public static IServiceBusCallback Send(this IServiceBus serviceBus, params IServiceMessage[] messages) { return serviceBus.Send(null, messages); }
-        public static IServiceBusCallback Send(this IServiceBus serviceBus, string destination, params IServiceMessage[] messages) { return serviceBus.Send(new LiteralServiceBusEndpoint(destination), messages); }
+            where TMessage : class { return serviceBus.Send(new LiteralServiceBusEndpoint(destination), serviceBus.CreateMessage<TMessage>(messageBuilder)); }
+        public static IServiceBusCallback Send(this IServiceBus serviceBus, params object[] messages) { return serviceBus.Send(null, messages); }
+        public static IServiceBusCallback Send(this IServiceBus serviceBus, string destination, params object[] messages) { return serviceBus.Send(new LiteralServiceBusEndpoint(destination), messages); }
         public static void Reply<TMessage>(this IServiceBus serviceBus, Action<TMessage> messageBuilder)
-            where TMessage : class, IServiceMessage { serviceBus.Reply(serviceBus.CreateMessage(messageBuilder)); }
+            where TMessage : class { serviceBus.Reply(serviceBus.CreateMessage(messageBuilder)); }
 
         // publishing
         public static void Publish<TMessage>(this IPublishingServiceBus serviceBus, Action<TMessage> messageBuilder)
-            where TMessage : class, IServiceMessage { serviceBus.Publish(serviceBus.CreateMessage<TMessage>(messageBuilder)); }
+            where TMessage : class { serviceBus.Publish(serviceBus.CreateMessage<TMessage>(messageBuilder)); }
         //
         public static void Subscribe<TMessage>(this IPublishingServiceBus serviceBus)
-            where TMessage : class, IServiceMessage { serviceBus.Subscribe(typeof(TMessage), null); }
+            where TMessage : class { serviceBus.Subscribe(typeof(TMessage), null); }
         public static void Subscribe<TMessage>(this IPublishingServiceBus serviceBus, Predicate<TMessage> condition)
-            where TMessage : class, IServiceMessage
+            where TMessage : class
         {
-            var p = new Predicate<IServiceMessage>(m => (m is TMessage ? condition((TMessage)m) : true));
+            var p = new Predicate<object>(m => (m is TMessage ? condition((TMessage)m) : true));
             serviceBus.Subscribe(typeof(TMessage), p);
         }
         public static void Subscribe(this IPublishingServiceBus serviceBus, Type messageType) { }
         public static void Unsubscribe<TMessage>(this IPublishingServiceBus serviceBus)
-            where TMessage : class, IServiceMessage { serviceBus.Subscribe(typeof(TMessage)); }
+            where TMessage : class { serviceBus.Subscribe(typeof(TMessage)); }
 
         #region Lazy Setup
 
@@ -68,15 +68,15 @@ namespace System.Abstract
         public static Lazy<IServiceBus> RegisterWithServiceLocator(this Lazy<IServiceBus> service, Lazy<IServiceLocator> locator, string name) { ServiceBusManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, locator, name); return service; }
         public static Lazy<IServiceBus> AddEndpoint(this Lazy<IServiceBus> service, string endpoint) { return service; }
 
-        public static Lazy<IServiceBus> AddHandler(this Lazy<IServiceBus> service, params Assembly[] assemblies) { ServiceBusManager.GetSetupDescriptor(service).Do(s => AddHandler(s, null, assemblies)); return service; }
-        public static Lazy<IServiceBus> AddHandler(this Lazy<IServiceBus> service, Predicate<Type> predicate, params Assembly[] assemblies) { ServiceBusManager.GetSetupDescriptor(service).Do(s => AddHandler(s, predicate, assemblies)); return service; }
-        public static Lazy<IServiceBus> AddHandler(this Lazy<IServiceBus> service, Type handlerType) { ServiceBusManager.GetSetupDescriptor(service).Do(s => AddHandler(s, handlerType)); return service; }
+        public static Lazy<IServiceBus> AddMessageHandlersByScan(this Lazy<IServiceBus> service, params Assembly[] assemblies) { ServiceBusManager.GetSetupDescriptor(service).Do(s => AddMessageHandlersByScan(s, null, assemblies)); return service; }
+        public static Lazy<IServiceBus> AddMessageHandlersByScan(this Lazy<IServiceBus> service, Predicate<Type> predicate, params Assembly[] assemblies) { ServiceBusManager.GetSetupDescriptor(service).Do(s => AddMessageHandlersByScan(s, predicate, assemblies)); return service; }
+        public static Lazy<IServiceBus> AddMessageHandler(this Lazy<IServiceBus> service, Type handlerType) { ServiceBusManager.GetSetupDescriptor(service).Do(s => AddMessageHandler(s, handlerType)); return service; }
 
         #endregion
 
-        public static void AddHandler<TMessageHandler>(IServiceBus bus)
-            where TMessageHandler : class { AddHandler(bus, typeof(TMessageHandler)); }
-        public static void AddHandler(IServiceBus bus, Type handlerType)
+        public static void AddMessageHandlersByScan<TMessageHandler>(IServiceBus bus)
+            where TMessageHandler : class { AddMessageHandlersByScan(bus, typeof(TMessageHandler)); }
+        public static void AddMessageHandlersByScan(IServiceBus bus, Type handlerType)
         {
             var messageType = GetMessageTypeFromHandler(handlerType);
             if (messageType == null)
@@ -91,7 +91,7 @@ namespace System.Abstract
 
         private static IEnumerable<Type> GetMessageTypeFromHandler(Type messageHandlerType)
         {
-            var serviceMessageType = typeof(IServiceMessage);
+            //var serviceMessageType = typeof(IServiceMessage);
             //return messageHandlerType.GetInterfaces()
             //    .Where(h => h.IsGenericType && (h.FullName.StartsWith("System.Abstract.IServiceMessageHandler`1") || h.FullName.StartsWith("Contoso.Abstract.IApplicationServiceMessageHandler`1")))
             //    .Select(h => h.GetGenericArguments()[0])
@@ -99,7 +99,7 @@ namespace System.Abstract
             return null;
         }
 
-        public static void AddHandler(IServiceBus bus, Predicate<Type> predicate, params Assembly[] assemblies)
+        public static void AddMessageHandlersByScan(IServiceBus bus, Predicate<Type> predicate, params Assembly[] assemblies)
         {
             if (assemblies.Count() == 0)
                 return;
@@ -109,6 +109,9 @@ namespace System.Abstract
             //    action(basedOnType, type, Guid.NewGuid().ToString());
         }
 
+        public static void AddMessageHandler(IServiceBus bus, Type handlerType)
+        {
+        }
 
         //public static string ToString(this IServiceBusLocation location, Func<IServiceBusLocation, object, string> builder, object arg)
         //{

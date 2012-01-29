@@ -29,7 +29,7 @@ namespace System.Abstract
     /// IServiceMessageHandler
     /// </summary>
     public interface IServiceMessageHandler<TMessage>
-        where TMessage : IServiceMessage
+        where TMessage : class
     {
         void Handle(TMessage message);
     }

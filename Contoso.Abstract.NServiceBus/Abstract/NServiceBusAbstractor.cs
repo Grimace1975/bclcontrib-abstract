@@ -39,7 +39,7 @@ namespace Contoso.Abstract
     /// </summary>
     public interface INServiceBus : IPublishingServiceBus
     {
-        int SendWithReturn(int executeTimeout, IServiceBusEndpoint endpoint, params IServiceMessage[] messages);
+        int SendWithReturn(int executeTimeout, IServiceBusEndpoint endpoint, params object[] messages);
         void Return<T>(T value);
         IBus Bus { get; }
     }
@@ -83,7 +83,7 @@ namespace Contoso.Abstract
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         public TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder)
-            where TMessage : class, IServiceMessage
+            where TMessage : class
         {
             var message = (TMessage)Bus.CreateInstance(typeof(TMessage));
             if (messageBuilder != null)
@@ -91,7 +91,7 @@ namespace Contoso.Abstract
             return message;
         }
 
-        public IServiceBusCallback Send(IServiceBusEndpoint endpoint, params IServiceMessage[] messages)
+        public IServiceBusCallback Send(IServiceBusEndpoint endpoint, params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
                 throw new ArgumentNullException("messages", "Please include at least one message.");
@@ -107,7 +107,7 @@ namespace Contoso.Abstract
             return null;
         }
 
-        public void Reply(params IServiceMessage[] messages)
+        public void Reply(params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
                 throw new ArgumentNullException("messages", "Please include at least one message.");
@@ -118,7 +118,7 @@ namespace Contoso.Abstract
 
         #region Publishing ServiceBus
 
-        public void Publish(params IServiceMessage[] messages)
+        public void Publish(params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
                 throw new ArgumentNullException("messages");
@@ -127,7 +127,7 @@ namespace Contoso.Abstract
             catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
         }
 
-        public void Subscribe(Type messageType, Predicate<IServiceMessage> predicate)
+        public void Subscribe(Type messageType, Predicate<object> predicate)
         {
             if (messageType == null)
                 throw new ArgumentNullException("messageType");
@@ -155,7 +155,7 @@ namespace Contoso.Abstract
 
         public IBus Bus { get; set; }
 
-        public int SendWithReturn(int executeTimeout, IServiceBusEndpoint endpoint, params IServiceMessage[] messages)
+        public int SendWithReturn(int executeTimeout, IServiceBusEndpoint endpoint, params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
                 throw new ArgumentNullException("messages", "Please include at least one message.");
@@ -213,7 +213,7 @@ namespace Contoso.Abstract
 
         private class Caster
         {
-            public static IMessage[] Cast(IServiceMessage[] messages)
+            public static IMessage[] Cast(object[] messages)
             {
                 return messages.Select(x =>
                 {
@@ -225,9 +225,9 @@ namespace Contoso.Abstract
                 //return messages.Select(x => new Transport<object> { B = x }).ToArray();
             }
 
-            public static Predicate<IMessage> Cast(Predicate<IServiceMessage> predicate)
+            public static Predicate<IMessage> Cast(Predicate<object> predicate)
             {
-                return (c => predicate((INServiceMessage)c));
+                return (c => predicate(c));
             }
         }
     }

@@ -29,5 +29,5 @@ namespace Contoso.Practices.Cqrs
 	/// <summary>
 	/// ICommand
 	/// </summary>
-	public interface ICommand : IServiceMessage { }
+	public interface ICommand { }
 }

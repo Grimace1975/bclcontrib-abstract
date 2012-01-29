@@ -32,7 +32,7 @@ namespace Contoso.Practices.Cqrs
 	/// CommandHandler
 	/// </summary>
 	public abstract class CommandHandler<TCommand, TAggregate> : CommandHandler<TCommand>
-		where TCommand : ICommandWithAggregate
+		where TCommand : class, ICommandWithAggregate
 		where TAggregate : AggregateRoot
 	{
         public CommandHandler(ICqrsContext context)

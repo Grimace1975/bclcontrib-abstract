@@ -44,7 +44,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Abstract\ApplicationServiceBusRegistration.cs" />
-    <Compile Include="Abstract\IApplicationServiceMessage.cs" />
     <Compile Include="Abstract\IApplicationServiceMessageHandler.cs" />
     <Compile Include="Abstract\ApplicationServiceBus.cs" />
   </ItemGroup>

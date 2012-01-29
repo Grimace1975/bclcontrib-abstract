@@ -55,9 +55,6 @@
     <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\BootstrapMTServiceBusHost.cs">
       <Link>Abstract\BootstrapMTServiceBusHost.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\IMTServiceMessage.cs">
-      <Link>Abstract\IMTServiceMessage.cs</Link>
-    </Compile>
     <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\IMTServiceMessageHandler.cs">
       <Link>Abstract\IMTServiceMessageHandler.cs</Link>
     </Compile>

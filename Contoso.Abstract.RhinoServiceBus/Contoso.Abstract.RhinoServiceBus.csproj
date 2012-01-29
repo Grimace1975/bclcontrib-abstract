@@ -40,7 +40,6 @@
   <ItemGroup>
     <Compile Include="Abstract\BootstrapRhinoServiceBusLoadBalancedHost.cs" />
     <Compile Include="Abstract\BootstrapRhinoServiceBusHost.cs" />
-    <Compile Include="Abstract\IRhinoServiceMessage.cs" />
     <Compile Include="Abstract\IRhinoServiceMessageHandler.cs" />
     <Compile Include="Abstract\TransportHandler.cs" />
     <Compile Include="Abstract\Transport.cs" />

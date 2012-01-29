@@ -46,8 +46,8 @@ namespace System.Abstract
         }
         public object GetService(Type serviceType) { return _parent.GetService(serviceType); }
         public TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder)
-            where TMessage : class, IServiceMessage { return _parent.CreateMessage(messageBuilder); }
-        public IServiceBusCallback Send(IServiceBusEndpoint destination, params IServiceMessage[] messages) { return _parent.Send(destination, messages); }
-        public void Reply(params IServiceMessage[] messages) { _parent.Send(messages); }
+            where TMessage : class { return _parent.CreateMessage(messageBuilder); }
+        public IServiceBusCallback Send(IServiceBusEndpoint destination, params object[] messages) { return _parent.Send(destination, messages); }
+        public void Reply(params object[] messages) { _parent.Send(messages); }
     }
 }

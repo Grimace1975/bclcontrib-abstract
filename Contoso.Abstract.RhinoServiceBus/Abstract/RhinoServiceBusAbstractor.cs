@@ -45,6 +45,7 @@ namespace Contoso.Abstract
     public class RhinoServiceBusAbstractor : IRhinoServiceBus, ServiceBusManager.ISetupRegistration
     {
         private IServiceLocator _serviceLocator;
+        private bool _passthru = true;
 
         static RhinoServiceBusAbstractor() { ServiceBusManager.EnsureRegistration(); }
         public RhinoServiceBusAbstractor()
@@ -70,7 +71,7 @@ namespace Contoso.Abstract
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         public TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder)
-            where TMessage : class, IServiceMessage
+            where TMessage : class
         {
             var message = _serviceLocator.Resolve<TMessage>();
             if (messageBuilder != null)
@@ -78,58 +79,83 @@ namespace Contoso.Abstract
             return message;
         }
 
-        public IServiceBusCallback Send(IServiceBusEndpoint endpoint, params IServiceMessage[] messages)
+        public IServiceBusCallback Send(IServiceBusEndpoint endpoint, params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
                 throw new ArgumentNullException("messages", "Please include at least one message.");
-            if (endpoint == null)
-                endpoint = EndpointByMessageType(messages[0].GetType());
-            var transports = Caster.Cast(messages);
-            try
+            if (_passthru)
+                try
+                {
+                    if (endpoint != ServiceBus.SelfEndpoint)
+                        Bus.Send(messages);
+                    else
+                        Bus.SendToSelf(messages);
+                }
+                catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
+            else
             {
-                if (endpoint != ServiceBus.SelfEndpoint)
-                    Bus.Send(TransportEndpointMapper(endpoint), transports);
-                else
-                    Bus.SendToSelf(TransportEndpointMapper(endpoint), transports);
+                if (endpoint == null)
+                    endpoint = EndpointByMessageType(messages[0].GetType());
+                try
+                {
+                    if (endpoint != ServiceBus.SelfEndpoint)
+                        Bus.Send(TransportEndpointMapper(endpoint), Caster.Cast(messages));
+                    else
+                        Bus.SendToSelf(TransportEndpointMapper(endpoint), Caster.Cast(messages));
+                }
+                catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
             }
-            catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
             return null;
         }
 
-        public void Reply(params IServiceMessage[] messages)
+        public void Reply(params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
                 throw new ArgumentNullException("messages", "Please include at least one message.");
-            var transports = Caster.Cast(messages);
-            try { Bus.Reply(transports); }
-            catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
+            if (_passthru)
+                try { Bus.Reply(messages); }
+                catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
+            else
+                try { Bus.Reply(Caster.Cast(messages)); }
+                catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
         }
 
         #region Publishing ServiceBus
 
-        public void Publish(params IServiceMessage[] messages)
+        public void Publish(params object[] messages)
         {
-            var transports = Caster.Cast(messages);
-            try { Bus.Publish(transports); }
-            catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
+            if (_passthru)
+                try { Bus.Publish(messages); }
+                catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
+            else
+                try { Bus.Publish(Caster.Cast(messages)); }
+                catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
         }
 
-        public void Subscribe(Type messageType, Predicate<IServiceMessage> condition)
+        public void Subscribe(Type messageType, Predicate<object> condition)
         {
             if (messageType == null)
                 throw new ArgumentNullException("messageType");
             if (condition != null)
                 throw new ArgumentException("condition", "Must be null.");
-            try { Bus.Subscribe(messageType); }
-            catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
+            if (_passthru)
+                try { Bus.Subscribe(messageType); }
+                catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
+            else
+                try { Bus.Subscribe(Caster.Cast(messageType)); }
+                catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
         }
 
         public void Unsubscribe(Type messageType)
         {
             if (messageType == null)
                 throw new ArgumentNullException("messageType");
-            try { Bus.Unsubscribe(messageType); }
-            catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
+            if (_passthru)
+                try { Bus.Unsubscribe(messageType); }
+                catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
+            else
+                try { Bus.Unsubscribe(Caster.Cast(messageType)); }
+                catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
         }
 
         #endregion
@@ -166,7 +192,7 @@ namespace Contoso.Abstract
 
         private class Caster
         {
-            public static object[] Cast(IServiceMessage[] messages)
+            public static object[] Cast(object[] messages)
             {
                 return messages.Select(x =>
                 {
@@ -177,6 +203,8 @@ namespace Contoso.Abstract
                 }).ToArray();
                 //return messages.Select(x => new Transport<object> { B = x }).ToArray();
             }
+
+            public static Type Cast(Type messagesType) { return typeof(Transport<>).MakeGenericType(messagesType); }
         }
     }
 }

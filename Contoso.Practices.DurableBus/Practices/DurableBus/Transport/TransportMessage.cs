@@ -36,7 +36,7 @@ namespace Contoso.Practices.DurableBus.Transport
 	[Serializable]
 	public class TransportMessage
 	{
-		private IServiceMessage[] _body;
+		private object[] _body;
 
 		public TransportMessage()
 		{
@@ -57,11 +57,11 @@ namespace Contoso.Practices.DurableBus.Transport
 
 		public void CopyMessagesToBody()
 		{
-			_body = new IServiceMessage[Messages.Count];
+            _body = new object[Messages.Count];
 			Messages.CopyTo(_body);
 		}
 
-		public IServiceMessage[] Body
+        public object[] Body
 		{
 			get { return _body; }
 			set

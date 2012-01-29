@@ -30,5 +30,5 @@ namespace Contoso.Abstract
     /// IRhinoServiceMessageHandler
     /// </summary>
     public interface IRhinoServiceMessageHandler<TMessage> : IServiceMessageHandler<TMessage>
-        where TMessage : IServiceMessage { }
+        where TMessage : class { }
 }

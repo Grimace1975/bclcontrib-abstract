@@ -30,5 +30,5 @@ namespace Contoso.Abstract
     /// IApplicationServiceMessageHandler
     /// </summary>
     public interface IApplicationServiceMessageHandler<TMessage> : IServiceMessageHandler<TMessage>
-        where TMessage : IApplicationServiceMessage { }
+        where TMessage : class { }
 }
