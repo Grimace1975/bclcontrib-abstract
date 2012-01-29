@@ -53,9 +53,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\INServiceMessage.cs">
-      <Link>Abstract\INServiceMessage.cs</Link>
-    </Compile>
     <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\INServiceMessageHandler.cs">
       <Link>Abstract\INServiceMessageHandler.cs</Link>
     </Compile>

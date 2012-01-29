@@ -31,13 +31,13 @@ namespace Contoso.Practices.Cqrs
     /// ICommandHandler
     /// </summary>
     public interface ICommandHandler<TCommand> : IServiceMessageHandler<TCommand>
-        where TCommand : ICommand { }
+        where TCommand : class, ICommand { }
 
     /// <summary>
     /// CommandHandler
     /// </summary>
     public abstract class CommandHandler<TCommand> : ICommandHandler<TCommand>
-        where TCommand : ICommand
+        where TCommand : class, ICommand
     {
         public CommandHandler(ICqrsContext context)
         {

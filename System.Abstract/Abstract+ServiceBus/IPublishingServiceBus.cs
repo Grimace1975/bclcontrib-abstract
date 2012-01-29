@@ -30,8 +30,8 @@ namespace System.Abstract
     /// </summary>
     public interface IPublishingServiceBus : IServiceBus
     {
-        void Publish(params IServiceMessage[] messages);
-        void Subscribe(Type messageType, Predicate<IServiceMessage> condition);
+        void Publish(params object[] messages);
+        void Subscribe(Type messageType, Predicate<object> condition);
         void Unsubscribe(Type messageType);
     }
 }

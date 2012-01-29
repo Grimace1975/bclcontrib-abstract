@@ -31,8 +31,8 @@ namespace System.Abstract
     public interface IServiceBus : IServiceProvider
     {
         TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder)
-            where TMessage : class, IServiceMessage;
-        IServiceBusCallback Send(IServiceBusEndpoint destination, params IServiceMessage[] messages);
-		void Reply(params IServiceMessage[] messages);
+            where TMessage : class;
+        IServiceBusCallback Send(IServiceBusEndpoint destination, params object[] messages);
+		void Reply(params object[] messages);
     }
 }

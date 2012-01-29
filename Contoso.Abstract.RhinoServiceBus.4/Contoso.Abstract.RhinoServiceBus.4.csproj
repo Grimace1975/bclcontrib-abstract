@@ -44,9 +44,6 @@
     <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\BootstrapRhinoServiceBusLoadBalancedHost.cs">
       <Link>Abstract\BootstrapRhinoServiceBusLoadBalancedHost.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\IRhinoServiceMessage.cs">
-      <Link>Abstract\IRhinoServiceMessage.cs</Link>
-    </Compile>
     <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\IRhinoServiceMessageHandler.cs">
       <Link>Abstract\IRhinoServiceMessageHandler.cs</Link>
     </Compile>

@@ -3,7 +3,7 @@ using System.Abstract;
 using Contoso.Abstract;
 namespace Example.ApplicationBus
 {
-    public class MyMessage : IServiceMessage
+    public class MyMessage
     {
         public string Value { get; set; }
     }

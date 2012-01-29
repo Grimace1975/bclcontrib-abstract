@@ -172,7 +172,6 @@
     <Compile Include="Abstract+ServiceBus\IServiceMessageHandler.cs" />
     <Compile Include="Abstract+ServiceBus+Impl\ServiceBusManager.cs" />
     <Compile Include="Abstract+ServiceBus\IServiceBusCallback.cs" />
-    <Compile Include="Abstract+ServiceBus\IServiceMessage.cs" />
     <Compile Include="Abstract+ServiceBus\IPublishingServiceBus.cs" />
     <Compile Include="Abstract+ServiceBus\ServiceBusMessageException.cs" />
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocator.cs">

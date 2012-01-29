@@ -31,6 +31,6 @@ namespace System.Abstract
     public interface IServiceMessageHandlerFactory
     {
         IServiceMessageHandler<TMessage> Create<TMessage>(Type type)
-            where TMessage : IServiceMessage;
+            where TMessage : class;
     }
 }

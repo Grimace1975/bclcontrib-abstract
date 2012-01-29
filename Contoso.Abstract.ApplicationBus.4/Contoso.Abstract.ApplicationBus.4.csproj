@@ -47,9 +47,6 @@
     <Compile Include="..\Contoso.Abstract.ApplicationBus\Abstract\ApplicationServiceBusRegistration.cs">
       <Link>Abstract\ApplicationServiceBusRegistration.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.ApplicationBus\Abstract\IApplicationServiceMessage.cs">
-      <Link>Abstract\IApplicationServiceMessage.cs</Link>
-    </Compile>
     <Compile Include="..\Contoso.Abstract.ApplicationBus\Abstract\IApplicationServiceMessageHandler.cs">
       <Link>Abstract\IApplicationServiceMessageHandler.cs</Link>
     </Compile>

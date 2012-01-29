@@ -63,7 +63,7 @@ namespace Contoso.Abstract
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         public TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder)
-            where TMessage : class, IServiceMessage { throw new NotImplementedException(); }
+            where TMessage : class { throw new NotImplementedException(); }
 
         public IApplicationServiceBus Add<TMessageHandler>()
             where TMessageHandler : class { return Add(typeof(TMessageHandler)); }
@@ -80,19 +80,19 @@ namespace Contoso.Abstract
             return this;
         }
 
-        public IServiceBusCallback Send(IServiceBusEndpoint destination, params IServiceMessage[] messages)
+        public IServiceBusCallback Send(IServiceBusEndpoint destination, params object[] messages)
         {
             if (messages == null)
                 throw new ArgumentNullException("messages");
             foreach (var message in messages)
                 foreach (var type in GetTypesOfMessageHandlers(message.GetType()))
-                    HandleTheMessage(type, (IApplicationServiceMessage)message);
+                    HandleTheMessage(type, message);
             return null;
         }
 
-        private void HandleTheMessage(Type type, IApplicationServiceMessage message)
+        private void HandleTheMessage(Type type, object message)
         {
-            _messageHandlerFactory.Create<IApplicationServiceMessage>(type)
+            _messageHandlerFactory.Create<object>(type)
                 .Handle(message);
         }
 
@@ -104,16 +104,17 @@ namespace Contoso.Abstract
 
         private static Type GetMessageTypeFromHandler(Type messageHandlerType)
         {
-            var serviceMessageType = typeof(IServiceMessage);
-            var applicationServiceMessageType = typeof(IApplicationServiceMessage);
-            return messageHandlerType.GetInterfaces()
-                .Where(h => h.IsGenericType && (h.FullName.StartsWith("System.Abstract.IServiceMessageHandler`1") || h.FullName.StartsWith("Contoso.Abstract.IApplicationServiceMessageHandler`1")))
-                .Select(h => h.GetGenericArguments()[0])
-                .Where(m => m.GetInterfaces().Any(x => x == serviceMessageType || x == applicationServiceMessageType))
-                .SingleOrDefault();
+            return null;
+            //var serviceMessageType = typeof(IServiceMessage);
+            //var applicationServiceMessageType = typeof(IApplicationServiceMessage);
+            //return messageHandlerType.GetInterfaces()
+            //    .Where(h => h.IsGenericType && (h.FullName.StartsWith("System.Abstract.IServiceMessageHandler`1") || h.FullName.StartsWith("Contoso.Abstract.IApplicationServiceMessageHandler`1")))
+            //    .Select(h => h.GetGenericArguments()[0])
+            //    .Where(m => m.GetInterfaces().Any(x => x == serviceMessageType || x == applicationServiceMessageType))
+            //    .SingleOrDefault();
         }
 
-        public void Reply(params IServiceMessage[] messages) { throw new NotImplementedException(); }
+        public void Reply(params object[] messages) { throw new NotImplementedException(); }
         public void Return<T>(T value) { throw new NotImplementedException(); }
     }
 }

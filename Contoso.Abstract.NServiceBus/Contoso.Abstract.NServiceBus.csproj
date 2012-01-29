@@ -64,7 +64,6 @@
     <Compile Include="Abstract\Transport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Abstract\INServiceMessageHandler.cs" />
-    <Compile Include="Abstract\INServiceMessage.cs" />
     <Compile Include="Abstract\NServiceBusAbstractor.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -19,7 +19,7 @@ namespace Example
     }
 
     public interface IMyService { }
-    public class MyService : IMyService, IServiceMessage
+    public class MyService : IMyService
     {
         public string Value { get; set; }
     }

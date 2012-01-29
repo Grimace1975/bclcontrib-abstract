@@ -32,8 +32,8 @@ namespace System.Abstract
     public static class ServiceBus
     {
         public readonly static IServiceBusEndpoint SelfEndpoint = new LiteralServiceBusEndpoint("#local");
-        public static IServiceBusCallback Send(params IServiceMessage[] messages) { return ServiceBusManager.Current.Send(messages); }
+        public static IServiceBusCallback Send(params object[] messages) { return ServiceBusManager.Current.Send(messages); }
         public static IServiceBusCallback Send<TMessage>(Action<TMessage> messageBuilder)
-            where TMessage : class, IServiceMessage { return ServiceBusManager.Current.Send<TMessage>(messageBuilder); }
+            where TMessage : class { return ServiceBusManager.Current.Send<TMessage>(messageBuilder); }
     }
 }

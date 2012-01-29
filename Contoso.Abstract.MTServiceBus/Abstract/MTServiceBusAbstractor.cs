@@ -72,7 +72,7 @@ namespace Contoso.Abstract
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         public TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder)
-            where TMessage : class, IServiceMessage
+            where TMessage : class
         {
             //var message = (TMessage)Bus.CreateInstance(typeof(TMessage));
             //if (messageBuilder != null)
@@ -81,7 +81,7 @@ namespace Contoso.Abstract
             return null;
         }
 
-        public IServiceBusCallback Send(IServiceBusEndpoint endpoint, params IServiceMessage[] messages)
+        public IServiceBusCallback Send(IServiceBusEndpoint endpoint, params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
                 throw new ArgumentNullException("messages", "Please include at least one message.");
@@ -97,7 +97,7 @@ namespace Contoso.Abstract
             return null;
         }
 
-        public void Reply(params IServiceMessage[] messages)
+        public void Reply(params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
                 throw new ArgumentNullException("messages", "Please include at least one message.");
@@ -108,7 +108,7 @@ namespace Contoso.Abstract
 
         #region Publishing ServiceBus
 
-        public void Publish(params IServiceMessage[] messages)
+        public void Publish(params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
                 throw new ArgumentNullException("messages");
@@ -117,7 +117,7 @@ namespace Contoso.Abstract
             //catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
         }
 
-        public void Subscribe(Type messageType, Predicate<IServiceMessage> predicate)
+        public void Subscribe(Type messageType, Predicate<object> predicate)
         {
             if (messageType == null)
                 throw new ArgumentNullException("messageType");
@@ -166,7 +166,7 @@ namespace Contoso.Abstract
 
         private class Caster
         {
-            public static object[] Cast(IServiceMessage[] messages)
+            public static object[] Cast(object[] messages)
             {
                 return messages.Select(x =>
                 {
