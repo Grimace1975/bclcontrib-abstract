@@ -86,6 +86,7 @@
     <Compile Include="Abstract+Event\IEvent.cs" />
     <Compile Include="Abstract+Event\EventBus.cs" />
     <Compile Include="Abstract+Event\IEventHandler.cs" />
+    <Compile Include="Abstract+ServiceBus\IServiceBusHostBootstrap.cs" />
     <Compile Include="Abstract+ServiceBus\ServiceBusExtensions.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCache+Primitives.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheExtensions.cs" />

@@ -43,7 +43,7 @@ namespace Contoso.Abstract.RhinoServiceBus
         public void RegisterDefaultServices()
         {
             _registrar.Register<IServiceLocator, ServiceLocatorAdapter>();
-            System.Abstract.ServiceLocatorExtensions.RegisterByTypeMatch<IBusConfigurationAware>(_registrar, null, typeof(IServiceBus).Assembly);
+            System.Abstract.ServiceLocatorExtensions.RegisterByTypeMatch<IBusConfigurationAware>(_registrar, typeof(IServiceBus).Assembly);
             foreach (var aware in _locator.ResolveAll<IBusConfigurationAware>())
                 aware.Configure(_config, this);
             foreach (var messageModule in _config.MessageModules)

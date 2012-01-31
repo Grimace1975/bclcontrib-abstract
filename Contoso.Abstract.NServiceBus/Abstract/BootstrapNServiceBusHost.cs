@@ -30,19 +30,17 @@ namespace Contoso.Abstract
     /// <summary>
     /// BootstrapNServiceBusHost
     /// </summary>
-    public abstract class BootstrapNServiceBusHost : IConfigureThisEndpoint, AsA_Publisher, IWantToRunAtStartup, IWantCustomLogging
+    public abstract class BootstrapNServiceBusHost : IServiceBusHostBootstrap, IConfigureThisEndpoint, AsA_Publisher, IWantToRunAtStartup, IWantCustomLogging
     {
         protected BootstrapNServiceBusHost() { }
         protected BootstrapNServiceBusHost(IServiceLocator locator) { }
 
-        public virtual void Init()
-        {
-            //SetLoggingLibrary.Log4Net(XmlConfigurator.Configure);
-            //Configure.Instance.Log4Net(new RollingFileAppender { AppendToFile = true, File = GetLogFilePath() });
-        }
+        public virtual void Initialize() { }
+        public virtual void Open() { }
+        public virtual void Close() { }
 
-        public virtual void Run() { }
-
-        public virtual void Stop() { }
+        void IWantToRunAtStartup.Run() { Open(); }
+        void IWantToRunAtStartup.Stop() { Close(); }
+        void IWantCustomLogging.Init() { Initialize(); }
     }
 }

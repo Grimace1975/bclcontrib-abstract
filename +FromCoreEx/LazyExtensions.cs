@@ -23,37 +23,35 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Threading;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 namespace System
 {
-	/// <summary>
-	/// Internal
-	/// </summary>
+    /// <summary>
+    /// Internal
+    /// </summary>
 #if COREINTERNAL
     internal
 #else
 	public
 #endif
  static class LazyExtensions
-	{
-		public static Lazy<T> HookValueFactory<T>(this Lazy<T> lazy, Func<Func<T>, T> valueFactory) { LazyHelper<T>.HookValueFactory(lazy, valueFactory); return lazy; }
+    {
+        public static Lazy<T> HookValueFactory<T>(this Lazy<T> lazy, Func<Func<T>, T> valueFactory) { LazyHelper<T>.HookValueFactory(lazy, valueFactory); return lazy; }
 
-		private class LazyHelper<T>
-		{
-			private static readonly object _lock = new object();
-			private static readonly FieldInfo _valueFactoryField = typeof(Lazy<T>).GetField("m_valueFactory", BindingFlags.NonPublic | BindingFlags.Instance);
+        private class LazyHelper<T>
+        {
+            private static readonly object _lock = new object();
+            private static readonly FieldInfo _valueFactoryField = typeof(Lazy<T>).GetField("m_valueFactory", BindingFlags.NonPublic | BindingFlags.Instance);
 
-			public static void HookValueFactory(Lazy<T> lazy, Func<Func<T>, T> valueFactory)
-			{
-				lock (_lock)
-				{
-					var hook = (Func<T>)_valueFactoryField.GetValue(lazy);
-					Func<T> newHook = () => valueFactory(hook);
-					_valueFactoryField.SetValue(lazy, newHook);
-				}
-			}
-		}
-	}
+            public static void HookValueFactory(Lazy<T> lazy, Func<Func<T>, T> valueFactory)
+            {
+                lock (_lock)
+                {
+                    var hook = (Func<T>)_valueFactoryField.GetValue(lazy);
+                    Func<T> newHook = () => valueFactory(hook);
+                    _valueFactoryField.SetValue(lazy, newHook);
+                }
+            }
+        }
+    }
 }

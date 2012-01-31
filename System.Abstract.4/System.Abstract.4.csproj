@@ -204,6 +204,9 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusEndpoint.cs">
       <Link>Abstract+ServiceBus\IServiceBusEndpoint.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceBusHostBootstrap.cs">
+      <Link>Abstract+ServiceBus\IServiceBusHostBootstrap.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\IServiceMessageHandler.cs">
       <Link>Abstract+ServiceBus\IServiceMessageHandler.cs</Link>
     </Compile>
