@@ -42,8 +42,8 @@ namespace Contoso.Abstract.RhinoServiceBus
         protected virtual void ConfigureContainer()
         {
             var registrar = _locator.Registrar;
-            registrar.RegisterByTypeMatch<IDeploymentAction>(null, Assembly);
-            registrar.RegisterByTypeMatch<IEnvironmentValidationAction>(null, Assembly);
+            registrar.RegisterByTypeMatch<IDeploymentAction>(Assembly);
+            registrar.RegisterByTypeMatch<IEnvironmentValidationAction>(Assembly);
             ConfigureConsumers(typeof(Rhino.ServiceBus.IServiceBus).Assembly);
             ConfigureConsumers(Assembly);
         }

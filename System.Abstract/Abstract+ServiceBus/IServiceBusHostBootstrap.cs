@@ -23,37 +23,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Abstract;
-using Contoso.Abstract.RhinoServiceBus;
-namespace Contoso.Abstract
+namespace System.Abstract
 {
     /// <summary>
-    /// BootstrapRhinoServiceBusHost
+    /// IServiceBusHostBootstrap
     /// </summary>
-    public abstract class BootstrapRhinoServiceBusHost : ServiceLocatorBootStrapper, IServiceBusHostBootstrap
+    public interface IServiceBusHostBootstrap
     {
-        protected BootstrapRhinoServiceBusHost() { }
-        protected BootstrapRhinoServiceBusHost(IServiceLocator locator)
-            : base(locator) { }
-
-        public virtual void Initialize()
-        {
-        }
-
-        public override void InitializeContainer()
-        {
-            Initialize();
-            base.InitializeContainer();
-        }
-
-        public void Open()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Close()
-        {
-            throw new System.NotImplementedException();
-        }
+        void Initialize();
+        void Open();
+        void Close();
     }
 }

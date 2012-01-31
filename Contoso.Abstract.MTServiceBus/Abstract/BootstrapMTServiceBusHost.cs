@@ -30,7 +30,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// BootstrapMTServiceBusHost
     /// </summary>
-    public abstract class BootstrapMTServiceBusHost
+    public abstract class BootstrapMTServiceBusHost : IServiceBusHostBootstrap
     {
         protected BootstrapMTServiceBusHost() { }
         protected BootstrapMTServiceBusHost(IServiceLocator locator) { }
@@ -48,5 +48,20 @@ namespace Contoso.Abstract
         }
 
         public MassTransit.IServiceBus Bus { get; set; }
+
+        public void Initialize()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Open()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Close()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

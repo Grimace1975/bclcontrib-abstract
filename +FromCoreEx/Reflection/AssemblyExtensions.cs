@@ -36,23 +36,25 @@ namespace System.Reflection
 #endif
  static class AssemblyExtensions
     {
-        public static IEnumerable<Type> AsTypesEnumerator(this Assembly assembly, Predicate<Type> predicate)
+        public static IEnumerable<Type> AsTypes(this Assembly assembly, Predicate<Type> predicate)
         {
             if (assembly == null)
                 throw new ArgumentNullException("assembly");
             foreach (var type in assembly.GetTypes())
-                if (predicate(type))
+                if (predicate == null || predicate(type))
                     yield return type;
         }
 
-        public static IEnumerable<Type> AsTypesEnumerator(this Assembly assembly, Type assignableFromType) { return AsTypesEnumerator(assembly, assignableFromType, null); }
-        public static IEnumerable<Type> AsTypesEnumerator(this Assembly assembly, Type assignableFromType, Predicate<Type> predicate)
+        public static IEnumerable<Type> AsTypes<TBasedOn>(this Assembly assembly) { return AsTypes(assembly, typeof(TBasedOn), null); }
+        public static IEnumerable<Type> AsTypes<TBasedOn>(this Assembly assembly, Predicate<Type> predicate) { return AsTypes(assembly, typeof(TBasedOn), null); }
+        public static IEnumerable<Type> AsTypes(this Assembly assembly, Type basedOnType) { return AsTypes(assembly, basedOnType, null); }
+        public static IEnumerable<Type> AsTypes(this Assembly assembly, Type basedOnType, Predicate<Type> predicate)
         {
             if (assembly == null)
                 throw new ArgumentNullException("assembly");
-            foreach (var type in assembly.GetTypes())
-                if ((!type.IsInterface) && (!type.IsAbstract) && (assignableFromType.IsAssignableFrom(type) && ((predicate == null) || (predicate(type)))))
-                    yield return type;
+            foreach (var t in assembly.GetTypes())
+                if (basedOnType.IsAssignableFrom(t) && !t.Equals(basedOnType) && !t.IsInterface && !t.IsAbstract && (predicate == null || predicate(t)))
+                    yield return t;
         }
     }
 }

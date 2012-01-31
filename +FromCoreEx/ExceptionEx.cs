@@ -23,7 +23,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if !CLR4
 using System.Reflection;
 using System.Threading;
 namespace System
@@ -38,13 +37,12 @@ namespace System
 #endif
  static class ExceptionExtensions
     {
-        private const string ExceptionPrepForRemotingMethodName = "PrepForRemoting";
         private static readonly MethodInfo _prepForRemotingMethod = typeof(Exception).GetMethod("PrepForRemoting", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly MethodInfo _internalPreserveStackTraceMethod = typeof(Exception).GetMethod("InternalPreserveStackTrace", BindingFlags.NonPublic | BindingFlags.Instance);
 
         public static bool IsCritical(this Exception exception)
         {
-            return ((exception is AccessViolationException) || ((exception is NullReferenceException) || ((exception is StackOverflowException) || ((exception is OutOfMemoryException) || ((exception is ExecutionEngineException) || (exception is ThreadAbortException))))));
+            return (exception is AccessViolationException || exception is NullReferenceException || exception is StackOverflowException || exception is OutOfMemoryException || exception is ExecutionEngineException || exception is ThreadAbortException);
         }
 
         public static Exception PrepareForRethrow(this Exception exception) { return PrepareForRethrow(exception, false); }
@@ -60,4 +58,3 @@ namespace System
         }
     }
 }
-#endif
