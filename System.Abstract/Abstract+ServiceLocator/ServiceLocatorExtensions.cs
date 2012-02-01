@@ -114,8 +114,8 @@ namespace System.Abstract
 
         #endregion
 
-        public static void RegisterByIServiceRegistration(this IServiceRegistrar registrar) { RegisterByIServiceRegistration(registrar, null, new[] { GetPreviousCallingMethodAssembly() }); }
-        public static void RegisterByIServiceRegistration(this IServiceRegistrar registrar, params Assembly[] assemblies) { RegisterByIServiceRegistration(registrar, null, assemblies); }
+        public static void RegisterByIServiceRegistration(this IServiceRegistrar registrar) { RegisterByIServiceRegistration(registrar, x => DefaultPredicate(registrar, x), new[] { GetPreviousCallingMethodAssembly() }); }
+        public static void RegisterByIServiceRegistration(this IServiceRegistrar registrar, params Assembly[] assemblies) { RegisterByIServiceRegistration(registrar, x => DefaultPredicate(registrar, x), assemblies); }
         public static void RegisterByIServiceRegistration(this IServiceRegistrar registrar, Predicate<Type> predicate) { RegisterByIServiceRegistration(registrar, predicate, new[] { GetPreviousCallingMethodAssembly() }); }
         public static void RegisterByIServiceRegistration(this IServiceRegistrar registrar, Predicate<Type> predicate, params Assembly[] assemblies)
         {
@@ -125,13 +125,12 @@ namespace System.Abstract
             var registrationType = typeof(IServiceRegistrant);
             var matchedTypes = assemblies.SelectMany(a => a.AsTypes(registrationType, predicate))
                 .Where(t => !ServiceLocatorManager.GetWantsToSkipRegistration(t));
-            //.Where(t => !t.IsInterface && !t.IsAbstract && t.GetInterfaces().Contains(registrationType) && (predicate == null || predicate(t)))
             foreach (var matchedType in matchedTypes)
                 locator.Resolve<IServiceRegistrant>(matchedType).Register(registrar);
         }
 
-        public static void RegisterByNamingConvention(this IServiceRegistrar registrar) { RegisterByNamingConvention((serviceType, implementationType) => registrar.Register(serviceType, implementationType), null, new[] { GetPreviousCallingMethodAssembly() }); }
-        public static void RegisterByNamingConvention(this IServiceRegistrar registrar, params Assembly[] assemblies) { RegisterByNamingConvention((serviceType, implementationType) => registrar.Register(serviceType, implementationType), null, assemblies); }
+        public static void RegisterByNamingConvention(this IServiceRegistrar registrar) { RegisterByNamingConvention((serviceType, implementationType) => registrar.Register(serviceType, implementationType), x => DefaultPredicate(registrar, x), new[] { GetPreviousCallingMethodAssembly() }); }
+        public static void RegisterByNamingConvention(this IServiceRegistrar registrar, params Assembly[] assemblies) { RegisterByNamingConvention((serviceType, implementationType) => registrar.Register(serviceType, implementationType), x => DefaultPredicate(registrar, x), assemblies); }
         public static void RegisterByNamingConvention(this IServiceRegistrar registrar, Predicate<Type> predicate) { RegisterByNamingConvention((serviceType, implementationType) => registrar.Register(serviceType, implementationType), predicate, new[] { GetPreviousCallingMethodAssembly() }); }
         public static void RegisterByNamingConvention(this IServiceRegistrar registrar, Predicate<Type> predicate, params Assembly[] assemblies) { RegisterByNamingConvention((serviceType, implementationType) => registrar.Register(serviceType, implementationType), predicate, assemblies); }
         public static void RegisterByNamingConvention(Action<Type, Type> action, Predicate<Type> predicate, IEnumerable<Assembly> assemblies)
@@ -140,7 +139,7 @@ namespace System.Abstract
                 throw new ArgumentNullException("action");
             if (assemblies == null || assemblies.Count() == 0)
                 return;
-            var interfaceTypes = assemblies.SelectMany(a => a.AsTypes(t => t.IsInterface && t.Name.StartsWith("I")));
+            var interfaceTypes = assemblies.SelectMany(a => a.AsTypes(t => t.IsInterface && t.Name.StartsWith("I") && (predicate == null || predicate(t))));
             foreach (var interfaceType in interfaceTypes)
             {
                 var concreteName = interfaceType.Name.Substring(1);
@@ -152,12 +151,12 @@ namespace System.Abstract
             }
         }
 
-        public static void RegisterByTypeMatch<TBasedOn>(this IServiceRegistrar registrar) { RegisterByTypeMatch((serviceType, implementationType, name) => registrar.Register(serviceType, implementationType, name), typeof(TBasedOn), null, new[] { GetPreviousCallingMethodAssembly() }); }
-        public static void RegisterByTypeMatch<TBasedOn>(this IServiceRegistrar registrar, params Assembly[] assemblies) { RegisterByTypeMatch((serviceType, implementationType, name) => registrar.Register(serviceType, implementationType, name), typeof(TBasedOn), null, assemblies); }
+        public static void RegisterByTypeMatch<TBasedOn>(this IServiceRegistrar registrar) { RegisterByTypeMatch((serviceType, implementationType, name) => registrar.Register(serviceType, implementationType, name), typeof(TBasedOn), x => DefaultPredicate(registrar, x), new[] { GetPreviousCallingMethodAssembly() }); }
+        public static void RegisterByTypeMatch<TBasedOn>(this IServiceRegistrar registrar, params Assembly[] assemblies) { RegisterByTypeMatch((serviceType, implementationType, name) => registrar.Register(serviceType, implementationType, name), typeof(TBasedOn), x => DefaultPredicate(registrar, x), assemblies); }
         public static void RegisterByTypeMatch<TBasedOn>(this IServiceRegistrar registrar, Predicate<Type> predicate) { RegisterByTypeMatch((serviceType, implementationType, name) => registrar.Register(serviceType, implementationType, name), typeof(TBasedOn), predicate, new[] { GetPreviousCallingMethodAssembly() }); }
         public static void RegisterByTypeMatch<TBasedOn>(this IServiceRegistrar registrar, Predicate<Type> predicate, params Assembly[] assemblies) { RegisterByTypeMatch((serviceType, implementationType, name) => registrar.Register(serviceType, implementationType, name), typeof(TBasedOn), predicate, assemblies); }
-        public static void RegisterByTypeMatch(this IServiceRegistrar registrar, Type basedOnType) { RegisterByTypeMatch((serviceType, implementationType, name) => registrar.Register(serviceType, implementationType, name), basedOnType, null, new[] { GetPreviousCallingMethodAssembly() }); }
-        public static void RegisterByTypeMatch(this IServiceRegistrar registrar, Type basedOnType, params Assembly[] assemblies) { RegisterByTypeMatch((serviceType, implementationType, name) => registrar.Register(serviceType, implementationType, name), basedOnType, null, assemblies); }
+        public static void RegisterByTypeMatch(this IServiceRegistrar registrar, Type basedOnType) { RegisterByTypeMatch((serviceType, implementationType, name) => registrar.Register(serviceType, implementationType, name), basedOnType, x => DefaultPredicate(registrar, x), new[] { GetPreviousCallingMethodAssembly() }); }
+        public static void RegisterByTypeMatch(this IServiceRegistrar registrar, Type basedOnType, params Assembly[] assemblies) { RegisterByTypeMatch((serviceType, implementationType, name) => registrar.Register(serviceType, implementationType, name), basedOnType, x => DefaultPredicate(registrar, x), assemblies); }
         public static void RegisterByTypeMatch(this IServiceRegistrar registrar, Type basedOnType, Predicate<Type> predicate) { RegisterByTypeMatch((serviceType, implementationType, name) => registrar.Register(serviceType, implementationType, name), basedOnType, predicate, new[] { GetPreviousCallingMethodAssembly() }); }
         public static void RegisterByTypeMatch(this IServiceRegistrar registrar, Type basedOnType, Predicate<Type> predicate, params Assembly[] assemblies) { RegisterByTypeMatch((serviceType, implementationType, name) => registrar.Register(serviceType, implementationType, name), basedOnType, predicate, assemblies); }
         public static void RegisterByTypeMatch(Action<Type, Type, string> action, Type basedOnType, Predicate<Type> predicate, IEnumerable<Assembly> assemblies)
@@ -172,5 +171,7 @@ namespace System.Abstract
             foreach (var matchedType in matchedTypes)
                 action(basedOnType, matchedType, Guid.NewGuid().ToString());
         }
+
+        public static readonly Func<IServiceRegistrar, Type, bool> DefaultPredicate = (r, t) => !r.HasRegistered(t);
     }
 }

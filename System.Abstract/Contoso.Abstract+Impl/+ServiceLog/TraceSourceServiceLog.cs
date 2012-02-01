@@ -75,7 +75,7 @@ namespace Contoso.Abstract
         {
             if (Log == null)
                 throw new NullReferenceException("Log");
-            s = string.Format(CultureInfo.CurrentCulture, s, args);
+            s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
             if (ex == null)
                 Log.TraceEvent(ToTraceEventType(level), 0, s);
             else

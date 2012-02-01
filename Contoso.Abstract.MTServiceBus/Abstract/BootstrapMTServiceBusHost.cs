@@ -35,33 +35,17 @@ namespace Contoso.Abstract
         protected BootstrapMTServiceBusHost() { }
         protected BootstrapMTServiceBusHost(IServiceLocator locator) { }
 
-        public virtual void Start(MassTransit.IServiceBus bus)
-        {
-            Bus = bus;
-        }
-
-        public virtual void Stop() { }
-
-        public virtual void Dispose()
-        {
-            if (Bus != null) { Bus.Dispose(); Bus = null; }
-        }
+        //public virtual void Start(MassTransit.IServiceBus bus) { Bus = bus; }
+        //public virtual void Stop() { }
+        //public virtual void Dispose()
+        //{
+        //    if (Bus != null) { Bus.Dispose(); Bus = null; }
+        //}
 
         public MassTransit.IServiceBus Bus { get; set; }
 
-        public void Initialize()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Open()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Close()
-        {
-            throw new System.NotImplementedException();
-        }
+        public virtual void Initialize() { }
+        public virtual void Open() { }
+        public virtual void Close() { }
     }
 }

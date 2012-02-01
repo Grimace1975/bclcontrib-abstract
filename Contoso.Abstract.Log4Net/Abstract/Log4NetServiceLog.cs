@@ -74,7 +74,7 @@ namespace Contoso.Abstract
         {
             if (Log == null)
                 throw new NullReferenceException("Log");
-            s = string.Format(CultureInfo.CurrentCulture, s, args);
+            s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
             var message = string.Format(CultureInfo.CurrentCulture, "[{0}] '{1}' message: {2}", level.ToString(), Name, s);
             switch (level)
             {

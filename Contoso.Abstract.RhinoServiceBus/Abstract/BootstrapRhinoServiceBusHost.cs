@@ -36,24 +36,14 @@ namespace Contoso.Abstract
         protected BootstrapRhinoServiceBusHost(IServiceLocator locator)
             : base(locator) { }
 
-        public virtual void Initialize()
-        {
-        }
+        public virtual void Initialize() { }
+        public virtual void Open() { }
+        public virtual void Close() { }
 
         public override void InitializeContainer()
         {
             Initialize();
             base.InitializeContainer();
-        }
-
-        public void Open()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void Close()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
