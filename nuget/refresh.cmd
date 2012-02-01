@@ -193,6 +193,9 @@ xcopy %SRC%\bin\Release\Contoso.Abstract.RhinoServiceBus.dll lib\NET35\ /Y/Q
 xcopy %SRC%\bin\Release\Contoso.Abstract.RhinoServiceBus.xml lib\NET35\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.RhinoServiceBus.dll lib\NET40\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.RhinoServiceBus.xml lib\NET40\ /Y/Q
+::
+xcopy %SRC%\bin\Release\Rhino.* lib\NET35\ /Y/Q
+xcopy %SRC%.4\bin\Release\Rhino.* lib\NET40\ /Y/Q
 popd
 
 ::

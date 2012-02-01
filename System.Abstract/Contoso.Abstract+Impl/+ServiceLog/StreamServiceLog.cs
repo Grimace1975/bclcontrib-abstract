@@ -93,7 +93,7 @@ namespace Contoso.Abstract
         {
             if (Log == null)
                 throw new NullReferenceException("Log");
-            s = string.Format(CultureInfo.CurrentCulture, s, args);
+            s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
             Log.WriteLine("[{0}] '{1}' {2} {3}", level, Name, s);
             if (ex != null)
                 Log.WriteLine("{0}: {1} {2}", ex.GetType().FullName, ex.Message, ex.StackTrace);

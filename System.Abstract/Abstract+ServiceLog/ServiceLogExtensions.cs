@@ -41,14 +41,19 @@ namespace System.Abstract
 
         // log
         public static void Fatal(this IServiceLog service, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Fatal, null, s, args); }
+        public static void Fatal(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Fatal, ex, null, null); }
         public static void Fatal(this IServiceLog service, Exception ex, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Fatal, ex, s, args); }
         public static void Error(this IServiceLog service, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Error, null, s, args); }
+        public static void Error(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Error, ex, null, null); }
         public static void Error(this IServiceLog service, Exception ex, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Error, ex, s, args); }
         public static void Warning(this IServiceLog service, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Warning, null, s, args); }
+        public static void Warning(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Warning, ex, null, null); }
         public static void Warning(this IServiceLog service, Exception ex, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Warning, ex, s, args); }
         public static void Information(this IServiceLog service, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Information, null, s, args); }
+        public static void Information(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Information, ex, null, null); }
         public static void Information(this IServiceLog service, Exception ex, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Information, ex, s, args); }
         public static void Debug(this IServiceLog service, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Debug, null, s, args); }
+        public static void Debug(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Debug, ex, null, null); }
         public static void Debug(this IServiceLog service, Exception ex, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Debug, ex, s, args); }
 
         #region Lazy Setup

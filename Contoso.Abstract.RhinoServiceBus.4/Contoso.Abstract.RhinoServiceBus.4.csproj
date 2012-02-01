@@ -83,31 +83,35 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Rhino.PersistentHashTable, Version=1.7.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+    <Reference Include="Esent.Interop">
+      <HintPath>..\packages\Rhino.ServiceBus.References.2.3.0.0\lib\Esent.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.1.2.11\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.PersistentHashTable">
       <HintPath>..\packages\Rhino.PersistentHashTable.1.7.0.0\lib\4.0\Rhino.PersistentHashTable.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.Queues, Version=1.4.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rhino.Queues.1.4.0.0\lib\4.0\Rhino.Queues.dll</HintPath>
+    <Reference Include="Rhino.Queues">
+      <HintPath>..\packages\Rhino.Queues.1.4.2.0\lib\4.0\Rhino.Queues.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.ServiceBus, Version=2.2.2.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rhino.ServiceBus.2.2.2.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
+    <Reference Include="Rhino.ServiceBus">
+      <HintPath>..\packages\Rhino.ServiceBus.2.3.0.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
     </Reference>
-    <Reference Include="Rhino.ServiceBus.Host, Version=2.2.2.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Rhino.ServiceBus.Host.2.2.2.0\lib\4.0\Rhino.ServiceBus.Host.exe</HintPath>
+    <Reference Include="Rhino.ServiceBus.Host">
+      <HintPath>..\packages\Rhino.ServiceBus.Host.2.3.0.0\lib\4.0\Rhino.ServiceBus.Host.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Messaging" />
     <Reference Include="System.Transactions" />
+    <Reference Include="Wintellect.Threading">
+      <HintPath>..\packages\PowerThreading.20101026.0\lib\net20\Wintellect.Threading.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="BclContrib.snk" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Contoso.Abstract.RhinoServiceBus\Changelog.txt">
