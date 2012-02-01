@@ -62,9 +62,13 @@ namespace Contoso.Abstract
         {
             if (_container != null)
             {
-                _container.Dispose(); _container = null;
+                var container = _container;
+                _container = null;
                 _registrar = null;
                 _containerBuilder = null;
+                // prevent cyclical dispose
+                if (container != null)
+                    container.Dispose();
             }
         }
 

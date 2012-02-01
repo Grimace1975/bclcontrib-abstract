@@ -53,6 +53,8 @@ namespace Contoso.Abstract
         public RhinoServiceBusAbstractor(IServiceLocator serviceLocator)
             : this(serviceLocator, DefaultBusCreator(serviceLocator)) { }
         public RhinoServiceBusAbstractor(IServiceLocator serviceLocator, IStartableServiceBus bus)
+            : this(serviceLocator, (Rhino.ServiceBus.IServiceBus)bus) { bus.Start(); }
+        public RhinoServiceBusAbstractor(IServiceLocator serviceLocator, Rhino.ServiceBus.IServiceBus bus)
         {
             if (serviceLocator == null)
                 throw new ArgumentNullException("serviceLocator");
@@ -60,7 +62,6 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("bus", "The specified NServiceBus bus cannot be null.");
             _serviceLocator = serviceLocator;
             Bus = bus;
-            bus.Start();
         }
 
         Action<IServiceLocator, string> ServiceBusManager.ISetupRegistration.OnServiceRegistrar

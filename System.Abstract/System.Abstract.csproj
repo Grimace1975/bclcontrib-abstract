@@ -181,7 +181,6 @@
     <Compile Include="Abstract+ServiceLocator\IWantToSkipServiceLocator.cs" />
     <Compile Include="Abstract\Parts+TypeGrapher+Impl\TypeCacheSerializer.cs" />
     <Compile Include="Abstract\Parts+TypeGrapher+Impl\TypeCacheManager.cs" />
-    <Compile Include="Abstract\AService.cs" />
     <Compile Include="Abstract\Parts+TypeGrapher\IBuildManager.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\MemoryAggregateRootSnapshotStore.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\MemoryEventStore.cs" />

@@ -342,9 +342,6 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceLog\ServiceLogExtensions.cs">
       <Link>Abstract+ServiceLog\ServiceLogExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract\AService.cs">
-      <Link>Abstract\AService.cs</Link>
-    </Compile>
     <Compile Include="..\System.Abstract\Abstract\Parts+TypeGrapher+Impl\BuildManagerTypeCache.cs">
       <Link>Abstract\Parts+TypeGrapher+Impl\BuildManagerTypeCache.cs</Link>
     </Compile>
