@@ -24,6 +24,7 @@ THE SOFTWARE.
 */
 #endregion
 using System.Abstract.Parts;
+using Contoso.Abstract;
 namespace System.Abstract
 {
     /// <summary>
@@ -47,6 +48,19 @@ namespace System.Abstract
                     return service;
                 },
             };
+            // default provider
+            if (Lazy == null)
+                SetProvider(() => new MicroServiceLocator());
+        }
+
+        public static IServiceLocator Current
+        {
+            get
+            {
+                if (Lazy == null)
+                    throw new InvalidOperationException("Service undefined. Ensure SetProvider");
+                return Lazy.Value;
+            }
         }
 
         public static void EnsureRegistration() { }

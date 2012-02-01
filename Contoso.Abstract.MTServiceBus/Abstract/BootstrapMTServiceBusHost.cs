@@ -33,7 +33,10 @@ namespace Contoso.Abstract
     public abstract class BootstrapMTServiceBusHost : IServiceBusHostBootstrap
     {
         protected BootstrapMTServiceBusHost() { }
-        protected BootstrapMTServiceBusHost(IServiceLocator locator) { }
+        protected BootstrapMTServiceBusHost(IServiceLocator locator)
+        {
+            ServiceBusManager.SetProvider(() => new MTServiceBusAbstractor(locator));
+        }
 
         //public virtual void Start(MassTransit.IServiceBus bus) { Bus = bus; }
         //public virtual void Stop() { }

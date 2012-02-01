@@ -33,7 +33,10 @@ namespace Contoso.Abstract
     public abstract class BootstrapNServiceBusHost : IServiceBusHostBootstrap, IConfigureThisEndpoint, AsA_Publisher, IWantToRunAtStartup, IWantCustomLogging
     {
         protected BootstrapNServiceBusHost() { }
-        protected BootstrapNServiceBusHost(IServiceLocator locator) { }
+        protected BootstrapNServiceBusHost(IServiceLocator locator)
+        {
+            ServiceBusManager.SetProvider(() => new NServiceBusAbstractor(locator));
+        }
 
         public virtual void Initialize() { }
         public virtual void Open() { }

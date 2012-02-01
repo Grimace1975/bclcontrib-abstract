@@ -38,6 +38,9 @@ namespace System.Abstract.Parts
         private static readonly ConditionalWeakTable<Lazy<TIService>, ISetupDescriptor> _setupDescriptors = new ConditionalWeakTable<Lazy<TIService>, ISetupDescriptor>();
         private static readonly object _lock = new object();
 
+        // Force "precise" initialization
+        static ServiceManagerBase() { }
+
         public static Lazy<TIService> Lazy { get; private set; }
         public static Lazy<TIService> SetProvider(Func<TIService> provider) { return (Lazy = MakeByProvider(provider, null)); }
         public static Lazy<TIService> SetProvider(Func<TIService> provider, ISetupDescriptor setupDescriptor) { return (Lazy = MakeByProvider(provider, setupDescriptor)); }
@@ -52,28 +55,6 @@ namespace System.Abstract.Parts
         }
 
         protected static SetupRegistration Registration { get; set; }
-
-        // Force "precise" initialization
-        static ServiceManagerBase() { }
-
-        /// <summary>
-        /// Current
-        /// </summary
-        public static TIService Current
-        {
-            get
-            {
-                if (Lazy == null)
-                    throw new InvalidOperationException("Service undefined. Ensure SetProvider");
-                return Lazy.Value;
-            }
-        }
-
-        public static Lazy<TIService> GetDefaultService()
-        {
-            try { return Lazy; }
-            catch (InvalidOperationException) { return null; }
-        }
 
         #region Setup
 
@@ -196,7 +177,7 @@ namespace System.Abstract.Parts
                 _actions.Add(action);
             }
 
-            void ISetupDescriptor.RegisterWithServiceLocator(Lazy<TIService> service, string name) { ((ISetupDescriptor)this).RegisterWithServiceLocator(service, ServiceLocatorManager.GetDefaultService(), name); }
+            void ISetupDescriptor.RegisterWithServiceLocator(Lazy<TIService> service, string name) { ((ISetupDescriptor)this).RegisterWithServiceLocator(service, ServiceLocatorManager.Lazy, name); }
             void ISetupDescriptor.RegisterWithServiceLocator(Lazy<TIService> service, Lazy<IServiceLocator> locator, string name)
             {
                 if (locator == null)

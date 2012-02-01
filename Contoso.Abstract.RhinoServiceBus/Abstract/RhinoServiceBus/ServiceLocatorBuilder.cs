@@ -36,7 +36,7 @@ namespace Contoso.Abstract.RhinoServiceBus
             var config = (RhinoServiceBusConfiguration)_config;
             _registrar.Register<IDeploymentAction, CreateQueuesAction>(Guid.NewGuid().ToString());
             _registrar.Register<IStartableServiceBus>(l => new DefaultServiceBus(l.Resolve<IServiceLocator>(), l.Resolve<ITransport>(), l.Resolve<ISubscriptionStorage>(), l.Resolve<IReflection>(), l.ResolveAll<IMessageModule>().ToArray(), config.MessageOwners.ToArray(), l.Resolve<IEndpointRouter>()));
-            //_registrar.Register<IStartable, IStartableServiceBus>();
+            _registrar.Register<IStartable, IStartableServiceBus>();
             //_registrar.Register<IServiceBus, IStartableServiceBus>();
         }
 
@@ -81,7 +81,7 @@ namespace Contoso.Abstract.RhinoServiceBus
             _registrar.Register<IMessageBuilder<Message>, MsmqMessageBuilder>();
             _registrar.Register<IMsmqTransportAction>(l => new ErrorAction(_config.NumberOfRetries, l.Resolve<IQueueStrategy>()), Guid.NewGuid().ToString());
             _registrar.Register<ISubscriptionStorage>(l => new MsmqSubscriptionStorage(l.Resolve<IReflection>(), l.Resolve<IMessageSerializer>(), _config.Endpoint, l.Resolve<IEndpointRouter>(), l.Resolve<IQueueStrategy>()));
-            _registrar.Register<ITransport>(l => new MsmqTransport(l.Resolve<IMessageSerializer>(), l.Resolve<IQueueStrategy>(), _config.Endpoint, _config.ThreadCount, l.Resolve<IMsmqTransportAction[]>(), l.Resolve<IEndpointRouter>(), _config.IsolationLevel, _config.Transactional, _config.ConsumeInTransaction, l.Resolve<IMessageBuilder<Message>>()));
+            _registrar.Register<ITransport>(l => new MsmqTransport(l.Resolve<IMessageSerializer>(), l.Resolve<IQueueStrategy>(), _config.Endpoint, _config.ThreadCount, l.ResolveAll<IMsmqTransportAction>().ToArray(), l.Resolve<IEndpointRouter>(), _config.IsolationLevel, _config.Transactional, _config.ConsumeInTransaction, l.Resolve<IMessageBuilder<Message>>()));
             var exclude = typeof(ErrorAction);
             System.Abstract.ServiceLocatorExtensions.RegisterByTypeMatch<IMsmqTransportAction>(_registrar, t => t != exclude, typeof(IMsmqTransportAction).Assembly);
         }
@@ -96,7 +96,7 @@ namespace Contoso.Abstract.RhinoServiceBus
         {
             var config = (Rhino.ServiceBus.LoadBalancer.LoadBalancerConfiguration)_config;
             _registrar.Register<MsmqLoadBalancer>(l => new MsmqLoadBalancer(l.Resolve<IMessageSerializer>(), l.Resolve<IQueueStrategy>(), l.Resolve<IEndpointRouter>(), config.Endpoint, config.ThreadCount, config.SecondaryLoadBalancer, config.Transactional, l.Resolve<IMessageBuilder<Message>>()) { ReadyForWorkListener = l.Resolve<MsmqReadyForWorkListener>() });
-            //_registrar.Register<IStartable, MsmqLoadBalancer>();
+            _registrar.Register<IStartable, MsmqLoadBalancer>();
             _registrar.Register<IDeploymentAction, CreateLoadBalancerQueuesAction>(Guid.NewGuid().ToString());
         }
 
@@ -132,7 +132,7 @@ namespace Contoso.Abstract.RhinoServiceBus
         {
             var config = (Rhino.ServiceBus.LoadBalancer.LoadBalancerConfiguration)_config;
             _registrar.Register<MsmqSecondaryLoadBalancer>(l => new MsmqSecondaryLoadBalancer(l.Resolve<IMessageSerializer>(), l.Resolve<IQueueStrategy>(), l.Resolve<IEndpointRouter>(), config.Endpoint, config.PrimaryLoadBalancer, config.ThreadCount, config.Transactional, l.Resolve<IMessageBuilder<Message>>()));
-            //_registrar.Register<IStartable, MsmqSecondaryLoadBalancer>();
+            _registrar.Register<IStartable, MsmqSecondaryLoadBalancer>();
             _registrar.Register<IDeploymentAction, CreateLoadBalancerQueuesAction>(Guid.NewGuid().ToString());
         }
 

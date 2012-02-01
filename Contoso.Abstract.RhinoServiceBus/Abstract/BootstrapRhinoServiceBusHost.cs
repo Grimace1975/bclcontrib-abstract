@@ -34,16 +34,17 @@ namespace Contoso.Abstract
     {
         protected BootstrapRhinoServiceBusHost() { }
         protected BootstrapRhinoServiceBusHost(IServiceLocator locator)
-            : base(locator) { }
+            : base(locator)
+        {
+            ServiceBusManager.SetProvider(() => new RhinoServiceBusAbstractor(locator));
+        }
 
         public virtual void Initialize() { }
         public virtual void Open() { }
         public virtual void Close() { }
 
-        public override void InitializeContainer()
-        {
-            Initialize();
-            base.InitializeContainer();
-        }
+        public override void InitializeContainer() { Initialize(); base.InitializeContainer(); }
+        protected override void OnEndStart() { base.OnEndStart(); Open(); }
+        public override void Dispose() { base.Dispose(); Close(); }
     }
 }

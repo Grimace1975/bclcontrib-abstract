@@ -24,6 +24,7 @@ THE SOFTWARE.
 */
 #endregion
 using System.Abstract.Parts;
+using Contoso.Abstract;
 namespace System.Abstract
 {
     /// <summary>
@@ -54,6 +55,19 @@ namespace System.Abstract
                         setupRegistration.OnServiceRegistrar(locator, name);
                 },
             };
+            // default provider
+            if (Lazy == null)
+                SetProvider(() => new StaticServiceCache());
+        }
+
+        public static IServiceCache Current
+        {
+            get
+            {
+                if (Lazy == null)
+                    throw new InvalidOperationException("Service undefined. Ensure SetProvider");
+                return Lazy.Value;
+            }
         }
 
         public static void EnsureRegistration() { }

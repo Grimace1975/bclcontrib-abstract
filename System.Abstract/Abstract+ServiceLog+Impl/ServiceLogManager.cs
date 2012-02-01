@@ -27,31 +27,44 @@ using System.Abstract.Parts;
 using Contoso.Abstract;
 namespace System.Abstract
 {
-	/// <summary>
-	/// ServiceLogManager
-	/// </summary>
-	public class ServiceLogManager : ServiceManagerBase<IServiceLog, Action<IServiceLog>>
-	{
-		public static readonly Lazy<IServiceLog> EmptyServiceLog = new Lazy<IServiceLog>(() => new EmptyServiceLog());
+    /// <summary>
+    /// ServiceLogManager
+    /// </summary>
+    public class ServiceLogManager : ServiceManagerBase<IServiceLog, Action<IServiceLog>>
+    {
+        public static readonly Lazy<IServiceLog> EmptyServiceLog = new Lazy<IServiceLog>(() => new EmptyServiceLog());
 
-		static ServiceLogManager()
-		{
-			Registration = new SetupRegistration
-			{
-				OnSetup = (service, descriptor) =>
-				{
-					if (descriptor != null)
-						foreach (var action in descriptor.Actions)
-							action(service);
-					return service;
-				},
-			};
-		}
+        static ServiceLogManager()
+        {
+            Registration = new SetupRegistration
+            {
+                OnSetup = (service, descriptor) =>
+                {
+                    if (descriptor != null)
+                        foreach (var action in descriptor.Actions)
+                            action(service);
+                    return service;
+                },
+            };
+            // default provider
+            if (Lazy == null)
+                SetProvider(() => new ConsoleServiceLog("Default"));
+        }
 
-		public static void EnsureRegistration() { }
-		public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLog> service) { return ProtectedGetSetupDescriptor(service, null); }
+        public static IServiceLog Current
+        {
+            get
+            {
+                if (Lazy == null)
+                    throw new InvalidOperationException("Service undefined. Ensure SetProvider");
+                return Lazy.Value;
+            }
+        }
 
-		public static IServiceLog Get<T>() { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get<T>(); }
-		public static IServiceLog Get(string name) { return (ServiceLogManager.GetDefaultService() ?? EmptyServiceLog).Value.Get(name); }
-	}
+        public static void EnsureRegistration() { }
+        public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLog> service) { return ProtectedGetSetupDescriptor(service, null); }
+
+        public static IServiceLog Get<T>() { return (ServiceLogManager.Lazy ?? EmptyServiceLog).Value.Get<T>(); }
+        public static IServiceLog Get(string name) { return (ServiceLogManager.Lazy ?? EmptyServiceLog).Value.Get(name); }
+    }
 }

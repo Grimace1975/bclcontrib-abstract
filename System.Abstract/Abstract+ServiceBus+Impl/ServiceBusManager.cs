@@ -56,6 +56,16 @@ namespace System.Abstract
             };
         }
 
+        public static IServiceBus Current
+        {
+            get
+            {
+                if (Lazy == null)
+                    throw new InvalidOperationException("Service undefined. Ensure SetProvider");
+                return Lazy.Value;
+            }
+        }
+
         public static void EnsureRegistration() { }
         public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceBus> service) { return ProtectedGetSetupDescriptor(service, null); }
     }

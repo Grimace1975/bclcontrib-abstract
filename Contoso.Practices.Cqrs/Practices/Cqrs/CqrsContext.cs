@@ -50,9 +50,9 @@ namespace Contoso.Practices.Cqrs
 		private string _name;
 
 		public CqrsContext()
-			: this(ServiceLocatorManager.GetDefaultService(), null) { }
+			: this(ServiceLocatorManager.Lazy, null) { }
 		public CqrsContext(string name)
-			: this(ServiceLocatorManager.GetDefaultService(), name) { }
+            : this(ServiceLocatorManager.Lazy, name) { }
 		public CqrsContext(Lazy<IServiceLocator> locator)
 			: this(locator, null) { }
 		public CqrsContext(Lazy<IServiceLocator> locator, string name)

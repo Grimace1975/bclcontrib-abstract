@@ -167,7 +167,7 @@ namespace System.Abstract
                 throw new ArgumentNullException("basedOnType");
             if (assemblies == null || assemblies.Count() == 0)
                 return;
-            var matchedTypes = assemblies.SelectMany(a => a.AsTypes(basedOnType));
+            var matchedTypes = assemblies.SelectMany(a => a.AsTypes(basedOnType, predicate));
             foreach (var matchedType in matchedTypes)
                 action(basedOnType, matchedType, Guid.NewGuid().ToString());
         }
