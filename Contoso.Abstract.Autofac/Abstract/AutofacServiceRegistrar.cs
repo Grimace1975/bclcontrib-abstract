@@ -79,7 +79,7 @@ namespace Contoso.Abstract
             return _parent.Container.ComponentRegistry.Registrations
                 .SelectMany(x => x.Services.OfType<TypedService>())
                 .Where(x => serviceType.IsAssignableFrom(x.ServiceType))
-                .Select(x => new ServiceRegistration { ServiceType = x.ServiceType, ServiceName = x.Description });
+                .Select(x => new ServiceRegistration { ServiceType = serviceType, ImplementationType = x.ServiceType, Name = x.Description });
         }
         public IEnumerable<ServiceRegistration> Registrations
         {
@@ -88,7 +88,7 @@ namespace Contoso.Abstract
                 // parent container will ensure build
                 return _parent.Container.ComponentRegistry.Registrations
                     .SelectMany(x => x.Services.OfType<TypedService>())
-                    .Select(x => new ServiceRegistration { ServiceType = x.ServiceType, ServiceName = x.Description });
+                    .Select(x => new ServiceRegistration { ImplementationType = x.ServiceType, Name = x.Description });
             }
         }
 

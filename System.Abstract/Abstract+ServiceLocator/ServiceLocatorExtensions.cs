@@ -123,7 +123,7 @@ namespace System.Abstract
                 return;
             var locator = registrar.Locator;
             var registrationType = typeof(IServiceRegistrant);
-            var matchedTypes = assemblies.SelectMany(a => a.AsTypes(registrationType, predicate))
+            var matchedTypes = assemblies.SelectMany(a => a.AsConcreteTypes(registrationType, predicate))
                 .Where(t => !ServiceLocatorManager.GetWantsToSkipRegistration(t));
             foreach (var matchedType in matchedTypes)
                 locator.Resolve<IServiceRegistrant>(matchedType).Register(registrar);
@@ -143,7 +143,7 @@ namespace System.Abstract
             foreach (var interfaceType in interfaceTypes)
             {
                 var concreteName = interfaceType.Name.Substring(1);
-                var matchedTypes = interfaceType.Assembly.AsTypes(interfaceType, predicate)
+                var matchedTypes = interfaceType.Assembly.AsConcreteTypes(interfaceType, predicate)
                     .Where(t => t.Name == concreteName && !ServiceLocatorManager.GetWantsToSkipRegistration(t))
                     .ToList();
                 if (matchedTypes.Count == 1)
@@ -167,7 +167,7 @@ namespace System.Abstract
                 throw new ArgumentNullException("basedOnType");
             if (assemblies == null || assemblies.Count() == 0)
                 return;
-            var matchedTypes = assemblies.SelectMany(a => a.AsTypes(basedOnType, predicate));
+            var matchedTypes = assemblies.SelectMany(a => a.AsConcreteTypes(basedOnType, predicate));
             foreach (var matchedType in matchedTypes)
                 action(basedOnType, matchedType, Guid.NewGuid().ToString());
         }

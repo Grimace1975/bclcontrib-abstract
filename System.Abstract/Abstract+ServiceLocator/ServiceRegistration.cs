@@ -30,7 +30,8 @@ namespace System.Abstract
     /// </summary>
     public struct ServiceRegistration
     {
-        public string ServiceName { get; set; }
+        public string Name { get; set; }
         public Type ServiceType { get; set; }
+        public Type ImplementationType { get; set; }
     }
 }

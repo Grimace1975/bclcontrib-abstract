@@ -70,14 +70,14 @@ namespace Contoso.Abstract
         {
             return _builder.Dependencies
                 .Where(x => serviceType.IsAssignableFrom(x.ServiceType))
-                .Select(x => new ServiceRegistration { ServiceType = x.ServiceType, ServiceName = x.ServiceName });
+                .Select(x => new ServiceRegistration { ServiceType = x.ServiceType, Name = x.ServiceName });
         }
         public IEnumerable<ServiceRegistration> Registrations
         {
             get
             {
                 return _builder.Dependencies
-                    .Select(x => new ServiceRegistration { ServiceType = x.ServiceType, ServiceName = x.ServiceName });
+                    .Select(x => new ServiceRegistration { ServiceType = x.ServiceType, Name = x.ServiceName });
             }
         }
 

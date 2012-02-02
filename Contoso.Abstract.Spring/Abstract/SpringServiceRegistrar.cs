@@ -68,12 +68,21 @@ namespace Contoso.Abstract
                 {
                     var objectName = (string)x.Key;
                     var objectDefinition = _container.GetObjectDefinition(objectName);
-                    return new ServiceRegistration { ServiceType = objectDefinition.ObjectType, ServiceName = objectName };
+                    return new ServiceRegistration { ServiceType = objectDefinition.ObjectType, ImplementationType = objectDefinition.ObjectType, Name = objectName };
                 });
         }
         public IEnumerable<ServiceRegistration> Registrations
         {
-            get { throw new NotSupportedException(); }
+            get
+            {
+                return _container.GetObjectsOfType(typeof(object)).Cast<DictionaryEntry>()
+                    .Select(x =>
+                    {
+                        var objectName = (string)x.Key;
+                        var objectDefinition = _container.GetObjectDefinition(objectName);
+                        return new ServiceRegistration { ServiceType = objectDefinition.ObjectType, ImplementationType = objectDefinition.ObjectType, Name = objectName };
+                    });
+            }
         }
 
         // register type

@@ -45,10 +45,10 @@ namespace System.Reflection
                     yield return type;
         }
 
-        public static IEnumerable<Type> AsTypes<TBasedOn>(this Assembly assembly) { return AsTypes(assembly, typeof(TBasedOn), null); }
-        public static IEnumerable<Type> AsTypes<TBasedOn>(this Assembly assembly, Predicate<Type> predicate) { return AsTypes(assembly, typeof(TBasedOn), null); }
-        public static IEnumerable<Type> AsTypes(this Assembly assembly, Type basedOnType) { return AsTypes(assembly, basedOnType, null); }
-        public static IEnumerable<Type> AsTypes(this Assembly assembly, Type basedOnType, Predicate<Type> predicate)
+        public static IEnumerable<Type> AsConcreteTypes<TBasedOn>(this Assembly assembly) { return AsConcreteTypes(assembly, typeof(TBasedOn), null); }
+        public static IEnumerable<Type> AsConcreteTypes<TBasedOn>(this Assembly assembly, Predicate<Type> predicate) { return AsConcreteTypes(assembly, typeof(TBasedOn), null); }
+        public static IEnumerable<Type> AsConcreteTypes(this Assembly assembly, Type basedOnType) { return AsConcreteTypes(assembly, basedOnType, null); }
+        public static IEnumerable<Type> AsConcreteTypes(this Assembly assembly, Type basedOnType, Predicate<Type> predicate)
         {
             if (assembly == null)
                 throw new ArgumentNullException("assembly");
