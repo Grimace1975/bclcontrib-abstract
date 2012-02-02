@@ -32,12 +32,9 @@ namespace Contoso.Abstract
     /// </summary>
     public abstract class BootstrapRhinoServiceBusHost : ServiceLocatorBootStrapper, IServiceBusHostBootstrap
     {
-        protected BootstrapRhinoServiceBusHost() { }
+        protected BootstrapRhinoServiceBusHost() { ServiceBusManager.SetProvider(() => new RhinoServiceBusAbstractor(null, (Rhino.ServiceBus.IServiceBus)GetInstance<Rhino.ServiceBus.IStartableServiceBus>())); }
         protected BootstrapRhinoServiceBusHost(IServiceLocator locator)
-            : base(locator)
-        {
-            ServiceBusManager.SetProvider(() => new RhinoServiceBusAbstractor(locator));
-        }
+            : base(locator) { ServiceBusManager.SetProvider(() => new RhinoServiceBusAbstractor(locator, (Rhino.ServiceBus.IServiceBus)GetInstance<Rhino.ServiceBus.IStartableServiceBus>())); }
 
         public virtual void Initialize() { }
         public virtual void Open() { }

@@ -79,14 +79,14 @@ namespace Contoso.Abstract
         {
             return _container.Model.AllInstances
                 .Where(x => serviceType.IsAssignableFrom(x.ConcreteType))
-                .Select(x => new ServiceRegistration { ServiceType = x.PluginType, ServiceName = x.Description });
+                .Select(x => new ServiceRegistration { ServiceType = x.PluginType, ImplementationType = x.ConcreteType, Name = x.Description });
         }
         public IEnumerable<ServiceRegistration> Registrations
         {
             get
             {
                 return _container.Model.AllInstances
-                    .Select(x => new ServiceRegistration { ServiceType = x.PluginType, ServiceName = x.Description });
+                    .Select(x => new ServiceRegistration { ServiceType = x.PluginType, ImplementationType = x.ConcreteType, Name = x.Description });
             }
         }
 

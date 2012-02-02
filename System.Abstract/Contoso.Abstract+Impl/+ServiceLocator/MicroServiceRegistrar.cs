@@ -38,14 +38,14 @@ namespace Contoso.Abstract
         {
             return _container.SelectMany(x => x.Value, (a, b) => new { Name = a.Key, Services = b })
                 .Where(x => serviceType.IsAssignableFrom(x.Services.Key))
-                .Select(x => new ServiceRegistration { ServiceType = x.Services.Key, ServiceName = x.Name });
+                .Select(x => new ServiceRegistration { ServiceType = x.Services.Key, ImplementationType = x.Services.Value.GetType(), Name = x.Name });
         }
         public IEnumerable<ServiceRegistration> Registrations
         {
             get
             {
                 return _container.SelectMany(x => x.Value, (a, b) => new { Name = a.Key, Services = b })
-                    .Select(x => new ServiceRegistration { ServiceType = x.Services.Key, ServiceName = x.Name });
+                    .Select(x => new ServiceRegistration { ServiceType = x.Services.Key, ImplementationType = x.Services.Value.GetType(), Name = x.Name });
             }
         }
 

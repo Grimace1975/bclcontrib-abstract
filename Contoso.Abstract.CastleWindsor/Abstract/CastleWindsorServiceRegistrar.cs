@@ -70,11 +70,15 @@ namespace Contoso.Abstract
         public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType)
         {
             return _container.Kernel.GetAssignableHandlers(serviceType)
-                .Select(x => new ServiceRegistration { ServiceType = x.ComponentModel.Implementation });
+                .Select(x => new ServiceRegistration { ImplementationType = x.ComponentModel.Implementation });
         }
         public IEnumerable<ServiceRegistration> Registrations
         {
-            get { throw new NotSupportedException(); }
+            get
+            {
+                return _container.Kernel.GetAssignableHandlers(typeof(object))
+                    .Select(x => new ServiceRegistration { ImplementationType = x.ComponentModel.Implementation });
+            }
         }
 
         // register type

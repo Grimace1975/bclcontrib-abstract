@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Rhino.ServiceBus.Internal;
+using Rhino.ServiceBus.Impl;
 namespace Contoso.Abstract.RhinoServiceBus
 {
     internal class ServiceLocatorAdapter : IServiceLocator
@@ -15,7 +16,11 @@ namespace Contoso.Abstract.RhinoServiceBus
 
         public bool CanResolve(Type type) { return _locator.Registrar.HasRegistered(type); }
 
-        public IEnumerable<IHandler> GetAllHandlersFor(Type type) { return _locator.Registrar.GetRegistrationsFor(type).Select(x => x.ServiceType as IHandler).Where(x => x != null); }
+        public IEnumerable<IHandler> GetAllHandlersFor(Type type)
+        {
+            return _locator.Registrar.GetRegistrationsFor(type)
+                .Select(x => (IHandler)new DefaultHandler(x.ServiceType, x.ImplementationType, () => _locator.Resolve(x.ServiceType, x.Name)));
+        }
 
         public void Release(object item) { }
         public T Resolve<T>() { return (T)_locator.Resolve(typeof(T)); }
