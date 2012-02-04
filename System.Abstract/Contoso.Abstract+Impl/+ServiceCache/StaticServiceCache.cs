@@ -48,7 +48,7 @@ namespace Contoso.Abstract
         static StaticServiceCache() { ServiceCacheManager.EnsureRegistration(); }
         public StaticServiceCache()
         {
-            Settings = new ServiceCacheSettings(new DefaultTouchableCacheItem(this, null));
+            Settings = new ServiceCacheSettings(new DefaultFileTouchableCacheItem(this, new DefaultTouchableCacheItem(this, null)));
         }
 
         Action<IServiceLocator, string> ServiceCacheManager.ISetupRegistration.OnServiceRegistrar
@@ -169,6 +169,17 @@ namespace Contoso.Abstract
                     return null;
                 throw new NotSupportedException();
             }
+        }
+
+        /// <summary>
+        /// DefaultFileTouchableCacheItem
+        /// </summary>
+        public class DefaultFileTouchableCacheItem : ServiceCache.FileTouchableCacheItemBase
+        {
+            public DefaultFileTouchableCacheItem(StaticServiceCache parent, ITouchableCacheItem @base)
+                : base(parent, @base) { }
+
+            protected override object MakeDependencyInternal(object tag, string[] names) { return null; }
         }
 
         #endregion
