@@ -32,7 +32,7 @@ namespace System
     /// <summary>
     /// StdParams
     /// </summary>
-    public class StdParams : Nparams
+    public class StdParams : INparams
     {
         private static FieldInfo _comparerField = typeof(Dictionary<string, object>).GetField("comparer", BindingFlags.Instance | BindingFlags.NonPublic);
         private Dictionary<string, object> _values = new Dictionary<string, object>();
@@ -53,37 +53,59 @@ namespace System
             AddValues(values);
         }
 
-        public override void Add(string key, object value) { _values.Add(key, value); }
-        public override bool ContainsKey(string key) { return _values.ContainsKey(key); }
-        public override int Count
-        {
-            get { return _values.Count; }
-        }
+        #region Interface
 
-        public override ICollection<string> Keys
+        public void Add(string key, object value) { _values.Add(key, value); }
+        public bool ContainsKey(string key) { return _values.ContainsKey(key); }
+
+        public ICollection<string> Keys
         {
             get { return _values.Keys; }
         }
 
-        public override bool Remove(string key) { return _values.Remove(key); }
-        public override bool TryGetValue(string key, out object value) { return _values.TryGetValue(key, out value); }
+        public bool Remove(string key) { return _values.Remove(key); }
+        public bool TryGetValue(string key, out object value) { return _values.TryGetValue(key, out value); }
 
-        public override ICollection<object> Values
+        public ICollection<object> Values
         {
             get { return _values.Values; }
         }
 
-        public override object this[string key]
+        public object this[string key]
         {
             get { return _values[key]; }
             set { _values[key] = value; }
         }
 
-        public override void Clear() { _values.Clear(); }
+        public void Clear() { _values.Clear(); }
+        public int Count
+        {
+            get { return _values.Count; }
+        }
 
-        public override IEnumerator<KeyValuePair<string, object>> GetEnumerator() { return _values.GetEnumerator(); }
+        public IEnumerator<KeyValuePair<string, object>> GetEnumerator() { return _values.GetEnumerator(); }
 
-        public override string[] ToStringArray()
+        public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
+        Collections.IEnumerator Collections.IEnumerable.GetEnumerator() { return ((INparams)this).GetEnumerator(); }
+
+        public void Add(KeyValuePair<string, object> item) { throw new NotImplementedException(); }
+        public bool Contains(KeyValuePair<string, object> item) { throw new NotImplementedException(); }
+        public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex) { throw new NotImplementedException(); }
+        public bool Remove(KeyValuePair<string, object> item) { throw new NotImplementedException(); }
+
+        // added
+        public void AddRange(IDictionary<string, object> dictionary)
+        {
+            if (dictionary != null)
+                foreach (var pair in dictionary)
+                    Add(pair.Key, pair.Value);
+        }
+
+        public string[] ToStringArray()
         {
             return _values.Select(x =>
             {
@@ -91,7 +113,7 @@ namespace System
             }).ToArray();
         }
 
-        public override T Slice<T>(string key, T defaultValue)
+        public T Slice<T>(string key, T defaultValue)
         {
             object value;
             if (_values.TryGetValue(key, out value) && value is T)
@@ -101,6 +123,8 @@ namespace System
             }
             return defaultValue;
         }
+
+        #endregion
 
         //public override T Value<T>(string key, T defaultValue)
         //{

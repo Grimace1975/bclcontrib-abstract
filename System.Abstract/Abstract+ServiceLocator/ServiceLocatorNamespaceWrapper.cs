@@ -43,7 +43,7 @@ namespace System.Abstract
                 throw new ArgumentNullException("@namespace");
             _parent = parent;
             _namespace = @namespace;
-            _registrar = new ServiceRegistrarNamespaceWrapper(this, _parent.Registrar, @namespace);
+            _registrar = new ServiceRegistrarNamespaceBehavorWrapper(this, _parent.Registrar, @namespace);
         }
 
         public object GetService(Type serviceType) { return _parent.GetService(serviceType); }

@@ -75,23 +75,22 @@ namespace Contoso.Abstract
             if (Log == null)
                 throw new NullReferenceException("Log");
             s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
-            var message = string.Format(CultureInfo.CurrentCulture, "[{0}] '{1}' message: {2}", level.ToString(), Name, s);
             switch (level)
             {
                 case ServiceLog.LogLevel.Fatal:
-                    Log.Fatal(message, ex);
+                    Log.Fatal(s, ex);
                     return;
                 case ServiceLog.LogLevel.Error:
-                    Log.Error(message, ex);
+                    Log.Error(s, ex);
                     return;
                 case ServiceLog.LogLevel.Warning:
-                    Log.Warn(message, ex);
+                    Log.Warn(s, ex);
                     return;
                 case ServiceLog.LogLevel.Information:
-                    Log.Info(message, ex);
+                    Log.Info(s, ex);
                     return;
                 case ServiceLog.LogLevel.Debug:
-                    Log.Debug(message, ex);
+                    Log.Debug(s, ex);
                     return;
                 default:
                     return;

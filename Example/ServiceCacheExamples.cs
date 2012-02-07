@@ -140,10 +140,10 @@ namespace Example
 			cache.Touch(tag, "tag", "tag2");
 
 			// wrapping a servicecache with a namespace
-			var newCache2 = cache.Wrap("namespace");
+			var newCache2 = cache.BehaveAs("namespace");
 			// wrapping a servicecache using a generated namespace from an object[] of values
 			string @namespace;
-			var newCache = cache.Wrap(new object[] { "value", 5 }, out @namespace);
+			var newCache = cache.BehaveAs(new object[] { "value", 5 }, out @namespace);
 		}
 
 		class MyCache

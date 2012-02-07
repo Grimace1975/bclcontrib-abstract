@@ -27,15 +27,15 @@ using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
-    /// ServiceLocatorNamespaceWrapper
+    /// ServiceRegistrarNamespaceBehavorWrapper
     /// </summary>
-    internal class ServiceRegistrarNamespaceWrapper : IServiceRegistrar
+    internal class ServiceRegistrarNamespaceBehavorWrapper : IServiceRegistrar
     {
         private IServiceLocator _parent;
         private IServiceRegistrar _registrar;
         private string _namespace;
 
-        public ServiceRegistrarNamespaceWrapper(IServiceLocator parent, IServiceRegistrar registrar, string @namespace)
+        public ServiceRegistrarNamespaceBehavorWrapper(IServiceLocator parent, IServiceRegistrar registrar, string @namespace)
         {
             if (parent == null)
                 throw new ArgumentNullException("parent");
@@ -65,7 +65,6 @@ namespace System.Abstract
         public ServiceRegistrarLifetime LifetimeForRegisters
         {
             get { return _registrar.LifetimeForRegisters; }
-            set { _registrar.LifetimeForRegisters = value; }
         }
         public void Register(Type serviceType) { _registrar.Register(serviceType, _namespace); }
         public void Register(Type serviceType, string name) { _registrar.Register(serviceType, _namespace + "::" + name); }

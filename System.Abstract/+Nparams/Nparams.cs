@@ -24,58 +24,34 @@ THE SOFTWARE.
 */
 #endregion
 using System.Collections.Generic;
+using System.Linq;
 namespace System
 {
     /// <summary>
+    /// INparams
+    /// </summary>
+    public interface INparams : IDictionary<string, object>
+    {
+        void AddRange(IDictionary<string, object> dictionary);
+        string[] ToStringArray();
+        T Slice<T>(string key, T defaultValue);
+    }
+
+    /// <summary>
     /// Nparams
     /// </summary>
-    public abstract class Nparams : IDictionary<string, object>
+    public class Nparams : Collections.IEnumerable, IEnumerable<KeyValuePair<string, object>>
     {
+        internal INparams _base;
+
         public static Nparams Parse(Nparams args) { return (args != null ? args : null); }
         public static Nparams Parse(IDictionary<string, object> args) { return (args != null ? NparamsManager.Parse(args) : null); }
         public static Nparams Parse(string[] args) { return (args != null ? NparamsManager.Parse(args) : null); }
         public static Nparams Parse(object args) { return (args != null ? NparamsManager.Parse(args) : null); }
 
-        public abstract void Add(string key, object value);
-        public abstract bool ContainsKey(string key);
-        public abstract int Count { get; }
-        public abstract ICollection<string> Keys { get; }
-        public abstract bool Remove(string key);
-        public abstract bool TryGetValue(string key, out object value);
-        public abstract ICollection<object> Values { get; }
-        public abstract object this[string key] { get; set; }
-        public abstract void Clear();
-        public bool IsReadOnly
-        {
-            get { return false; }
-        }
-        public abstract IEnumerator<KeyValuePair<string, object>> GetEnumerator();
-        public abstract string[] ToStringArray();
-        public T Slice<T>(string key) { return Slice<T>(key, default(T)); }
-        public abstract T Slice<T>(string key, T defaultValue);
-        //public T Value<T>(string key) { return Value<T>(key, default(T)); }
-        //public abstract T Value<T>(string key, T defaultValue);
-        public T Get<T>()
-        {
-            return (T)this[typeof(T).Name];
-        }
-        public void Set<T>(T value)
-        {
-            this[typeof(T).Name] = value;
-        }
-        //
-        Collections.IEnumerator Collections.IEnumerable.GetEnumerator() { return ((Nparams)this).GetEnumerator(); }
-        //
-        public void Add(KeyValuePair<string, object> item) { throw new NotImplementedException(); }
-        public bool Contains(KeyValuePair<string, object> item) { throw new NotImplementedException(); }
-        public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex) { throw new NotImplementedException(); }
-        public bool Remove(KeyValuePair<string, object> item) { throw new NotImplementedException(); }
-        //
-        public void AddRange(IDictionary<string, object> dictionary)
-        {
-            if (dictionary != null)
-                foreach (var pair in dictionary)
-                    Add(pair.Key, pair.Value);
-        }
+        public Nparams(INparams @base) { _base = @base; }
+
+        Collections.IEnumerator Collections.IEnumerable.GetEnumerator() { return _base.GetEnumerator(); }
+        public IEnumerator<KeyValuePair<string, object>> GetEnumerator() { return _base.GetEnumerator(); }
     }
 }

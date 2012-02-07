@@ -46,7 +46,7 @@ namespace System.Abstract
             string name = registration.AbsoluteName;
             string @namespace;
             if ((values != null) && (values.Length > 0))
-                cache = cache.Wrap(values, out @namespace);
+                cache = cache.BehaveAs(values, out @namespace);
             else
                 @namespace = null;
             var useDBNull = ((cache.Settings.Options & ServiceCacheOptions.UseDBNullWithRegistrations) == ServiceCacheOptions.UseDBNullWithRegistrations);
