@@ -85,19 +85,27 @@ namespace System.Abstract
 			return (c, tag) => touchable.MakeDependency(tag, names);
 		}
 
-		public static IServiceCache Wrap(this IServiceCache cache, IEnumerable<object> values, out string @namespace)
+        #region BehaveAs
+
+        public static IServiceCache BehaveAs(this IServiceCache cache, string @namespace)
+        {
+            if (cache == null)
+                throw new ArgumentNullException("cache");
+            if (@namespace == null)
+                throw new ArgumentNullException("@namespace");
+            return new ServiceCacheNamespaceBehavorWrapper(cache, @namespace);
+        }
+        public static IServiceCache BehaveAs(this IServiceCache cache, IEnumerable<object> values, out string @namespace)
 		{
+            if (cache == null)
+                throw new ArgumentNullException("cache");
 			@namespace = ServiceCache.GetNamespace(values);
 			if (@namespace == null)
 				throw new ArgumentNullException("@values");
-			return new ServiceCacheNamespaceWrapper(cache, @namespace);
+			return new ServiceCacheNamespaceBehavorWrapper(cache, @namespace);
 		}
-		public static IServiceCache Wrap(this IServiceCache cache, string @namespace)
-		{
-			if (@namespace == null)
-				throw new ArgumentNullException("@namespace");
-			return new ServiceCacheNamespaceWrapper(cache, @namespace);
-		}
+
+        #endregion
 
 		#region Registrations
 

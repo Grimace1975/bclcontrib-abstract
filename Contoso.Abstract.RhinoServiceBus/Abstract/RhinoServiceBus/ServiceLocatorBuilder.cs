@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Abstract;
 using System.Linq;
 using System.Messaging;
 using Rhino.Queues;
@@ -15,6 +16,8 @@ using Rhino.ServiceBus.Msmq;
 using Rhino.ServiceBus.Msmq.TransportActions;
 using Rhino.ServiceBus.RhinoQueues;
 using ErrorAction = Rhino.ServiceBus.Msmq.TransportActions.ErrorAction;
+using IServiceBus = Rhino.ServiceBus.IServiceBus;
+using IServiceLocator = Rhino.ServiceBus.Internal.IServiceLocator;
 namespace Contoso.Abstract.RhinoServiceBus
 {
     internal class ServiceLocatorBuilder : IBusContainerBuilder
@@ -35,9 +38,9 @@ namespace Contoso.Abstract.RhinoServiceBus
         {
             var config = (RhinoServiceBusConfiguration)_config;
             _registrar.Register<IDeploymentAction, CreateQueuesAction>(Guid.NewGuid().ToString());
-            _registrar.Register<IStartableServiceBus>(l => new DefaultServiceBus(l.Resolve<IServiceLocator>(), l.Resolve<ITransport>(), l.Resolve<ISubscriptionStorage>(), l.Resolve<IReflection>(), l.ResolveAll<IMessageModule>().ToArray(), config.MessageOwners.ToArray(), l.Resolve<IEndpointRouter>()));
+            _registrar.BehaveAs(ServiceRegistrarLifetime.Singleton).Register<IStartableServiceBus>(l => new DefaultServiceBus(l.Resolve<IServiceLocator>(), l.Resolve<ITransport>(), l.Resolve<ISubscriptionStorage>(), l.Resolve<IReflection>(), l.ResolveAll<IMessageModule>().ToArray(), config.MessageOwners.ToArray(), l.Resolve<IEndpointRouter>()));
             _registrar.Register<IStartable, IStartableServiceBus>();
-            //_registrar.Register<IServiceBus, IStartableServiceBus>();
+            _registrar.Register<IServiceBus, IStartableServiceBus>();
         }
 
         public void RegisterDefaultServices()

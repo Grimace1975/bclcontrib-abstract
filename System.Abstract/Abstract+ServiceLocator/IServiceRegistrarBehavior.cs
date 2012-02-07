@@ -23,25 +23,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Abstract;
-using Contoso.Abstract.RhinoServiceBus;
-namespace Contoso.Abstract
+namespace System.Abstract
 {
     /// <summary>
-    /// BootstrapRhinoServiceBusHost
+    /// IServiceRegistrarBehavior
     /// </summary>
-    public abstract class BootstrapRhinoServiceBusHost : ServiceLocatorBootStrapper, IServiceBusHostBootstrap
+    public interface IServiceRegistrarBehavior
     {
-        protected BootstrapRhinoServiceBusHost() { ServiceBusManager.SetProvider(() => new RhinoServiceBusAbstractor(ServiceLocatorManager.Current, GetInstance<Rhino.ServiceBus.IServiceBus>())); }
-        protected BootstrapRhinoServiceBusHost(IServiceLocator locator)
-            : base(locator) { ServiceBusManager.SetProvider(() => new RhinoServiceBusAbstractor(locator, GetInstance<Rhino.ServiceBus.IServiceBus>())); }
-
-        public virtual void Initialize() { }
-        public virtual void Open() { }
-        public virtual void Close() { }
-
-        public override void InitializeContainer() { Initialize(); base.InitializeContainer(); }
-        protected override void OnEndStart() { base.OnEndStart(); Open(); }
-        public override void Dispose() { base.Dispose(); Close(); }
+        ServiceRegistrarLifetime Lifetime { get; set; }
     }
 }

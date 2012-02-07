@@ -70,12 +70,24 @@ namespace System.Abstract
             return locator.ResolveAll(serviceType).Cast<TService>();
         }
 
-        public static IServiceLocator Wrap(this IServiceLocator locator, string @namespace)
+        #region BehaveAs
+
+        public static IServiceLocator BehaveAs(this IServiceLocator locator, string @namespace)
         {
+            if (locator == null)
+                throw new ArgumentNullException("locator");
             if (@namespace == null)
                 throw new ArgumentNullException("@namespace");
             return new ServiceLocatorNamespaceWrapper(locator, @namespace);
         }
+        public static IServiceRegistrar BehaveAs(this IServiceRegistrar registrar, ServiceRegistrarLifetime lifetime)
+        {
+            if (registrar == null)
+                throw new ArgumentNullException("registrar");
+            return new ServiceRegistrarLifetimeBehavorWrapper(registrar, lifetime);
+        }
+
+        #endregion
 
         #region Lazy Setup
 

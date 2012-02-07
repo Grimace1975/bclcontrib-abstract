@@ -105,6 +105,9 @@
     <Compile Include="..\System.Abstract\+Nparams\Nparams.cs">
       <Link>+Nparams\Nparams.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\+Nparams\NparamsExtensions.cs">
+      <Link>+Nparams\NparamsExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\+Nparams\ParamObject.cs">
       <Link>+Nparams\ParamObject.cs</Link>
     </Compile>
@@ -237,6 +240,9 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\ServiceCacheManager.cs">
       <Link>Abstract+ServiceCache+Impl\ServiceCacheManager.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\ServiceCacheNamespaceBehavorWrapper.cs">
+      <Link>Abstract+ServiceCache+Impl\ServiceCacheNamespaceBehavorWrapper.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\ServiceCacheRegistrar.cs">
       <Link>Abstract+ServiceCache+Impl\ServiceCacheRegistrar.cs</Link>
     </Compile>
@@ -273,9 +279,6 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheForeignRegistration.cs">
       <Link>Abstract+ServiceCache\ServiceCacheForeignRegistration.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheNamespaceWrapper.cs">
-      <Link>Abstract+ServiceCache\ServiceCacheNamespaceWrapper.cs</Link>
-    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheOptions.cs">
       <Link>Abstract+ServiceCache\ServiceCacheOptions.cs</Link>
     </Compile>
@@ -291,6 +294,12 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceLocatorManager.cs">
       <Link>Abstract+ServiceLocator+Impl\ServiceLocatorManager.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceRegistrarLifetimeBehavorWrapper.cs">
+      <Link>Abstract+ServiceLocator+Impl\ServiceRegistrarLifetimeBehavorWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceRegistrarNamespaceBehavorWrapper.cs">
+      <Link>Abstract+ServiceLocator+Impl\ServiceRegistrarNamespaceBehavorWrapper.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceLocator.cs">
       <Link>Abstract+ServiceLocator\IServiceLocator.cs</Link>
     </Compile>
@@ -302,6 +311,9 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceRegistrar.cs">
       <Link>Abstract+ServiceLocator\IServiceRegistrar.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IServiceRegistrarBehavior.cs">
+      <Link>Abstract+ServiceLocator\IServiceRegistrarBehavior.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IWantToSkipServiceLocator.cs">
       <Link>Abstract+ServiceLocator\IWantToSkipServiceLocator.cs</Link>
@@ -320,9 +332,6 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceRegistrarLifetime.cs">
       <Link>Abstract+ServiceLocator\ServiceRegistrarLifetime.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceRegistrarNamespaceWrapper.cs">
-      <Link>Abstract+ServiceLocator\ServiceRegistrarNamespaceWrapper.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\ServiceRegistration.cs">
       <Link>Abstract+ServiceLocator\ServiceRegistration.cs</Link>

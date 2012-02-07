@@ -51,7 +51,6 @@ namespace Contoso.Abstract
             _parent = parent;
             _builder = builder;
             containerBuilder = (() => _container = _builder.Build());
-            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
 
         public void Dispose() { }
@@ -63,19 +62,10 @@ namespace Contoso.Abstract
         }
 
         // enumerate
-        public bool HasRegistered<TService>()
-        {
-            // parent container will ensure build
-            return _parent.Container.IsRegistered<TService>();
-        }
-        public bool HasRegistered(Type serviceType)
-        {
-            // parent container will ensure build
-            return _parent.Container.IsRegistered(serviceType);
-        }
+        public bool HasRegistered<TService>() { return _parent.Container.IsRegistered<TService>(); }
+        public bool HasRegistered(Type serviceType) { return _parent.Container.IsRegistered(serviceType); }
         public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType)
         {
-            // parent container will ensure build
             return _parent.Container.ComponentRegistry.Registrations
                 .SelectMany(x => x.Services.OfType<TypedService>())
                 .Where(x => serviceType.IsAssignableFrom(x.ServiceType))
@@ -85,7 +75,6 @@ namespace Contoso.Abstract
         {
             get
             {
-                // parent container will ensure build
                 return _parent.Container.ComponentRegistry.Registrations
                     .SelectMany(x => x.Services.OfType<TypedService>())
                     .Select(x => new ServiceRegistration { ImplementationType = x.ServiceType, Name = x.Description });
@@ -93,7 +82,10 @@ namespace Contoso.Abstract
         }
 
         // register type
-        public ServiceRegistrarLifetime LifetimeForRegisters { get; set; }
+        public ServiceRegistrarLifetime LifetimeForRegisters
+        {
+            get { return ServiceRegistrarLifetime.Transient; }
+        }
         public void Register(Type serviceType)
         {
             SetLifestyle(_builder.RegisterType(serviceType));
@@ -165,6 +157,7 @@ namespace Contoso.Abstract
         public void RegisterInstance<TService>(TService instance)
             where TService : class
         {
+            EnsureTransientLifestyle();
             _builder.RegisterInstance(instance).As<TService>().ExternallyOwned();
             if (_container != null)
                 UpdateAndClearBuilder();
@@ -172,18 +165,21 @@ namespace Contoso.Abstract
         public void RegisterInstance<TService>(TService instance, string name)
             where TService : class
         {
+            EnsureTransientLifestyle();
             _builder.RegisterInstance(instance).Named(name, typeof(TService)).ExternallyOwned();
             if (_container != null)
                 UpdateAndClearBuilder();
         }
         public void RegisterInstance(Type serviceType, object instance)
         {
+            EnsureTransientLifestyle();
             _builder.RegisterInstance(instance).As(serviceType).ExternallyOwned();
             if (_container != null)
                 UpdateAndClearBuilder();
         }
         public void RegisterInstance(Type serviceType, object instance, string name)
         {
+            EnsureTransientLifestyle();
             _builder.RegisterInstance(instance).Named(name, serviceType).ExternallyOwned();
             if (_container != null)
                 UpdateAndClearBuilder();
@@ -221,6 +217,7 @@ namespace Contoso.Abstract
         // interceptor
         public void RegisterInterceptor(IServiceLocatorInterceptor interceptor)
         {
+            EnsureTransientLifestyle();
             _builder.RegisterModule(new Interceptor(interceptor));
             if (_container != null)
                 UpdateAndClearBuilder();
@@ -236,8 +233,15 @@ namespace Contoso.Abstract
 
         #endregion
 
+        private void EnsureTransientLifestyle()
+        {
+            if (LifetimeForRegisters != ServiceRegistrarLifetime.Transient)
+                throw new NotSupportedException();
+        }
+
         private IRegistrationBuilder<TLimit, TActivatorData, TRegistrationStyle> SetLifestyle<TLimit, TActivatorData, TRegistrationStyle>(IRegistrationBuilder<TLimit, TActivatorData, TRegistrationStyle> b)
         {
+            // must cast to IServiceRegistrar for behavior wrappers
             switch (LifetimeForRegisters)
             {
                 case ServiceRegistrarLifetime.Transient: break; // b.InstancePerDependency();

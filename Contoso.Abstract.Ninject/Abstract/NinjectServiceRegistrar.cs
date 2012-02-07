@@ -49,7 +49,6 @@ namespace Contoso.Abstract
             _parent = parent;
             _container = kernel;
             _container.Load(new INinjectModule[] { this });
-            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
 
         // locator
@@ -76,7 +75,10 @@ namespace Contoso.Abstract
         }
 
         // register type
-        public ServiceRegistrarLifetime LifetimeForRegisters { get; set; }
+        public ServiceRegistrarLifetime LifetimeForRegisters
+        {
+            get { return ServiceRegistrarLifetime.Transient; }
+        }
         public void Register(Type serviceType) { Bind(serviceType).ToSelf(); }
         public void Register(Type serviceType, string name) { Bind(serviceType).ToSelf().Named(name); }
 
@@ -97,11 +99,11 @@ namespace Contoso.Abstract
 
         // register instance
         public void RegisterInstance<TService>(TService instance)
-            where TService : class { Bind<TService>().ToConstant(instance); }
+            where TService : class { EnsureTransientLifestyle(); Bind<TService>().ToConstant(instance); }
         public void RegisterInstance<TService>(TService instance, string name)
-            where TService : class { Bind<TService>().ToConstant(instance).Named(name); }
-        public void RegisterInstance(Type serviceType, object instance) { Bind(serviceType).ToConstant(instance); }
-        public void RegisterInstance(Type serviceType, object instance, string name) { Bind(serviceType).ToConstant(instance).Named(name); }
+            where TService : class { EnsureTransientLifestyle(); Bind<TService>().ToConstant(instance).Named(name); }
+        public void RegisterInstance(Type serviceType, object instance) { EnsureTransientLifestyle(); Bind(serviceType).ToConstant(instance); }
+        public void RegisterInstance(Type serviceType, object instance, string name) { EnsureTransientLifestyle(); Bind(serviceType).ToConstant(instance).Named(name); }
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
@@ -132,6 +134,12 @@ namespace Contoso.Abstract
         //private string MakeId(Type serviceType, Type implementationType) { return serviceType.Name + "->" + implementationType.FullName; }
 
         #endregion
+
+        private void EnsureTransientLifestyle()
+        {
+            if (LifetimeForRegisters != ServiceRegistrarLifetime.Transient)
+                throw new NotSupportedException();
+        }
 
         private IBindingNamedWithOrOnSyntax<TService> SetLifetime<TService>(IBindingWhenInNamedWithOrOnSyntax<TService> bindingWhenInNamedWithOrOnSyntax)
         {

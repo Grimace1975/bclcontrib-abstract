@@ -49,7 +49,6 @@ namespace Contoso.Abstract
         {
             _parent = parent;
             _container = container;
-            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
 
         // locator
@@ -86,7 +85,10 @@ namespace Contoso.Abstract
         }
 
         // register type
-        public ServiceRegistrarLifetime LifetimeForRegisters { get; set; }
+        public ServiceRegistrarLifetime LifetimeForRegisters
+        {
+            get { return ServiceRegistrarLifetime.Transient; }
+        }
         public void Register(Type serviceType)
         {
             var b = SetLifetime(ObjectDefinitionBuilder.RootObjectDefinition(_factory, serviceType));
@@ -139,48 +141,47 @@ namespace Contoso.Abstract
 
         // register instance
         public void RegisterInstance<TService>(TService instance)
-            where TService : class { _container.ObjectFactory.RegisterSingleton(SpringServiceLocator.GetName(typeof(TService)), instance); }
+            where TService : class { EnsureTransientLifestyle(); _container.ObjectFactory.RegisterSingleton(SpringServiceLocator.GetName(typeof(TService)), instance); }
         public void RegisterInstance<TService>(TService instance, string name)
-            where TService : class { _container.ObjectFactory.RegisterSingleton(name, instance); }
-        public void RegisterInstance(Type serviceType, object instance) { _container.ObjectFactory.RegisterSingleton(SpringServiceLocator.GetName(serviceType), instance); }
-        public void RegisterInstance(Type serviceType, object instance, string name) { _container.ObjectFactory.RegisterSingleton(name, instance); }
+            where TService : class { EnsureTransientLifestyle(); _container.ObjectFactory.RegisterSingleton(name, instance); }
+        public void RegisterInstance(Type serviceType, object instance) { EnsureTransientLifestyle(); _container.ObjectFactory.RegisterSingleton(SpringServiceLocator.GetName(serviceType), instance); }
+        public void RegisterInstance(Type serviceType, object instance, string name) { EnsureTransientLifestyle(); _container.ObjectFactory.RegisterSingleton(name, instance); }
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class
         {
-            if (LifetimeForRegisters != ServiceRegistrarLifetime.Transient)
-                throw new NotSupportedException();
+            EnsureTransientLifestyle();
             Func<TService> func = () => factoryMethod(_parent);
             _container.ObjectFactory.RegisterSingleton(SpringServiceLocator.GetName(typeof(TService)), func);
         }
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
             where TService : class
         {
-            if (LifetimeForRegisters != ServiceRegistrarLifetime.Transient)
-                throw new NotSupportedException();
+            EnsureTransientLifestyle();
             Func<TService> func = () => factoryMethod(_parent);
             _container.ObjectFactory.RegisterSingleton(name, func);
         }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod)
         {
-            if (LifetimeForRegisters != ServiceRegistrarLifetime.Transient)
-                throw new NotSupportedException();
+            EnsureTransientLifestyle();
             Func<object> func = () => factoryMethod(_parent);
             _container.ObjectFactory.RegisterSingleton(SpringServiceLocator.GetName(serviceType), func);
         }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name)
         {
-            if (LifetimeForRegisters != ServiceRegistrarLifetime.Transient)
-                throw new NotSupportedException();
+            EnsureTransientLifestyle();
             Func<object> func = () => factoryMethod(_parent);
             _container.ObjectFactory.RegisterSingleton(name, func);
         }
 
         // interceptor
-        public void RegisterInterceptor(IServiceLocatorInterceptor interceptor)
+        public void RegisterInterceptor(IServiceLocatorInterceptor interceptor) { _container.ObjectFactory.AddObjectPostProcessor(new Interceptor(interceptor, _container)); }
+
+        private void EnsureTransientLifestyle()
         {
-            _container.ObjectFactory.AddObjectPostProcessor(new Interceptor(interceptor, _container));
+            if (LifetimeForRegisters != ServiceRegistrarLifetime.Transient)
+                throw new NotSupportedException();
         }
 
         private ObjectDefinitionBuilder SetLifetime(ObjectDefinitionBuilder b)

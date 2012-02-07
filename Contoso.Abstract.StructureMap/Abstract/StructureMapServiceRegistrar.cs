@@ -53,7 +53,6 @@ namespace Contoso.Abstract
         {
             _parent = parent;
             _container = container;
-            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
 
         public void Dispose() { }
@@ -91,7 +90,10 @@ namespace Contoso.Abstract
         }
 
         // register type
-        public ServiceRegistrarLifetime LifetimeForRegisters { get; set; }
+        public ServiceRegistrarLifetime LifetimeForRegisters
+        {
+            get { return ServiceRegistrarLifetime.Transient; }
+        }
         public void Register(Type serviceType) { SetLifetime(new GenericFamilyExpression(serviceType, this)).Use((Instance)new ConfiguredInstance(serviceType)); HasPendingRegistrations = true; }
         public void Register(Type serviceType, string name) { SetLifetime(new GenericFamilyExpression(serviceType, this)).Use((Instance)new ConfiguredInstance(serviceType) { Name = name }); HasPendingRegistrations = true; }
 
@@ -111,11 +113,11 @@ namespace Contoso.Abstract
 
         // register instance
         public void RegisterInstance<TService>(TService instance)
-            where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ObjectInstance(instance)); HasPendingRegistrations = true; }
+            where TService : class { EnsureTransientLifestyle(); new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ObjectInstance(instance)); HasPendingRegistrations = true; }
         public void RegisterInstance<TService>(TService instance, string name)
-            where TService : class { new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ObjectInstance(instance) { Name = name }); HasPendingRegistrations = true; }
-        public void RegisterInstance(Type serviceType, object instance) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ObjectInstance(instance)); HasPendingRegistrations = true; }
-        public void RegisterInstance(Type serviceType, object instance, string name) { new GenericFamilyExpression(serviceType, this).Use((Instance)new ObjectInstance(instance) { Name = name }); HasPendingRegistrations = true; }
+            where TService : class { EnsureTransientLifestyle(); new GenericFamilyExpression(typeof(TService), this).Use((Instance)new ObjectInstance(instance) { Name = name }); HasPendingRegistrations = true; }
+        public void RegisterInstance(Type serviceType, object instance) { EnsureTransientLifestyle(); new GenericFamilyExpression(serviceType, this).Use((Instance)new ObjectInstance(instance)); HasPendingRegistrations = true; }
+        public void RegisterInstance(Type serviceType, object instance, string name) { EnsureTransientLifestyle(); new GenericFamilyExpression(serviceType, this).Use((Instance)new ObjectInstance(instance) { Name = name }); HasPendingRegistrations = true; }
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
@@ -136,6 +138,12 @@ namespace Contoso.Abstract
         public void RegisterAll<TService>() { Scan(scanner => scanner.AddAllTypesOf<TService>()); }
 
         #endregion
+
+        private void EnsureTransientLifestyle()
+        {
+            if (LifetimeForRegisters != ServiceRegistrarLifetime.Transient)
+                throw new NotSupportedException();
+        }
 
         private GenericFamilyExpression SetLifetime(GenericFamilyExpression e)
         {

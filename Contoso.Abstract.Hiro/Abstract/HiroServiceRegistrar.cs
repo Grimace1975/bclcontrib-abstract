@@ -34,9 +34,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// IHiroServiceRegistrar
     /// </summary>
-    public interface IHiroServiceRegistrar : IServiceRegistrar
-    {
-    }
+    public interface IHiroServiceRegistrar : IServiceRegistrar { }
 
     /// <summary>
     /// HiroServiceRegistrar
@@ -52,7 +50,6 @@ namespace Contoso.Abstract
             _parent = parent;
             _builder = builder;
             containerBuilder = (() => _container = _builder.CreateContainer());
-            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
 
         public void Dispose() { }
@@ -82,7 +79,10 @@ namespace Contoso.Abstract
         }
 
         // register type
-        public ServiceRegistrarLifetime LifetimeForRegisters { get; set; }
+        public ServiceRegistrarLifetime LifetimeForRegisters
+        {
+            get { return ServiceRegistrarLifetime.Transient; }
+        }
         public void Register(Type serviceType)
         {
             if (IsDefaultLifetime()) _builder.AddService(serviceType, serviceType);
@@ -136,62 +136,65 @@ namespace Contoso.Abstract
         public void RegisterInstance<TService>(TService instance)
             where TService : class
         {
+            EnsureTransientLifestyle();
             Func<IMicroContainer, TService> f = (x => instance);
-            if (IsDefaultLifetime()) _builder.AddService<TService>(f);
-            else throw new NotSupportedException();
+            _builder.AddService<TService>(f);
         }
         public void RegisterInstance<TService>(TService instance, string name)
             where TService : class
         {
+            EnsureTransientLifestyle();
             Func<IMicroContainer, TService> f = (x => instance);
-            if (IsDefaultLifetime()) _builder.AddService<TService>(name, f);
-            else throw new NotSupportedException();
+            _builder.AddService<TService>(name, f);
         }
         public void RegisterInstance(Type serviceType, object instance)
         {
+            EnsureTransientLifestyle();
             Func<IMicroContainer, object> f = (x => instance);
-            if (IsDefaultLifetime()) _builder.AddService(serviceType, f);
-            else throw new NotSupportedException();
+            _builder.AddService(serviceType, f);
         }
         public void RegisterInstance(Type serviceType, object instance, string name)
         {
+            EnsureTransientLifestyle();
             Func<IMicroContainer, object> f = (x => instance);
-            if (IsDefaultLifetime()) _builder.AddService(name, serviceType, f);
-            else throw new NotSupportedException();
+            _builder.AddService(name, serviceType, f);
         }
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class
         {
+            EnsureTransientLifestyle();
             Func<IMicroContainer, TService> f = (x => factoryMethod(_parent));
-            if (IsDefaultLifetime()) _builder.AddService<TService>(f);
-            else throw new NotSupportedException();
+            _builder.AddService<TService>(f);
         }
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
             where TService : class
         {
+            EnsureTransientLifestyle();
             Func<IMicroContainer, TService> f = (x => factoryMethod(_parent));
-            if (IsDefaultLifetime()) _builder.AddService<TService>(name, f);
-            else throw new NotSupportedException();
+            _builder.AddService<TService>(name, f);
         }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod)
         {
+            EnsureTransientLifestyle();
             Func<IMicroContainer, object> f = (x => factoryMethod(_parent));
-            if (IsDefaultLifetime()) _builder.AddService(serviceType, f);
-            else throw new NotSupportedException();
+            _builder.AddService(serviceType, f);
         }
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name)
         {
+            EnsureTransientLifestyle();
             Func<IMicroContainer, object> f = (x => factoryMethod(_parent));
-            if (IsDefaultLifetime()) _builder.AddService(name, serviceType, f);
-            else throw new NotSupportedException();
+            _builder.AddService(name, serviceType, f);
         }
 
         // interceptor
-        public void RegisterInterceptor(IServiceLocatorInterceptor interceptor)
+        public void RegisterInterceptor(IServiceLocatorInterceptor interceptor) { throw new NotSupportedException(); }
+
+        private void EnsureTransientLifestyle()
         {
-            throw new NotSupportedException();
+            if (LifetimeForRegisters != ServiceRegistrarLifetime.Transient)
+                throw new NotSupportedException();
         }
 
         private bool IsDefaultLifetime()

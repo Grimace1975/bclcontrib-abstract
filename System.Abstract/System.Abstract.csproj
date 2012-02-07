@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="+EnvironmentEx\PlatformProductID.cs" />
     <Compile Include="+Nparams+Impl\StdParams.cs" />
+    <Compile Include="+Nparams\NparamsExtensions.cs" />
     <Compile Include="+ParseFormat\IConvertFormatter.cs" />
     <Compile Include="+ParseFormat\IConvertParser.cs" />
     <Compile Include="..\+FromCoreEx\+Kludge\Collections\HashHelpers.cs">
@@ -94,7 +95,7 @@
     <Compile Include="Abstract+ServiceCache\ITouchableCacheItem.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheOptions.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheSettings.cs" />
-    <Compile Include="Abstract+ServiceCache\ServiceCacheNamespaceWrapper.cs" />
+    <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheNamespaceBehavorWrapper.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\DefaultServiceCacheRegistrationDispatcher.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCache.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheManager.cs" />
@@ -103,11 +104,13 @@
     <Compile Include="Abstract+ServiceCache\ServiceCacheRegistration.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemPolicy.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemDependency.cs" />
+    <Compile Include="Abstract+ServiceLocator+Impl\ServiceRegistrarLifetimeBehavorWrapper.cs" />
+    <Compile Include="Abstract+ServiceLocator\IServiceRegistrarBehavior.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceRegistrarLifetime.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceLocatorInterceptor.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceLocatorExtensions.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceRegistrant.cs" />
-    <Compile Include="Abstract+ServiceLocator\ServiceRegistrarNamespaceWrapper.cs" />
+    <Compile Include="Abstract+ServiceLocator+Impl\ServiceRegistrarNamespaceBehavorWrapper.cs" />
     <Compile Include="Abstract+ServiceLocator\IWantToSkipServiceRegistration.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceLocatorNamespaceWrapper.cs" />
     <Compile Include="Abstract+ServiceLog\ServiceLogExtensions.cs" />

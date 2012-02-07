@@ -47,7 +47,6 @@ namespace Contoso.Abstract
         {
             _parent = parent;
             _container = container;
-            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
 
         public void Dispose() { }
@@ -77,7 +76,10 @@ namespace Contoso.Abstract
         }
 
         // register type
-        public ServiceRegistrarLifetime LifetimeForRegisters { get; set; }
+        public ServiceRegistrarLifetime LifetimeForRegisters
+        {
+            get { return ServiceRegistrarLifetime.Transient; }
+        }
         public void Register(Type serviceType) { _container.RegisterType(serviceType, SetLifetime(), new InjectionMember[0]); }
         public void Register(Type serviceType, string name) { _container.RegisterType(serviceType, name, SetLifetime(), new InjectionMember[0]); }
 
@@ -97,11 +99,11 @@ namespace Contoso.Abstract
 
         // register instance
         public void RegisterInstance<TService>(TService instance)
-            where TService : class { _container.RegisterInstance<TService>(instance); }
+            where TService : class { EnsureTransientLifestyle(); _container.RegisterInstance<TService>(instance); }
         public void RegisterInstance<TService>(TService instance, string name)
-            where TService : class { _container.RegisterInstance<TService>(name, instance); }
-        public void RegisterInstance(Type serviceType, object instance) { _container.RegisterInstance(serviceType, instance); }
-        public void RegisterInstance(Type serviceType, object instance, string name) { _container.RegisterInstance(serviceType, name, instance); }
+            where TService : class { EnsureTransientLifestyle(); _container.RegisterInstance<TService>(name, instance); }
+        public void RegisterInstance(Type serviceType, object instance) { EnsureTransientLifestyle(); _container.RegisterInstance(serviceType, instance); }
+        public void RegisterInstance(Type serviceType, object instance, string name) { EnsureTransientLifestyle(); _container.RegisterInstance(serviceType, name, instance); }
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
@@ -117,8 +119,15 @@ namespace Contoso.Abstract
             _container.AddExtension(new Interceptor(interceptor));
         }
 
+        private void EnsureTransientLifestyle()
+        {
+            if (LifetimeForRegisters != ServiceRegistrarLifetime.Transient)
+                throw new NotSupportedException();
+        }
+
         private LifetimeManager SetLifetime()
         {
+            // must cast to IServiceRegistrar for behavior wrappers
             switch (LifetimeForRegisters)
             {
                 case ServiceRegistrarLifetime.Transient: return null;

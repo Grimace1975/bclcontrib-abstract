@@ -35,19 +35,19 @@ namespace System
         {
             if (args == null)
                 throw new ArgumentNullException("args");
-            return new StdParams(args);
+            return new Nparams(new StdParams(args));
         }
         public static Nparams Parse(string[] args)
         {
             if (args == null)
                 throw new ArgumentNullException("args");
-            return new StdParams(args);
+            return new Nparams(new StdParams(args));
         }
         public static Nparams Parse(object args)
         {
             if (args == null)
                 throw new ArgumentNullException("args");
-            return new StdParams(args);
+            return new Nparams(new StdParams(args));
         }
     }
 }
