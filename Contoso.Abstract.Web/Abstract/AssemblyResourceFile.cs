@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /*
 The MIT License
 
@@ -23,10 +23,30 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-namespace System.Abstract
+using System;
+using System.IO;
+using System.Reflection;
+using System.Web.Hosting;
+namespace Contoso.Abstract
 {
-    /// <summary>
-    /// IWantToSkipServiceRegistration
-    /// </summary>
-    public interface IWantToSkipServiceRegistration { }
+    public class AssemblyResourceFile : VirtualFile
+    {
+        private readonly Assembly _assembly;
+        private readonly string _name;
+
+        public AssemblyResourceFile(Assembly assembly, string name, string virtualPath)
+            : base(virtualPath)
+        {
+            if (assembly == null)
+                throw new ArgumentNullException("view");
+            if (name == null)
+                throw new ArgumentNullException("name");
+            _assembly = assembly;
+            _name = name;
+        }
+
+        public override Stream Open() { return _assembly.GetManifestResourceStream(_name); }
+    }
 }
+
+

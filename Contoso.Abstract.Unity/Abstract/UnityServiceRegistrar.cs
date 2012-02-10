@@ -38,7 +38,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// UnityServiceRegistrar
     /// </summary>
-    internal sealed class UnityServiceRegistrar : IUnityServiceRegistrar, IDisposable
+    internal sealed class UnityServiceRegistrar : IUnityServiceRegistrar, IDisposable, ICloneable, IServiceRegistrarBehaviorAccessor
     {
         private UnityServiceLocator _parent;
         private IUnityContainer _container;
@@ -50,6 +50,7 @@ namespace Contoso.Abstract
         }
 
         public void Dispose() { }
+        object ICloneable.Clone() { return MemberwiseClone(); }
 
         // locator
         public IServiceLocator Locator
@@ -76,10 +77,7 @@ namespace Contoso.Abstract
         }
 
         // register type
-        public ServiceRegistrarLifetime LifetimeForRegisters
-        {
-            get { return ServiceRegistrarLifetime.Transient; }
-        }
+        public ServiceRegistrarLifetime LifetimeForRegisters { get; private set; }
         public void Register(Type serviceType) { _container.RegisterType(serviceType, SetLifetime(), new InjectionMember[0]); }
         public void Register(Type serviceType, string name) { _container.RegisterType(serviceType, name, SetLifetime(), new InjectionMember[0]); }
 
@@ -118,6 +116,16 @@ namespace Contoso.Abstract
         {
             _container.AddExtension(new Interceptor(interceptor));
         }
+
+        #region Behavior
+
+        ServiceRegistrarLifetime IServiceRegistrarBehaviorAccessor.Lifetime
+        {
+            get { return LifetimeForRegisters; }
+            set { LifetimeForRegisters = value; }
+        }
+
+        #endregion
 
         private void EnsureTransientLifestyle()
         {

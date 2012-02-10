@@ -45,6 +45,12 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Contoso.Abstract.Web\Abstract\AssemblyResourceFile.cs">
+      <Link>Abstract\AssemblyResourceFile.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.Web\Abstract\AssemblyResourcePathProvider.cs">
+      <Link>Abstract\AssemblyResourcePathProvider.cs</Link>
+    </Compile>
     <Compile Include="..\Contoso.Abstract.Web\Abstract\Parts\BuildManagerWrapper.cs">
       <Link>Abstract\Parts\BuildManagerWrapper.cs</Link>
     </Compile>

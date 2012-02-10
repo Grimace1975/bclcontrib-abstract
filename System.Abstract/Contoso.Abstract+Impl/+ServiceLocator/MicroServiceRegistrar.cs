@@ -13,7 +13,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// MicroServiceRegistrar
     /// </summary>
-    internal class MicroServiceRegistrar : IMicroServiceRegistrar
+    internal class MicroServiceRegistrar : IMicroServiceRegistrar, ICloneable, IServiceRegistrarBehaviorAccessor
     {
         private MicroServiceLocator _parent;
         private IDictionary<string, IDictionary<Type, object>> _container;
@@ -22,7 +22,10 @@ namespace Contoso.Abstract
         {
             _parent = parent;
             _container = container;
+            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
+
+        object ICloneable.Clone() { return MemberwiseClone(); }
 
         // locator
         public IServiceLocator Locator
@@ -49,10 +52,7 @@ namespace Contoso.Abstract
         }
 
         // register type
-        public ServiceRegistrarLifetime LifetimeForRegisters
-        {
-            get { return ServiceRegistrarLifetime.Transient; }
-        }
+        public ServiceRegistrarLifetime LifetimeForRegisters { get; private set; }
         public void Register(Type serviceType) { EnsureTransientLifestyle(); RegisterInternal(serviceType, new MicroServiceLocator.Trampoline { Type = serviceType }, string.Empty); }
         public void Register(Type serviceType, string name) { EnsureTransientLifestyle(); RegisterInternal(serviceType, new MicroServiceLocator.Trampoline { Type = serviceType }, name); }
 
@@ -95,6 +95,16 @@ namespace Contoso.Abstract
 
         // interceptor
         public void RegisterInterceptor(IServiceLocatorInterceptor interceptor) { throw new NotSupportedException(); }
+
+        #region Behavior
+
+        ServiceRegistrarLifetime IServiceRegistrarBehaviorAccessor.Lifetime
+        {
+            get { return LifetimeForRegisters; }
+            set { LifetimeForRegisters = value; }
+        }
+
+        #endregion
 
         private void EnsureTransientLifestyle()
         {

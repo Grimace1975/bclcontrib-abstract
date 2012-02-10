@@ -31,6 +31,10 @@ namespace System
     /// </summary>
     public class NparamsManager
     {
+        public static Nparams Create()
+        {
+            return new Nparams(new StdParams());
+        }
         public static Nparams Parse(IDictionary<string, object> args)
         {
             if (args == null)

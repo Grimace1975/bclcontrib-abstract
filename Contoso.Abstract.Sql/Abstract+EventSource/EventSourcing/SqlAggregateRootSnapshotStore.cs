@@ -209,8 +209,8 @@ When Not Matched By Target Then
         private AggregateRootSnapshot MakeSnapshot(SqlDataReader r, SnapshotOrdinal ordinal)
         {
             var type = Type.GetType(r.Field<string>(ordinal.Type));
-            string blob = r.Field<string>(ordinal.Blob);
-            return _serializer.ReadObject<AggregateRootSnapshot>(type, blob);
+            var blob = r.Field<string>(ordinal.Blob);
+            return (type != null ? _serializer.ReadObject<AggregateRootSnapshot>(type, blob) : null);
         }
 
         private AggregateTuple<AggregateRootSnapshot> MakeSnapshotTuple(SqlDataReader r, SnapshotOrdinal ordinal)

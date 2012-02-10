@@ -41,16 +41,26 @@ namespace System
         {
             _comparerField.SetValue(_values, StringComparer.OrdinalIgnoreCase);
         }
-        public StdParams(IDictionary<string, object> dictionary)
+        public StdParams(INparams args)
         {
+            if (args == null)
+                throw new ArgumentNullException("args");
             _comparerField.SetValue(_values, StringComparer.OrdinalIgnoreCase);
-            foreach (KeyValuePair<string, object> pair in dictionary)
+            foreach (KeyValuePair<string, object> pair in args)
                 Add(pair.Key, pair.Value);
         }
-        public StdParams(object values)
+        public StdParams(IDictionary<string, object> args)
+        {
+            if (args == null)
+                throw new ArgumentNullException("args");
+            _comparerField.SetValue(_values, StringComparer.OrdinalIgnoreCase);
+            foreach (KeyValuePair<string, object> pair in args)
+                Add(pair.Key, pair.Value);
+        }
+        public StdParams(object args)
         {
             _comparerField.SetValue(_values, StringComparer.OrdinalIgnoreCase);
-            AddValues(values);
+            AddValues(args);
         }
 
         #region Interface
@@ -98,10 +108,10 @@ namespace System
         public bool Remove(KeyValuePair<string, object> item) { throw new NotImplementedException(); }
 
         // added
-        public void AddRange(IDictionary<string, object> dictionary)
+        public void AddRange(IDictionary<string, object> args)
         {
-            if (dictionary != null)
-                foreach (var pair in dictionary)
+            if (args != null)
+                foreach (var pair in args)
                     Add(pair.Key, pair.Value);
         }
 
@@ -125,11 +135,6 @@ namespace System
         }
 
         #endregion
-
-        //public override T Value<T>(string key, T defaultValue)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         private void AddValues(object values)
         {

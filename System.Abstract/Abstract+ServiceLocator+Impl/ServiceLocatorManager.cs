@@ -32,8 +32,7 @@ namespace System.Abstract
     /// </summary>
     public class ServiceLocatorManager : ServiceManagerBase<IServiceLocator, Action<IServiceLocator>>
     {
-        private static readonly Type _wantToSkipServiceLocatorType = typeof(IWantToSkipServiceLocator);
-        private static readonly Type _wantToSkipServiceRegistrationType = typeof(IWantToSkipServiceRegistration);
+        private static readonly Type _ignoreServiceLocatorType = typeof(IIgnoreServiceLocator);
 
         static ServiceLocatorManager()
         {
@@ -71,18 +70,11 @@ namespace System.Abstract
             locator.Registrar.RegisterInstance<IServiceLocator>(locator);
         }
 
-        public static bool GetWantsToSkipLocator(object instance) { return (instance == null || GetWantsToSkipLocator(instance.GetType())); }
-        public static bool GetWantsToSkipLocator<TService>() { return GetWantsToSkipLocator(typeof(TService)); }
-        public static bool GetWantsToSkipLocator(Type type)
+        public static bool HasIgnoreServiceLocator(object instance) { return (instance == null || HasIgnoreServiceLocator(instance.GetType())); }
+        public static bool HasIgnoreServiceLocator<TService>() { return HasIgnoreServiceLocator(typeof(TService)); }
+        public static bool HasIgnoreServiceLocator(Type type)
         {
-            return (type == null || _wantToSkipServiceLocatorType.IsAssignableFrom(type));
-        }
-
-        public static bool GetWantsToSkipRegistration(object instance) { return (instance == null || GetWantsToSkipRegistration(instance.GetType())); }
-        public static bool GetWantsToSkipRegistration<TService>() { return GetWantsToSkipRegistration(typeof(TService)); }
-        public static bool GetWantsToSkipRegistration(Type type)
-        {
-            return (type == null || _wantToSkipServiceRegistrationType.IsAssignableFrom(type));
+            return (type == null || _ignoreServiceLocatorType.IsAssignableFrom(type));
         }
     }
 }

@@ -83,7 +83,10 @@
       <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
     </Compile>
     <Compile Include="+Nparams+Impl\NparamsManager.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\AggregateRootExtensions.cs" />
+    <Compile Include="Abstract+EventSource\EventSourceManager.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\AggregateRootExtensions.cs" />
+    <Compile Include="Abstract+EventSource\IEventSource.cs" />
+    <Compile Include="Abstract+EventSource\EventSource.cs" />
     <Compile Include="Abstract+Event\IEvent.cs" />
     <Compile Include="Abstract+Event\EventBus.cs" />
     <Compile Include="Abstract+Event\IEventHandler.cs" />
@@ -95,7 +98,7 @@
     <Compile Include="Abstract+ServiceCache\ITouchableCacheItem.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheOptions.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheSettings.cs" />
-    <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheNamespaceBehavorWrapper.cs" />
+    <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheNamespaceBehaviorWrapper.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\DefaultServiceCacheRegistrationDispatcher.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCache.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheManager.cs" />
@@ -104,15 +107,14 @@
     <Compile Include="Abstract+ServiceCache\ServiceCacheRegistration.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemPolicy.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemDependency.cs" />
-    <Compile Include="Abstract+ServiceLocator+Impl\ServiceRegistrarLifetimeBehavorWrapper.cs" />
-    <Compile Include="Abstract+ServiceLocator\IServiceRegistrarBehavior.cs" />
+    <Compile Include="Abstract+ServiceLocator\IServiceRegistrarBehaviorAccessor.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceRegistrarLifetime.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceLocatorInterceptor.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceLocatorExtensions.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceRegistrant.cs" />
-    <Compile Include="Abstract+ServiceLocator+Impl\ServiceRegistrarNamespaceBehavorWrapper.cs" />
-    <Compile Include="Abstract+ServiceLocator\IWantToSkipServiceRegistration.cs" />
-    <Compile Include="Abstract+ServiceLocator\ServiceLocatorNamespaceWrapper.cs" />
+    <Compile Include="Abstract+ServiceLocator+Impl\ServiceRegistrarNamespaceBehaviorWrapper.cs" />
+    <Compile Include="Abstract+ServiceLocator\IIgnoreServiceLocator.cs" />
+    <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocatorNamespaceBehaviorWrapper.cs" />
     <Compile Include="Abstract+ServiceLog\ServiceLogExtensions.cs" />
     <Compile Include="Abstract\Parts+TypeGrapher\ITypeCacheSerializer.cs" />
     <Compile Include="Abstract\Parts+TypeGrapher\ITypeCache.cs" />
@@ -143,25 +145,25 @@
     <Compile Include="Contoso.Abstract+Impl\+ServiceCache\StaticServiceCache.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\FileAggregateRootSnapshotStore.cs" />
     <Compile Include="Contoso.Abstract+Impl\EventSourcing\FileEventStore.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\AggregateRoot.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\AggregateRootQueryOptions.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\AggregateRootOptions.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\AggregateTuple.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\AggregateRootOfflineSnapshotService.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\AggregateTuple2.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\IOfflineSnaphotQuery.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\Event2.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing+Impl\RegistryEventDispatcher.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\IAggregateRootEventDispatcher.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\IBatchedAggregateRootSnapshotStore.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\IBatchedEventStore.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\ICanAggregateRootSnapshot.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\AggregateRootSnapshot.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\AggregateRootRepository.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\IAggregateRootSnapshotStore.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\Event.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\IEventStore.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\IAccessAggregateRootState.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\AggregateRoot.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\AggregateRootQueryOptions.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\AggregateRootOptions.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\AggregateTuple.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\AggregateRootOfflineSnapshotService.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\AggregateTuple2.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\IOfflineSnaphotQuery.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\Event2.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing+Impl\RegistryEventDispatcher.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\IAggregateRootEventDispatcher.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\IBatchedAggregateRootSnapshotStore.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\IBatchedEventStore.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\ICanAggregateRootSnapshot.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\AggregateRootSnapshot.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\AggregateRootRepository.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\IAggregateRootSnapshotStore.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\Event.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\IEventStore.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\IAggregateRootStateAccessor.cs" />
     <Compile Include="+Nparams\ParamObject.cs" />
     <Compile Include="+Nparams\Nparams.cs" />
     <Compile Include="_Unsorted_\NewAttrib.cs" />
@@ -181,7 +183,6 @@
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocator.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Abstract+ServiceLocator\IWantToSkipServiceLocator.cs" />
     <Compile Include="Abstract\Parts+TypeGrapher+Impl\TypeCacheSerializer.cs" />
     <Compile Include="Abstract\Parts+TypeGrapher+Impl\TypeCacheManager.cs" />
     <Compile Include="Abstract\Parts+TypeGrapher\IBuildManager.cs" />

@@ -27,15 +27,15 @@ using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
-    /// ServiceRegistrarNamespaceBehavorWrapper
+    /// ServiceRegistrarNamespaceBehaviorWrapper
     /// </summary>
-    internal class ServiceRegistrarNamespaceBehavorWrapper : IServiceRegistrar
+    internal struct ServiceRegistrarNamespaceBehaviorWrapper : IServiceRegistrar
     {
         private IServiceLocator _parent;
         private IServiceRegistrar _registrar;
         private string _namespace;
 
-        public ServiceRegistrarNamespaceBehavorWrapper(IServiceLocator parent, IServiceRegistrar registrar, string @namespace)
+        public ServiceRegistrarNamespaceBehaviorWrapper(IServiceLocator parent, IServiceRegistrar registrar, string @namespace)
         {
             if (parent == null)
                 throw new ArgumentNullException("parent");
@@ -90,6 +90,7 @@ namespace System.Abstract
             where TService : class { _registrar.RegisterInstance(instance, _namespace + "::" + name); }
         public void RegisterInstance(Type serviceType, object instance) { _registrar.RegisterInstance(serviceType, instance, _namespace); }
         public void RegisterInstance(Type serviceType, object instance, string name) { _registrar.RegisterInstance(serviceType, instance, _namespace + "::" + name); }
+
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { throw new NotSupportedException(); }

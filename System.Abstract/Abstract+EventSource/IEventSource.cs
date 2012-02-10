@@ -23,23 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Abstract.Configuration.ServiceBus;
-namespace System.Abstract.Configuration
+namespace System.Abstract
 {
-    /// <summary>
-    /// IServiceConfigurationExtensions
-    /// </summary>
-    public static partial class IServiceConfigurationExtensions
-    {
-        public static void LoadFromConfiguration(this ServiceBusManager.ISetupDescriptor descriptor, Lazy<IServiceBus> service, ServiceBusConfiguration configuration)
-        {
-            if (service == null)
-                throw new ArgumentNullException("service");
-            if (configuration == null)
-                throw new ArgumentNullException("configuration");
-            var endpoints = configuration.Endpoints;
-            foreach (EndpointElement endpoint in endpoints)
-                service.AddEndpoint(endpoint.Endpoint);
-        }
-    }
+
 }

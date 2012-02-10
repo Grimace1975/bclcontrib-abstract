@@ -47,14 +47,17 @@
     <Compile Include="..\+FromDataEx\Data\DataReaderExtensions.cs">
       <Link>+FromDataEx\Data\DataReaderExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.Sql\Abstract+EventSourcing\EventSourcing\SqlAggregateRootSnapshotStore.cs">
-      <Link>Abstract+EventSourcing\EventSourcing\SqlAggregateRootSnapshotStore.cs</Link>
+    <Compile Include="..\Contoso.Abstract.Sql\Abstract+EventSource\EventSourcing\SqlAggregateRootSnapshotStore.cs">
+      <Link>Abstract+EventSource\EventSourcing\SqlAggregateRootSnapshotStore.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.Sql\Abstract+EventSourcing\EventSourcing\SqlEventStore.cs">
-      <Link>Abstract+EventSourcing\EventSourcing\SqlEventStore.cs</Link>
+    <Compile Include="..\Contoso.Abstract.Sql\Abstract+EventSource\EventSourcing\SqlEventStore.cs">
+      <Link>Abstract+EventSource\EventSourcing\SqlEventStore.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.Sql\Abstract+EventSourcing\EventSourcing\SqlOfflineSnapshotQuery.cs">
-      <Link>Abstract+EventSourcing\EventSourcing\SqlOfflineSnapshotQuery.cs</Link>
+    <Compile Include="..\Contoso.Abstract.Sql\Abstract+EventSource\EventSourcing\SqlOfflineSnapshotQuery.cs">
+      <Link>Abstract+EventSource\EventSourcing\SqlOfflineSnapshotQuery.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.Sql\Abstract+EventSource\SqlEventSource.cs">
+      <Link>Abstract+EventSource\SqlEventSource.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

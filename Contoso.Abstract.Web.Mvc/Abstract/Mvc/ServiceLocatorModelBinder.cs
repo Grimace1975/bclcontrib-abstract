@@ -53,7 +53,7 @@ namespace Contoso.Abstract.Mvc
         {
             var controllerType = controllerContext.Controller.GetType();
             IEnumerable<IInjectableModelBinder> modelBinders;
-            if (!ServiceLocatorManager.GetWantsToSkipLocator(controllerType) && ((modelBinders = GetRegisteredModelBinders()) != null))
+            if (!ServiceLocatorManager.HasIgnoreServiceLocator(controllerType) && (modelBinders = GetRegisteredModelBinders()) != null)
                 foreach (var modelBinder in modelBinders.Where(x => x.InjectForModelType(bindingContext.ModelType)))
                     return modelBinder.BindModel(controllerContext, bindingContext);
             return base.BindModel(controllerContext, bindingContext);

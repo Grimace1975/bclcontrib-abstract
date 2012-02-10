@@ -27,9 +27,9 @@ using System.Collections.Generic;
 namespace System.Abstract.EventSourcing
 {
     /// <summary>
-    /// IAccessAggregateRootState
+    /// IAggregateRootStateAccessor
     /// </summary>
-    public interface IAccessAggregateRootState
+    public interface IAggregateRootStateAccessor
     {
         bool LoadFromHistory(IEnumerable<Event> events);
         IEnumerable<Event> GetUncommittedChanges();

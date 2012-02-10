@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="Abstract\Parts\BuildManagerWrapper.cs" />
     <Compile Include="Abstract\WebServiceCache.cs" />
+    <Compile Include="Abstract\AssemblyResourceFile.cs" />
+    <Compile Include="Abstract\AssemblyResourcePathProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

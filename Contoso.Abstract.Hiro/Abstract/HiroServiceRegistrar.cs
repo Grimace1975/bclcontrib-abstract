@@ -39,7 +39,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// HiroServiceRegistrar
     /// </summary>
-    public class HiroServiceRegistrar : IHiroServiceRegistrar, IDisposable
+    public class HiroServiceRegistrar : IHiroServiceRegistrar, IDisposable, ICloneable, IServiceRegistrarBehaviorAccessor
     {
         private HiroServiceLocator _parent;
         private DependencyMap _builder;
@@ -50,9 +50,11 @@ namespace Contoso.Abstract
             _parent = parent;
             _builder = builder;
             containerBuilder = (() => _container = _builder.CreateContainer());
+            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
 
         public void Dispose() { }
+        object ICloneable.Clone() { return MemberwiseClone(); }
 
         // locator
         public IServiceLocator Locator
@@ -79,10 +81,7 @@ namespace Contoso.Abstract
         }
 
         // register type
-        public ServiceRegistrarLifetime LifetimeForRegisters
-        {
-            get { return ServiceRegistrarLifetime.Transient; }
-        }
+        public ServiceRegistrarLifetime LifetimeForRegisters { get; private set; }
         public void Register(Type serviceType)
         {
             if (IsDefaultLifetime()) _builder.AddService(serviceType, serviceType);
@@ -190,6 +189,16 @@ namespace Contoso.Abstract
 
         // interceptor
         public void RegisterInterceptor(IServiceLocatorInterceptor interceptor) { throw new NotSupportedException(); }
+
+        #region Behavior
+
+        ServiceRegistrarLifetime IServiceRegistrarBehaviorAccessor.Lifetime
+        {
+            get { return LifetimeForRegisters; }
+            set { LifetimeForRegisters = value; }
+        }
+
+        #endregion
 
         private void EnsureTransientLifestyle()
         {

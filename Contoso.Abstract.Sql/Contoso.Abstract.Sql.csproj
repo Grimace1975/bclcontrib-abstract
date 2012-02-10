@@ -47,10 +47,11 @@
     <Compile Include="..\+FromDataEx\Data\DataReaderExtensions.cs">
       <Link>+FromDataEx\Data\DataReaderExtensions.cs</Link>
     </Compile>
+    <Compile Include="Abstract+EventSource\SqlEventSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\SqlOfflineSnapshotQuery.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\SqlAggregateRootSnapshotStore.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\SqlEventStore.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\SqlOfflineSnapshotQuery.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\SqlAggregateRootSnapshotStore.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\SqlEventStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BclContrib.snk" />
