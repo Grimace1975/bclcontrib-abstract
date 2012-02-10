@@ -39,7 +39,7 @@ namespace Contoso.Abstract
     /// </summary>
     public interface ISpringServiceRegistrar : IServiceRegistrar { }
 
-    public class SpringServiceRegistrar : ISpringServiceRegistrar
+    public class SpringServiceRegistrar : ISpringServiceRegistrar, ICloneable, IServiceRegistrarBehaviorAccessor
     {
         private SpringServiceLocator _parent;
         private GenericApplicationContext _container; // IConfigurableApplicationContext
@@ -49,7 +49,10 @@ namespace Contoso.Abstract
         {
             _parent = parent;
             _container = container;
+            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
+
+        object ICloneable.Clone() { return MemberwiseClone(); }
 
         // locator
         public IServiceLocator Locator
@@ -85,10 +88,7 @@ namespace Contoso.Abstract
         }
 
         // register type
-        public ServiceRegistrarLifetime LifetimeForRegisters
-        {
-            get { return ServiceRegistrarLifetime.Transient; }
-        }
+        public ServiceRegistrarLifetime LifetimeForRegisters { get; private set; }
         public void Register(Type serviceType)
         {
             var b = SetLifetime(ObjectDefinitionBuilder.RootObjectDefinition(_factory, serviceType));
@@ -177,6 +177,16 @@ namespace Contoso.Abstract
 
         // interceptor
         public void RegisterInterceptor(IServiceLocatorInterceptor interceptor) { _container.ObjectFactory.AddObjectPostProcessor(new Interceptor(interceptor, _container)); }
+
+        #region Behavior
+
+        ServiceRegistrarLifetime IServiceRegistrarBehaviorAccessor.Lifetime
+        {
+            get { return LifetimeForRegisters; }
+            set { LifetimeForRegisters = value; }
+        }
+
+        #endregion
 
         private void EnsureTransientLifestyle()
         {

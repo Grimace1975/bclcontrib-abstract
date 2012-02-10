@@ -78,13 +78,21 @@ namespace System.Abstract
                 throw new ArgumentNullException("locator");
             if (@namespace == null)
                 throw new ArgumentNullException("@namespace");
-            return new ServiceLocatorNamespaceWrapper(locator, @namespace);
+            return new ServiceLocatorNamespaceBehaviorWrapper(locator, @namespace);
         }
         public static IServiceRegistrar BehaveAs(this IServiceRegistrar registrar, ServiceRegistrarLifetime lifetime)
         {
             if (registrar == null)
                 throw new ArgumentNullException("registrar");
-            return new ServiceRegistrarLifetimeBehavorWrapper(registrar, lifetime);
+            var registrarAsCloneable = (registrar as ICloneable);
+            if (registrarAsCloneable == null)
+                throw new ArgumentNullException("registrar", "Provider must have ICloneable");
+            var newRegistrar = (IServiceRegistrar)registrarAsCloneable.Clone();
+            var newRegistrarAsAccessor = (newRegistrar as IServiceRegistrarBehaviorAccessor);
+            if (newRegistrarAsAccessor == null)
+                throw new ArgumentNullException("registrar", "Provider must have IServiceRegistrarBehaviorAccessor");
+            newRegistrarAsAccessor.Lifetime = lifetime;
+            return (IServiceRegistrar)newRegistrar;
         }
 
         #endregion
@@ -136,7 +144,7 @@ namespace System.Abstract
             var locator = registrar.Locator;
             var registrationType = typeof(IServiceRegistrant);
             var matchedTypes = assemblies.SelectMany(a => a.AsConcreteTypes(registrationType, predicate))
-                .Where(t => !ServiceLocatorManager.GetWantsToSkipRegistration(t));
+                .Where(t => !ServiceLocatorManager.HasIgnoreServiceLocator(t));
             foreach (var matchedType in matchedTypes)
                 locator.Resolve<IServiceRegistrant>(matchedType).Register(registrar);
         }
@@ -156,7 +164,7 @@ namespace System.Abstract
             {
                 var concreteName = interfaceType.Name.Substring(1);
                 var matchedTypes = interfaceType.Assembly.AsConcreteTypes(interfaceType, predicate)
-                    .Where(t => t.Name == concreteName && !ServiceLocatorManager.GetWantsToSkipRegistration(t))
+                    .Where(t => t.Name == concreteName && !ServiceLocatorManager.HasIgnoreServiceLocator(t))
                     .ToList();
                 if (matchedTypes.Count == 1)
                     action(interfaceType, matchedTypes.First());

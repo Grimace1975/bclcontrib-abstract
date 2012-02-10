@@ -73,7 +73,12 @@ namespace Contoso.Abstract.EventSourcing
             _tableName = tableName;
             _makeAggregateId = makeAggregateId;
             _serializer = serializer;
+            TypeMappingTo = new Dictionary<string, Type>();
+            TypeMappingFrom = new Dictionary<Type, string>();
         }
+
+        public Dictionary<string, Type> TypeMappingTo { get; private set; }
+        public Dictionary<Type, string> TypeMappingFrom { get; private set; }
 
         public IEnumerable<Event> GetEventsById(object aggregateId, int startSequence)
         {
@@ -162,7 +167,7 @@ Order By AggregateId, EventSequence;", _tableName);
                     return new XElement("e",
                         (x.EventSequence.HasValue ? new XAttribute("s", x.EventSequence) : null),
                         new XAttribute("d", x.EventDate),
-                        new XAttribute("t", eventType.AssemblyQualifiedName),
+                        new XAttribute("t", TypeMapFrom(eventType)),
                         _serializer.WriteObject(eventType, x));
                 }));
             using (var connection = new SqlConnection(_connectionString))
@@ -192,7 +197,7 @@ From @xml.nodes(N'/r/e') _xml(item);", _tableName);
                         new XAttribute("i", m.a),
                         (x.EventSequence.HasValue ? new XAttribute("s", x.EventSequence) : null),
                         new XAttribute("d", x.EventDate),
-                        new XAttribute("t", eventType.AssemblyQualifiedName),
+                        new XAttribute("t", TypeMapFrom(eventType)),
                         _serializer.WriteObject(eventType, x));
                 }));
             using (var connection = new SqlConnection(_connectionString))
@@ -211,12 +216,22 @@ From @xml.nodes(N'/r/e') _xml(item);", _tableName);
 
         private Event MakeEvent(SqlDataReader r, EventOrdinal ordinal)
         {
-            var type = Type.GetType(r.Field<string>(ordinal.Type));
+            var type = TypeMapTo(r.Field<string>(ordinal.Type));
             var blob = r.Field<string>(ordinal.Blob);
-            return _serializer.ReadObject<Event>(type, blob);
+            return (type != null ? _serializer.ReadObject<Event>(type, blob) : null);
         }
 
+        private Type TypeMapTo(string type)
+        {
+            Type v;
+            return (TypeMappingTo.TryGetValue(type, out v) ? v : Type.GetType(type));
+        }
 
+        private string TypeMapFrom(Type type)
+        {
+            string v;
+            return (TypeMappingFrom.TryGetValue(type, out v) ? v : type.AssemblyQualifiedName);
+        }
 
         //        public IEnumerable<Event> GetEventsByEventTypes(IEnumerable<Type> eventTypes)
         //        {

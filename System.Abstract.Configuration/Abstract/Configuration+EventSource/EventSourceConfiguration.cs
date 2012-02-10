@@ -23,19 +23,14 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System.Configuration;
+using System.Abstract.Configuration.ServiceBus;
 namespace System.Abstract.Configuration
 {
     /// <summary>
-    /// IServiceConfigurationExtensions
+    /// EventSourceConfiguration
     /// </summary>
-    public static partial class IServiceConfigurationExtensions
+    public partial class EventSourceConfiguration
     {
-        public static void LoadFromConfiguration(this ServiceLocatorManager.ISetupDescriptor descriptor, Lazy<IServiceLocator> service, ServiceLocatorConfiguration configuration)
-        {
-            if (service == null)
-                throw new ArgumentNullException("service");
-            if (configuration == null)
-                throw new ArgumentNullException("configuration");
-        }
     }
 }

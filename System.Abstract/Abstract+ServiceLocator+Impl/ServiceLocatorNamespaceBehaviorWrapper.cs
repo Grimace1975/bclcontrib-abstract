@@ -27,15 +27,15 @@ using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
-    /// ServiceLocatorNamespaceWrapper
+    /// ServiceLocatorNamespaceBehaviorWrapper
     /// </summary>
-    internal class ServiceLocatorNamespaceWrapper : IServiceLocator
+    internal class ServiceLocatorNamespaceBehaviorWrapper : IServiceLocator
     {
         private IServiceLocator _parent;
         private IServiceRegistrar _registrar;
         private string _namespace;
 
-        public ServiceLocatorNamespaceWrapper(IServiceLocator parent, string @namespace)
+        public ServiceLocatorNamespaceBehaviorWrapper(IServiceLocator parent, string @namespace)
         {
             if (parent == null)
                 throw new ArgumentNullException("parent");
@@ -43,7 +43,7 @@ namespace System.Abstract
                 throw new ArgumentNullException("@namespace");
             _parent = parent;
             _namespace = @namespace;
-            _registrar = new ServiceRegistrarNamespaceBehavorWrapper(this, _parent.Registrar, @namespace);
+            _registrar = new ServiceRegistrarNamespaceBehaviorWrapper(this, _parent.Registrar, @namespace);
         }
 
         public object GetService(Type serviceType) { return _parent.GetService(serviceType); }

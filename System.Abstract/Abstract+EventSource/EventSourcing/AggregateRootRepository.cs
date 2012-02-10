@@ -56,15 +56,10 @@ namespace System.Abstract.EventSourcing
         private readonly Action<IEnumerable<Event>> _eventDispatcher;
         private readonly Func<Type, AggregateRoot> _factory;
 
-        public static class DefaultFactory
-        {
-            public static Func<Type, AggregateRoot> Factory = (t => (AggregateRoot)Activator.CreateInstance(t));
-        }
-
         public AggregateRootRepository(IEventStore eventStore, IAggregateRootSnapshotStore snapshotStore)
-            : this(eventStore, snapshotStore, null, DefaultFactory.Factory) { }
+            : this(eventStore, snapshotStore, null, EventSource.DefaultFactory.Factory) { }
         public AggregateRootRepository(IEventStore eventStore, IAggregateRootSnapshotStore snapshotStore, Action<IEnumerable<Event>> eventDispatcher)
-            : this(eventStore, snapshotStore, eventDispatcher, DefaultFactory.Factory) { }
+            : this(eventStore, snapshotStore, eventDispatcher, EventSource.DefaultFactory.Factory) { }
         public AggregateRootRepository(IEventStore eventStore, IAggregateRootSnapshotStore snapshotStore, Action<IEnumerable<Event>> eventDispatcher, Func<Type, AggregateRoot> factory)
         {
             if (eventStore == null)
@@ -74,7 +69,7 @@ namespace System.Abstract.EventSourcing
             _snapshotStore = snapshotStore;
             _batchedSnapshotStore = (snapshotStore as IBatchedAggregateRootSnapshotStore);
             _eventDispatcher = eventDispatcher;
-            _factory = (factory ?? DefaultFactory.Factory);
+            _factory = (factory ?? EventSource.DefaultFactory.Factory);
         }
 
         public IEnumerable<Event> GetEventsById(object aggregateId)
@@ -104,7 +99,7 @@ namespace System.Abstract.EventSourcing
             }
             // load events
             var events = _eventStore.GetEventsById(aggregateId, (snapshot != null ? snapshot.LastEventSequence : 0));
-            loaded |= ((IAccessAggregateRootState)aggregate).LoadFromHistory(events);
+            loaded |= ((IAggregateRootStateAccessor)aggregate).LoadFromHistory(events);
             return ((queryOptions & AggregateRootQueryOptions.UseNullAggregates) == 0 ? aggregate : (loaded ? aggregate : null));
         }
 
@@ -120,7 +115,7 @@ namespace System.Abstract.EventSourcing
         {
             if (aggregate == null)
                 throw new ArgumentNullException("aggregate");
-            var accessAggregateState = (IAccessAggregateRootState)aggregate;
+            var accessAggregateState = (IAggregateRootStateAccessor)aggregate;
             var events = accessAggregateState.GetUncommittedChanges();
             _eventStore.SaveEvents(aggregate.AggregateId, events);
             if (_eventDispatcher != null)

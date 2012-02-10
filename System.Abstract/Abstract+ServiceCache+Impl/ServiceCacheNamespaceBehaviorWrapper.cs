@@ -27,14 +27,14 @@ using System.Collections.Generic;
 namespace System.Abstract
 {
     /// <summary>
-    /// ServiceCacheNamespaceBehavorWrapper
+    /// ServiceCacheNamespaceBehaviorWrapper
     /// </summary>
-    internal struct ServiceCacheNamespaceBehavorWrapper : IServiceCache
+    internal struct ServiceCacheNamespaceBehaviorWrapper : IServiceCache
     {
         private IServiceCache _parent;
         private string _namespace;
 
-        public ServiceCacheNamespaceBehavorWrapper(IServiceCache parent, string @namespace)
+        public ServiceCacheNamespaceBehaviorWrapper(IServiceCache parent, string @namespace)
         {
             if (parent == null)
                 throw new ArgumentNullException("parent");

@@ -23,19 +23,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-namespace System.Abstract.Configuration
+using System;
+using System.Abstract;
+using System.Abstract.EventSourcing;
+using Contoso.Abstract.EventSourcing;
+namespace Contoso.Abstract
 {
     /// <summary>
-    /// IServiceConfigurationExtensions
+    /// ISqlEventSource
     /// </summary>
-    public static partial class IServiceConfigurationExtensions
+    public interface ISqlEventSource : IEventSource { }
+
+    /// <summary>
+    /// SqlEventSource
+    /// </summary>
+    public class SqlEventSource : ISqlEventSource, EventSourceManager.ISetupRegistration
     {
-        public static void LoadFromConfiguration(this ServiceCacheManager.ISetupDescriptor descriptor, Lazy<IServiceCache> service, ServiceCacheConfiguration configuration)
+        private readonly string _connectionString;
+
+        static SqlEventSource() { ServiceBusManager.EnsureRegistration(); }
+        public SqlEventSource(string connectionString)
         {
-            if (service == null)
-                throw new ArgumentNullException("service");
-            if (configuration == null)
-                throw new ArgumentNullException("configuration");
+            _connectionString = connectionString;
         }
+
+        Action<IServiceLocator, string> EventSourceManager.ISetupRegistration.OnServiceRegistrar
+        {
+            get { return (locator, name) => EventSourceManager.RegisterInstance<ISqlEventSource>(this, locator, name); }
+        }
+
+        public object GetService(Type serviceType) { throw new NotImplementedException(); }
+
+        public IAggregateRootRepository MakeRepository() { return new AggregateRootRepository(new SqlEventStore(_connectionString), null); }
     }
 }

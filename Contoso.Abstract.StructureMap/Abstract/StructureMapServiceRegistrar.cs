@@ -44,7 +44,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// StructureMapServiceRegistrar
     /// </summary>
-    public class StructureMapServiceRegistrar : Registry, IStructureMapServiceRegistrar, IDisposable
+    public class StructureMapServiceRegistrar : Registry, IStructureMapServiceRegistrar, IDisposable, ICloneable, IServiceRegistrarBehaviorAccessor
     {
         private StructureMapServiceLocator _parent;
         private IContainer _container;
@@ -53,9 +53,11 @@ namespace Contoso.Abstract
         {
             _parent = parent;
             _container = container;
+            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
 
         public void Dispose() { }
+        object ICloneable.Clone() { return MemberwiseClone(); }
 
         public bool HasPendingRegistrations { get; private set; }
 
@@ -90,10 +92,7 @@ namespace Contoso.Abstract
         }
 
         // register type
-        public ServiceRegistrarLifetime LifetimeForRegisters
-        {
-            get { return ServiceRegistrarLifetime.Transient; }
-        }
+        public ServiceRegistrarLifetime LifetimeForRegisters { get; private set; }
         public void Register(Type serviceType) { SetLifetime(new GenericFamilyExpression(serviceType, this)).Use((Instance)new ConfiguredInstance(serviceType)); HasPendingRegistrations = true; }
         public void Register(Type serviceType, string name) { SetLifetime(new GenericFamilyExpression(serviceType, this)).Use((Instance)new ConfiguredInstance(serviceType) { Name = name }); HasPendingRegistrations = true; }
 
@@ -136,6 +135,16 @@ namespace Contoso.Abstract
         #region Domain extents
 
         public void RegisterAll<TService>() { Scan(scanner => scanner.AddAllTypesOf<TService>()); }
+
+        #endregion
+
+        #region Behavior
+
+        ServiceRegistrarLifetime IServiceRegistrarBehaviorAccessor.Lifetime
+        {
+            get { return LifetimeForRegisters; }
+            set { LifetimeForRegisters = value; }
+        }
 
         #endregion
 

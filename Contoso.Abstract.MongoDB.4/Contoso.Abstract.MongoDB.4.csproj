@@ -50,12 +50,6 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Contoso.Abstract.MongoDB\Abstract+EventSourcing\EventSourcing\MongoAggregateRootSnapshotStore.cs">
-      <Link>Abstract+EventSourcing\EventSourcing\MongoAggregateRootSnapshotStore.cs</Link>
-    </Compile>
-    <Compile Include="..\Contoso.Abstract.MongoDB\Abstract+EventSourcing\EventSourcing\MongoEventStore.cs">
-      <Link>Abstract+EventSourcing\EventSourcing\MongoEventStore.cs</Link>
-    </Compile>
     <Compile Include="..\Contoso.Abstract.MongoDB\Linq\EnumerableExtensions.cs">
       <Link>Linq\EnumerableExtensions.cs</Link>
     </Compile>
@@ -73,6 +67,9 @@
       <Project>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</Project>
       <Name>System.Abstract.4</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Abstract+EventSource\EventSourcing\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

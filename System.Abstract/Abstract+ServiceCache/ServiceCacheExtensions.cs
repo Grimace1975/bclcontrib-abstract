@@ -93,7 +93,7 @@ namespace System.Abstract
                 throw new ArgumentNullException("cache");
             if (@namespace == null)
                 throw new ArgumentNullException("@namespace");
-            return new ServiceCacheNamespaceBehavorWrapper(cache, @namespace);
+            return new ServiceCacheNamespaceBehaviorWrapper(cache, @namespace);
         }
         public static IServiceCache BehaveAs(this IServiceCache cache, IEnumerable<object> values, out string @namespace)
 		{
@@ -102,7 +102,7 @@ namespace System.Abstract
 			@namespace = ServiceCache.GetNamespace(values);
 			if (@namespace == null)
 				throw new ArgumentNullException("@values");
-			return new ServiceCacheNamespaceBehavorWrapper(cache, @namespace);
+			return new ServiceCacheNamespaceBehaviorWrapper(cache, @namespace);
 		}
 
         #endregion

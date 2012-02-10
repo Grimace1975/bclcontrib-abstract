@@ -26,7 +26,10 @@ THE SOFTWARE.
 namespace System.Abstract
 {
     /// <summary>
-    /// IWantToSkipServiceLocator
+    /// IServiceRegistrarBehaviorAccessor
     /// </summary>
-    public interface IWantToSkipServiceLocator { }
+    public interface IServiceRegistrarBehaviorAccessor
+    {
+        ServiceRegistrarLifetime Lifetime { get; set; }
+    }
 }

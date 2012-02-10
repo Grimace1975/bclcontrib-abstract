@@ -23,13 +23,39 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System.Abstract.Parts;
 namespace System.Abstract
 {
     /// <summary>
-    /// IServiceRegistrarBehavior
+    /// EventSourceManager
     /// </summary>
-    public interface IServiceRegistrarBehavior
+    public class EventSourceManager : ServiceManagerBase<IEventSource, Action<IEventSource>>
     {
-        ServiceRegistrarLifetime Lifetime { get; set; }
+        static EventSourceManager()
+        {
+            Registration = new SetupRegistration
+            {
+                OnSetup = (service, descriptor) =>
+                {
+                    if (descriptor != null)
+                        foreach (var action in descriptor.Actions)
+                            action(service);
+                    return service;
+                },
+            };
+        }
+
+        public static IEventSource Current
+        {
+            get
+            {
+                if (Lazy == null)
+                    throw new InvalidOperationException("Service undefined. Ensure SetProvider");
+                return Lazy.Value;
+            }
+        }
+
+        public static void EnsureRegistration() { }
+        public static ISetupDescriptor GetSetupDescriptor(Lazy<IEventSource> service) { return ProtectedGetSetupDescriptor(service, null); }
     }
 }

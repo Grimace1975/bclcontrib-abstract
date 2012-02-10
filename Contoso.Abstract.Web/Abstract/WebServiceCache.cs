@@ -24,15 +24,15 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-using System.Linq;
 using System.Abstract;
-using System.Web;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Hosting;
 using WebCache = System.Web.Caching.Cache;
 using WebCacheDependency = System.Web.Caching.CacheDependency;
 using WebCacheItemPriority = System.Web.Caching.CacheItemPriority;
 using WebCacheItemRemovedCallback = System.Web.Caching.CacheItemRemovedCallback;
-using WebCacheItemRemovedReason = System.Web.Caching.CacheItemRemovedReason;
 namespace Contoso.Abstract
 {
     /// <summary>
@@ -51,7 +51,7 @@ namespace Contoso.Abstract
         static WebServiceCache() { ServiceCacheManager.EnsureRegistration(); }
         public WebServiceCache()
         {
-            Cache = HttpRuntime.Cache;
+            Cache = (HttpRuntime.Cache ?? HostingEnvironment.Cache);
             Settings = new ServiceCacheSettings(new DefaultFileTouchableCacheItem(this, new DefaultTouchableCacheItem(this, null)));
         }
 

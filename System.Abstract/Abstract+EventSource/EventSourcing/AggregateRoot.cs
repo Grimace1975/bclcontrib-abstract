@@ -41,7 +41,7 @@ namespace System.Abstract.EventSourcing
     /// <summary>
     /// AggregateRoot
     /// </summary>
-	public abstract class AggregateRoot : IAggregateRoot, IAccessAggregateRootState
+	public abstract class AggregateRoot : IAggregateRoot, IAggregateRootStateAccessor
     {
         public static readonly IAggregateRootEventDispatcher EmptyEventDispatcher = new EmptyAggregateRootEventDispatcher();
         private readonly List<Event> _changes = new List<Event>();
@@ -96,7 +96,7 @@ namespace System.Abstract.EventSourcing
 
         #region Access State
 
-        bool IAccessAggregateRootState.LoadFromHistory(IEnumerable<Event> events)
+        bool IAggregateRootStateAccessor.LoadFromHistory(IEnumerable<Event> events)
         {
             if (events == null)
                 throw new ArgumentNullException("events");
@@ -119,12 +119,12 @@ namespace System.Abstract.EventSourcing
             return false;
         }
 
-        IEnumerable<Event> IAccessAggregateRootState.GetUncommittedChanges()
+        IEnumerable<Event> IAggregateRootStateAccessor.GetUncommittedChanges()
         {
             return _changes;
         }
 
-        void IAccessAggregateRootState.MarkChangesAsCommitted()
+        void IAggregateRootStateAccessor.MarkChangesAsCommitted()
         {
             _changes.Clear();
         }

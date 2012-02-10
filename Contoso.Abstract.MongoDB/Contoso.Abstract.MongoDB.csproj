@@ -52,8 +52,8 @@
   <ItemGroup>
     <Compile Include="Linq\EnumerableExtensions.cs" />
     <Compile Include="MongoBuilder.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\MongoEventStore.cs" />
-    <Compile Include="Abstract+EventSourcing\EventSourcing\MongoAggregateRootSnapshotStore.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\MongoEventStore.cs" />
+    <Compile Include="Abstract+EventSource\EventSourcing\MongoAggregateRootSnapshotStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

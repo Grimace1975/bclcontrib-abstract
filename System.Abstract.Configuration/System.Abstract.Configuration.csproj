@@ -38,18 +38,16 @@
     <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Abstract\Configuration+ServiceBus\IServiceConfigurationExtensions.cs" />
     <Compile Include="Abstract\Configuration+ServiceBus\ServiceBus\EndpointElementCollection+FromCoreEx.cs" />
     <Compile Include="Abstract\Configuration+ServiceBus\ServiceBus\EndpointElementCollection.cs" />
     <Compile Include="Abstract\Configuration+ServiceBus\ServiceBus\EndpointElement.cs" />
     <Compile Include="Abstract\Configuration+ServiceBus\ServiceBus\EndpointElement+FromCoreEx.cs" />
-    <Compile Include="Abstract\Configuration+ServiceCache\IServiceConfigurationExtensions.cs" />
-    <Compile Include="Abstract\Configuration+ServiceLocator\IServiceConfigurationExtensions.cs" />
-    <Compile Include="Abstract\Configuration+ServiceLog\IServiceConfigurationExtensions.cs" />
+    <Compile Include="Abstract\Configuration+EventSource\EventSourceConfiguration+FromCoreEx.cs" />
+    <Compile Include="Abstract\Configuration+EventSource\EventSourceConfiguration.cs" />
     <Compile Include="Patterns\ReleaseManagement\ReleaseManagementManager.cs" />
     <Compile Include="Patterns\ReleaseManagement\ReleaseManagementConfiguration.cs" />
     <Compile Include="Patterns\ReleaseManagement\ReleaseManagementConfiguration+FromCoreEx.cs" />
-    <Compile Include="Abstract\IServiceConfigurationExtensions.cs" />
+    <Compile Include="Abstract\ServiceConfigurationExtensions.cs" />
     <Compile Include="Abstract\Configuration+ServiceBus\ServiceBusConfiguration+FromCoreEx.cs" />
     <Compile Include="Abstract\Configuration+ServiceBus\ServiceBusConfiguration.cs" />
     <Compile Include="Abstract\Configuration+ServiceLocator\ServiceLocatorConfiguration+FromCoreEx.cs" />
@@ -73,6 +71,9 @@
       <Project>{A44E9D89-BFF2-41A4-AADC-3C2BDFDAEEB1}</Project>
       <Name>System.Abstract</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Abstract\Configuration+EventSource\EventSourcing\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

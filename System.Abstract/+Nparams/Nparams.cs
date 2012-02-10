@@ -32,7 +32,7 @@ namespace System
     /// </summary>
     public interface INparams : IDictionary<string, object>
     {
-        void AddRange(IDictionary<string, object> dictionary);
+        void AddRange(IDictionary<string, object> args);
         string[] ToStringArray();
         T Slice<T>(string key, T defaultValue);
     }
@@ -44,14 +44,45 @@ namespace System
     {
         internal INparams _base;
 
-        public static Nparams Parse(Nparams args) { return (args != null ? args : null); }
+        public static Nparams Create() { return NparamsManager.Create(); }
+        public static Nparams Parse(Nparams args) { return args; }
         public static Nparams Parse(IDictionary<string, object> args) { return (args != null ? NparamsManager.Parse(args) : null); }
-        public static Nparams Parse(string[] args) { return (args != null ? NparamsManager.Parse(args) : null); }
+        public static Nparams Parse(string[] args) { return (args != null && args.Length > 0 ? NparamsManager.Parse(args) : null); }
         public static Nparams Parse(object args) { return (args != null ? NparamsManager.Parse(args) : null); }
 
         public Nparams(INparams @base) { _base = @base; }
 
-        Collections.IEnumerator Collections.IEnumerable.GetEnumerator() { return _base.GetEnumerator(); }
-        public IEnumerator<KeyValuePair<string, object>> GetEnumerator() { return _base.GetEnumerator(); }
+        Collections.IEnumerator Collections.IEnumerable.GetEnumerator() { return (_base != null ? _base.GetEnumerator() : null); }
+        public IEnumerator<KeyValuePair<string, object>> GetEnumerator() { return (_base != null ? _base.GetEnumerator() : null); }
+
+        #region Properties
+
+        public int Count
+        {
+            get { return (_base != null ? _base.Count : 0); }
+        }
+
+        public bool IsReadOnly
+        {
+            get { return (_base != null ? _base.IsReadOnly : false); }
+        }
+
+        public object this[string key]
+        {
+            get { return (_base != null ? _base[key] : null); }
+            set { if (_base == null) throw new InvalidOperationException(); _base[key] = value; }
+        }
+
+        public ICollection<string> Keys
+        {
+            get { return (_base != null ? _base.Keys : null); }
+        }
+
+        public ICollection<object> Values
+        {
+            get { return (_base != null ? _base.Values : null); }
+        }
+
+        #endregion
     }
 }

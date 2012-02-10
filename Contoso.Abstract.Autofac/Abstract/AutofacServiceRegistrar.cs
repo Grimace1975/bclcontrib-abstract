@@ -40,7 +40,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// AutofacServiceRegistrar
     /// </summary>
-    public class AutofacServiceRegistrar : IAutofacServiceRegistrar, IDisposable
+    public class AutofacServiceRegistrar : IAutofacServiceRegistrar, IDisposable, ICloneable, IServiceRegistrarBehaviorAccessor
     {
         private AutofacServiceLocator _parent;
         private ContainerBuilder _builder;
@@ -51,9 +51,11 @@ namespace Contoso.Abstract
             _parent = parent;
             _builder = builder;
             containerBuilder = (() => _container = _builder.Build());
+            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
 
         public void Dispose() { }
+        object ICloneable.Clone() { return MemberwiseClone(); }
 
         // locator
         public IServiceLocator Locator
@@ -82,10 +84,7 @@ namespace Contoso.Abstract
         }
 
         // register type
-        public ServiceRegistrarLifetime LifetimeForRegisters
-        {
-            get { return ServiceRegistrarLifetime.Transient; }
-        }
+        public ServiceRegistrarLifetime LifetimeForRegisters { get; private set; }
         public void Register(Type serviceType)
         {
             SetLifestyle(_builder.RegisterType(serviceType));
@@ -229,6 +228,16 @@ namespace Contoso.Abstract
         {
             _builder.Update(_container);
             _builder = new ContainerBuilder();
+        }
+
+        #endregion
+
+        #region Behavior
+
+        ServiceRegistrarLifetime IServiceRegistrarBehaviorAccessor.Lifetime
+        {
+            get { return LifetimeForRegisters; }
+            set { LifetimeForRegisters = value; }
         }
 
         #endregion

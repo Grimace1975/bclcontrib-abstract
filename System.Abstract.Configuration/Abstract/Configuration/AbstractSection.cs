@@ -31,6 +31,12 @@ namespace System.Abstract.Configuration
     /// </summary>
     public partial class AbstractSection
     {
+        [ConfigurationProperty("eventSource", DefaultValue = null)]
+        public EventSourceConfiguration EventSource
+        {
+            get { return (EventSourceConfiguration)base["eventSource"]; }
+        }
+
         [ConfigurationProperty("serviceBus", DefaultValue = null)]
         public ServiceBusConfiguration ServiceBus
         {

@@ -61,7 +61,7 @@ namespace Contoso.Abstract.Mvc
         protected override IController GetControllerInstance(RequestContext requestContext, Type controllerType)
         {
             // skips and calls to base if controllerType = null, throw standard MVC exception
-            if (!ServiceLocatorManager.GetWantsToSkipLocator(controllerType))
+            if (!ServiceLocatorManager.HasIgnoreServiceLocator(controllerType))
             {
                 var controller = ServiceLocator.Resolve<IController>(controllerType);
                 var controllerAsController = (controller as Controller);
@@ -74,7 +74,7 @@ namespace Contoso.Abstract.Mvc
 
         public override void ReleaseController(IController controller)
         {
-            if (!ServiceLocatorManager.GetWantsToSkipLocator(controller))
+            if (!ServiceLocatorManager.HasIgnoreServiceLocator(controller))
             {
                 var disposable = (controller as IDisposable);
                 if (disposable != null)

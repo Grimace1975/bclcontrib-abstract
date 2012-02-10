@@ -38,7 +38,7 @@ namespace Contoso.Abstract
     /// </summary>
     public interface INinjectServiceRegistrar : IServiceRegistrar { }
 
-    public class NinjectServiceRegistrar : NinjectModule, INinjectServiceRegistrar, IDisposable
+    public class NinjectServiceRegistrar : NinjectModule, INinjectServiceRegistrar, IDisposable, ICloneable, IServiceRegistrarBehaviorAccessor
     {
         private NinjectServiceLocator _parent;
         private IKernel _container;
@@ -49,7 +49,10 @@ namespace Contoso.Abstract
             _parent = parent;
             _container = kernel;
             _container.Load(new INinjectModule[] { this });
+            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
+
+        object ICloneable.Clone() { return MemberwiseClone(); }
 
         // locator
         public IServiceLocator Locator
@@ -75,10 +78,7 @@ namespace Contoso.Abstract
         }
 
         // register type
-        public ServiceRegistrarLifetime LifetimeForRegisters
-        {
-            get { return ServiceRegistrarLifetime.Transient; }
-        }
+        public ServiceRegistrarLifetime LifetimeForRegisters { get; private set; }
         public void Register(Type serviceType) { Bind(serviceType).ToSelf(); }
         public void Register(Type serviceType, string name) { Bind(serviceType).ToSelf().Named(name); }
 
@@ -132,6 +132,16 @@ namespace Contoso.Abstract
         }
 
         //private string MakeId(Type serviceType, Type implementationType) { return serviceType.Name + "->" + implementationType.FullName; }
+
+        #endregion
+
+        #region Behavior
+
+        ServiceRegistrarLifetime IServiceRegistrarBehaviorAccessor.Lifetime
+        {
+            get { return LifetimeForRegisters; }
+            set { LifetimeForRegisters = value; }
+        }
 
         #endregion
 

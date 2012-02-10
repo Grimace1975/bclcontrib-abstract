@@ -23,19 +23,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-namespace System.Abstract.Configuration
+namespace System.Abstract
 {
     /// <summary>
-    /// IServiceConfigurationExtensions
+    /// IIgnoreServiceLocator
     /// </summary>
-    public static partial class IServiceConfigurationExtensions
-    {
-        public static void LoadFromConfiguration(this ServiceLogManager.ISetupDescriptor descriptor, Lazy<IServiceLog> service, ServiceLogConfiguration configuration)
-        {
-            if (service == null)
-                throw new ArgumentNullException("service");
-            if (configuration == null)
-                throw new ArgumentNullException("configuration");
-        }
-    }
+    public interface IIgnoreServiceLocator { }
 }

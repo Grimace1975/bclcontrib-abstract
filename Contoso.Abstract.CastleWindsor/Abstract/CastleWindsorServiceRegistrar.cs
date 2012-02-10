@@ -44,7 +44,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// CastleWindsorServiceRegistrar
     /// </summary>
-    public class CastleWindsorServiceRegistrar : ICastleWindsorServiceRegistrar, IDisposable
+    public class CastleWindsorServiceRegistrar : ICastleWindsorServiceRegistrar, IDisposable, ICloneable, IServiceRegistrarBehaviorAccessor
     {
         private CastleWindsorServiceLocator _parent;
         private IWindsorContainer _container;
@@ -53,9 +53,11 @@ namespace Contoso.Abstract
         {
             _parent = parent;
             _container = container;
+            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
 
         public void Dispose() { }
+        object ICloneable.Clone() { return MemberwiseClone(); }
 
         // locator
         public IServiceLocator Locator
@@ -81,10 +83,7 @@ namespace Contoso.Abstract
         }
 
         // register type
-        public ServiceRegistrarLifetime LifetimeForRegisters
-        {
-            get { return ServiceRegistrarLifetime.Transient; }
-        }
+        public ServiceRegistrarLifetime LifetimeForRegisters { get; private set; }
         public void Register(Type serviceType) { _container.Register(Component.For(serviceType).LifeStyle.Is(GetLifetime())); }
         public void Register(Type serviceType, string name) { _container.Register(Component.For(serviceType).Named(name).LifeStyle.Is(GetLifetime())); }
 
@@ -133,6 +132,16 @@ namespace Contoso.Abstract
 
         //public void RegisterAll<TService>() { AllTypes.Of<TService>(); }
         //private static string MakeId(Type serviceType, Type implementationType) { return serviceType.Name + "->" + implementationType.FullName; }
+
+        #endregion
+
+        #region Behavior
+
+        ServiceRegistrarLifetime IServiceRegistrarBehaviorAccessor.Lifetime
+        {
+            get { return LifetimeForRegisters; }
+            set { LifetimeForRegisters = value; }
+        }
 
         #endregion
 
