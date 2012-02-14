@@ -25,6 +25,8 @@ THE SOFTWARE.
 #endregion
 using System.Abstract.Parts;
 using Contoso.Abstract;
+using System.Reflection;
+using System.Text;
 namespace System.Abstract
 {
     /// <summary>
@@ -58,7 +60,16 @@ namespace System.Abstract
             {
                 if (Lazy == null)
                     throw new InvalidOperationException("Service undefined. Ensure SetProvider");
-                return Lazy.Value;
+                if (Lazy.IsValueCreated)
+                    return Lazy.Value;
+                try { return Lazy.Value; }
+                catch (ReflectionTypeLoadException ex)
+                {
+                    var b = new StringBuilder();
+                    foreach (var ex2 in ex.LoaderExceptions)
+                        b.AppendLine(ex2.Message);
+                    throw new Exception(b.ToString(), ex);
+                }
             }
         }
 
