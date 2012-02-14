@@ -46,13 +46,19 @@ namespace Contoso.Abstract
         }
 
         public AssemblyResourcePathProvider(Assembly assembly, Func<string, string> selector)
+            : this("/", assembly, selector) { }
+        public AssemblyResourcePathProvider(string path, Assembly assembly, Func<string, string> selector)
         {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
+            if (!path.StartsWith("/"))
+                throw new ArgumentOutOfRangeException("path", path, "Must start with /");
             if (assembly == null)
                 throw new ArgumentNullException("assembly");
             _assembly = assembly;
             _assemblyFiles = _assembly.GetManifestResourceNames()
-                .Select(x => new File(x, selector(x)))
-                .Where(x => !string.IsNullOrEmpty(x.Path))
+                .Select(x => { var newPath = selector(x); return (!string.IsNullOrEmpty(newPath) ? new File(x, path + newPath) : new File(null, null)); })
+                .Where(x => x.Path != null)
                 .ToDictionary(x => x.Path);
         }
 
