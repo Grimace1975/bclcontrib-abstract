@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /*
 The MIT License
 
@@ -23,27 +23,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-#if xEXPERIMENTAL
-namespace System.Abstract
+namespace System
 {
-    /// <summary>
-    /// ITypeCatalog
-    /// </summary>
-    public interface ITypeCatalog
-    {
-        Type[] GetDerivedTypes(Type type, bool concretable);
-        Type[] GetInterfaceImplementations(Type type, bool concretable);
-        Type[] GetGenericInterfaceImplementations(Type type, bool concretable);
-    }
-
-    /// <summary>
-    /// ITypeCatalogExtensions
-    /// </summary>
-    public static class ITypeCatalogExtensions
-    {
-        public static Type[] GetDerivedTypes<T>(this ITypeCatalog typeCatalog, bool concretable) { return typeCatalog.GetDerivedTypes(typeof(T), concretable); }
-        public static Type[] GetInterfaceImplementations<T>(this ITypeCatalog typeCatalog, bool concretable) { return typeCatalog.GetInterfaceImplementations(typeof(T), concretable); }
-        public static Type[] GetGenericInterfaceImplementations<T>(this ITypeCatalog typeCatalog, bool concretable) { return typeCatalog.GetGenericInterfaceImplementations(typeof(T), concretable); }
-    }
+	/// <summary>
+    /// DevelopmentStage
+	/// </summary>
+	// [Wiki] http://en.wikipedia.org/wiki/Software_release_life_cycle
+	public enum DevelopmentStage
+	{
+		PreAlpha,
+		Alpha,
+		Beta,
+		Release,
+	}
 }
-#endif

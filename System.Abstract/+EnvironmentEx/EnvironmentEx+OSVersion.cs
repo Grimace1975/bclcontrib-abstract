@@ -26,64 +26,64 @@ THE SOFTWARE.
 using System.Runtime.InteropServices;
 namespace System
 {
-	public static partial class EnvironmentEx
-	{
-		private static OperatingSystemEx _osVersionEx;
-		[ThreadStatic]
-		private static OperatingSystemEx _osVersionExMock;
+    public static partial class EnvironmentEx
+    {
+        private static OperatingSystemEx _osVersionEx;
+        [ThreadStatic]
+        private static OperatingSystemEx _osVersionExMock;
 
-		public static OperatingSystemEx OSVersionExMock
-		{
-			get { return _osVersionExMock; }
-			set { _osVersionExMock = value; }
-		}
+        public static OperatingSystemEx OSVersionExMock
+        {
+            get { return _osVersionExMock; }
+            set { _osVersionExMock = value; }
+        }
 
-		public static OperatingSystemEx OSVersionEx
-		{
-			get { return (_osVersionExMock == null ? GetOSVersionEx() : _osVersionExMock); }
-		}
+        public static OperatingSystemEx OSVersionEx
+        {
+            get { return (_osVersionExMock == null ? GetOSVersionEx() : _osVersionExMock); }
+        }
 
-		private static OperatingSystemEx GetOSVersionEx()
-		{
-			if (_osVersionEx != null)
-				return _osVersionEx;
-			var osvi = new OSVersionInfoEx { OSVersionInfoSize = (uint)Marshal.SizeOf(typeof(OSVersionInfoEx)) };
-			GetVersionEx(osvi);
-			var suiteMask = osvi.SuiteMask;
-			var productType = osvi.ProductType;
-			return new OperatingSystemEx(Environment.OSVersion)
-			{
-				PlatformSuites = (PlatformSuites)suiteMask,
-				PlatformProductID = (PlatformProductID)productType,
-			};
-		}
+        private static OperatingSystemEx GetOSVersionEx()
+        {
+            if (_osVersionEx != null)
+                return _osVersionEx;
+            var osvi = new OSVersionInfoEx { OSVersionInfoSize = (uint)Marshal.SizeOf(typeof(OSVersionInfoEx)) };
+            GetVersionEx(osvi);
+            var suiteMask = osvi.SuiteMask;
+            var productType = osvi.ProductType;
+            return _osVersionEx = new OperatingSystemEx(Environment.OSVersion)
+            {
+                PlatformSuites = (PlatformSuites)suiteMask,
+                PlatformProductID = (PlatformProductID)productType,
+            };
+        }
 
-		#region Native
+        #region Native
 
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		private class OSVersionInfo
-		{
-			public uint OSVersionInfoSize = ((uint)Marshal.SizeOf(typeof(OSVersionInfo)));
-			public uint MajorVersion;
-			public uint MinorVersion;
-			public uint BuildNumber;
-			public uint PlatformId;
-			[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x80)]
-			public string CSDVersion;
-		}
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        private class OSVersionInfo
+        {
+            public uint OSVersionInfoSize = ((uint)Marshal.SizeOf(typeof(OSVersionInfo)));
+            public uint MajorVersion;
+            public uint MinorVersion;
+            public uint BuildNumber;
+            public uint PlatformId;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x80)]
+            public string CSDVersion;
+        }
 
-		[StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-		private class OSVersionInfoEx : OSVersionInfo
-		{
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
+        private class OSVersionInfoEx : OSVersionInfo
+        {
 
-			public ushort SuiteMask;
-			public byte ProductType;
-			public byte Reserved;
-		}
+            public ushort SuiteMask;
+            public byte ProductType;
+            public byte Reserved;
+        }
 
-		[DllImport("Kernel32", CharSet = CharSet.Auto)]
-		private static extern bool GetVersionEx([In, Out] OSVersionInfo versionInformation);
+        [DllImport("Kernel32", CharSet = CharSet.Auto)]
+        private static extern bool GetVersionEx([In, Out] OSVersionInfo versionInformation);
 
-		#endregion
-	}
+        #endregion
+    }
 }

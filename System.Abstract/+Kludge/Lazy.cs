@@ -140,7 +140,7 @@ namespace System
         public bool IsValueCreated
         {
             //[TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")]
-            get { return ((_boxed != null) && (_boxed is Boxed)); }
+            get { return (_boxed != null && _boxed is Boxed); }
         }
 
         internal bool IsValueFaulted

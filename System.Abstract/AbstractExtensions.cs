@@ -23,12 +23,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-namespace System.Patterns.ReleaseManagement
+namespace System
 {
     /// <summary>
-	/// ReleaseManagementExtensions
+    /// AbstractExtensions
     /// </summary>
-	public static class ReleaseManagementExtensions
+    public static class AbstractExtensions
     {
         public static string ToShortName(this DeploymentEnvironment environment)
         {
@@ -46,7 +46,7 @@ namespace System.Patterns.ReleaseManagement
 
         public static bool IsExternalDeployment(this DeploymentEnvironment environment)
         {
-            return ((environment == DeploymentEnvironment.Production) || (environment == DeploymentEnvironment.BetaTesting));
+            return (environment == DeploymentEnvironment.Production || environment == DeploymentEnvironment.BetaTesting);
         }
 
         public static string ToCode(this DeploymentEnvironment environment)
