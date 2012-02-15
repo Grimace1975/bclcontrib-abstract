@@ -72,6 +72,12 @@
     <Compile Include="..\+fromcoreex\reflection\AssemblyExtensions.cs">
       <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\+EnvironmentEx\DeploymentEnvironment.cs">
+      <Link>+EnvironmentEx\DeploymentEnvironment.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\+EnvironmentEx\DevelopmentStage.cs">
+      <Link>+EnvironmentEx\DevelopmentStage.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\+EnvironmentEx\EnvironmentEx+OSVersion.cs">
       <Link>+EnvironmentEx\EnvironmentEx+OSVersion.cs</Link>
     </Compile>
@@ -351,6 +357,9 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceLog\ServiceLogExtensions.cs">
       <Link>Abstract+ServiceLog\ServiceLogExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\AbstractExtensions.cs">
+      <Link>AbstractExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract\Parts+TypeGrapher+Impl\BuildManagerTypeCache.cs">
       <Link>Abstract\Parts+TypeGrapher+Impl\BuildManagerTypeCache.cs</Link>
     </Compile>
@@ -452,15 +461,6 @@
     </Compile>
     <Compile Include="..\System.Abstract\Local.Designer.cs">
       <Link>Local.Designer.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Patterns\ReleaseManagement\DeploymentEnvironment.cs">
-      <Link>Patterns\ReleaseManagement\DeploymentEnvironment.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Patterns\ReleaseManagement\DevelopmentStage.cs">
-      <Link>Patterns\ReleaseManagement\DevelopmentStage.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\Patterns\ReleaseManagement\ReleaseManagementExtensions.cs">
-      <Link>Patterns\ReleaseManagement\ReleaseManagementExtensions.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

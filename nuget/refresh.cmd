@@ -300,4 +300,4 @@ set SRC=..\..\lib\ServerAppFabric.Client
 xcopy %SRC%\* lib\ /Y/Q
 popd
 
-pause
+::pause

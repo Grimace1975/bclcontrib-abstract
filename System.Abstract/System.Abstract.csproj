@@ -166,7 +166,6 @@
     <Compile Include="Abstract+EventSource\EventSourcing\IAggregateRootStateAccessor.cs" />
     <Compile Include="+Nparams\ParamObject.cs" />
     <Compile Include="+Nparams\Nparams.cs" />
-    <Compile Include="_Unsorted_\NewAttrib.cs" />
     <Compile Include="Abstract+ServiceBus\AggregateServiceMessage.cs" />
     <Compile Include="Abstract+ServiceBus\IServiceMessageHandlerFactory.cs" />
     <Compile Include="Abstract+ServiceBus\LiteralServiceBusEndpoint.cs" />
@@ -205,9 +204,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Patterns\ReleaseManagement\ReleaseManagementExtensions.cs" />
-    <Compile Include="Patterns\ReleaseManagement\DeploymentEnvironment.cs" />
-    <Compile Include="Patterns\ReleaseManagement\DevelopmentStage.cs" />
+    <Compile Include="AbstractExtensions.cs" />
+    <Compile Include="+EnvironmentEx\DeploymentEnvironment.cs" />
+    <Compile Include="+EnvironmentEx\DevelopmentStage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Abstract\ServiceDependencyAttribute.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceLocator.cs" />
@@ -215,9 +214,7 @@
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocatorManager.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceLocatorResolutionException.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceRegistration.cs" />
-    <Compile Include="_Unsorted_\AssemblyTypeCatalog.cs" />
     <Compile Include="Abstract\Parts+TypeSerializer\ITypeSerializer.cs" />
-    <Compile Include="_Unsorted_\ITypeCatalog.cs" />
     <Compile Include="+Kludge\System_LazyDebugView.cs" />
     <Compile Include="+Kludge\Threading\LazyThreadSafetyMode.cs" />
   </ItemGroup>
