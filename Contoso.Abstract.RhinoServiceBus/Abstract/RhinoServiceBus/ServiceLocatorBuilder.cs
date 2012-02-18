@@ -148,7 +148,8 @@ namespace Contoso.Abstract.RhinoServiceBus
 
         public void WithInterceptor(IConsumerInterceptor interceptor)
         {
-            _registrar.RegisterInterceptor(new ConsumerInterceptorAdapter(interceptor));
+            try { _registrar.RegisterInterceptor(new ConsumerInterceptorAdapter(interceptor)); }
+            catch { }
         }
     }
 }

@@ -243,15 +243,15 @@ xcopy %SRC%.4\bin\Release\Contoso.Abstract.StructureMap.xml lib\NET40\ /Y/Q
 popd
 
 ::
-echo Abstract.TypeSerializer
-pushd BclContrib-Abstract.TypeSerializer
-set SRC=..\..\Contoso.Abstract.TypeSerializer
-xcopy %SRC%\Changelog.txt . /Y/Q
-xcopy %SRC%\bin\Release\Contoso.Abstract.TypeSerializer.dll lib\NET35\ /Y/Q
-xcopy %SRC%\bin\Release\Contoso.Abstract.TypeSerializer.xml lib\NET35\ /Y/Q
-xcopy %SRC%.4\bin\Release\Contoso.Abstract.TypeSerializer.dll lib\NET40\ /Y/Q
-xcopy %SRC%.4\bin\Release\Contoso.Abstract.TypeSerializer.xml lib\NET40\ /Y/Q
-popd
+::echo Abstract.TypeSerializer
+::pushd BclContrib-Abstract.TypeSerializer
+::set SRC=..\..\Contoso.Abstract.TypeSerializer
+::xcopy %SRC%\Changelog.txt . /Y/Q
+::xcopy %SRC%\bin\Release\Contoso.Abstract.TypeSerializer.dll lib\NET35\ /Y/Q
+::xcopy %SRC%\bin\Release\Contoso.Abstract.TypeSerializer.xml lib\NET35\ /Y/Q
+::xcopy %SRC%.4\bin\Release\Contoso.Abstract.TypeSerializer.dll lib\NET40\ /Y/Q
+::xcopy %SRC%.4\bin\Release\Contoso.Abstract.TypeSerializer.xml lib\NET40\ /Y/Q
+::popd
 
 ::
 echo Abstract.Unity
