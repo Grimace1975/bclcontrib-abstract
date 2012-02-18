@@ -12,6 +12,8 @@
     <AssemblyName>System.Abstract</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,6 +44,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
@@ -378,8 +381,17 @@
     <Compile Include="..\System.Abstract\Abstract\Parts+TypeGrapher\ITypeCacheSerializer.cs">
       <Link>Abstract\Parts+TypeGrapher\ITypeCacheSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract\Parts+TypeSerializer\BinaryTypeSerializer.cs">
+      <Link>Abstract\Parts+TypeSerializer\BinaryTypeSerializer.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract\Parts+TypeSerializer\ITypeSerializer.cs">
       <Link>Abstract\Parts+TypeSerializer\ITypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract\Parts+TypeSerializer\WcfTypeSerializer.cs">
+      <Link>Abstract\Parts+TypeSerializer\WcfTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract\Parts+TypeSerializer\XmlTypeSerializer.cs">
+      <Link>Abstract\Parts+TypeSerializer\XmlTypeSerializer.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract\Parts\ServiceManagerBase.cs">
       <Link>Abstract\Parts\ServiceManagerBase.cs</Link>

@@ -24,13 +24,12 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-using System.Linq;
-using System.IO;
-using System.Web.Compilation;
 using System.Abstract.Parts;
-using System.Collections;
-using System.Reflection;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Web.Compilation;
 namespace Contoso.Abstract.Parts
 {
     /// <summary>

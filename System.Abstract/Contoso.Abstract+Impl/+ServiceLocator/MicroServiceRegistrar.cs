@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Abstract;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Linq;
+using Trampoline = Contoso.Abstract.MicroServiceLocator.Trampoline;
 namespace Contoso.Abstract
 {
     /// <summary>
@@ -16,12 +16,13 @@ namespace Contoso.Abstract
     internal class MicroServiceRegistrar : IMicroServiceRegistrar, ICloneable, IServiceRegistrarBehaviorAccessor
     {
         private MicroServiceLocator _parent;
-        private IDictionary<string, IDictionary<Type, object>> _container;
+        private IDictionary<string, IDictionary<Type, object>> _containers;
+        //private IList<IServiceLocatorInterceptor> _interceptors;
 
         public MicroServiceRegistrar(MicroServiceLocator parent, IDictionary<string, IDictionary<Type, object>> container)
         {
             _parent = parent;
-            _container = container;
+            _containers = container;
             LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
 
@@ -35,10 +36,10 @@ namespace Contoso.Abstract
 
         // enumerate
         public bool HasRegistered<TService>() { return HasRegistered(typeof(TService)); }
-        public bool HasRegistered(Type serviceType) { return _container.Any(x => x.Value.Any(y => y.Key == serviceType)); }
+        public bool HasRegistered(Type serviceType) { return _containers.Any(x => x.Value.Any(y => y.Key == serviceType)); }
         public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType)
         {
-            return _container.SelectMany(x => x.Value, (a, b) => new { Name = a.Key, Services = b })
+            return _containers.SelectMany(x => x.Value, (a, b) => new { Name = a.Key, Services = b })
                 .Where(x => serviceType.IsAssignableFrom(x.Services.Key))
                 .Select(x => new ServiceRegistration { ServiceType = x.Services.Key, ImplementationType = x.Services.Value.GetType(), Name = x.Name });
         }
@@ -46,36 +47,31 @@ namespace Contoso.Abstract
         {
             get
             {
-                return _container.SelectMany(x => x.Value, (a, b) => new { Name = a.Key, Services = b })
+                return _containers.SelectMany(x => x.Value, (a, b) => new { Name = a.Key, Services = b })
                     .Select(x => new ServiceRegistration { ServiceType = x.Services.Key, ImplementationType = x.Services.Value.GetType(), Name = x.Name });
             }
         }
 
         // register type
         public ServiceRegistrarLifetime LifetimeForRegisters { get; private set; }
-        public void Register(Type serviceType) { EnsureTransientLifestyle(); RegisterInternal(serviceType, new MicroServiceLocator.Trampoline { Type = serviceType }, string.Empty); }
-        public void Register(Type serviceType, string name) { EnsureTransientLifestyle(); RegisterInternal(serviceType, new MicroServiceLocator.Trampoline { Type = serviceType }, name); }
+        public void Register(Type serviceType) { RegisterInternal(serviceType, SetLifestyle(new Trampoline { Type = serviceType }), string.Empty); }
+        public void Register(Type serviceType, string name) { RegisterInternal(serviceType, SetLifestyle(new Trampoline { Type = serviceType }), name); }
+
 
         // register implementation
         public void Register<TService, TImplementation>()
             where TService : class
-            where TImplementation : class, TService { EnsureTransientLifestyle(); RegisterInternal(typeof(TService), new MicroServiceLocator.Trampoline { Type = typeof(TImplementation) }, string.Empty); }
+            where TImplementation : class, TService { RegisterInternal(typeof(TService), SetLifestyle(new Trampoline { Type = typeof(TImplementation) }), string.Empty); }
         public void Register<TService, TImplementation>(string name)
             where TService : class
-            where TImplementation : class, TService { EnsureTransientLifestyle(); RegisterInternal(typeof(TService), new MicroServiceLocator.Trampoline { Type = typeof(TImplementation) }, name); }
+            where TImplementation : class, TService { RegisterInternal(typeof(TService), SetLifestyle(new Trampoline { Type = typeof(TImplementation) }), name); }
         public void Register<TService>(Type implementationType)
-           where TService : class { RegisterInternal(typeof(TService), new MicroServiceLocator.Trampoline { Type = implementationType }, string.Empty); }
+           where TService : class { RegisterInternal(typeof(TService), SetLifestyle(new Trampoline { Type = implementationType }), string.Empty); }
         public void Register<TService>(Type implementationType, string name)
-           where TService : class { EnsureTransientLifestyle(); RegisterInternal(typeof(TService), new MicroServiceLocator.Trampoline { Type = implementationType }, name); }
-        public void Register(Type serviceType, Type implementationType) { EnsureTransientLifestyle(); RegisterInternal(serviceType, new MicroServiceLocator.Trampoline { Type = implementationType }, string.Empty); }
-        public void Register(Type serviceType, Type implementationType, string name) { EnsureTransientLifestyle(); RegisterInternal(serviceType, new MicroServiceLocator.Trampoline { Type = implementationType }, name); }
-        private void RegisterInternal(Type serviceType, object concrete, string name)
-        {
-            IDictionary<Type, object> singleContainer;
-            if (!_container.TryGetValue(name, out singleContainer))
-                _container[name] = singleContainer = new Dictionary<Type, object>();
-            singleContainer[serviceType] = concrete;
-        }
+           where TService : class { RegisterInternal(typeof(TService), SetLifestyle(new Trampoline { Type = implementationType }), name); }
+        public void Register(Type serviceType, Type implementationType) { RegisterInternal(serviceType, SetLifestyle(new Trampoline { Type = implementationType }), string.Empty); }
+        public void Register(Type serviceType, Type implementationType, string name) { RegisterInternal(serviceType, SetLifestyle(new Trampoline { Type = implementationType }), name); }
+
 
         // register instance
         public void RegisterInstance<TService>(TService instance)
@@ -87,14 +83,20 @@ namespace Contoso.Abstract
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
-            where TService : class { EnsureTransientLifestyle(); RegisterInternal(typeof(TService), (Func<IServiceLocator, object>)(l => factoryMethod(l)), string.Empty); }
+            where TService : class { RegisterInternal(typeof(TService), SetLifestyle(new Trampoline { Factory = l => factoryMethod(l) }), string.Empty); }
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
-            where TService : class { EnsureTransientLifestyle(); RegisterInternal(typeof(TService), (Func<IServiceLocator, object>)(l => factoryMethod(l)), name); }
-        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { EnsureTransientLifestyle(); RegisterInternal(serviceType, (Func<IServiceLocator, object>)(l => factoryMethod(l)), string.Empty); }
-        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { EnsureTransientLifestyle(); RegisterInternal(serviceType, (Func<IServiceLocator, object>)(l => factoryMethod(l)), name); }
+            where TService : class { RegisterInternal(typeof(TService), SetLifestyle(new Trampoline { Factory = l => factoryMethod(l) }), name); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { RegisterInternal(serviceType, SetLifestyle(new Trampoline { Factory = l => factoryMethod(l) }), string.Empty); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { RegisterInternal(serviceType, SetLifestyle(new Trampoline { Factory = l => factoryMethod(l) }), name); }
 
         // interceptor
-        public void RegisterInterceptor(IServiceLocatorInterceptor interceptor) { throw new NotSupportedException(); }
+        public void RegisterInterceptor(IServiceLocatorInterceptor interceptor)
+        {
+            throw new NotSupportedException();
+            //if (_interceptors == null)
+            //    _interceptors = new List<IServiceLocatorInterceptor>();
+            //_interceptors.Add(interceptor);
+        }
 
         #region Behavior
 
@@ -106,10 +108,30 @@ namespace Contoso.Abstract
 
         #endregion
 
+        private void RegisterInternal(Type serviceType, object concrete, string name)
+        {
+            IDictionary<Type, object> container;
+            if (!_containers.TryGetValue(name ?? string.Empty, out container))
+                _containers[name ?? string.Empty] = container = new Dictionary<Type, object>();
+            container[serviceType] = concrete;
+        }
+
         private void EnsureTransientLifestyle()
         {
             if (LifetimeForRegisters != ServiceRegistrarLifetime.Transient)
                 throw new NotSupportedException();
+        }
+
+        private Trampoline SetLifestyle(Trampoline t)
+        {
+            // must cast to IServiceRegistrar for behavior wrappers
+            switch (LifetimeForRegisters)
+            {
+                case ServiceRegistrarLifetime.Transient: break; // b.InstancePerDependency();
+                case ServiceRegistrarLifetime.Singleton: t.AsSingleton = true; break;
+                default: throw new NotSupportedException();
+            }
+            return t;
         }
     }
 }

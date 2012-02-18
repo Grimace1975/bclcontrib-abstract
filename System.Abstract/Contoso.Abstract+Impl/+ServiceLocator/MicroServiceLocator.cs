@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Abstract;
 using System.Collections.Generic;
-using System.Reflection;
+using System.Linq;
 namespace Contoso.Abstract
 {
     /// <summary>
@@ -18,11 +17,11 @@ namespace Contoso.Abstract
     /// </summary>
     public class MicroServiceLocator : IMicroServiceLocator, ServiceLocatorManager.ISetupRegistration
     {
-        private IDictionary<string, IDictionary<Type, object>> _container;
+        private IDictionary<string, IDictionary<Type, object>> _containers;
         private MicroServiceRegistrar _registrar;
 
         // used so Type is not a reserved value
-        internal class Trampoline { public Type Type; }
+        internal class Trampoline { public bool AsSingleton; public Type Type; public Func<IServiceLocator, object> Factory; }
 
         static MicroServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
         public MicroServiceLocator()
@@ -50,7 +49,7 @@ namespace Contoso.Abstract
         public object GetService(Type serviceType) { return Resolve(serviceType); }
 
         public TContainer GetUnderlyingContainer<TContainer>()
-            where TContainer : class { return (_container as TContainer); }
+            where TContainer : class { return (_containers as TContainer); }
 
         // registrar
         public IServiceRegistrar Registrar
@@ -69,12 +68,16 @@ namespace Contoso.Abstract
             try
             {
                 IDictionary<Type, object> container;
-                if (!_container.TryGetValue(name ?? string.Empty, out container))
+                if (!_containers.TryGetValue(name ?? string.Empty, out container))
                     throw new ArgumentOutOfRangeException(string.Format("Could not resolve implementation for [{0}-{1}]", name ?? "+", serviceType.ToString()));
                 // if not registered, then use requested type
                 object concrete;
                 if (!container.TryGetValue(serviceType, out concrete))
+                {
+                    if (serviceType.IsInterface)
+                        throw new ArgumentOutOfRangeException(string.Format("Anonymous registrations for [{0}-{1}] can not be an interface.", name ?? "+", serviceType.ToString()));
                     concrete = new Trampoline { Type = serviceType };
+                }
                 // register as null for default constructor
                 if (concrete == null)
                     return Activator.CreateInstance(serviceType);
@@ -82,25 +85,35 @@ namespace Contoso.Abstract
                 var factory = (concrete as Func<IServiceLocator, object>);
                 if (factory != null)
                     return factory(this);
-                // try type, then register as factory
-                var concreteAsTrampoline = (concrete as Trampoline);
-                if (concreteAsTrampoline != null)
+                // try trampoline, then register as factory|singleton
+                var trampoline = (concrete as Trampoline);
+                if (trampoline != null)
                 {
-                    var concreteAsType = concreteAsTrampoline.Type;
-                    var constructorInfo = concreteAsType.GetConstructors()
-                        .FirstOrDefault(constructor => constructor.GetParameters().Length > 0);
-                    if (constructorInfo == null)
-                        container[serviceType] = factory = (l => Activator.CreateInstance(concreteAsType));
-                    else
+                    var trampolineAsType = trampoline.Type;
+                    if (trampolineAsType != null)
                     {
-                        var args = constructorInfo.GetParameters()
-                            .Select(arg => Resolve(arg.ParameterType))
-                            .ToArray();
-                        container[serviceType] = factory = (l => Activator.CreateInstance(concreteAsType, args));
+                        if (!trampolineAsType.IsInterface)
+                        {
+                            var constructorInfo = trampolineAsType.GetConstructors()
+                                .FirstOrDefault(constructor => constructor.GetParameters().Length > 0);
+                            if (constructorInfo == null)
+                                factory = l => Activator.CreateInstance(trampolineAsType);
+                            else
+                            {
+                                var args = constructorInfo.GetParameters()
+                                    .Select(arg => Resolve(arg.ParameterType))
+                                    .ToArray();
+                                factory = l => Activator.CreateInstance(trampolineAsType, args);
+                            }
+                        }
+                        else
+                            factory = l => Resolve(trampolineAsType, name);
                     }
-                    return factory(this);
+                    else if ((factory = trampoline.Factory) == null)
+                        throw new InvalidOperationException();
+                    concrete = factory(this);
+                    container[serviceType] = (!trampoline.AsSingleton ? factory : concrete);
                 }
-                // other wise was registered as an instance
                 return concrete;
             }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
@@ -110,7 +123,7 @@ namespace Contoso.Abstract
             where TService : class { return ResolveAll(typeof(TService)).Cast<TService>(); }
         public IEnumerable<object> ResolveAll(Type serviceType)
         {
-            var items = _container.SelectMany(x => x.Value, (a, b) => new { Name = a.Key, Services = b })
+            var items = _containers.SelectMany(x => x.Value, (a, b) => new { Name = a.Key, Services = b })
                 .Where(x => x.Services.Key == serviceType)
                 .Select(x => new { ServiceType = x.Services.Key, x.Name })
                 .ToList();
@@ -133,10 +146,10 @@ namespace Contoso.Abstract
 
         public IDictionary<string, IDictionary<Type, object>> Container
         {
-            get { return _container; }
+            get { return _containers; }
             private set
             {
-                _container = value;
+                _containers = value;
                 _registrar = new MicroServiceRegistrar(this, value);
             }
         }

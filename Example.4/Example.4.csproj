@@ -130,10 +130,6 @@
       <Project>{C8B19127-C82E-45C5-8A6D-DA22AE9C8A7B}</Project>
       <Name>Contoso.Abstract.StructureMap.4</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.TypeSerializer.4\Contoso.Abstract.TypeSerializer.4.csproj">
-      <Project>{4B9E4DED-536A-450E-9B34-53383D3D1BFC}</Project>
-      <Name>Contoso.Abstract.TypeSerializer.4</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Contoso.Abstract.Unity.4\Contoso.Abstract.Unity.4.csproj">
       <Project>{D8273634-E428-474A-98EB-4D9374F782A2}</Project>
       <Name>Contoso.Abstract.Unity.4</Name>
