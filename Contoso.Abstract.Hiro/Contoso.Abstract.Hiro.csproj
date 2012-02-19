@@ -36,7 +36,7 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Hiro">
@@ -62,7 +62,7 @@
     <Content Include="Changelog.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BclContrib.snk" />
+    <None Include="BclEx.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

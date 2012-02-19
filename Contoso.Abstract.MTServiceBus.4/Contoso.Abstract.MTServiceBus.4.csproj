@@ -34,7 +34,7 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
@@ -82,7 +82,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BclContrib.snk" />
+    <None Include="BclEx.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

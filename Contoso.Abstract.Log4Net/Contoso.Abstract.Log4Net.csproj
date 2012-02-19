@@ -35,14 +35,14 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Abstract\Log4NetServiceLog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BclContrib.snk" />
+    <None Include="BclEx.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

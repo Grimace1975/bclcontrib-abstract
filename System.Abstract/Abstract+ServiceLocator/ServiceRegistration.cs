@@ -33,5 +33,6 @@ namespace System.Abstract
         public string Name { get; set; }
         public Type ServiceType { get; set; }
         public Type ImplementationType { get; set; }
+        public object Tag { get; set; }
     }
 }
