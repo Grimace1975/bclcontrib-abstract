@@ -35,7 +35,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>BclContrib.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Abstract\BootstrapRhinoServiceBusLoadBalancedHost.cs" />
@@ -62,7 +62,7 @@
     <Content Include="Changelog.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BclContrib.snk" />
+    <None Include="BclEx.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
