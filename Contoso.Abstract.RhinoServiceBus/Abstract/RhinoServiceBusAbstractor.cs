@@ -29,6 +29,7 @@ using System.Linq;
 using Contoso.Abstract.RhinoServiceBus;
 using Rhino.ServiceBus;
 using Rhino.ServiceBus.Impl;
+using Rhino.ServiceBus.Config;
 namespace Contoso.Abstract
 {
     /// <summary>
@@ -49,9 +50,13 @@ namespace Contoso.Abstract
 
         static RhinoServiceBusAbstractor() { ServiceBusManager.EnsureRegistration(); }
         public RhinoServiceBusAbstractor()
-            : this(ServiceLocatorManager.Current, DefaultBusCreator(null)) { }
+            : this(ServiceLocatorManager.Current, DefaultBusCreator(null, null, null)) { }
         public RhinoServiceBusAbstractor(IServiceLocator serviceLocator)
-            : this(serviceLocator, DefaultBusCreator(serviceLocator)) { }
+            : this(serviceLocator, DefaultBusCreator(serviceLocator, null, null)) { }
+        public RhinoServiceBusAbstractor(BusConfigurationSection busConfiguration)
+            : this(ServiceLocatorManager.Current, DefaultBusCreator(null, busConfiguration, null)) { }
+        public RhinoServiceBusAbstractor(IServiceLocator serviceLocator, BusConfigurationSection busConfiguration)
+            : this(serviceLocator, DefaultBusCreator(serviceLocator, busConfiguration, null)) { }
         public RhinoServiceBusAbstractor(IServiceLocator serviceLocator, IStartableServiceBus bus)
             : this(serviceLocator, (Rhino.ServiceBus.IServiceBus)bus) { bus.Start(); }
         public RhinoServiceBusAbstractor(IServiceLocator serviceLocator, Rhino.ServiceBus.IServiceBus bus)
@@ -87,8 +92,10 @@ namespace Contoso.Abstract
             if (_passthru)
                 try
                 {
-                    if (endpoint != ServiceBus.SelfEndpoint)
+                    if (endpoint == null)
                         Bus.Send(messages);
+                    else if (endpoint != ServiceBus.SelfEndpoint)
+                        Bus.Send(Caster.Cast(endpoint), messages);
                     else
                         Bus.SendToSelf(messages);
                 }
@@ -99,10 +106,12 @@ namespace Contoso.Abstract
                     endpoint = EndpointByMessageType(messages[0].GetType());
                 try
                 {
-                    if (endpoint != ServiceBus.SelfEndpoint)
+                    if (endpoint == null)
+                        Bus.Send(Caster.Cast(messages));
+                    else if (endpoint != ServiceBus.SelfEndpoint)
                         Bus.Send(TransportEndpointMapper(endpoint), Caster.Cast(messages));
                     else
-                        Bus.SendToSelf(TransportEndpointMapper(endpoint), Caster.Cast(messages));
+                        Bus.SendToSelf(Caster.Cast(messages));
                 }
                 catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
             }
@@ -181,13 +190,17 @@ namespace Contoso.Abstract
 
         #endregion
 
-        public static IStartableServiceBus DefaultBusCreator(IServiceLocator serviceLocator)
+        public static IStartableServiceBus DefaultBusCreator(IServiceLocator serviceLocator, BusConfigurationSection busConfiguration, Action<AbstractRhinoServiceBusConfiguration> configurator)
         {
             if (serviceLocator == null)
                 serviceLocator = ServiceLocatorManager.Current;
-            new RhinoServiceBusConfiguration()
-                .UseAbstractServiceLocator(serviceLocator)
-                .Configure();
+            var configuration = new RhinoServiceBusConfiguration()
+                .UseAbstractServiceLocator(serviceLocator);
+            if (busConfiguration != null)
+                configuration.UseConfiguration(busConfiguration);
+            if (configurator != null)
+                configurator(configuration);
+            configuration.Configure();
             return serviceLocator.Resolve<IStartableServiceBus>();
         }
 
@@ -206,6 +219,14 @@ namespace Contoso.Abstract
             }
 
             public static Type Cast(Type messagesType) { return typeof(Transport<>).MakeGenericType(messagesType); }
+
+            public static Endpoint Cast(IServiceBusEndpoint endpoint)
+            {
+                var endpointAsLiteral = (endpoint as LiteralServiceBusEndpoint);
+                if (endpointAsLiteral != null)
+                    return new Endpoint { Uri = new Uri(endpointAsLiteral.Value) };
+                throw new InvalidOperationException("Cast: Endpoint");
+            }
         }
     }
 }
