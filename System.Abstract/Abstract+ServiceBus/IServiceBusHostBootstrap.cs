@@ -31,7 +31,7 @@ namespace System.Abstract
     public interface IServiceBusHostBootstrap
     {
         void Initialize();
-        void Open();
+        void Open(IServiceBus bus);
         void Close();
     }
 }

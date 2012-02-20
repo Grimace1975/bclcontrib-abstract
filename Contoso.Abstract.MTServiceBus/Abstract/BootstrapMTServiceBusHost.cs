@@ -25,6 +25,7 @@ THE SOFTWARE.
 #endregion
 using System.Abstract;
 using MassTransit;
+using IServiceBus = System.Abstract.IServiceBus;
 namespace Contoso.Abstract
 {
     /// <summary>
@@ -48,7 +49,7 @@ namespace Contoso.Abstract
         public MassTransit.IServiceBus Bus { get; set; }
 
         public virtual void Initialize() { }
-        public virtual void Open() { }
+        public virtual void Open(IServiceBus bus) { }
         public virtual void Close() { }
     }
 }

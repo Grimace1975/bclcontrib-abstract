@@ -35,6 +35,7 @@ namespace System.Abstract
         {
             Registration = new SetupRegistration
             {
+                MakeAction = a => x => a(x),
                 OnSetup = (service, descriptor) =>
                 {
                     if (descriptor != null)
@@ -42,8 +43,19 @@ namespace System.Abstract
                             action(service);
                     return service;
                 },
+                OnChange = (service, descriptor) =>
+                {
+                    if (descriptor != null)
+                        foreach (var action in descriptor.Actions)
+                            action(service);
+                },
             };
         }
+
+        public static Lazy<IEventSource> SetProvider(Func<IEventSource> provider) { return (Lazy = MakeByProviderProtected(provider, null)); }
+        public static Lazy<IEventSource> SetProvider(Func<IEventSource> provider, ISetupDescriptor setupDescriptor) { return (Lazy = MakeByProviderProtected(provider, setupDescriptor)); }
+        public static Lazy<IEventSource> MakeByProvider(Func<IEventSource> provider) { return MakeByProviderProtected(provider, null); }
+        public static Lazy<IEventSource> MakeByProvider(Func<IEventSource> provider, ISetupDescriptor setupDescriptor) { return MakeByProviderProtected(provider, setupDescriptor); }
 
         public static IEventSource Current
         {
@@ -56,6 +68,6 @@ namespace System.Abstract
         }
 
         public static void EnsureRegistration() { }
-        public static ISetupDescriptor GetSetupDescriptor(Lazy<IEventSource> service) { return ProtectedGetSetupDescriptor(service, null); }
+        public static ISetupDescriptor GetSetupDescriptor(Lazy<IEventSource> service) { return GetSetupDescriptorProtected(service, null); }
     }
 }
