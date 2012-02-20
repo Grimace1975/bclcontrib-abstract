@@ -39,10 +39,10 @@ namespace Contoso.Abstract
         }
 
         public virtual void Initialize() { }
-        public virtual void Open() { }
+        public virtual void Open(IServiceBus bus) { }
         public virtual void Close() { }
 
-        void IWantToRunAtStartup.Run() { Open(); }
+        void IWantToRunAtStartup.Run() { Open(ServiceBusManager.Current); }
         void IWantToRunAtStartup.Stop() { Close(); }
         void IWantCustomLogging.Init() { Initialize(); }
     }

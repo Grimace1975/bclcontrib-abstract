@@ -36,12 +36,19 @@ namespace System.Abstract
         {
             Registration = new SetupRegistration
             {
+                MakeAction = a => x => a(x),
                 OnSetup = (service, descriptor) =>
                 {
                     if (descriptor != null)
                         foreach (var action in descriptor.Actions)
                             action(service);
                     return service;
+                },
+                OnChange = (service, descriptor) =>
+                {
+                    if (descriptor != null)
+                        foreach (var action in descriptor.Actions)
+                            action(service);
                 },
                 OnServiceRegistrar = (service, locator, name) =>
                 {
@@ -60,6 +67,11 @@ namespace System.Abstract
                 SetProvider(() => new StaticServiceCache());
         }
 
+        public static Lazy<IServiceCache> SetProvider(Func<IServiceCache> provider) { return (Lazy = MakeByProviderProtected(provider, null)); }
+        public static Lazy<IServiceCache> SetProvider(Func<IServiceCache> provider, ISetupDescriptor setupDescriptor) { return (Lazy = MakeByProviderProtected(provider, setupDescriptor)); }
+        public static Lazy<IServiceCache> MakeByProvider(Func<IServiceCache> provider) { return MakeByProviderProtected(provider, null); }
+        public static Lazy<IServiceCache> MakeByProvider(Func<IServiceCache> provider, ISetupDescriptor setupDescriptor) { return MakeByProviderProtected(provider, setupDescriptor); }
+
         public static IServiceCache Current
         {
             get
@@ -71,6 +83,6 @@ namespace System.Abstract
         }
 
         public static void EnsureRegistration() { }
-        public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceCache> service) { return ProtectedGetSetupDescriptor(service, null); }
+        public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceCache> service) { return GetSetupDescriptorProtected(service, null); }
     }
 }

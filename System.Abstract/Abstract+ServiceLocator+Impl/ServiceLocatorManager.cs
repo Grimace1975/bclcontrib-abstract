@@ -40,6 +40,7 @@ namespace System.Abstract
         {
             Registration = new SetupRegistration
             {
+                MakeAction = a => x => a(x),
                 OnSetup = (service, descriptor) =>
                 {
                     RegisterSelfInLocator(service);
@@ -48,11 +49,22 @@ namespace System.Abstract
                             action(service);
                     return service;
                 },
+                OnChange = (service, descriptor) =>
+                {
+                    if (descriptor != null)
+                        foreach (var action in descriptor.Actions)
+                            action(service);
+                },
             };
             // default provider
             if (Lazy == null)
                 SetProvider(() => new MicroServiceLocator());
         }
+
+        public static Lazy<IServiceLocator> SetProvider(Func<IServiceLocator> provider) { return (Lazy = MakeByProviderProtected(provider, null)); }
+        public static Lazy<IServiceLocator> SetProvider(Func<IServiceLocator> provider, ISetupDescriptor setupDescriptor) { return (Lazy = MakeByProviderProtected(provider, setupDescriptor)); }
+        public static Lazy<IServiceLocator> MakeByProvider(Func<IServiceLocator> provider) { return MakeByProviderProtected(provider, null); }
+        public static Lazy<IServiceLocator> MakeByProvider(Func<IServiceLocator> provider, ISetupDescriptor setupDescriptor) { return MakeByProviderProtected(provider, setupDescriptor); }
 
         public static IServiceLocator Current
         {
@@ -74,7 +86,7 @@ namespace System.Abstract
         }
 
         public static void EnsureRegistration() { }
-        public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLocator> service) { return ProtectedGetSetupDescriptor(service, null); }
+        public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLocator> service) { return GetSetupDescriptorProtected(service, null); }
 
         private static void RegisterSelfInLocator(IServiceLocator locator)
         {

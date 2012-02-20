@@ -35,12 +35,19 @@ namespace System.Abstract
         {
             Registration = new SetupRegistration
             {
+                MakeAction = a => x => a(x),
                 OnSetup = (service, descriptor) =>
                 {
                     if (descriptor != null)
                         foreach (var action in descriptor.Actions)
                             action(service);
                     return service;
+                },
+                OnChange = (service, descriptor) =>
+                {
+                    if (descriptor != null)
+                        foreach (var action in descriptor.Actions)
+                            action(service);
                 },
                 OnServiceRegistrar = (service, locator, name) =>
                 {
@@ -56,6 +63,11 @@ namespace System.Abstract
             };
         }
 
+        public static Lazy<IServiceBus> SetProvider(Func<IServiceBus> provider) { return (Lazy = MakeByProviderProtected(provider, null)); }
+        public static Lazy<IServiceBus> SetProvider(Func<IServiceBus> provider, ISetupDescriptor setupDescriptor) { return (Lazy = MakeByProviderProtected(provider, setupDescriptor)); }
+        public static Lazy<IServiceBus> MakeByProvider(Func<IServiceBus> provider) { return MakeByProviderProtected(provider, null); }
+        public static Lazy<IServiceBus> MakeByProvider(Func<IServiceBus> provider, ISetupDescriptor setupDescriptor) { return MakeByProviderProtected(provider, setupDescriptor); }
+
         public static IServiceBus Current
         {
             get
@@ -67,6 +79,6 @@ namespace System.Abstract
         }
 
         public static void EnsureRegistration() { }
-        public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceBus> service) { return ProtectedGetSetupDescriptor(service, null); }
+        public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceBus> service) { return GetSetupDescriptorProtected(service, null); }
     }
 }

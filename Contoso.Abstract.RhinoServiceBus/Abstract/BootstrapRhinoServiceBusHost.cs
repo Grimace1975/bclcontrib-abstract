@@ -32,16 +32,29 @@ namespace Contoso.Abstract
     /// </summary>
     public abstract class BootstrapRhinoServiceBusHost : ServiceLocatorBootStrapper, IServiceBusHostBootstrap
     {
-        protected BootstrapRhinoServiceBusHost() { ServiceBusManager.SetProvider(() => new RhinoServiceBusAbstractor(ServiceLocatorManager.Current, GetInstance<Rhino.ServiceBus.IServiceBus>())); }
+        protected BootstrapRhinoServiceBusHost()
+        {
+            ServiceBusManager.SetProvider(() => new RhinoServiceBusAbstractor(ServiceLocatorManager.Current, GetInstance<Rhino.ServiceBus.IServiceBus>()))
+                .RegisterWithServiceLocator();
+        }
         protected BootstrapRhinoServiceBusHost(IServiceLocator locator)
-            : base(locator) { ServiceBusManager.SetProvider(() => new RhinoServiceBusAbstractor(locator, GetInstance<Rhino.ServiceBus.IServiceBus>())); }
+            : base(locator)
+        {
+            ServiceBusManager.SetProvider(() => new RhinoServiceBusAbstractor(locator, GetInstance<Rhino.ServiceBus.IServiceBus>()))
+                .RegisterWithServiceLocator(locator);
+        }
 
         public virtual void Initialize() { }
-        public virtual void Open() { }
+        public virtual void Open(IServiceBus bus) { }
         public virtual void Close() { }
 
         public override void InitializeContainer() { Initialize(); base.InitializeContainer(); }
-        protected override void OnEndStart() { base.OnEndStart(); Open(); }
+        protected override void OnEndStart()
+        {
+            base.OnEndStart();
+            // also opens to connection, thus registering IServiceBus
+            Open(ServiceBusManager.Current);
+        }
         public override void Dispose() { base.Dispose(); Close(); }
     }
 }

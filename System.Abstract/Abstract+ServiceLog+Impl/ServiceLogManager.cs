@@ -38,6 +38,7 @@ namespace System.Abstract
         {
             Registration = new SetupRegistration
             {
+                MakeAction = a => x => a(x),
                 OnSetup = (service, descriptor) =>
                 {
                     if (descriptor != null)
@@ -45,11 +46,22 @@ namespace System.Abstract
                             action(service);
                     return service;
                 },
+                OnChange = (service, descriptor) =>
+                {
+                    if (descriptor != null)
+                        foreach (var action in descriptor.Actions)
+                            action(service);
+                },
             };
             // default provider
             if (Lazy == null)
                 SetProvider(() => new ConsoleServiceLog("Default"));
         }
+
+        public static Lazy<IServiceLog> SetProvider(Func<IServiceLog> provider) { return (Lazy = MakeByProviderProtected(provider, null)); }
+        public static Lazy<IServiceLog> SetProvider(Func<IServiceLog> provider, ISetupDescriptor setupDescriptor) { return (Lazy = MakeByProviderProtected(provider, setupDescriptor)); }
+        public static Lazy<IServiceLog> MakeByProvider(Func<IServiceLog> provider) { return MakeByProviderProtected(provider, null); }
+        public static Lazy<IServiceLog> MakeByProvider(Func<IServiceLog> provider, ISetupDescriptor setupDescriptor) { return MakeByProviderProtected(provider, setupDescriptor); }
 
         public static IServiceLog Current
         {
@@ -62,7 +74,7 @@ namespace System.Abstract
         }
 
         public static void EnsureRegistration() { }
-        public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLog> service) { return ProtectedGetSetupDescriptor(service, null); }
+        public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLog> service) { return GetSetupDescriptorProtected(service, null); }
 
         public static IServiceLog Get<T>() { return (ServiceLogManager.Lazy ?? EmptyServiceLog).Value.Get<T>(); }
         public static IServiceLog Get(string name) { return (ServiceLogManager.Lazy ?? EmptyServiceLog).Value.Get(name); }
