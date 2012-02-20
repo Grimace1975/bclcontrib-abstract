@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>BclContrib-Abstract.StructureMap</id>
-    <version>0.1.6a</version>
+    <version>0.1.6</version>
     <authors>Sky Morey</authors>
     <owners>Sky Morey</owners>
     <description>This package contains a StructureMap implementation of the abstract ServiceLocator.</description>

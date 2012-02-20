@@ -10,5 +10,8 @@
     <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
     <tags>abstract nosql interface ioc di aggregateroot servicebus servicelocator bclcontrib</tags>
     <language>en-US</language>
+    <references>
+       <reference file="System.Abstract.dll" />
+    </references>
   </metadata>
 </package>
