@@ -30,6 +30,7 @@ using Contoso.Abstract.RhinoServiceBus;
 using Rhino.ServiceBus;
 using Rhino.ServiceBus.Impl;
 using Rhino.ServiceBus.Config;
+// [Main] http://hibernatingrhinos.com/open-source/rhino-service-bus
 namespace Contoso.Abstract
 {
     /// <summary>
