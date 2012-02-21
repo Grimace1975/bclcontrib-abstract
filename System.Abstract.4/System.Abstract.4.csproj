@@ -288,6 +288,9 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\ITouchableCacheItem.cs">
       <Link>Abstract+ServiceCache\ITouchableCacheItem.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheByDispatcher.cs">
+      <Link>Abstract+ServiceCache\ServiceCacheByDispatcher.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\ServiceCacheExtensions.cs">
       <Link>Abstract+ServiceCache\ServiceCacheExtensions.cs</Link>
     </Compile>

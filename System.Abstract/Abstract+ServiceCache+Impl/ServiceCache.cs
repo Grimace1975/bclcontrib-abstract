@@ -64,6 +64,9 @@ namespace System.Abstract
             return b.ToString();
         }
 
+        public static void Touch(params string[] names) { ServiceCacheManager.Current.Touch(null, names); }
+        public static void Touch(object tag, params string[] names) { ServiceCacheManager.Current.Touch(tag, names); }
+
         #region Registrations
 
         /// <summary>

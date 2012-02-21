@@ -25,8 +25,16 @@ THE SOFTWARE.
 #endregion
 namespace System.Abstract
 {
-	/// <summary>
-	/// CacheItemDependency
-	/// </summary>
-    public delegate object CacheItemDependency(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values);
+    public struct ServiceCacheByDispatcher
+    {
+        public static readonly ServiceCacheByDispatcher Empty = new ServiceCacheByDispatcher(null, null);
+        public ServiceCacheByDispatcher(ServiceCacheRegistration registration, object[] values)
+        {
+            Registration = registration;
+            Values = values;
+        }
+
+        public ServiceCacheRegistration Registration;
+        public object[] Values;
+    }
 }

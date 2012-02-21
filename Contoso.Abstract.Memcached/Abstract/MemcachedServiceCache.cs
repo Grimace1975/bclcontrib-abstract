@@ -136,10 +136,10 @@ namespace Contoso.Abstract
         public object this[string name]
         {
             get { return Get(null, name); }
-            set { Set(null, name, CacheItemPolicy.Default, value); }
+            set { Set(null, name, CacheItemPolicy.Default, value, ServiceCacheByDispatcher.Empty); }
         }
 
-        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value)
+        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             if (itemPolicy == null)
                 throw new ArgumentNullException("itemPolicy");
@@ -204,7 +204,7 @@ namespace Contoso.Abstract
 
         public object Remove(object tag, string name) { return Cache.Remove(name); }
 
-        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value)
+        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             if (itemPolicy == null)
                 throw new ArgumentNullException("itemPolicy");

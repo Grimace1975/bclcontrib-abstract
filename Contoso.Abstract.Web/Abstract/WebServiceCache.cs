@@ -65,10 +65,10 @@ namespace Contoso.Abstract
         public object this[string name]
         {
             get { return Get(null, name); }
-            set { Set(null, name, CacheItemPolicy.Default, value); }
+            set { Set(null, name, CacheItemPolicy.Default, value, ServiceCacheByDispatcher.Empty); }
         }
 
-        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value)
+        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             if (itemPolicy == null)
                 throw new ArgumentNullException("itemPolicy");
@@ -103,7 +103,7 @@ namespace Contoso.Abstract
             }
             // item removed callback
             var removedCallback = (itemPolicy.RemovedCallback == null ? null : new WebCacheItemRemovedCallback((n, v, c) => { itemPolicy.RemovedCallback(n, v); }));
-            return Cache.Add(name, value, GetCacheDependency(tag, itemPolicy.Dependency), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, itemPriority, removedCallback);
+            return Cache.Add(name, value, GetCacheDependency(tag, itemPolicy.Dependency, dispatch), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, itemPriority, removedCallback);
         }
 
         public object Get(object tag, string name) { return Cache.Get(name); }
@@ -118,7 +118,7 @@ namespace Contoso.Abstract
             throw new NotSupportedException();
         }
 
-        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value)
+        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             if (itemPolicy == null)
                 throw new ArgumentNullException("itemPolicy");
@@ -153,7 +153,7 @@ namespace Contoso.Abstract
             }
             // item removed callback
             var removedCallback = (itemPolicy.RemovedCallback == null ? null : new WebCacheItemRemovedCallback((n, v, c) => { itemPolicy.RemovedCallback(n, v); }));
-            Cache.Insert(name, value, GetCacheDependency(tag, itemPolicy.Dependency), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, removedCallback);
+            Cache.Insert(name, value, GetCacheDependency(tag, itemPolicy.Dependency, dispatch), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, removedCallback);
             return value;
         }
 
@@ -216,10 +216,10 @@ namespace Contoso.Abstract
 
         #endregion
 
-        private WebCacheDependency GetCacheDependency(object tag, CacheItemDependency dependency)
+        private WebCacheDependency GetCacheDependency(object tag, CacheItemDependency dependency, ServiceCacheByDispatcher dispatch)
         {
             object value;
-            if (dependency == null || (value = dependency(this, tag)) == null)
+            if (dependency == null || (value = dependency(this, dispatch.Registration, tag, dispatch.Values)) == null)
                 return null;
             //
             var names = (value as string[]);

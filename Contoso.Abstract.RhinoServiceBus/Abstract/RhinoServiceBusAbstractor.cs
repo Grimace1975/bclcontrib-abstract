@@ -64,7 +64,7 @@ namespace Contoso.Abstract
             if (serviceLocator == null)
                 throw new ArgumentNullException("serviceLocator");
             if (bus == null)
-                throw new ArgumentNullException("bus", "The specified NServiceBus bus cannot be null.");
+                throw new ArgumentNullException("bus", "The specified bus cannot be null.");
             _serviceLocator = serviceLocator;
             Bus = bus;
         }
