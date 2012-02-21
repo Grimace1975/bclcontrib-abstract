@@ -61,7 +61,7 @@ namespace Contoso.Abstract
         public object this[string name]
         {
             get { return Get(null, name); }
-            set { Set(null, name, CacheItemPolicy.Default, value); }
+            set { Set(null, name, CacheItemPolicy.Default, value, ServiceCacheByDispatcher.Empty); }
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace Contoso.Abstract
         /// <param name="onRemoveCallback">The delegate to invoke when the item is removed from cache.</param>
         /// <param name="value">The value to store in cache.</param>
         /// <returns></returns>
-        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value)
+        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             // TODO: Throw on dependency or other stuff not supported by this simple system
             object lastValue;
@@ -118,7 +118,7 @@ namespace Contoso.Abstract
         /// <param name="slidingExpiration">The sliding expiration value used to determine when a cache item is considered invalid due to lack of use.</param>
         /// <param name="priority">The priority.</param>
         /// <param name="onRemoveCallback">The delegate to invoke when the item is removed from cache.</param>
-        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value)
+        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             return (_cache[name] = value);
         }

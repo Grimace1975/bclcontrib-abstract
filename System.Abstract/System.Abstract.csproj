@@ -96,6 +96,8 @@
     <Compile Include="Abstract+ServiceBus\IServiceBusHostBootstrap.cs" />
     <Compile Include="Abstract+ServiceBus\ServiceBusExtensions.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCache+Primitives.cs" />
+    <Compile Include="Abstract+ServiceCache\CacheItemDependency.cs" />
+    <Compile Include="Abstract+ServiceCache\ServiceCacheByDispatcher.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheExtensions.cs" />
     <Compile Include="Abstract+ServiceCache\IDistributedServiceCache.cs" />
     <Compile Include="Abstract+ServiceCache\ITouchableCacheItem.cs" />
@@ -109,7 +111,6 @@
     <Compile Include="Abstract+ServiceCache\CacheItemBuilder.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheRegistration.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemPolicy.cs" />
-    <Compile Include="Abstract+ServiceCache\CacheItemDependency.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceRegistrarBehaviorAccessor.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceRegistrarLifetime.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceLocatorInterceptor.cs" />

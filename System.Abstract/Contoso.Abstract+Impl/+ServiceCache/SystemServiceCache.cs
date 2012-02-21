@@ -67,10 +67,10 @@ namespace Contoso.Abstract
         public object this[string name]
         {
             get { return Get(null, name); }
-            set { Set(null, name, CacheItemPolicy.Default, value); }
+            set { Set(null, name, CacheItemPolicy.Default, value, ServiceCacheByDispatcher.Empty); }
         }
 
-        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value)
+        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             if (itemPolicy == null)
                 throw new ArgumentNullException("itemPolicy");
@@ -80,7 +80,7 @@ namespace Contoso.Abstract
             // item removed callback
             string regionName;
             Settings.TryGetRegion(ref name, out regionName);
-            return Cache.Add(name, value, MapToSystemCacheItemPolicy(tag, itemPolicy), regionName);
+            return Cache.Add(name, value, GetCacheDependency(tag, itemPolicy, dispatch), regionName);
         }
 
         public object Get(object tag, string name)
@@ -105,7 +105,7 @@ namespace Contoso.Abstract
             return false;
         }
 
-        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value)
+        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             if (itemPolicy == null)
                 throw new ArgumentNullException("itemPolicy");
@@ -115,7 +115,7 @@ namespace Contoso.Abstract
             // item removed callback
             string regionName;
             Settings.TryGetRegion(ref name, out regionName);
-            Cache.Set(name, value, MapToSystemCacheItemPolicy(tag, itemPolicy), regionName);
+            Cache.Set(name, value, GetCacheDependency(tag, itemPolicy, dispatch), regionName);
             return value;
         }
 
@@ -184,7 +184,7 @@ namespace Contoso.Abstract
 
         #endregion
 
-        private SystemCaching.CacheItemPolicy MapToSystemCacheItemPolicy(object tag, CacheItemPolicy itemPolicy)
+        private SystemCaching.CacheItemPolicy GetCacheDependency(object tag, CacheItemPolicy itemPolicy, ServiceCacheByDispatcher dispatch)
         {
             // item priority
             SystemCaching.CacheItemPriority itemPriority;
@@ -207,7 +207,7 @@ namespace Contoso.Abstract
                 SlidingExpiration = itemPolicy.SlidingExpiration,
                 UpdateCallback = updateCallback,
             };
-            var changeMonitors = GetCacheDependency(tag, itemPolicy.Dependency);
+            var changeMonitors = GetCacheDependency(tag, itemPolicy.Dependency, dispatch);
             if (changeMonitors != null)
             {
                 var list = newItemPolicy.ChangeMonitors;
@@ -217,10 +217,10 @@ namespace Contoso.Abstract
             return newItemPolicy;
         }
 
-        private IEnumerable<SystemCaching.ChangeMonitor> GetCacheDependency(object tag, CacheItemDependency dependency)
+        private IEnumerable<SystemCaching.ChangeMonitor> GetCacheDependency(object tag, CacheItemDependency dependency, ServiceCacheByDispatcher dispatch)
         {
             object value;
-            if (dependency == null || (value = dependency(this, tag)) == null)
+            if (dependency == null || (value = dependency(this, dispatch.Registration, tag, dispatch.Values)) == null)
                 return null;
             //
             var names = (value as string[]);

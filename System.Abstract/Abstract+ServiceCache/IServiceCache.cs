@@ -34,7 +34,7 @@ namespace System.Abstract
 	{
 		object this[string name] { get; set; }
 
-		object Add(object tag, string name, CacheItemPolicy itemPolicy, object value);
+        object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch);
 
 		/// <summary>
 		/// Gets the item from cache associated with the key provided.
@@ -64,22 +64,7 @@ namespace System.Abstract
 		/// <param name="itemPolicy">The itemPolicy object.</param>
 		/// <param name="value">The value to store in cache.</param>
 		/// <returns></returns>
-		object Set(object tag, string name, CacheItemPolicy itemPolicy, object value);
-
-		///// <summary>
-		///// Touches the specified names.
-		///// </summary>
-		///// <param name="tag">The tag.</param>
-		///// <param name="names">The names.</param>
-		//void Touch(object tag, params string[] names);
-
-		///// <summary>
-		///// Makes dependency for the specified names.
-		///// </summary>
-		///// <param name="tag">The tag.</param>
-		///// <param name="names">The names.</param>
-		///// /// <returns></returns>
-		//CacheItemDependency MakeDependency(object tag, params string[] names);
+        object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch);
 
 		/// <summary>
 		/// Settings

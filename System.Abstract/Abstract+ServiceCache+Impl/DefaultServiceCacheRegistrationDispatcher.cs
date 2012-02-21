@@ -43,9 +43,9 @@ namespace System.Abstract
             if (itemPolicy == null)
                 throw new ArgumentNullException("registration.CacheCommand");
             // fetch from cache
-            string name = registration.AbsoluteName;
+            var name = registration.AbsoluteName;
             string @namespace;
-            if ((values != null) && (values.Length > 0))
+            if (values != null && values.Length > 0)
                 cache = cache.BehaveAs(values, out @namespace);
             else
                 @namespace = null;
@@ -64,7 +64,7 @@ namespace System.Abstract
             // create
             var value = CreateData<T>(@namespace, registration, tag, values);
             valueAsCache = (!useDBNull || value != null ? (object)value : DBNull.Value);
-            cache.Add(tag, name, itemPolicy, valueAsCache);
+            cache.Add(tag, name, itemPolicy, valueAsCache, new ServiceCacheByDispatcher(registration, values));
             return value;
         }
 
@@ -81,7 +81,7 @@ namespace System.Abstract
                 // create
                 var value = CreateData<T>(@namespace, registration, tag, values);
                 valueAsCache = (!useDBNull || value != null ? (object)value : DBNull.Value);
-                cache.Add(tag, name, itemPolicy, valueAsCache);
+                cache.Add(tag, name, itemPolicy, valueAsCache, new ServiceCacheByDispatcher(registration, values));
                 return value;
             }
         }
@@ -103,7 +103,7 @@ namespace System.Abstract
                     // create
                     var value = CreateData<T>(@namespace, registration, tag, values);
                     valueAsCache = (!useDBNull || value != null ? (object)value : DBNull.Value);
-                    cache.Add(tag, name, itemPolicy, valueAsCache);
+                    cache.Add(tag, name, itemPolicy, valueAsCache, new ServiceCacheByDispatcher(registration, values));
                     return value;
                 }
                 finally { _rwLock.ExitWriteLock(); }
@@ -119,7 +119,7 @@ namespace System.Abstract
             // create
             var value = CreateData<T>(@namespace, registration, tag, values);
             valueAsCache = (!useDBNull || value != null ? (object)value : DBNull.Value);
-            cache.Add(tag, name, itemPolicy, valueAsCache);
+            cache.Add(tag, name, itemPolicy, valueAsCache, new ServiceCacheByDispatcher(registration, values));
             return value;
         }
 

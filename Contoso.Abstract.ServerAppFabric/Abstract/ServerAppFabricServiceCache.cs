@@ -75,10 +75,10 @@ namespace Contoso.Abstract
         public object this[string name]
         {
             get { return Get(null, name); }
-            set { Set(null, name, CacheItemPolicy.Default, value); }
+            set { Set(null, name, CacheItemPolicy.Default, value, ServiceCacheByDispatcher.Empty); }
         }
 
-        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value)
+        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             if (itemPolicy == null)
                 throw new ArgumentNullException("itemPolicy");
@@ -91,7 +91,7 @@ namespace Contoso.Abstract
             if (itemPolicy.RemovedCallback != null)
                 throw new ArgumentOutOfRangeException("itemPolicy.RemovedCallback", "not supported.");
             //
-            var dataCacheTags = GetCacheDependency(tag, itemPolicy.Dependency);
+            var dataCacheTags = GetCacheDependency(tag, itemPolicy.Dependency, dispatch);
             var timeout = GetTimeout(itemPolicy.AbsoluteExpiration);
             string regionName;
             if (timeout == TimeSpan.Zero && dataCacheTags == null)
@@ -138,7 +138,7 @@ namespace Contoso.Abstract
             throw new NotSupportedException();
         }
 
-        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value)
+        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             if (itemPolicy == null)
                 throw new ArgumentNullException("itemPolicy");
@@ -153,7 +153,7 @@ namespace Contoso.Abstract
             //
             var oldVersion = (tag as DataCacheItemVersion);
             var lockHandle = (tag as DataCacheLockHandle);
-            var dataCacheTags = GetCacheDependency(tag, itemPolicy.Dependency);
+            var dataCacheTags = GetCacheDependency(tag, itemPolicy.Dependency, dispatch);
             var timeout = GetTimeout(itemPolicy.AbsoluteExpiration);
             string regionName;
             if (timeout == TimeSpan.Zero && dataCacheTags == null)
@@ -310,10 +310,10 @@ namespace Contoso.Abstract
 
         #endregion
 
-        private IEnumerable<DataCacheTag> GetCacheDependency(object tag, CacheItemDependency dependency)
+        private IEnumerable<DataCacheTag> GetCacheDependency(object tag, CacheItemDependency dependency, ServiceCacheByDispatcher dispatch)
         {
             object value;
-            if (dependency == null || (value = dependency(this, tag)) == null)
+            if (dependency == null || (value = dependency(this, dispatch.Registration, tag, dispatch.Values)) == null)
                 return null;
             //
             var names = (value as string[]);
