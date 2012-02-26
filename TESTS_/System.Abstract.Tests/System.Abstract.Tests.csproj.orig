@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5B51D0D9-57FB-428F-8223-B96F27BDA2FD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>System.Abstract.Tests</RootNamespace>
+    <AssemblyName>System.Abstract.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Abstract, Version=3.5.0.0, Culture=neutral, PublicKeyToken=725aceb8081535f0, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\BCLCONTRIB-ABSTRACT\System.Abstract\bin\Debug\System.Abstract.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\System.Abstract.Templates\Abstract+EventSourcing\EventSourcing\AggregateRootSnapshotStoreTestsBase.cs">
+      <Link>+FromTemplate\EventSourcing\AggregateRootSnapshotStoreTestsBase.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Templates\Abstract+EventSourcing\EventSourcing\EventStoreTestsBase.cs">
+      <Link>+FromTemplate\EventSourcing\EventStoreTestsBase.cs</Link>
+    </Compile>
+    <Compile Include="..\system.abstract.templates\abstract+servicelocator\ServiceLocatorTestsBase.cs">
+      <Link>+FromTemplate\ServiceLocatorTestsBase.cs</Link>
+    </Compile>
+    <Compile Include="..\system.abstract.templates\abstract+servicelocator\ServiceRegistrarTestsBase.cs">
+      <Link>+FromTemplate\ServiceRegistrarTestsBase.cs</Link>
+    </Compile>
+    <Compile Include="Abstract+EventSourcing\RegistryEventDispatcherTests.cs" />
+<<<<<<< local
+    <Compile Include="Abstract+ServiceBus\IServiceBusTests.cs" />
+    <Compile Include="Abstract+ServiceLocator\IServiceLocatorTests.cs" />
+=======
+    <Compile Include="Abstract+ServiceBus\ServiceBusInstanceTests.cs" />
+    <Compile Include="Abstract+ServiceCache\ServiceCacheInstanceTests.cs" />
+    <Compile Include="Abstract+ServiceCache\ServiceCacheManagerTests.cs" />
+    <Compile Include="Abstract+ServiceLocator\ServiceLocatorInstanceTests.cs" />
+>>>>>>> other
+    <Compile Include="Abstract+ServiceLocator\ServiceDependencyAttributeTests.cs" />
+    <Compile Include="Contoso.Abstract+Impl\EventSourcing\MemoryAggregateRootSnapshotStoreTests.cs" />
+    <Compile Include="Contoso.Abstract+Impl\EventSourcing\MemoryEventStoreTests.cs" />
+    <Compile Include="Contoso.Abstract+Impl\EventSourcing\FileEventStoreTests.cs" />
+    <Compile Include="Contoso.Abstract+Impl\EventSourcing\FileAggregateRootSnapshotStoreTests.cs" />
+    <Compile Include="Abstract+EventSourcing\AggregateRootTests.cs" />
+    <Compile Include="Abstract+EventSourcing\AggregateRootOfflineSnapshotServiceTests.cs" />
+    <Compile Include="Abstract+EventSourcing\AggregateRootRepositoryTests.cs" />
+    <Compile Include="Abstract+ServiceBus\Fakes\TestMessage.cs" />
+    <Compile Include="Abstract+ServiceBus\ServiceBusMessageExceptionTests.cs" />
+    <Compile Include="Abstract+ServiceBus\ServiceBusManagerTests.cs" />
+    <Compile Include="Abstract+ServiceLocator\Fakes\TestFutureService.cs" />
+    <Compile Include="Abstract+ServiceLocator\Fakes\TestNamedService.cs" />
+    <Compile Include="Abstract+ServiceLocator\Fakes\TestService.cs" />
+    <Compile Include="Abstract+ServiceLocator\Fakes\TestDependency.cs" />
+    <Compile Include="Contoso.Abstract+Impl\+ServiceLocator\MicroServiceLocatorTests.cs" />
+    <Compile Include="Contoso.Abstract+Impl\+ServiceLocator\MicroServiceRegistrarTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Abstract+ServiceLocator\ServiceLocatorManagerTests.cs" />
+    <Compile Include="Abstract+ServiceLocator\ServiceLocatorResolutionExceptionTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Contoso.Abstract+Impl\+ServiceCache\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

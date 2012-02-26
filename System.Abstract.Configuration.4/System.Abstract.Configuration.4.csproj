@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{46A59617-2520-4509-8B41-204C9085ABC7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>System.Abstract</RootNamespace>
+    <AssemblyName>System.Abstract.Configuration</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CLR4;COREINTERNAL;EXPERIMENTAL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;CLR4;COREINTERNAL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\System.Abstract.Configuration.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\System.Abstract.Configuration\Abstract\Configuration+EventSource\EventSourceConfiguration+FromCoreEx.cs">
+      <Link>Abstract\Configuration+EventSource\EventSourceConfiguration+FromCoreEx.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Abstract\Configuration+EventSource\EventSourceConfiguration.cs">
+      <Link>Abstract\Configuration+EventSource\EventSourceConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Abstract\Configuration+ServiceBus\ServiceBusConfiguration+FromCoreEx.cs">
+      <Link>Abstract\Configuration+ServiceBus\ServiceBusConfiguration+FromCoreEx.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Abstract\Configuration+ServiceBus\ServiceBusConfiguration.cs">
+      <Link>Abstract\Configuration+ServiceBus\ServiceBusConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Abstract\Configuration+ServiceBus\ServiceBus\EndpointElement+FromCoreEx.cs">
+      <Link>Abstract\Configuration+ServiceBus\ServiceBus\EndpointElement+FromCoreEx.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Abstract\Configuration+ServiceBus\ServiceBus\EndpointElement.cs">
+      <Link>Abstract\Configuration+ServiceBus\ServiceBus\EndpointElement.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Abstract\Configuration+ServiceBus\ServiceBus\EndpointElementCollection+FromCoreEx.cs">
+      <Link>Abstract\Configuration+ServiceBus\ServiceBus\EndpointElementCollection+FromCoreEx.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Abstract\Configuration+ServiceBus\ServiceBus\EndpointElementCollection.cs">
+      <Link>Abstract\Configuration+ServiceBus\ServiceBus\EndpointElementCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Abstract\Configuration+ServiceCache\ServiceCacheConfiguration+FromCoreEx.cs">
+      <Link>Abstract\Configuration+ServiceCache\ServiceCacheConfiguration+FromCoreEx.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Abstract\Configuration+ServiceCache\ServiceCacheConfiguration.cs">
+      <Link>Abstract\Configuration+ServiceCache\ServiceCacheConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Abstract\Configuration+ServiceLocator\ServiceLocatorConfiguration+FromCoreEx.cs">
+      <Link>Abstract\Configuration+ServiceLocator\ServiceLocatorConfiguration+FromCoreEx.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Abstract\Configuration+ServiceLocator\ServiceLocatorConfiguration.cs">
+      <Link>Abstract\Configuration+ServiceLocator\ServiceLocatorConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Abstract\Configuration+ServiceLog\ServiceLogConfiguration+FromCoreEx.cs">
+      <Link>Abstract\Configuration+ServiceLog\ServiceLogConfiguration+FromCoreEx.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Abstract\Configuration+ServiceLog\ServiceLogConfiguration.cs">
+      <Link>Abstract\Configuration+ServiceLog\ServiceLogConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Abstract\Configuration\AbstractSection+FromCoreEx.cs">
+      <Link>Abstract\Configuration\AbstractSection+FromCoreEx.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Abstract\Configuration\AbstractSection.cs">
+      <Link>Abstract\Configuration\AbstractSection.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Abstract\ServiceConfigurationExtensions.cs">
+      <Link>Abstract\ServiceConfigurationExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Patterns\ReleaseManagement\ReleaseManagementConfiguration+FromCoreEx.cs">
+      <Link>Patterns\ReleaseManagement\ReleaseManagementConfiguration+FromCoreEx.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Patterns\ReleaseManagement\ReleaseManagementConfiguration.cs">
+      <Link>Patterns\ReleaseManagement\ReleaseManagementConfiguration.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Configuration\Patterns\ReleaseManagement\ReleaseManagementManager.cs">
+      <Link>Patterns\ReleaseManagement\ReleaseManagementManager.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BclEx.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.Abstract.4\System.Abstract.4.csproj">
+      <Project>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</Project>
+      <Name>System.Abstract.4</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
