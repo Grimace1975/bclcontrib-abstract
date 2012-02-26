@@ -111,7 +111,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServiceCaches", "ServiceCac
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Practices", "Practices", "{1A4E44EF-5291-4514-98E9-ECD3371C52CF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventSource", "EventSource", "{142DFD1F-0003-416D-B1D4-A88C085D58EF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EventSources", "EventSources", "{142DFD1F-0003-416D-B1D4-A88C085D58EF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example.RhinoServiceBus.Host.4", "Example.RhinoServiceBus.Host.4\Example.RhinoServiceBus.Host.4.csproj", "{5453840C-79D7-4CCD-AE04-1BB00BD0AB52}"
 EndProject
