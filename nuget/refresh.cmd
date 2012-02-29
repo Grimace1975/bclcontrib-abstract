@@ -188,6 +188,7 @@ popd
 echo Abstract.RhinoServiceBus
 pushd BclContrib-Abstract.RhinoServiceBus
 set SRC=..\..\Contoso.Abstract.RhinoServiceBus
+set LIB=..\..\lib
 xcopy %SRC%\Changelog.txt . /Y/Q
 xcopy %SRC%\bin\Release\Contoso.Abstract.RhinoServiceBus.dll lib\NET35\ /Y/Q
 xcopy %SRC%\bin\Release\Contoso.Abstract.RhinoServiceBus.xml lib\NET35\ /Y/Q
@@ -196,6 +197,7 @@ xcopy %SRC%.4\bin\Release\Contoso.Abstract.RhinoServiceBus.xml lib\NET40\ /Y/Q
 ::
 xcopy %SRC%\bin\Release\Rhino.* lib\NET35\ /Y/Q
 xcopy %SRC%.4\bin\Release\Rhino.* lib\NET40\ /Y/Q
+xcopy %LIB%\Rhino.ServiceBus\NET40\* lib\NET40\ /Y/Q/S
 popd
 
 ::
@@ -241,17 +243,6 @@ xcopy %SRC%\bin\Release\Contoso.Abstract.StructureMap.xml lib\NET35\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.StructureMap.dll lib\NET40\ /Y/Q
 xcopy %SRC%.4\bin\Release\Contoso.Abstract.StructureMap.xml lib\NET40\ /Y/Q
 popd
-
-::
-::echo Abstract.TypeSerializer
-::pushd BclContrib-Abstract.TypeSerializer
-::set SRC=..\..\Contoso.Abstract.TypeSerializer
-::xcopy %SRC%\Changelog.txt . /Y/Q
-::xcopy %SRC%\bin\Release\Contoso.Abstract.TypeSerializer.dll lib\NET35\ /Y/Q
-::xcopy %SRC%\bin\Release\Contoso.Abstract.TypeSerializer.xml lib\NET35\ /Y/Q
-::xcopy %SRC%.4\bin\Release\Contoso.Abstract.TypeSerializer.dll lib\NET40\ /Y/Q
-::xcopy %SRC%.4\bin\Release\Contoso.Abstract.TypeSerializer.xml lib\NET40\ /Y/Q
-::popd
 
 ::
 echo Abstract.Unity
