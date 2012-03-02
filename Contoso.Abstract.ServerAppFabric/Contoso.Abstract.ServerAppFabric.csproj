@@ -48,6 +48,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="BclEx-Abstract.ServerAppFabric.nuspec" />
     <None Include="BclEx.snk" />
     <None Include="packages.config" />
   </ItemGroup>

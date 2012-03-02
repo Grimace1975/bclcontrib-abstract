@@ -55,6 +55,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="BclEx-Abstract.StructureMap.nuspec" />
     <None Include="BclEx.snk" />
     <None Include="packages.config" />
   </ItemGroup>

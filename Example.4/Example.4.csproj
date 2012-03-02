@@ -58,10 +58,6 @@
     <Reference Include="System.configuration" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Contoso.Abstract.ApplicationBus.4\Contoso.Abstract.ApplicationBus.4.csproj">
-      <Project>{2D0DAEDD-96E3-4395-AA31-A2407B03CB95}</Project>
-      <Name>Contoso.Abstract.ApplicationBus.4</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Contoso.Abstract.Autofac.4\Contoso.Abstract.Autofac.4.csproj">
       <Project>{078ECB87-6595-448E-8054-FB999B0DB350}</Project>
       <Name>Contoso.Abstract.Autofac.4</Name>
@@ -121,10 +117,6 @@
     <ProjectReference Include="..\Contoso.Practices.Cqrs.4\Contoso.Practices.Cqrs.4.csproj">
       <Project>{14D5934C-F462-4087-89A9-579E7F7BE704}</Project>
       <Name>Contoso.Practices.Cqrs.4</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.Sql.4\Contoso.Abstract.Sql.4.csproj">
-      <Project>{875FB8E5-8631-42E5-9DA2-8D8037627592}</Project>
-      <Name>Contoso.Abstract.Sql.4</Name>
     </ProjectReference>
     <ProjectReference Include="..\Contoso.Abstract.StructureMap.4\Contoso.Abstract.StructureMap.4.csproj">
       <Project>{C8B19127-C82E-45C5-8A6D-DA22AE9C8A7B}</Project>

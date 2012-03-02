@@ -57,6 +57,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="BclEx-Abstract.MongoDB.nuspec" />
     <None Include="BclEx.snk" />
     <None Include="packages.config" />
   </ItemGroup>

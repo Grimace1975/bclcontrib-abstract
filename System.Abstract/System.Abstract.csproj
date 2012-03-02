@@ -126,11 +126,15 @@
     <Compile Include="Abstract\Parts+TypeSerializer\BinaryTypeSerializer.cs" />
     <Compile Include="Abstract\Parts+TypeSerializer\WcfTypeSerializer.cs" />
     <Compile Include="Abstract\Parts+TypeSerializer\XmlTypeSerializer.cs" />
+    <Compile Include="Contoso.Abstract+Impl\+ServiceBus\AppServiceBus.cs" />
+    <Compile Include="Contoso.Abstract+Impl\+ServiceBus\AppServiceBusRegistration.cs" />
+    <Compile Include="Contoso.Abstract+Impl\+ServiceBus\IAppServiceMessageHandler.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceLog\TraceSourceServiceLog.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceLog\StreamServiceLog.cs" />
     <Compile Include="Contoso.Abstract+Impl\+ServiceLog\EmptyServiceLog.cs" />
     <Compile Include="Abstract+ServiceLog+Impl\ServiceLog.cs" />
     <Compile Include="Abstract+ServiceLog\ServiceLogEventType.cs" />
+    <Compile Include="IO\PathEx2+PathWrapper.cs" />
     <Compile Include="Lazy.cs" />
     <Compile Include="Abstract+ServiceLog+Impl\ServiceLogManager.cs" />
     <Compile Include="Abstract+ServiceLog\IServiceLog.cs" />
@@ -232,6 +236,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="BclEx-Abstract.nuspec" />
     <None Include="BclEx.snk" />
   </ItemGroup>
   <ItemGroup>

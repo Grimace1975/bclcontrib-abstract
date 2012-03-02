@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>BclContrib-Abstract.Web.Mvc</id>
+    <version>0.1.6</version>
+    <authors>Sky Morey</authors>
+    <owners>Sky Morey</owners>
+    <description>This package contains integrations for use with ASP.NET MVC 2 or 3, depending on your version of .Net.</description>
+    <projectUrl>http://code.google.com/p/bclcontrib-abstract/</projectUrl>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <tags>mvc mvc2 mvc3 servicelocator bclcontrib</tags>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="BclContrib-Abstract" version="0.1.6" />
+    </dependencies>
+  </metadata>
+</package>

@@ -402,6 +402,15 @@
     <Compile Include="..\System.Abstract\Abstract\ServiceDependencyAttribute.cs">
       <Link>Abstract\ServiceDependencyAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceBus\AppServiceBus.cs">
+      <Link>Contoso.Abstract+Impl\+ServiceBus\AppServiceBus.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceBus\AppServiceBusRegistration.cs">
+      <Link>Contoso.Abstract+Impl\+ServiceBus\AppServiceBusRegistration.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceBus\IAppServiceMessageHandler.cs">
+      <Link>Contoso.Abstract+Impl\+ServiceBus\IAppServiceMessageHandler.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceCache\StaticServiceCache.cs">
       <Link>Contoso.Abstract+Impl\+ServiceCache\StaticServiceCache.cs</Link>
     </Compile>
@@ -447,26 +456,29 @@
     <Compile Include="..\System.Abstract\DateTimeEx2.cs">
       <Link>DateTimeEx2.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\IO\+Mock\DirectoryMock.cs">
-      <Link>IO\+Mock\DirectoryMock.cs</Link>
+    <Compile Include="..\System.Abstract\IO\DirectoryEx2+DirectoryWrapper.cs">
+      <Link>IO\DirectoryEx2+DirectoryWrapper.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\IO\+Mock\DirectoryWrapper.cs">
-      <Link>IO\+Mock\DirectoryWrapper.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\IO\+Mock\FileMock.cs">
-      <Link>IO\+Mock\FileMock.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\IO\+Mock\FileWrapper.cs">
-      <Link>IO\+Mock\FileWrapper.cs</Link>
-    </Compile>
-    <Compile Include="..\System.Abstract\IO\+Mock\PathMock.cs">
-      <Link>IO\+Mock\PathMock.cs</Link>
+    <Compile Include="..\System.Abstract\IO\DirectoryEx2+MockBase.cs">
+      <Link>IO\DirectoryEx2+MockBase.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\IO\DirectoryEx2.cs">
       <Link>IO\DirectoryEx2.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\IO\FileEx2+FileWrapper.cs">
+      <Link>IO\FileEx2+FileWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\IO\FileEx2+MockBase.cs">
+      <Link>IO\FileEx2+MockBase.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\IO\FileEx2.cs">
       <Link>IO\FileEx2.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\IO\PathEx2+MockBase.cs">
+      <Link>IO\PathEx2+MockBase.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\IO\PathEx2+PathWrapper.cs">
+      <Link>IO\PathEx2+PathWrapper.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\IO\PathEx2.cs">
       <Link>IO\PathEx2.cs</Link>

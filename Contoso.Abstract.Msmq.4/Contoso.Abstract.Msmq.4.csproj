@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Contoso.Abstract</RootNamespace>
-    <AssemblyName>Contoso.Abstract.Msmq</AssemblyName>
+    <AssemblyName>Contoso.Abstract.MSMQ</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -29,7 +29,7 @@
     <DefineConstants>TRACE;CLR4</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Contoso.Abstract.Msmq.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Contoso.Abstract.MSMQ.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>

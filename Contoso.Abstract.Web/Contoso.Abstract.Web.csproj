@@ -53,6 +53,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="BclEx-Abstract.Web.nuspec" />
     <None Include="BclEx.snk" />
   </ItemGroup>
   <ItemGroup>

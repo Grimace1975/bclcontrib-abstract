@@ -53,10 +53,6 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Contoso.Abstract.ApplicationBus\Contoso.Abstract.ApplicationBus.csproj">
-      <Project>{7F717114-B597-4B43-931A-529F696A549A}</Project>
-      <Name>Contoso.Abstract.ApplicationBus</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Contoso.Abstract.Autofac\Contoso.Abstract.Autofac.csproj">
       <Project>{3AB44594-75F2-4D20-8450-F3FA9D4DE763}</Project>
       <Name>Contoso.Abstract.Autofac</Name>
@@ -117,9 +113,9 @@
       <Project>{C2F4F0D8-979A-4DCB-AC26-9701F7D46224}</Project>
       <Name>Contoso.Practices.Cqrs</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.Sql\Contoso.Abstract.Sql.csproj">
+    <ProjectReference Include="..\Contoso.Abstract.MSSql\Contoso.Abstract.MSSql.csproj">
       <Project>{530515EF-6DFC-4A59-BCF2-F0F998DC6D89}</Project>
-      <Name>Contoso.Abstract.Sql</Name>
+      <Name>Contoso.Abstract.MSSql</Name>
     </ProjectReference>
     <ProjectReference Include="..\Contoso.Abstract.StructureMap\Contoso.Abstract.StructureMap.csproj">
       <Project>{48DC2445-A460-4B42-B175-10B0924B248C}</Project>

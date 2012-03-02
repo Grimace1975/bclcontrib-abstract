@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Contoso.Abstract.EventStore")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("This package contains EventStore implementations of the Event-Sourcing storage for the abstract AggregateRoot.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyProduct("Contoso.Abstract.EventStore")]

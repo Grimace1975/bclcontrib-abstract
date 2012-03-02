@@ -19,7 +19,7 @@ namespace Example.ApplicationBus
         {
             // set service bus
             ServiceBusManager.SetProvider(() =>
-                new ApplicationServiceBus()
+                new AppServiceBus()
                     .Add<MyMessageHandler>()
             );
         }
