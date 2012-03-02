@@ -49,6 +49,7 @@
     <Content Include="EventStore.license.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="BclEx-Abstract.EventStore.nuspec" />
     <None Include="BclEx.snk" />
     <None Include="packages.config" />
   </ItemGroup>

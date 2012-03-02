@@ -73,6 +73,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="BclEx-Abstract.NServiceBus.nuspec" />
     <None Include="BclEx.snk" />
     <None Include="packages.config">
       <SubType>Designer</SubType>

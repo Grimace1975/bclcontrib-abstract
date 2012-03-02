@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Contoso.Abstract</RootNamespace>
-    <AssemblyName>Contoso.Abstract.Msmq</AssemblyName>
+    <AssemblyName>Contoso.Abstract.MSMQ</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -30,7 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Contoso.Abstract.Msmq.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Contoso.Abstract.MSMQ.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -55,6 +55,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="BclEx-Abstract.MSMQ.nuspec" />
     <None Include="BclEx.snk" />
   </ItemGroup>
   <ItemGroup>

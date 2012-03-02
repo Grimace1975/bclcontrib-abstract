@@ -13,7 +13,7 @@ namespace Example
                 .RegisterByIServiceRegistration(typeof(Program).Assembly)
                 .RegisterByNamingConvention(typeof(Program).Assembly);
             //
-            ServiceBusManager.SetProvider(() => new ApplicationServiceBus())
+            ServiceBusManager.SetProvider(() => new AppServiceBus())
                 .RegisterWithServiceLocator();
         }
     }

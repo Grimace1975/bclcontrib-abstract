@@ -24,6 +24,7 @@ THE SOFTWARE.
 */
 #endregion
 using System.Abstract.Parts;
+using Contoso.Abstract;
 namespace System.Abstract
 {
     /// <summary>
@@ -61,6 +62,9 @@ namespace System.Abstract
                         setupRegistration.OnServiceRegistrar(locator, name);
                 },
             };
+            // default provider
+            if (Lazy == null)
+                SetProvider(() => new AppServiceBus());
         }
 
         public static Lazy<IServiceBus> SetProvider(Func<IServiceBus> provider) { return (Lazy = MakeByProviderProtected(provider, null)); }

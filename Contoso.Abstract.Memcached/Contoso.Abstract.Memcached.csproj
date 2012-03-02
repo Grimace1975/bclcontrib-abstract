@@ -46,6 +46,7 @@
     <Content Include="Changelog.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="BclEx-Abstract.Memcached.nuspec" />
     <None Include="BclEx.snk" />
     <None Include="packages.config" />
   </ItemGroup>
