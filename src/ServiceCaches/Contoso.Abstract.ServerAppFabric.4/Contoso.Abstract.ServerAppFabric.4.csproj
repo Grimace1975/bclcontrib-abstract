@@ -55,10 +55,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.ApplicationServer.Caching.Client">
-      <HintPath>..\packages\ServerAppFabric.Client.1.0.2912\lib\Microsoft.ApplicationServer.Caching.Client.dll</HintPath>
+      <HintPath>..\..\..\packages\ServerAppFabric.Client.1.0.2912\lib\Microsoft.ApplicationServer.Caching.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ApplicationServer.Caching.Core">
-      <HintPath>..\packages\ServerAppFabric.Client.1.0.2912\lib\Microsoft.ApplicationServer.Caching.Core.dll</HintPath>
+      <HintPath>..\..\..\packages\ServerAppFabric.Client.1.0.2912\lib\Microsoft.ApplicationServer.Caching.Core.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

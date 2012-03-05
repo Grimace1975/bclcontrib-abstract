@@ -84,16 +84,16 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="log4net">
-      <HintPath>..\packages\log4net.1.2.11\lib\net40-full\log4net.dll</HintPath>
+      <HintPath>..\..\..\packages\log4net.1.2.11\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Queues">
-      <HintPath>..\packages\Rhino.Queues.1.4.2.0\lib\4.0\Rhino.Queues.dll</HintPath>
+      <HintPath>..\..\..\packages\Rhino.Queues.1.4.2.0\lib\4.0\Rhino.Queues.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.ServiceBus">
-      <HintPath>..\packages\Rhino.ServiceBus.2.3.0.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
+      <HintPath>..\..\..\packages\Rhino.ServiceBus.2.3.0.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.ServiceBus.Host">
-      <HintPath>..\packages\Rhino.ServiceBus.Host.2.3.0.0\lib\4.0\Rhino.ServiceBus.Host.exe</HintPath>
+      <HintPath>..\..\..\packages\Rhino.ServiceBus.Host.2.3.0.0\lib\4.0\Rhino.ServiceBus.Host.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />

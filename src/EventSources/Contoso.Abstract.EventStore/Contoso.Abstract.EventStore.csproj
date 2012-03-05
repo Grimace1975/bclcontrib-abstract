@@ -38,7 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EventStore">
-      <HintPath>..\packages\EventStore.3.0.11326.44\lib\net35\EventStore.dll</HintPath>
+      <HintPath>..\..\..\packages\EventStore.3.0.11326.44\lib\net35\EventStore.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -51,7 +51,9 @@
   <ItemGroup>
     <None Include="BclEx-Abstract.EventStore.nuspec" />
     <None Include="BclEx.snk" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\System.Abstract\System.Abstract.csproj">
