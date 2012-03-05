@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DCCDE1D3-F775-4895-B51A-126DB3D0A08D}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Example</RootNamespace>
+    <AssemblyName>Example</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CLR4</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;CLR4</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AppBus\ConstructorExamples.cs" />
+    <Compile Include="ServiceBusExamples.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\System.Abstract.4\System.Abstract.4.csproj">
+      <Project>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</Project>
+      <Name>System.Abstract.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\System.Abstract.Configuration.4\System.Abstract.Configuration.4.csproj">
+      <Project>{46A59617-2520-4509-8B41-204C9085ABC7}</Project>
+      <Name>System.Abstract.Configuration.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.MSMQ.4\Contoso.Abstract.MSMQ.4.csproj">
+      <Project>{38A2CF20-3E58-4C61-AEAC-4230C0F3F8AC}</Project>
+      <Name>Contoso.Abstract.MSMQ.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.MTServiceBus.4\Contoso.Abstract.MTServiceBus.4.csproj">
+      <Project>{9B6D3610-03BE-4D2A-A797-F185503C06E2}</Project>
+      <Name>Contoso.Abstract.MTServiceBus.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.NServiceBus.4\Contoso.Abstract.NServiceBus.4.csproj">
+      <Project>{9F470F63-B509-4B5F-B2A4-3364914935E4}</Project>
+      <Name>Contoso.Abstract.NServiceBus.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.RabbitMQ.4\Contoso.Abstract.RabbitMQ.4.csproj">
+      <Project>{2512C0B2-013C-4E2C-8BA1-29B919B3CFB3}</Project>
+      <Name>Contoso.Abstract.RabbitMQ.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.RhinoServiceBus.4\Contoso.Abstract.RhinoServiceBus.4.csproj">
+      <Project>{3CD3880F-DDEB-453D-895B-5E90AC66FE4A}</Project>
+      <Name>Contoso.Abstract.RhinoServiceBus.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.ZeroMQx64.4\Contoso.Abstract.ZeroMQx64.4.csproj">
+      <Project>{81D588A7-E841-4DA5-80FA-6CE53001F180}</Project>
+      <Name>Contoso.Abstract.ZeroMQx64.4</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

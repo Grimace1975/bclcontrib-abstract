@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3CD3880F-DDEB-453D-895B-5E90AC66FE4A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Contoso.Abstract</RootNamespace>
+    <AssemblyName>Contoso.Abstract.RhinoServiceBus</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Contoso.Abstract.RhinoServiceBus.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\BootstrapRhinoServiceBusHost.cs">
+      <Link>Abstract\BootstrapRhinoServiceBusHost.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\BootstrapRhinoServiceBusLoadBalancedHost.cs">
+      <Link>Abstract\BootstrapRhinoServiceBusLoadBalancedHost.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\IRhinoServiceMessageHandler.cs">
+      <Link>Abstract\IRhinoServiceMessageHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBusAbstractor.cs">
+      <Link>Abstract\RhinoServiceBusAbstractor.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBus\ConsumerInterceptorAdapter.cs">
+      <Link>Abstract\RhinoServiceBus\ConsumerInterceptorAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBus\Extensions.cs">
+      <Link>Abstract\RhinoServiceBus\Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBus\ServiceLocatorAdapter.cs">
+      <Link>Abstract\RhinoServiceBus\ServiceLocatorAdapter.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBus\ServiceLocatorBootStrapper.cs">
+      <Link>Abstract\RhinoServiceBus\ServiceLocatorBootStrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBus\ServiceLocatorBuilder.cs">
+      <Link>Abstract\RhinoServiceBus\ServiceLocatorBuilder.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBus\ServiceLocatorLoadBalancerBootStrapper.cs">
+      <Link>Abstract\RhinoServiceBus\ServiceLocatorLoadBalancerBootStrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\Transport.cs">
+      <Link>Abstract\Transport.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\TransportHandler.cs">
+      <Link>Abstract\TransportHandler.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\System.Abstract.4\System.Abstract.4.csproj">
+      <Project>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</Project>
+      <Name>System.Abstract.4</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.1.2.11\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Queues">
+      <HintPath>..\packages\Rhino.Queues.1.4.2.0\lib\4.0\Rhino.Queues.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.ServiceBus">
+      <HintPath>..\packages\Rhino.ServiceBus.2.3.0.0\lib\4.0\Rhino.ServiceBus.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.ServiceBus.Host">
+      <HintPath>..\packages\Rhino.ServiceBus.Host.2.3.0.0\lib\4.0\Rhino.ServiceBus.Host.exe</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.Transactions" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BclEx.snk" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Contoso.Abstract.RhinoServiceBus\Changelog.txt">
+      <Link>Changelog.txt</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

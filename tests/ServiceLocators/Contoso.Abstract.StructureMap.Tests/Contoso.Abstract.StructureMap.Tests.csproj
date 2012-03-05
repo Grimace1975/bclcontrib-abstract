@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D7805A97-2EEA-46B5-AAB1-424C82EB5415}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Contoso.Abstract.StructureMap.Tests</RootNamespace>
+    <AssemblyName>Contoso.Abstract.StructureMap.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Contoso.Abstract.StructureMap">
+      <HintPath>..\..\Contoso.Abstract.StructureMap.4\bin\Release\Contoso.Abstract.StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="StructureMap">
+      <HintPath>..\..\Contoso.Abstract.StructureMap.4\bin\Release\StructureMap.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Abstract">
+      <HintPath>..\..\Contoso.Abstract.StructureMap.4\bin\Release\System.Abstract.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\System.Abstract.Templates\Abstract+ServiceLocator\ServiceLocatorIntegrationTestsBase+Future.cs">
+      <Link>+FromTemplate\ServiceLocatorIntegrationTestsBase+Future.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Templates\Abstract+ServiceLocator\ServiceLocatorIntegrationTestsBase.cs">
+      <Link>+FromTemplate\ServiceLocatorIntegrationTestsBase.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract.Templates\Abstract+ServiceLocator\ServiceRegistrarIntegrationTestsBase.cs">
+      <Link>+FromTemplate\ServiceRegistrarIntegrationTestsBase.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Abstract+ServiceLocator\StructureMapServiceRegistrarIntegrationTests.cs" />
+    <Compile Include="Abstract+ServiceLocator\StructureMapServiceLocatorIntegrationTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\System.Abstract.Tests\System.Abstract.Tests.csproj">
+      <Project>{5B51D0D9-57FB-428F-8223-B96F27BDA2FD}</Project>
+      <Name>System.Abstract.Tests</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
