@@ -40,10 +40,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Hiro">
-      <HintPath>..\packages\Hiro.1.0.3\lib\Hiro.dll</HintPath>
+      <HintPath>..\..\..\packages\Hiro.1.0.3\lib\Hiro.dll</HintPath>
     </Reference>
     <Reference Include="Hiro.Containers">
-      <HintPath>..\packages\Hiro.1.0.3\lib\Hiro.Containers.dll</HintPath>
+      <HintPath>..\..\..\packages\Hiro.1.0.3\lib\Hiro.Containers.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>

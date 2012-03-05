@@ -38,7 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EventStore">
-      <HintPath>..\packages\EventStore.3.0.11326.44\lib\net40\EventStore.dll</HintPath>
+      <HintPath>..\..\..\packages\EventStore.3.0.11326.44\lib\net40\EventStore.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>

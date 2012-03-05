@@ -38,7 +38,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Munq.IocContainer">
-      <HintPath>..\packages\Munq.IocContainer.3.1.4\Lib\Munq.IocContainer.dll</HintPath>
+      <HintPath>..\..\..\packages\Munq.IocContainer.3.1.4\Lib\Munq.IocContainer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>

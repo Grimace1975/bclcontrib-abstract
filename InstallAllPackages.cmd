@@ -6,6 +6,6 @@ nuget install "%%x" -o packages )
 
 :: MvcTurbine2.1
 pushd packages
-..\nuget install MvcTurbine -o packages -version 2.1
+..\nuget install MvcTurbine -version 2.1
 popd
 pause
