@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>BclEx-Abstract</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>http://docs.bclex.org/bclex-abstract/</projectUrl>
+    <iconUrl>http://docs.bclex.org/bclex-abstract.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2010</copyright>
+    <tags>abstract nosql interface ioc di aggregateroot servicebus servicelocator bclcontrib</tags>
+    <language>en-US</language>
+    <references>
+       <reference file="System.Abstract.dll" />
+    </references>
+  </metadata>
+  <files>
+    <!--<file src="..\System.Abstract.Configuration\**\*.*" target="arg" />-->
+    <file src="..\System.Abstract.4\bin\Release\*.dll" target="lib\net40" />
+    <file src="..\System.Abstract.4\bin\Release\*.xml" target="lib\net40" />
+    <file src="..\System.Abstract.Configuration\bin\Release\*.dll" target="lib\net35" />
+    <file src="..\System.Abstract.Configuration\bin\Release\*.xml" target="lib\net35" />
+    <file src="..\System.Abstract.Configuration.4\bin\Release\*.dll" target="lib\net35" />
+    <file src="..\System.Abstract.Configuration.4\bin\Release\*.xml" target="lib\net35" />
+  </files>
+</package>
