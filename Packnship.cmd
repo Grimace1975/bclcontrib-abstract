@@ -8,7 +8,7 @@ if not exist %OUTPUTDIR% mkdir %OUTPUTDIR%
 set BUILD=-Prop Configuration=Release
 
 :: Services
-for /r src\System.Abstract %%x in (*.nuspec) do (
+for /r src %%x in (*.nuspec) do (
    set v=%%x
    set v=!v:.nuspec=.csproj!
    set v=!v:BclEx-Abstract.csproj=System.Abstract.csproj!
