@@ -23,23 +23,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Reflection;
-using Microsoft.Practices.Unity.ObjectBuilder;
-using Microsoft.Practices.ObjectBuilder2;
 using System.Abstract;
+using System.Linq;
+using System.Reflection;
+using Microsoft.Practices.ObjectBuilder2;
+using Microsoft.Practices.Unity.ObjectBuilder;
 namespace Contoso.Abstract.Internal
 {
     /// <summary>
     /// UnityConstructorSelectorPolicy
     /// </summary>
-    internal class UnityConstructorSelectorPolicy : DefaultUnityConstructorSelectorPolicy
+    internal class UnityConstructorSelectorPolicy : ConstructorSelectorPolicyBase<ServiceInjectionConstructorAttribute>
     {
         protected override IDependencyResolverPolicy CreateResolver(ParameterInfo parameter)
         {
-            var dependency = ServiceDependencyAttribute.GetServiceDependency(parameter);
-            if (dependency == null)
-                return base.CreateResolver(parameter);
-            return new NamedTypeDependencyResolverPolicy(parameter.ParameterType, dependency.Name);
+            var dependency = ServiceDependencyAttribute.GetServiceDependencies(parameter)
+                .SingleOrDefault();
+            if (dependency != null)
+                return new NamedTypeDependencyResolverPolicy(parameter.ParameterType, dependency.Name);
+            return new NamedTypeDependencyResolverPolicy(parameter.ParameterType, null);
         }
     }
 }

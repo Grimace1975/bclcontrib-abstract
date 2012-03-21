@@ -23,23 +23,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Reflection;
-using Microsoft.Practices.Unity.ObjectBuilder;
-using Microsoft.Practices.ObjectBuilder2;
 using System.Abstract;
+using System.Linq;
+using System.Reflection;
+using Microsoft.Practices.ObjectBuilder2;
+using Microsoft.Practices.Unity.ObjectBuilder;
 namespace Contoso.Abstract.Internal
 {
     /// <summary>
     /// UnityPropertySelectorPolicy
     /// </summary>
-    internal class UnityPropertySelectorPolicy : DefaultUnityPropertySelectorPolicy
+    internal class UnityPropertySelectorPolicy : PropertySelectorBase<ServiceDependencyAttribute>
     {
         protected override IDependencyResolverPolicy CreateResolver(PropertyInfo property)
         {
-            var dependency = ServiceDependencyAttribute.GetServiceDependency(property);
-            if (dependency == null)
-                return base.CreateResolver(property);
-            return new NamedTypeDependencyResolverPolicy(property.PropertyType, dependency.Name);            
+            var dependency = ServiceDependencyAttribute.GetServiceDependencies(property)
+                .Single();
+            return new NamedTypeDependencyResolverPolicy(property.PropertyType, dependency.Name);
         }
     }
 }

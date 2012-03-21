@@ -77,23 +77,12 @@ namespace Contoso.Abstract
             s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
             switch (level)
             {
-                case ServiceLog.LogLevel.Fatal:
-                    Log.Fatal(s, ex);
-                    return;
-                case ServiceLog.LogLevel.Error:
-                    Log.Error(s, ex);
-                    return;
-                case ServiceLog.LogLevel.Warning:
-                    Log.Warn(s, ex);
-                    return;
-                case ServiceLog.LogLevel.Information:
-                    Log.Info(s, ex);
-                    return;
-                case ServiceLog.LogLevel.Debug:
-                    Log.Debug(s, ex);
-                    return;
-                default:
-                    return;
+                case ServiceLog.LogLevel.Fatal: Log.Fatal(s, ex); return;
+                case ServiceLog.LogLevel.Error: Log.Error(s, ex); return;
+                case ServiceLog.LogLevel.Warning: Log.Warn(s, ex); return;
+                case ServiceLog.LogLevel.Information: Log.Info(s, ex); return;
+                case ServiceLog.LogLevel.Debug: Log.Debug(s, ex); return;
+                default: return;
             }
         }
 

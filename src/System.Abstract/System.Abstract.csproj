@@ -120,6 +120,8 @@
     <Compile Include="Abstract+ServiceLocator\IIgnoreServiceLocator.cs" />
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocatorNamespaceBehaviorWrapper.cs" />
     <Compile Include="Abstract+ServiceLog\ServiceLogExtensions.cs" />
+    <Compile Include="Abstract\ServiceInjectionConstructorAttribute.cs" />
+    <Compile Include="Abstract\ServiceInjectionMethodAttribute.cs" />
     <Compile Include="Abstract\Parts+TypeGrapher\ITypeCacheSerializer.cs" />
     <Compile Include="Abstract\Parts+TypeGrapher\ITypeCache.cs" />
     <Compile Include="Abstract\Parts+TypeGrapher+Impl\BuildManagerTypeCache.cs" />

@@ -25,15 +25,24 @@ THE SOFTWARE.
 #endregion
 using System.Abstract;
 using Contoso.Abstract.RhinoServiceBus;
+using Rhino.ServiceBus.Impl;
+using Rhino.ServiceBus.LoadBalancer;
 namespace Contoso.Abstract
 {
     /// <summary>
     /// BootstrapRhinoServiceBusLoadBalancedHost
     /// </summary>
-    public abstract class BootstrapRhinoServiceBusLoadBalancedHost : ServiceLocatorLoadBalancerBootStrapper
+    public abstract class BootstrapRhinoServiceBusLoadBalancedHost : BootstrapRhinoServiceBusHost
     {
         protected BootstrapRhinoServiceBusLoadBalancedHost() { }
         protected BootstrapRhinoServiceBusLoadBalancedHost(IServiceLocator locator)
             : base(locator) { }
+        protected BootstrapRhinoServiceBusLoadBalancedHost(IServiceLocator locator, string name)
+            : base(locator, name) { }
+
+        protected override AbstractRhinoServiceBusConfiguration CreateConfiguration()
+        {
+            return new LoadBalancerConfiguration();
+        }
     }
 }
