@@ -40,17 +40,15 @@ namespace System.Abstract
 
         public string Name { get; private set; }
 
-        public static ServiceDependencyAttribute GetServiceDependency(ParameterInfo parameter)
+        public static IEnumerable<ServiceDependencyAttribute> GetServiceDependencies(ParameterInfo parameter)
         {
             return parameter.GetCustomAttributes(false)
-                .OfType<ServiceDependencyAttribute>()
-                .SingleOrDefault();
+                .OfType<ServiceDependencyAttribute>();
         }
-        public static ServiceDependencyAttribute GetServiceDependency(PropertyInfo property)
+        public static IEnumerable<ServiceDependencyAttribute> GetServiceDependencies(PropertyInfo property)
         {
             return property.GetCustomAttributes(typeof(ServiceDependencyAttribute), false)
-                .OfType<ServiceDependencyAttribute>()
-                .SingleOrDefault();
+                .OfType<ServiceDependencyAttribute>();
         }
     }
 }

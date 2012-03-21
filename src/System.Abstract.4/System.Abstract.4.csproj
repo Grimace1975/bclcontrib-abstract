@@ -405,6 +405,12 @@
     <Compile Include="..\System.Abstract\Abstract\ServiceDependencyAttribute.cs">
       <Link>Abstract\ServiceDependencyAttribute.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract\ServiceInjectionConstructorAttribute.cs">
+      <Link>Abstract\ServiceInjectionConstructorAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract\ServiceInjectionMethodAttribute.cs">
+      <Link>Abstract\ServiceInjectionMethodAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\+ServiceBus\AppServiceBus.cs">
       <Link>Contoso.Abstract+Impl\+ServiceBus\AppServiceBus.cs</Link>
     </Compile>

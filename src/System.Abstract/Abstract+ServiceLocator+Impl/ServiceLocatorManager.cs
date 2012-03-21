@@ -74,7 +74,7 @@ namespace System.Abstract
                     throw new InvalidOperationException("Service undefined. Ensure SetProvider");
                 if (Lazy.IsValueCreated)
                     return Lazy.Value;
-                try { return Lazy.Value; }
+                try { return _lazyValue ?? Lazy.Value; }
                 catch (ReflectionTypeLoadException ex)
                 {
                     var b = new StringBuilder();

@@ -32,17 +32,14 @@ namespace Contoso.Abstract
     /// </summary>
     public abstract class BootstrapRhinoServiceBusHost : ServiceLocatorBootStrapper, IServiceBusHostBootstrap
     {
+        private string _name;
+
         protected BootstrapRhinoServiceBusHost()
-        {
-            ServiceBusManager.SetProvider(() => new RhinoServiceBusAbstractor(ServiceLocatorManager.Current, GetInstance<Rhino.ServiceBus.IServiceBus>()))
-                .RegisterWithServiceLocator();
-        }
+            : base(ServiceLocatorManager.Current) { }
         protected BootstrapRhinoServiceBusHost(IServiceLocator locator)
-            : base(locator)
-        {
-            ServiceBusManager.SetProvider(() => new RhinoServiceBusAbstractor(locator, GetInstance<Rhino.ServiceBus.IServiceBus>()))
-                .RegisterWithServiceLocator(locator);
-        }
+            : base(locator) { }
+        protected BootstrapRhinoServiceBusHost(IServiceLocator locator, string name)
+            : base(locator) { _name = name; }
 
         public virtual void Initialize() { }
         public virtual void Open(IServiceBus bus) { }
@@ -52,6 +49,8 @@ namespace Contoso.Abstract
         protected override void OnEndStart()
         {
             base.OnEndStart();
+            ServiceBusManager.SetProvider(() => new RhinoServiceBusAbstractor(_locator, GetInstance<Rhino.ServiceBus.IServiceBus>()))
+                .RegisterWithServiceLocator(_locator, _name);
             // also opens to connection, thus registering IServiceBus
             Open(ServiceBusManager.Current);
         }

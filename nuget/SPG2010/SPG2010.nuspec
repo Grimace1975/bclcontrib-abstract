@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>SPG2010</id>
+    <version>2.0.0</version>
+    <authors>Microsoft</authors>
+    <owners>Sky Morey</owners>
+    <description>This package contains the Patterns and Practices for SharePoint 2010.</description>
+    <projectUrl>http://msdn.microsoft.com/en-us/library/ff770300.aspx</projectUrl>
+    <tags>Sharepoint</tags>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="CommonServiceLocator" version="1.0" />
+    </dependencies>
+  </metadata>
+</package>

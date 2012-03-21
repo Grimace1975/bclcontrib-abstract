@@ -37,6 +37,7 @@ namespace System.Abstract.Parts
     {
         private static readonly ConditionalWeakTable<Lazy<TIService>, ISetupDescriptor> _setupDescriptors = new ConditionalWeakTable<Lazy<TIService>, ISetupDescriptor>();
         private static readonly object _lock = new object();
+        protected static TIService _lazyValue;
 
         // Force "precise" initialization
         static ServiceManagerBase() { }
@@ -170,7 +171,7 @@ namespace System.Abstract.Parts
                 {
                     descriptor = (firstDescriptor ?? new SetupDescriptor(Registration, null));
                     _setupDescriptors.Add(service, descriptor);
-                    service.HookValueFactory(valueFactory => ApplySetup(service, valueFactory()));
+                    service.HookValueFactory(valueFactory => ApplySetup(service, _lazyValue = valueFactory()));
                 }
             return descriptor;
         }
