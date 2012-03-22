@@ -24,6 +24,7 @@ THE SOFTWARE.
 */
 #endregion
 using Microsoft.SharePoint;
+using Microsoft.SharePoint.Administration;
 namespace System.Abstract
 {
     /// <summary>
@@ -47,7 +48,7 @@ namespace System.Abstract
             newLocatorAsAccessor.SetContainer(site);
             return (IServiceLocator)newLocator;
         }
-        public static IServiceLocator BehaveAsFarm(this IServiceLocator locator)
+        public static IServiceLocator BehaveAs(this IServiceLocator locator, SPFarm farm)
         {
             if (locator == null)
                 throw new ArgumentNullException("locator");
@@ -76,7 +77,7 @@ namespace System.Abstract
             newRegistrarAsAccessor.SetContainer(site);
             return (IServiceRegistrar)newRegistrar;
         }
-        public static IServiceRegistrar BehaveAsFarm(this IServiceRegistrar registrar)
+        public static IServiceRegistrar BehaveAs(this IServiceRegistrar registrar, SPFarm farm)
         {
             if (registrar == null)
                 throw new ArgumentNullException("registrar");

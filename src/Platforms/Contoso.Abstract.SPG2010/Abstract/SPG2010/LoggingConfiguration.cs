@@ -46,7 +46,7 @@ namespace Contoso.Abstract.SPG2010
 
         private static bool HasArea(DiagnosticsAreaCollection collection, string areaName)
         {
-            return collection.Any(x => string.Equals(x.Name, areaName, StringComparison.OrdinalIgnoreCase));
+            return collection.Any(x => string.Equals(x.Name.Trim(), areaName.Trim(), StringComparison.OrdinalIgnoreCase));
         }
 
         private static void AddArea(DiagnosticsArea newArea)
