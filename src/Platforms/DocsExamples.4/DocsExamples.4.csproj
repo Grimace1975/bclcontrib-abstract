@@ -54,6 +54,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
   </ItemGroup>
@@ -65,6 +69,10 @@
     <ProjectReference Include="..\..\System.Abstract.Configuration.4\System.Abstract.Configuration.4.csproj">
       <Project>{46A59617-2520-4509-8B41-204C9085ABC7}</Project>
       <Name>System.Abstract.Configuration.4</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Contoso.Abstract.SPG2010\Contoso.Abstract.SPG2010.csproj">
+      <Project>{30BA05EA-A4C6-442A-97F7-5797C604B5A7}</Project>
+      <Name>Contoso.Abstract.SPG2010</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
