@@ -55,8 +55,7 @@ namespace Contoso.Abstract
         {
             if (container == null)
                 throw new ArgumentNullException("container");
-            _container = container;
-            _registrar = new StructureMapServiceRegistrar(this, container);
+            Container = container;
         }
 
         public void Dispose()
@@ -150,7 +149,11 @@ namespace Contoso.Abstract
                     _registrar.LoadPendingRegistrations();
                 return _container;
             }
-            private set { _container = value; }
+            private set
+            {
+                _container = value;
+                _registrar = new StructureMapServiceRegistrar(this, value);
+            }
         }
 
         #endregion
