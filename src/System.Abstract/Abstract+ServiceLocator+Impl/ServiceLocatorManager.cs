@@ -43,7 +43,7 @@ namespace System.Abstract
                 MakeAction = a => x => a(x),
                 OnSetup = (service, descriptor) =>
                 {
-                    var behavior = (service as IServiceRegistrarBehaviorAccessor);
+                    var behavior = (service.Registrar as IServiceRegistrarBehaviorAccessor);
                     if (behavior == null || behavior.RegisterInLocator)
                         RegisterSelfInLocator(service);
                     if (descriptor != null)

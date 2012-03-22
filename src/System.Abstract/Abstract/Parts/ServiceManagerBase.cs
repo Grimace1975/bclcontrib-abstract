@@ -79,9 +79,9 @@ namespace System.Abstract.Parts
             {
                 OnServiceRegistrar = (service, locator, name) =>
                 {
-                    var behavior = (service as IServiceRegistrarBehaviorAccessor);
-                    if (behavior != null && !behavior.RegisterInLocator)
-                        throw new InvalidOperationException();
+                    //var behavior = (service.Registrar as IServiceRegistrarBehaviorAccessor);
+                    //if (behavior != null && !behavior.RegisterInLocator)
+                    //    throw new InvalidOperationException();
                     RegisterInstance(service, locator, name);
                     // specific registration
                     var setupRegistration = (service as ISetupRegistration);
