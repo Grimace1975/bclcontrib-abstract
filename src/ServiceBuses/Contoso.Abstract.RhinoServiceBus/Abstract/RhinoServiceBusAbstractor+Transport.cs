@@ -24,23 +24,36 @@ THE SOFTWARE.
 */
 #endregion
 using Rhino.ServiceBus;
+using System;
 namespace Contoso.Abstract
 {
-    /// <summary>
-    /// TransportHandler
-    /// </summary>
-    internal class TransportHandler<T> : ConsumerOf<Transport<T>>
+    public partial class RhinoServiceBusAbstractor
     {
-        private readonly IServiceBus _bus;
-
-        public TransportHandler(IServiceBus bus)
+        /// <summary>
+        /// Transport
+        /// </summary>
+        [Serializable]
+        internal class Transport<T>
         {
-            _bus = bus;
+            public T B { get; set; }
         }
 
-        public void Consume(Transport<T> message)
+        /// <summary>
+        /// TransportHandler
+        /// </summary>
+        internal class TransportHandler<T> : ConsumerOf<Transport<T>>
         {
-            var b = message.B;
+            private readonly IServiceBus _bus;
+
+            public TransportHandler(IServiceBus bus)
+            {
+                _bus = bus;
+            }
+
+            public void Consume(Transport<T> message)
+            {
+                var b = message.B;
+            }
         }
     }
 }

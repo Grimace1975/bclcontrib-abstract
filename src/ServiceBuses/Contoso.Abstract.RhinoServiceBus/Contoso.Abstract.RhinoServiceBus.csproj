@@ -41,8 +41,7 @@
     <Compile Include="Abstract\BootstrapRhinoServiceBusLoadBalancedHost.cs" />
     <Compile Include="Abstract\BootstrapRhinoServiceBusHost.cs" />
     <Compile Include="Abstract\IRhinoServiceMessageHandler.cs" />
-    <Compile Include="Abstract\TransportHandler.cs" />
-    <Compile Include="Abstract\Transport.cs" />
+    <Compile Include="Abstract\RhinoServiceBusAbstractor+Transport.cs" />
     <Compile Include="Abstract\RhinoServiceBusAbstractor.cs" />
     <Compile Include="Abstract\RhinoServiceBus\ConsumerInterceptorAdapter.cs" />
     <Compile Include="Abstract\RhinoServiceBus\ServiceLocatorLoadBalancerBootStrapper.cs" />

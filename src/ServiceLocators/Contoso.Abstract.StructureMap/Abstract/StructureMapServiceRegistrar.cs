@@ -140,6 +140,11 @@ namespace Contoso.Abstract
 
         #region Behavior
 
+        bool IServiceRegistrarBehaviorAccessor.RegisterInLocator
+        {
+            get { return true; }
+        }
+
         ServiceRegistrarLifetime IServiceRegistrarBehaviorAccessor.Lifetime
         {
             get { return LifetimeForRegisters; }

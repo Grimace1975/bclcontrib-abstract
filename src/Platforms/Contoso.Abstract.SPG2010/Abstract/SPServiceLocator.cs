@@ -43,7 +43,7 @@ namespace Contoso.Abstract
     /// SPServiceLocator
     /// </summary>
     [Serializable]
-    public class SPServiceLocator : ISPServiceLocator, IDisposable, ServiceLocatorManager.ISetupRegistration
+    public class SPServiceLocator : ISPServiceLocator, IDisposable
     {
         private SharePointServiceLocator _container;
         private SPServiceRegistrar _registrar;
@@ -66,11 +66,6 @@ namespace Contoso.Abstract
                 _container = null;
                 _registrar = null;
             }
-        }
-
-        Action<IServiceLocator, string> ServiceLocatorManager.ISetupRegistration.OnServiceRegistrar
-        {
-            get { return (locator, name) => ServiceLocatorManager.RegisterInstance<ISPServiceLocator>(this, locator, name); }
         }
 
         public object GetService(Type serviceType) { return Resolve(serviceType); }

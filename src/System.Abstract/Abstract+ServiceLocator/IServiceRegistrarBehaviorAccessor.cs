@@ -30,6 +30,7 @@ namespace System.Abstract
     /// </summary>
     public interface IServiceRegistrarBehaviorAccessor
     {
+        bool RegisterInLocator { get; }
         ServiceRegistrarLifetime Lifetime { get; set; }
     }
 }

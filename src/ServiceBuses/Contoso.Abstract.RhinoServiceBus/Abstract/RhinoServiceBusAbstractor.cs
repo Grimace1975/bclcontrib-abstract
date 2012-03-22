@@ -44,7 +44,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// RhinoServiceBusAbstractor
     /// </summary>
-    public class RhinoServiceBusAbstractor : IRhinoServiceBus, ServiceBusManager.ISetupRegistration
+    public partial class RhinoServiceBusAbstractor : IRhinoServiceBus, ServiceBusManager.ISetupRegistration
     {
         private IServiceLocator _serviceLocator;
         private bool _passthru = true;

@@ -37,7 +37,7 @@ namespace System.Abstract.Parts
     {
         private static readonly ConditionalWeakTable<Lazy<TIService>, ISetupDescriptor> _setupDescriptors = new ConditionalWeakTable<Lazy<TIService>, ISetupDescriptor>();
         private static readonly object _lock = new object();
-        protected static TIService _lazyValue;
+        protected static TIService LazyValue;
 
         // Force "precise" initialization
         static ServiceManagerBase() { }
@@ -79,6 +79,9 @@ namespace System.Abstract.Parts
             {
                 OnServiceRegistrar = (service, locator, name) =>
                 {
+                    var behavior = (service as IServiceRegistrarBehaviorAccessor);
+                    if (behavior != null && !behavior.RegisterInLocator)
+                        throw new InvalidOperationException();
                     RegisterInstance(service, locator, name);
                     // specific registration
                     var setupRegistration = (service as ISetupRegistration);
@@ -171,7 +174,7 @@ namespace System.Abstract.Parts
                 {
                     descriptor = (firstDescriptor ?? new SetupDescriptor(Registration, null));
                     _setupDescriptors.Add(service, descriptor);
-                    service.HookValueFactory(valueFactory => ApplySetup(service, _lazyValue = valueFactory()));
+                    service.HookValueFactory(valueFactory => ApplySetup(service, LazyValue = valueFactory()));
                 }
             return descriptor;
         }
