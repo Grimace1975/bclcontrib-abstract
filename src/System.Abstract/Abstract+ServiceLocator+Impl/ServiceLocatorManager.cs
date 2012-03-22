@@ -43,7 +43,9 @@ namespace System.Abstract
                 MakeAction = a => x => a(x),
                 OnSetup = (service, descriptor) =>
                 {
-                    RegisterSelfInLocator(service);
+                    var behavior = (service as IServiceRegistrarBehaviorAccessor);
+                    if (behavior == null || behavior.RegisterInLocator)
+                        RegisterSelfInLocator(service);
                     if (descriptor != null)
                         foreach (var action in descriptor.Actions)
                             action(service);
@@ -74,7 +76,7 @@ namespace System.Abstract
                     throw new InvalidOperationException("Service undefined. Ensure SetProvider");
                 if (Lazy.IsValueCreated)
                     return Lazy.Value;
-                try { return _lazyValue ?? Lazy.Value; }
+                try { return LazyValue ?? Lazy.Value; }
                 catch (ReflectionTypeLoadException ex)
                 {
                     var b = new StringBuilder();
