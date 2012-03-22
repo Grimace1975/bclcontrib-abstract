@@ -37,6 +37,8 @@ namespace Contoso.Abstract
     {
         ITraceLogger Log { get; }
         int EventID { get; }
+        string AreaName { get; }
+        string Category { get; }
     }
 
     /// <summary>
@@ -46,22 +48,25 @@ namespace Contoso.Abstract
     {
         static SPTraceServiceLog() { ServiceLogManager.EnsureRegistration(); }
         public SPTraceServiceLog()
-            : this(new TraceLogger(), 0, null) { }
-        public SPTraceServiceLog(string name)
-            : this(new TraceLogger(), 0, name) { }
+            : this(new TraceLogger(), 0, "Undefined", "General") { }
+        public SPTraceServiceLog(string areaName, string category)
+            : this(new TraceLogger(), 0, areaName, category) { }
         public SPTraceServiceLog(int eventID)
-            : this(new TraceLogger(), eventID, null) { }
-        public SPTraceServiceLog(int eventID, string name)
-            : this(new TraceLogger(), eventID, name) { }
-        public SPTraceServiceLog(ITraceLogger log, int eventID, string name)
+            : this(new TraceLogger(), eventID, "Undefined", "General") { }
+        public SPTraceServiceLog(int eventID, string areaName, string category)
+            : this(new TraceLogger(), eventID, areaName, category) { }
+        public SPTraceServiceLog(ITraceLogger log, int eventID, string areaName, string category)
         {
             if (log == null)
                 throw new ArgumentNullException("log");
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
+            if (string.IsNullOrEmpty(areaName))
+                throw new ArgumentNullException("areaName");
+            if (string.IsNullOrEmpty(category))
+                throw new ArgumentNullException("category");
             Log = log;
             EventID = eventID;
-            Name = name;
+            AreaName = areaName;
+            Category = category;
         }
 
         Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.OnServiceRegistrar
@@ -72,12 +77,15 @@ namespace Contoso.Abstract
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         // get
-        public string Name { get; private set; }
+        public string Name
+        {
+            get { return AreaName + "/" + Category; }
+        }
         public IServiceLog Get(string name)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
-            return new SPTraceServiceLog(Log, EventID, Name + "." + name);
+            return new SPTraceServiceLog(Log, EventID, AreaName, name);
         }
 
         // log
@@ -103,6 +111,8 @@ namespace Contoso.Abstract
 
         public ITraceLogger Log { get; private set; }
         public int EventID { get; private set; }
+        public string AreaName { get; private set; }
+        public string Category { get; private set; }
 
         #endregion
 

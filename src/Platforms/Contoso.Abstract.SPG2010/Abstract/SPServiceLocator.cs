@@ -29,6 +29,7 @@ using System.Abstract;
 using System.Collections.Generic;
 using Contoso.Abstract.SPG2010;
 using SPIServiceLocator = Microsoft.Practices.ServiceLocation.IServiceLocator;
+using Microsoft.SharePoint;
 namespace Contoso.Abstract
 {
     /// <summary>
@@ -43,7 +44,7 @@ namespace Contoso.Abstract
     /// SPServiceLocator
     /// </summary>
     [Serializable]
-    public class SPServiceLocator : ISPServiceLocator, IDisposable
+    public class SPServiceLocator : ISPServiceLocator, IDisposable, ICloneable, ISPServiceBehaviorAccessor
     {
         private SPIServiceLocator _container;
         private SPServiceRegistrar _registrar;
@@ -66,6 +67,7 @@ namespace Contoso.Abstract
                 _registrar = null;
             }
         }
+        object ICloneable.Clone() { return MemberwiseClone(); }
 
         public object GetService(Type serviceType) { return Resolve(serviceType); }
 
@@ -122,6 +124,20 @@ namespace Contoso.Abstract
         public void Release(object instance) { throw new NotSupportedException(); }
         public void TearDown<TService>(TService instance)
             where TService : class { throw new NotSupportedException(); }
+
+        #region SPBehavior
+
+        void ISPServiceBehaviorAccessor.SetContainer(SPSite site)
+        {
+            Container = (site != null ? SharePointServiceLocator.GetCurrent(site) : SharePointServiceLocator.GetCurrent());
+        }
+
+        void ISPServiceBehaviorAccessor.SetContainerAsFarm()
+        {
+            Container = SharePointServiceLocator.GetCurrentFarm();
+        }
+
+        #endregion
 
         #region Domain specific
 

@@ -31,6 +31,7 @@ using Contoso.Abstract.SPG2010;
 using SPIServiceLocator = Microsoft.Practices.ServiceLocation.IServiceLocator;
 using InstantiationType = Microsoft.Practices.SharePoint.Common.ServiceLocation.InstantiationType;
 using System.Reflection;
+using Microsoft.SharePoint;
 namespace Contoso.Abstract
 {
     /// <summary>
@@ -46,7 +47,7 @@ namespace Contoso.Abstract
     /// <summary>
     /// SPServiceRegistrar
     /// </summary>
-    public class SPServiceRegistrar : ISPServiceRegistrar, IDisposable, ICloneable, IServiceRegistrarBehaviorAccessor
+    public class SPServiceRegistrar : ISPServiceRegistrar, IDisposable, ICloneable, IServiceRegistrarBehaviorAccessor, ISPServiceBehaviorAccessor
     {
         private SPServiceLocator _parent;
         private SPIServiceLocator _container;
@@ -142,6 +143,26 @@ namespace Contoso.Abstract
         {
             get { return LifetimeForRegisters; }
             set { LifetimeForRegisters = value; }
+        }
+
+        #endregion
+
+        #region SPBehavior
+
+        void ISPServiceBehaviorAccessor.SetContainer(SPSite site)
+        {
+            _container = (site != null ? SharePointServiceLocator.GetCurrent(site) : SharePointServiceLocator.GetCurrent());
+            _registrar = (_container.GetInstance<IServiceLocatorConfig>() as ServiceLocatorConfig);
+            if (_registrar == null)
+                throw new NullReferenceException("registrar");
+        }
+
+        void ISPServiceBehaviorAccessor.SetContainerAsFarm()
+        {
+            _container = SharePointServiceLocator.GetCurrentFarm();
+            _registrar = (_container.GetInstance<IServiceLocatorConfig>() as ServiceLocatorConfig);
+            if (_registrar == null)
+                throw new NullReferenceException("registrar");
         }
 
         #endregion
