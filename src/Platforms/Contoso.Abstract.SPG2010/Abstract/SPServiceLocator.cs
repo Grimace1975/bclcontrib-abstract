@@ -45,7 +45,7 @@ namespace Contoso.Abstract
     [Serializable]
     public class SPServiceLocator : ISPServiceLocator, IDisposable
     {
-        private SharePointServiceLocator _container;
+        private SPIServiceLocator _container;
         private SPServiceRegistrar _registrar;
 
         static SPServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
@@ -55,14 +55,13 @@ namespace Contoso.Abstract
         {
             if (container == null)
                 throw new ArgumentNullException("container");
-            _registrar = new SPServiceRegistrar(this, container);
+            Container = container;
         }
 
         public void Dispose()
         {
             if (_container != null)
             {
-                var container = _container;
                 _container = null;
                 _registrar = null;
             }
@@ -83,35 +82,35 @@ namespace Contoso.Abstract
         public TService Resolve<TService>()
             where TService : class
         {
-            try { return Container.GetInstance<TService>(); }
+            try { return _container.GetInstance<TService>(); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
         public TService Resolve<TService>(string name)
             where TService : class
         {
-            try { return Container.GetInstance<TService>(name); }
+            try { return _container.GetInstance<TService>(name); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
         public object Resolve(Type serviceType)
         {
-            try { return Container.GetInstance(serviceType); }
+            try { return _container.GetInstance(serviceType); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
         public object Resolve(Type serviceType, string name)
         {
-            try { return Container.GetInstance(serviceType, name); }
+            try { return _container.GetInstance(serviceType, name); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
         //
         public IEnumerable<TService> ResolveAll<TService>()
             where TService : class
         {
-            try { return Container.GetAllInstances<TService>(); }
+            try { return _container.GetAllInstances<TService>(); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
         public IEnumerable<object> ResolveAll(Type serviceType)
         {
-            try { return Container.GetAllInstances(serviceType); }
+            try { return _container.GetAllInstances(serviceType); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
 
@@ -126,7 +125,15 @@ namespace Contoso.Abstract
 
         #region Domain specific
 
-        public SPIServiceLocator Container { get; set; }
+        public SPIServiceLocator Container
+        {
+            get { return _container; }
+            private set
+            {
+                _container = value;
+                _registrar = new SPServiceRegistrar(this, value);
+            }
+        }
 
         #endregion
     }

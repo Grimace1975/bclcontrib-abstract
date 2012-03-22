@@ -41,7 +41,7 @@ namespace Contoso.Abstract
     }
 
     /// <summary>
-    /// WindsorServiceLocator
+    /// CastleWindsorServiceLocator
     /// </summary>
     [Serializable]
     public class CastleWindsorServiceLocator : ICastleWindsorServiceLocator, IDisposable, ServiceLocatorManager.ISetupRegistration

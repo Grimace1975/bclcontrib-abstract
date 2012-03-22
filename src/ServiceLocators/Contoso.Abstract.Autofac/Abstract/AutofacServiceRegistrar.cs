@@ -46,12 +46,17 @@ namespace Contoso.Abstract
         private ContainerBuilder _builder;
         private IContainer _container;
 
-        public AutofacServiceRegistrar(AutofacServiceLocator parent, ContainerBuilder builder, out Func<IContainer> containerBuilder)
+        public AutofacServiceRegistrar(AutofacServiceLocator parent, IContainer container)
         {
             _parent = parent;
+            _container = container;
+            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
+        }
+        public AutofacServiceRegistrar(AutofacServiceLocator parent, ContainerBuilder builder, out Func<IContainer> containerBuilder)
+            : this(parent, null)
+        {
             _builder = builder;
             containerBuilder = (() => _container = _builder.Build());
-            LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
 
         public void Dispose() { }

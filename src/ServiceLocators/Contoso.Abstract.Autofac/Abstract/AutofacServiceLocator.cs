@@ -51,11 +51,17 @@ namespace Contoso.Abstract
         static AutofacServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
         public AutofacServiceLocator()
             : this(new ContainerBuilder()) { }
-        public AutofacServiceLocator(ContainerBuilder container)
+        public AutofacServiceLocator(IContainer container)
         {
             if (container == null)
                 throw new ArgumentNullException("container");
-            _registrar = new AutofacServiceRegistrar(this, container, out _containerBuilder);
+            Container = container;
+        }
+        public AutofacServiceLocator(ContainerBuilder containerBuilder)
+        {
+            if (containerBuilder == null)
+                throw new ArgumentNullException("containerBuilder");
+            _registrar = new AutofacServiceRegistrar(this, containerBuilder, out _containerBuilder);
         }
 
         public void Dispose()
@@ -144,7 +150,11 @@ namespace Contoso.Abstract
                     _container = _containerBuilder();
                 return _container;
             }
-            private set { _container = value; }
+            private set
+            {
+                _container = value;
+                _registrar = new AutofacServiceRegistrar(this, value);
+            }
         }
 
         #endregion
