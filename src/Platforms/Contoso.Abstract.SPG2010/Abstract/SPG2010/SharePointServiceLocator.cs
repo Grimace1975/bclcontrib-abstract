@@ -34,7 +34,6 @@ using Microsoft.Practices.SharePoint.Common.Logging;
 using Microsoft.Practices.SharePoint.Common.ServiceLocation;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Security;
-
 namespace Contoso.Abstract.SPG2010
 {
     public class SharePointServiceLocator

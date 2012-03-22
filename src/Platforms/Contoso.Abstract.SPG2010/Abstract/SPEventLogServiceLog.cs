@@ -37,6 +37,8 @@ namespace Contoso.Abstract
     {
         IEventLogLogger Log { get; }
         int EventID { get; }
+        string AreaName { get; }
+        string Category { get; }
     }
 
     /// <summary>
@@ -46,22 +48,25 @@ namespace Contoso.Abstract
     {
         static SPEventLogServiceLog() { ServiceLogManager.EnsureRegistration(); }
         public SPEventLogServiceLog()
-            : this(new EventLogLogger(), 0, null) { }
-        public SPEventLogServiceLog(string name)
-            : this(new EventLogLogger(), 0, name) { }
+            : this(new EventLogLogger(), 0, "Undefined", "General") { }
+        public SPEventLogServiceLog(string areaName, string category)
+            : this(new EventLogLogger(), 0, areaName, category) { }
         public SPEventLogServiceLog(int eventID)
-            : this(new EventLogLogger(), eventID, null) { }
-        public SPEventLogServiceLog(int eventID, string name)
-            : this(new EventLogLogger(), eventID, name) { }
-        public SPEventLogServiceLog(IEventLogLogger log, int eventID, string name)
+            : this(new EventLogLogger(), eventID, "Undefined", "General") { }
+        public SPEventLogServiceLog(int eventID, string areaName, string category)
+            : this(new EventLogLogger(), eventID, areaName, category) { }
+        public SPEventLogServiceLog(IEventLogLogger log, int eventID, string areaName, string category)
         {
             if (log == null)
                 throw new ArgumentNullException("log");
-            if (string.IsNullOrEmpty(name))
-                throw new ArgumentNullException("name");
+            if (string.IsNullOrEmpty(areaName))
+                throw new ArgumentNullException("areaName");
+            if (string.IsNullOrEmpty(category))
+                throw new ArgumentNullException("category");
             Log = log;
             EventID = eventID;
-            Name = name;
+            AreaName = areaName;
+            Category = category;
         }
 
         Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.OnServiceRegistrar
@@ -72,12 +77,15 @@ namespace Contoso.Abstract
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         // get
-        public string Name { get; private set; }
+        public string Name
+        {
+            get { return AreaName + "/" + Category; }
+        }
         public IServiceLog Get(string name)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
-            return new SPEventLogServiceLog(Log, EventID, Name + "." + name);
+            return new SPEventLogServiceLog(Log, EventID, AreaName, name);
         }
 
         // log
@@ -103,6 +111,8 @@ namespace Contoso.Abstract
 
         public IEventLogLogger Log { get; private set; }
         public int EventID { get; private set; }
+        public string AreaName { get; private set; }
+        public string Category { get; private set; }
 
         #endregion
 

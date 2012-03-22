@@ -60,6 +60,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\ISPServiceBehaviorAccessor.cs" />
+    <Compile Include="Abstract\SPG2010\LoggingConfiguration.cs" />
+    <Compile Include="Abstract\SPServiceLocatorExtensions.cs" />
     <Compile Include="Abstract\SPDeveloperServiceLog.cs" />
     <Compile Include="Abstract\SPServiceLog.cs" />
     <Compile Include="Abstract\SPEventLogServiceLog.cs" />

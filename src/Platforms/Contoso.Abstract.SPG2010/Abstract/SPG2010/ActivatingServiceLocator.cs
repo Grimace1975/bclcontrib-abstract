@@ -32,7 +32,6 @@ using System.Reflection;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.SharePoint.Common;
 using Microsoft.Practices.SharePoint.Common.ServiceLocation;
-
 namespace Contoso.Abstract.SPG2010
 {
     public class ActivatingServiceLocator : ServiceLocatorImplBase
