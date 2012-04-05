@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Contoso.Abstract.AppFabric")]
+[assembly: AssemblyTitle("Contoso.Abstract.ServerAppFabric")]
 [assembly: AssemblyDescription("This package contains a Server AppFabric implementation of the abstract ServiceCache.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Contoso")]

@@ -25,11 +25,10 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Abstract;
-using System.Linq;
 using Contoso.Abstract.RhinoServiceBus;
 using Rhino.ServiceBus;
-using Rhino.ServiceBus.Impl;
 using Rhino.ServiceBus.Config;
+using Rhino.ServiceBus.Impl;
 // [Main] http://hibernatingrhinos.com/open-source/rhino-service-bus
 namespace Contoso.Abstract
 {
@@ -93,26 +92,20 @@ namespace Contoso.Abstract
             if (_passthru)
                 try
                 {
-                    if (endpoint == null)
-                        Bus.Send(messages);
-                    else if (endpoint != ServiceBus.SelfEndpoint)
-                        Bus.Send(Caster.Cast(endpoint), messages);
-                    else
-                        Bus.SendToSelf(messages);
+                    if (endpoint == null) Bus.Send(messages);
+                    else if (endpoint != ServiceBus.SelfEndpoint) Bus.Send(RhinoServiceBusTransport.Cast(endpoint), messages);
+                    else Bus.SendToSelf(messages);
                 }
                 catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
             else
             {
                 if (endpoint == null)
-                    endpoint = EndpointByMessageType(messages[0].GetType());
+                    endpoint = RhinoServiceBusTransport.EndpointByMessageType(messages[0].GetType());
                 try
                 {
-                    if (endpoint == null)
-                        Bus.Send(Caster.Cast(messages));
-                    else if (endpoint != ServiceBus.SelfEndpoint)
-                        Bus.Send(TransportEndpointMapper(endpoint), Caster.Cast(messages));
-                    else
-                        Bus.SendToSelf(Caster.Cast(messages));
+                    if (endpoint == null) Bus.Send(RhinoServiceBusTransport.Cast(messages));
+                    else if (endpoint != ServiceBus.SelfEndpoint) Bus.Send(RhinoServiceBusTransport.TransportEndpointMapper(endpoint), RhinoServiceBusTransport.Cast(messages));
+                    else Bus.SendToSelf(RhinoServiceBusTransport.Cast(messages));
                 }
                 catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
             }
@@ -127,7 +120,7 @@ namespace Contoso.Abstract
                 try { Bus.Reply(messages); }
                 catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
             else
-                try { Bus.Reply(Caster.Cast(messages)); }
+                try { Bus.Reply(RhinoServiceBusTransport.Cast(messages)); }
                 catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
         }
 
@@ -139,7 +132,7 @@ namespace Contoso.Abstract
                 try { Bus.Publish(messages); }
                 catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
             else
-                try { Bus.Publish(Caster.Cast(messages)); }
+                try { Bus.Publish(RhinoServiceBusTransport.Cast(messages)); }
                 catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
         }
 
@@ -153,7 +146,7 @@ namespace Contoso.Abstract
                 try { Bus.Subscribe(messageType); }
                 catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
             else
-                try { Bus.Subscribe(Caster.Cast(messageType)); }
+                try { Bus.Subscribe(RhinoServiceBusTransport.Cast(messageType)); }
                 catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
         }
 
@@ -165,7 +158,7 @@ namespace Contoso.Abstract
                 try { Bus.Unsubscribe(messageType); }
                 catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
             else
-                try { Bus.Unsubscribe(Caster.Cast(messageType)); }
+                try { Bus.Unsubscribe(RhinoServiceBusTransport.Cast(messageType)); }
                 catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
         }
 
@@ -174,20 +167,6 @@ namespace Contoso.Abstract
         #region Domain-specific
 
         public Rhino.ServiceBus.IServiceBus Bus { get; private set; }
-
-        #endregion
-
-        #region Endpoint-Translation
-
-        private IServiceBusEndpoint EndpointByMessageType(Type messageType)
-        {
-            return null;
-        }
-
-        private Endpoint TransportEndpointMapper(IServiceBusEndpoint endpoint)
-        {
-            return null;
-        }
 
         #endregion
 
@@ -203,31 +182,6 @@ namespace Contoso.Abstract
                 configurator(configuration);
             configuration.Configure();
             return serviceLocator.Resolve<IStartableServiceBus>();
-        }
-
-        private class Caster
-        {
-            public static object[] Cast(object[] messages)
-            {
-                return messages.Select(x =>
-                {
-                    var type = typeof(Transport<>).MakeGenericType(x.GetType());
-                    var transport = Activator.CreateInstance(type);
-                    type.GetProperty("B").SetValue(transport, x, null);
-                    return transport;
-                }).ToArray();
-                //return messages.Select(x => new Transport<object> { B = x }).ToArray();
-            }
-
-            public static Type Cast(Type messagesType) { return typeof(Transport<>).MakeGenericType(messagesType); }
-
-            public static Endpoint Cast(IServiceBusEndpoint endpoint)
-            {
-                var endpointAsLiteral = (endpoint as LiteralServiceBusEndpoint);
-                if (endpointAsLiteral != null)
-                    return new Endpoint { Uri = new Uri(endpointAsLiteral.Value) };
-                throw new InvalidOperationException("Cast: Endpoint");
-            }
         }
     }
 }

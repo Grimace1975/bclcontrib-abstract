@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Contoso.Abstract.SimpleCqrs")]
+[assembly: AssemblyTitle("Contoso.Practices.Cqrs")]
 [assembly: AssemblyDescription("This package contains practices for CQRS using abstract Services.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Contoso")]

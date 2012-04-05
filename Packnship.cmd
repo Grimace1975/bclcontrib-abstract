@@ -3,9 +3,9 @@ setlocal enabledelayedexpansion
 
 echo packing packages
 
-set OUTPUTDIR=%~dp0dagent\
+set OUTPUTDIR=%~dp0.nupkg\
 if not exist %OUTPUTDIR% mkdir %OUTPUTDIR%
-set BUILD=-Prop Configuration=Release
+set BUILD=-Build -Prop Configuration=Release
 
 :: Services
 for /r src\ %%x in (*.nuspec) do (
@@ -15,7 +15,7 @@ for /r src\ %%x in (*.nuspec) do (
    set v=!v:BclEx-Abstract.=Contoso.Abstract.!
    set v=!v:BclEx-Practices.=Contoso.Practices.!
    ::echo.!v!
-   nuget pack "!v!" -OutputDirectory %OUTPUTDIR% %BUILD% )
+   nuget pack "!v!" -NoDefaultExcludes -OutputDirectory %OUTPUTDIR% %BUILD% )
    ::pause )
 
 echo pushing packages

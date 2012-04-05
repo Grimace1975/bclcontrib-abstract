@@ -35,7 +35,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>BclEx.4.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\System.Abstract.Configuration\Abstract\Configuration+EventSource\EventSourceConfiguration+FromCoreEx.cs">
@@ -104,7 +104,7 @@
     <Reference Include="System.configuration" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BclEx.snk" />
+    <None Include="BclEx.4.snk" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\System.Abstract.4\System.Abstract.4.csproj">

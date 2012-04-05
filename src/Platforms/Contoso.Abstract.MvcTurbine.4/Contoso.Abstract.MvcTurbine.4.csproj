@@ -35,7 +35,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>BclEx.4.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Contoso.Abstract.MvcTurbine\Abstract\RegistrationStub.cs">
@@ -62,7 +62,7 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BclEx.snk" />
+    <None Include="BclEx.4.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

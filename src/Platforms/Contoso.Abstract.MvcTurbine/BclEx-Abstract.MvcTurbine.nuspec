@@ -20,5 +20,9 @@
       <dependency id="MVCTurbine" version="3.4" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="..\Contoso.Abstract.MvcTurbine.4\bin\Release\$title$.dll" target="lib\net40" />
+    <file src="..\Contoso.Abstract.MvcTurbine.4\bin\Release\$title$.xml" target="lib\net40" />
+  </files>
 </package>
 
