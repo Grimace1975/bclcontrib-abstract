@@ -51,7 +51,9 @@ namespace Contoso.Abstract
 
         static SPServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
         public SPServiceLocator()
-            : this(SharePointServiceLocator.GetCurrent()) { }
+            : this(SharePointServiceLocator.GetCurrentFarm()) { }
+        public SPServiceLocator(SPSite site)
+            : this(site != null ? SharePointServiceLocator.GetCurrent(site) : SharePointServiceLocator.GetCurrent()) { }
         public SPServiceLocator(SPIServiceLocator container)
         {
             if (container == null)

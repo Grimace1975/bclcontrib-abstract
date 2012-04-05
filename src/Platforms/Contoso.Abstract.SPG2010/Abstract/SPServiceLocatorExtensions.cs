@@ -41,12 +41,12 @@ namespace System.Abstract
             var locatorAsCloneable = (locator as ICloneable);
             if (locatorAsCloneable == null)
                 throw new ArgumentNullException("locator", "Provider must have ICloneable");
-            var newLocator = (IServiceRegistrar)locatorAsCloneable.Clone();
+            var newLocator = (IServiceLocator)locatorAsCloneable.Clone();
             var newLocatorAsAccessor = (newLocator as ISPServiceBehaviorAccessor);
             if (newLocatorAsAccessor == null)
                 throw new ArgumentNullException("locator", "Provider must have ISPServiceBehaviorAccessor");
             newLocatorAsAccessor.SetContainer(site);
-            return (IServiceLocator)newLocator;
+            return newLocator;
         }
         public static IServiceLocator BehaveAs(this IServiceLocator locator, SPFarm farm)
         {
@@ -55,12 +55,12 @@ namespace System.Abstract
             var locatorAsCloneable = (locator as ICloneable);
             if (locatorAsCloneable == null)
                 throw new ArgumentNullException("locator", "Provider must have ICloneable");
-            var newLocator = (IServiceRegistrar)locatorAsCloneable.Clone();
+            var newLocator = (IServiceLocator)locatorAsCloneable.Clone();
             var newLocatorAsAccessor = (newLocator as ISPServiceBehaviorAccessor);
             if (newLocatorAsAccessor == null)
                 throw new ArgumentNullException("locator", "Provider must have ISPServiceBehaviorAccessor");
             newLocatorAsAccessor.SetContainerAsFarm();
-            return (IServiceLocator)newLocator;
+            return newLocator;
         }
 
         public static IServiceRegistrar BehaveAs(this IServiceRegistrar registrar, SPSite site)
@@ -75,7 +75,7 @@ namespace System.Abstract
             if (newRegistrarAsAccessor == null)
                 throw new ArgumentNullException("registrar", "Provider must have ISPServiceBehaviorAccessor");
             newRegistrarAsAccessor.SetContainer(site);
-            return (IServiceRegistrar)newRegistrar;
+            return newRegistrar;
         }
         public static IServiceRegistrar BehaveAs(this IServiceRegistrar registrar, SPFarm farm)
         {
@@ -89,7 +89,7 @@ namespace System.Abstract
             if (newRegistrarAsAccessor == null)
                 throw new ArgumentNullException("registrar", "Provider must have ISPServiceBehaviorAccessor");
             newRegistrarAsAccessor.SetContainerAsFarm();
-            return (IServiceRegistrar)newRegistrar;
+            return newRegistrar;
         }
 
         #endregion

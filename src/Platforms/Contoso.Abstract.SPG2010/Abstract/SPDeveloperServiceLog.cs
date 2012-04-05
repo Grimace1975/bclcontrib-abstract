@@ -48,11 +48,11 @@ namespace Contoso.Abstract
     {
         static SPDeveloperServiceLog() { ServiceLogManager.EnsureRegistration(); }
         public SPDeveloperServiceLog()
-            : this(new SharePointLogger(), 0, "Undefined", "General") { }
+            : this(new SharePointLogger(), 0, "SharePoint Foundation", "General") { }
         public SPDeveloperServiceLog(string areaName, string category)
             : this(new SharePointLogger(), 0, areaName, category) { }
         public SPDeveloperServiceLog(int eventID)
-            : this(new SharePointLogger(), eventID, "Undefined", "General") { }
+            : this(new SharePointLogger(), eventID, "SharePoint Foundation", "General") { }
         public SPDeveloperServiceLog(int eventID, string areaName, string category)
             : this(new SharePointLogger(), eventID, areaName, category) { }
         public SPDeveloperServiceLog(ILogger log, int eventID, string areaName, string category)

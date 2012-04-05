@@ -19,4 +19,8 @@
       <dependency id="BclEx-Abstract" version="$version$" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="..\Contoso.Abstract.Log4Net.4\bin\Release\$title$.dll" target="lib\net40" />
+    <file src="..\Contoso.Abstract.Log4Net.4\bin\Release\$title$.xml" target="lib\net40" />
+  </files>
 </package>

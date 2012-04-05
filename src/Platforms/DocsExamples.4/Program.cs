@@ -7,10 +7,10 @@ namespace Example
     {
         static void Main(string[] args)
         {
-            var sl = new ActivatingServiceLocator();
-            sl.RegisterTypeMapping<IServiceLocatorConfig, ServiceLocatorConfig>();
-            var l = ServiceLocatorManager.MakeByProvider(() => new SPServiceLocator(sl))
-                .Value;
+            //var sl = new ActivatingServiceLocator();
+            //sl.RegisterTypeMapping<IServiceLocatorConfig, ServiceLocatorConfig>();
+            //var l = ServiceLocatorManager.MakeByProvider(() => new SPServiceLocator(sl))
+            //    .Value;
         }
     }
 }

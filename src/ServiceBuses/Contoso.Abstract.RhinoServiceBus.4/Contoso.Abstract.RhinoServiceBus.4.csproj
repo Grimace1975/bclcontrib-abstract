@@ -35,7 +35,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>BclEx.4.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\BootstrapRhinoServiceBusHost.cs">
@@ -47,11 +47,14 @@
     <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\IRhinoServiceMessageHandler.cs">
       <Link>Abstract\IRhinoServiceMessageHandler.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBusAbstractor+Transport.cs">
-      <Link>Abstract\RhinoServiceBusAbstractor+Transport.cs</Link>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\OnewayRhinoServiceBusAbstractor.cs">
+      <Link>Abstract\OnewayRhinoServiceBusAbstractor.cs</Link>
     </Compile>
     <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBusAbstractor.cs">
       <Link>Abstract\RhinoServiceBusAbstractor.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBusTransport.cs">
+      <Link>Abstract\RhinoServiceBusTransport.cs</Link>
     </Compile>
     <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBus\ConsumerInterceptorAdapter.cs">
       <Link>Abstract\RhinoServiceBus\ConsumerInterceptorAdapter.cs</Link>
@@ -98,7 +101,7 @@
     <Reference Include="System.Transactions" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BclEx.snk" />
+    <None Include="BclEx.4.snk" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

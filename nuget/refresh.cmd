@@ -194,6 +194,14 @@ xcopy %SRC%.4\bin\Release\Contoso.Abstract.ServerAppFabric.xml lib\net40\ /Y/Q
 popd
 
 ::
+echo Abstract.SPG2010
+pushd BclContrib-Abstract.SPG2010
+set SRC=..\..\src\Platforms\Contoso.Abstract.SPG2010
+xcopy %SRC%\bin\Release\Contoso.Abstract.SPG2010.dll lib\net35\ /Y/Q
+xcopy %SRC%\bin\Release\Contoso.Abstract.SPG2010.xml lib\net35\ /Y/Q
+popd
+
+::
 echo Abstract.Spring
 pushd BclContrib-Abstract.Spring
 set SRC=..\..\src\ServiceLocators\Contoso.Abstract.Spring

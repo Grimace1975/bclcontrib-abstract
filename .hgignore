@@ -9,6 +9,6 @@ glob:Bin/*
 glob:_ReSharper.*/*
 glob:*/_ReSharper.*/*
 syntax: glob
-dagent/*
+.nupkg/*
 Packages/*
 packages/*
