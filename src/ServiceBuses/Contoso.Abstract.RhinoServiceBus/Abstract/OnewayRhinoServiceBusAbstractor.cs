@@ -122,7 +122,7 @@ namespace Contoso.Abstract
         {
             if (serviceLocator == null)
                 serviceLocator = ServiceLocatorManager.Current;
-            var configuration = new RhinoServiceBusConfiguration()
+            var configuration = new OnewayRhinoServiceBusConfiguration()
                 .UseAbstractServiceLocator(serviceLocator);
             if (busConfiguration != null)
                 configuration.UseConfiguration(busConfiguration);

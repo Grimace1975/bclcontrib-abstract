@@ -32,8 +32,15 @@ namespace System.Abstract
     public static class ServiceBus
     {
         public readonly static IServiceBusEndpoint SelfEndpoint = new LiteralServiceBusEndpoint("#local");
-        public static IServiceBusCallback Send(params object[] messages) { return ServiceBusManager.Current.Send(messages); }
+
         public static IServiceBusCallback Send<TMessage>(Action<TMessage> messageBuilder)
-            where TMessage : class { return ServiceBusManager.Current.Send<TMessage>(messageBuilder); }
+            where TMessage : class { var serviceBus = ServiceBusManager.Current; return serviceBus.Send(null, serviceBus.CreateMessage<TMessage>(messageBuilder)); }
+        public static IServiceBusCallback Send<TMessage>(string destination, Action<TMessage> messageBuilder)
+            where TMessage : class { var serviceBus = ServiceBusManager.Current; return serviceBus.Send(new LiteralServiceBusEndpoint(destination), serviceBus.CreateMessage<TMessage>(messageBuilder)); }
+        public static IServiceBusCallback Send<TMessage>(IServiceBusEndpoint destination, Action<TMessage> messageBuilder)
+            where TMessage : class { var serviceBus = ServiceBusManager.Current; return serviceBus.Send(destination, serviceBus.CreateMessage<TMessage>(messageBuilder)); }
+        public static IServiceBusCallback Send(params object[] messages) { var serviceBus = ServiceBusManager.Current; return serviceBus.Send(null, messages); }
+        public static IServiceBusCallback Send(string destination, params object[] messages) { var serviceBus = ServiceBusManager.Current; return serviceBus.Send(new LiteralServiceBusEndpoint(destination), messages); }
+        public static IServiceBusCallback Send(IServiceBusEndpoint destination, params object[] messages) { var serviceBus = ServiceBusManager.Current; return serviceBus.Send(destination, messages); }
     }
 }
