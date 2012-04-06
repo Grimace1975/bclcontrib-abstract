@@ -33,12 +33,12 @@ namespace System.Abstract
     /// </summary>
     public static class ServiceBusExtensions
     {
-        public static IServiceBusCallback Send<TMessage>(this IServiceBus serviceBus, IServiceBusEndpoint destination, Action<TMessage> messageBuilder)
-            where TMessage : class { return serviceBus.Send(destination, serviceBus.CreateMessage<TMessage>(messageBuilder)); }
         public static IServiceBusCallback Send<TMessage>(this IServiceBus serviceBus, Action<TMessage> messageBuilder)
             where TMessage : class { return serviceBus.Send(null, serviceBus.CreateMessage<TMessage>(messageBuilder)); }
         public static IServiceBusCallback Send<TMessage>(this IServiceBus serviceBus, string destination, Action<TMessage> messageBuilder)
             where TMessage : class { return serviceBus.Send(new LiteralServiceBusEndpoint(destination), serviceBus.CreateMessage<TMessage>(messageBuilder)); }
+        public static IServiceBusCallback Send<TMessage>(this IServiceBus serviceBus, IServiceBusEndpoint destination, Action<TMessage> messageBuilder)
+            where TMessage : class { return serviceBus.Send(destination, serviceBus.CreateMessage<TMessage>(messageBuilder)); }
         public static IServiceBusCallback Send(this IServiceBus serviceBus, params object[] messages) { return serviceBus.Send(null, messages); }
         public static IServiceBusCallback Send(this IServiceBus serviceBus, string destination, params object[] messages) { return serviceBus.Send(new LiteralServiceBusEndpoint(destination), messages); }
         public static void Reply<TMessage>(this IServiceBus serviceBus, Action<TMessage> messageBuilder)
