@@ -68,6 +68,10 @@
     <Reference Include="System.configuration" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Platforms\Contoso.Abstract.Web.4\Contoso.Abstract.Web.4.csproj">
+      <Project>{4FF6400F-0C67-4156-AE24-9DC8D3A36FF8}</Project>
+      <Name>Contoso.Abstract.Web.4</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Contoso.Abstract.MongoDB.4\Contoso.Abstract.MongoDB.4.csproj">
       <Project>{F3B9AFC0-A8D9-4D7F-B660-54553A8A7A30}</Project>
       <Name>Contoso.Abstract.MongoDB.4</Name>

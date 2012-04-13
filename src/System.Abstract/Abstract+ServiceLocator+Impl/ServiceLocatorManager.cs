@@ -99,7 +99,7 @@ namespace System.Abstract
         public static bool HasIgnoreServiceLocator<TService>() { return HasIgnoreServiceLocator(typeof(TService)); }
         public static bool HasIgnoreServiceLocator(Type type)
         {
-            return (type == null || _ignoreServiceLocatorType.IsAssignableFrom(type));
+            return (type == null || _ignoreServiceLocatorType.IsAssignableFrom(type) || IgnoreServiceLocatorAttribute.HasIgnoreServiceLocator(type));
         }
     }
 }

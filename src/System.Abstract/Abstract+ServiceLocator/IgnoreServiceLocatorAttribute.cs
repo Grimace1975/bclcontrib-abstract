@@ -23,39 +23,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
-using System.Abstract;
-using System.Abstract.EventSourcing;
-using Contoso.Abstract.EventSourcing;
-using EventStore;
-using System.Abstract.Parts;
-namespace Contoso.Abstract
+namespace System.Abstract
 {
     /// <summary>
-    /// IESEventSource
+    /// IgnoreServiceLocatorAttribute
     /// </summary>
-    public interface IESEventSource : IEventSource { }
-
-    /// <summary>
-    /// ESEventSource
-    /// </summary>
-    public class ESEventSource : IESEventSource, EventSourceManager.ISetupRegistration
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
+    public class IgnoreServiceLocatorAttribute : Attribute
     {
-        private readonly IStoreEvents _store;
-
-        static ESEventSource() { EventSourceManager.EnsureRegistration(); }
-        public ESEventSource(IStoreEvents store)
+        public static bool HasIgnoreServiceLocator(Type type)
         {
-            _store = store;
+            return (type.GetCustomAttributes(typeof(IgnoreServiceLocatorAttribute), false).Length > 0);
         }
-
-        Action<IServiceLocator, string> EventSourceManager.ISetupRegistration.OnServiceRegistrar
-        {
-            get { return (locator, name) => EventSourceManager.RegisterInstance<IESEventSource>(this, locator, name); }
-        }
-
-        public object GetService(Type serviceType) { throw new NotImplementedException(); }
-
-        public IAggregateRootRepository MakeRepository<T>(T arg, ITypeSerializer serializer) { return new AggregateRootRepository(new ESEventStore(_store), new ESAggregateRootSnapshotStore(_store)); }
     }
 }

@@ -27,6 +27,7 @@ using System;
 using System.Abstract;
 using System.Abstract.EventSourcing;
 using Contoso.Abstract.EventSourcing;
+using System.Abstract.Parts;
 namespace Contoso.Abstract
 {
     /// <summary>
@@ -54,6 +55,6 @@ namespace Contoso.Abstract
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
-        public IAggregateRootRepository MakeRepository<T>(T arg) { return new AggregateRootRepository(new MSSqlEventStore(_connectionString), new MSSqlAggregateRootSnapshotStore(_connectionString)); }
+        public IAggregateRootRepository MakeRepository<T>(T arg, ITypeSerializer serializer) { return new AggregateRootRepository(new MSSqlEventStore(_connectionString, serializer), new MSSqlAggregateRootSnapshotStore(_connectionString, serializer)); }
     }
 }

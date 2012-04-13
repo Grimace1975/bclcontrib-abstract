@@ -91,7 +91,6 @@ namespace Contoso.Abstract
                 try
                 {
                     if (endpoint == null) Bus.Send(messages);
-                    else if (endpoint != ServiceBus.SelfEndpoint) Bus.Send(RhinoServiceBusTransport.Cast(endpoint), messages);
                     else throw new NotSupportedException();
                 }
                 catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
@@ -102,7 +101,6 @@ namespace Contoso.Abstract
                 try
                 {
                     if (endpoint == null) Bus.Send(RhinoServiceBusTransport.Cast(messages));
-                    else if (endpoint != ServiceBus.SelfEndpoint) Bus.Send(RhinoServiceBusTransport.TransportEndpointMapper(endpoint), RhinoServiceBusTransport.Cast(messages));
                     else throw new NotSupportedException();
                 }
                 catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
@@ -125,7 +123,11 @@ namespace Contoso.Abstract
             var configuration = new OnewayRhinoServiceBusConfiguration()
                 .UseAbstractServiceLocator(serviceLocator);
             if (busConfiguration != null)
+            {
+                if (busConfiguration.MessageOwners == null)
+                    throw new ArgumentNullException("busConfiguration.MessageOwners");
                 configuration.UseConfiguration(busConfiguration);
+            }
             if (configurator != null)
                 configurator(configuration);
             configuration.Configure();

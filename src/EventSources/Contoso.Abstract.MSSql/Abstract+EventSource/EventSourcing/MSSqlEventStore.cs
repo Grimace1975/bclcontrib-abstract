@@ -53,14 +53,12 @@ namespace Contoso.Abstract.EventSourcing
             }
         }
 
-        public MSSqlEventStore(string connectionString)
-            : this(connectionString, "AggregateEvent", null, new JsonTypeSerializer()) { }
-        public MSSqlEventStore(string connectionString, string tableName)
-            : this(connectionString, tableName, null, new JsonTypeSerializer()) { }
-        public MSSqlEventStore(string connectionString, Func<string, object> makeAggregateID)
-            : this(connectionString, "AggregateEvent", makeAggregateID, new JsonTypeSerializer()) { }
-        public MSSqlEventStore(string connectionString, string tableName, Func<string, object> makeAggregateID)
-            : this(connectionString, tableName, makeAggregateID, new JsonTypeSerializer()) { }
+        public MSSqlEventStore(string connectionString, ITypeSerializer serializer)
+            : this(connectionString, "AggregateEvent", null, serializer) { }
+        public MSSqlEventStore(string connectionString, string tableName, ITypeSerializer serializer)
+            : this(connectionString, tableName, null, serializer) { }
+        public MSSqlEventStore(string connectionString, Func<string, object> makeAggregateID, ITypeSerializer serializer)
+            : this(connectionString, "AggregateEvent", makeAggregateID, serializer) { }
         public MSSqlEventStore(string connectionString, string tableName, Func<string, object> makeAggregateID, ITypeSerializer serializer)
         {
             if (string.IsNullOrEmpty(connectionString))

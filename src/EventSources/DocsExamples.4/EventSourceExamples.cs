@@ -1,5 +1,6 @@
 ﻿using System.Abstract.EventSourcing;
 using Contoso.Abstract.EventSourcing;
+using Contoso.Abstract.Parts;
 namespace Example
 {
     // example event
@@ -18,7 +19,7 @@ namespace Example
     {
         private void Main()
         {
-            var aggregateRoot = new AggregateRootRepository(new MSSqlEventStore("connectionString"), new MSSqlAggregateRootSnapshotStore("connectionString"));
+            var aggregateRoot = new AggregateRootRepository(new MSSqlEventStore("connectionString", new JsonTypeSerializer()), new MSSqlAggregateRootSnapshotStore("connectionString", new JsonTypeSerializer()));
             var myAggregate = aggregateRoot.GetByID<MyAggregate>("ID");
             if (myAggregate.HasChanged)
                 aggregateRoot.Save(myAggregate);

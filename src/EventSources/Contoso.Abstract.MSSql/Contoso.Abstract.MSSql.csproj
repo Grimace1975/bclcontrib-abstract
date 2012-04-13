@@ -58,10 +58,6 @@
     <None Include="BclEx.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Platforms\Contoso.Abstract.Web\Contoso.Abstract.Web.csproj">
-      <Project>{D1EBE7A3-1CFD-438C-A007-FF281F0B1D2A}</Project>
-      <Name>Contoso.Abstract.Web</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\System.Abstract\System.Abstract.csproj">
       <Project>{A44E9D89-BFF2-41A4-AADC-3C2BDFDAEEB1}</Project>
       <Name>System.Abstract</Name>
