@@ -25,6 +25,7 @@ THE SOFTWARE.
 #endregion
 using System.Abstract.EventSourcing;
 using System.Collections.Generic;
+using System.Abstract.Parts;
 namespace System.Abstract
 {
     /// <summary>
@@ -32,7 +33,7 @@ namespace System.Abstract
     /// </summary>
     public interface IEventSource : IServiceProvider
     {
-        IAggregateRootRepository MakeRepository<T>(T arg);
+        IAggregateRootRepository MakeRepository<T>(T arg, ITypeSerializer serializer);
     }
 
     /// <summary>
@@ -70,6 +71,6 @@ namespace System.Abstract
 
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
-        public IAggregateRootRepository MakeRepository<T>(T arg) { return new AggregateRootRepository(_eventStore, _snapshotStore, _eventDispatcher, _factory); }
+        public IAggregateRootRepository MakeRepository<T>(T arg, ITypeSerializer serializer) { return new AggregateRootRepository(_eventStore, _snapshotStore, _eventDispatcher, _factory); }
     }
 }

@@ -53,14 +53,12 @@ namespace Contoso.Abstract.EventSourcing
             }
         }
 
-        public MSSqlAggregateRootSnapshotStore(string connectionString)
-            : this(connectionString, "AggregateSnapshot", null, new JsonTypeSerializer()) { }
-        public MSSqlAggregateRootSnapshotStore(string connectionString, string tableName)
-            : this(connectionString, tableName, null, new JsonTypeSerializer()) { }
-        public MSSqlAggregateRootSnapshotStore(string connectionString, Func<string, object> makeAggregateID)
-            : this(connectionString, "AggregateSnapshot", makeAggregateID, new JsonTypeSerializer()) { }
-        public MSSqlAggregateRootSnapshotStore(string connectionString, string tableName, Func<string, object> makeAggregateID)
-            : this(connectionString, tableName, makeAggregateID, new JsonTypeSerializer()) { }
+        public MSSqlAggregateRootSnapshotStore(string connectionString, ITypeSerializer serializer)
+            : this(connectionString, "AggregateSnapshot", null, serializer) { }
+        public MSSqlAggregateRootSnapshotStore(string connectionString, string tableName, ITypeSerializer serializer)
+            : this(connectionString, tableName, null, serializer) { }
+        public MSSqlAggregateRootSnapshotStore(string connectionString, Func<string, object> makeAggregateID, ITypeSerializer serializer)
+            : this(connectionString, "AggregateSnapshot", makeAggregateID, serializer) { }
         public MSSqlAggregateRootSnapshotStore(string connectionString, string tableName, Func<string, object> makeAggregateID, ITypeSerializer serializer)
         {
             if (string.IsNullOrEmpty(connectionString))

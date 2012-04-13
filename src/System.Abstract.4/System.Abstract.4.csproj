@@ -315,6 +315,9 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceRegistrarNamespaceBehaviorWrapper.cs">
       <Link>Abstract+ServiceLocator+Impl\ServiceRegistrarNamespaceBehaviorWrapper.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IgnoreServiceLocatorAttribute.cs">
+      <Link>Abstract+ServiceLocator\IgnoreServiceLocatorAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator\IIgnoreServiceLocator.cs">
       <Link>Abstract+ServiceLocator\IIgnoreServiceLocator.cs</Link>
     </Compile>
