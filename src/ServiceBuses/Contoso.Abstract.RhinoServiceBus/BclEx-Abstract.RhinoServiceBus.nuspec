@@ -19,8 +19,11 @@
     </dependencies>
   </metadata>
   <files>
+    <file src="bin\Release\Rhino.*" target="lib\net35" />
+    <file src="..\Contoso.Abstract.RhinoServiceBus.4\bin\Release\Rhino.*" target="lib\net40" />
     <file src="..\Contoso.Abstract.RhinoServiceBus.4\bin\Release\$title$.dll" target="lib\net40" />
     <file src="..\Contoso.Abstract.RhinoServiceBus.4\bin\Release\$title$.xml" target="lib\net40" />
+    <file src="..\..\..\lib\Rhino.ServiceBus\net40\**\*.*" target="lib\net40" />
   </files>
 </package>
 

@@ -21,6 +21,8 @@
     </dependencies>
   </metadata>
   <files>
+    <file src="bin\Release\MvcTurbine.dll" target="lib\net35" />
+    <file src="bin\Release\MvcTurbine.Web.dll" target="lib\net35" />
     <file src="..\Contoso.Abstract.MvcTurbine.4\bin\Release\$title$.dll" target="lib\net40" />
     <file src="..\Contoso.Abstract.MvcTurbine.4\bin\Release\$title$.xml" target="lib\net40" />
   </files>
