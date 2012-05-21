@@ -42,10 +42,12 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\Parts\BuildManagerWrapper.cs" />
+    <Compile Include="Abstract\Parts\Json2TypeSerializer.cs" />
     <Compile Include="Abstract\Parts\JsonTypeSerializer.cs" />
     <Compile Include="Abstract\WebServiceCache.cs" />
     <Compile Include="Abstract\AssemblyResourceFile.cs" />
