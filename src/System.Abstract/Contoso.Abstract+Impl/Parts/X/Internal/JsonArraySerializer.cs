@@ -29,8 +29,8 @@ using System.IO;
 namespace Contoso.Abstract.Parts.X.Internal
 {
     internal class JsonArraySerializer<TEnumerable, TElement> : JsonSerializer
-        where TElement : new()
         where TEnumerable : IEnumerable<TElement>
+        //where TElement : new()
     {
         private JsonSerializer<TElement> _elementSerializer = JsonSerializer<TElement>.CreateSerializer();
 

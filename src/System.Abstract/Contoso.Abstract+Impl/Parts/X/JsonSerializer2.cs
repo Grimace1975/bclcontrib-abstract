@@ -31,7 +31,7 @@ using Contoso.Abstract.Parts.X.Internal;
 namespace Contoso.Abstract.Parts.X
 {
     public class JsonSerializer<T> : JsonSerializer
-        where T : new()
+        //where T : new()
     {
         private Dictionary<String, JsonMemberSerializationInfo> _memberSerializers = new Dictionary<String, JsonMemberSerializationInfo>();
 
@@ -129,12 +129,11 @@ namespace Contoso.Abstract.Parts.X
                     {
                         if (memberValue != null)
                         {
-                            var memberValueType = memberValue.GetType();
-                            if (memberValue is string && memberValueType == typeof(Uri))
+                            if (memberValue is string && targetType == typeof(Uri))
                                 sInfo.SetValue(result, new Uri((string)memberValue, UriKind.RelativeOrAbsolute));
                             else
                             {
-                                var ctorInfo = targetType.GetConstructor(new[] { memberValueType });
+                                var ctorInfo = targetType.GetConstructor(new[] { memberValue.GetType() });
                                 if (ctorInfo != null)
                                     sInfo.SetValue(result, ctorInfo.Invoke(new[] { memberValue }));
                                 else
