@@ -28,7 +28,7 @@ using System.IO;
 namespace Contoso.Abstract.Parts.X.Internal
 {
     internal class GenericJsonSerializerAdapter<T> : JsonSerializer<T>
-        where T : new()
+        //where T : new()
     {
         private JsonSerializer _innerSerializer;
 
