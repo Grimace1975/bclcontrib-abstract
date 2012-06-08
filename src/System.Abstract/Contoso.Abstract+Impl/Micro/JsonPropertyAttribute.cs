@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
 The MIT License
 
@@ -24,15 +24,20 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-namespace Contoso.Abstract.Parts.X
+namespace Contoso.Abstract.Micro
 {
-    [Flags]
-    public enum JsonOptions
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = true)]
+    public class JsonPropertyAttribute : Attribute
     {
-        None = 0x0000,
-        QuoteNames = 0x0001,
-        EnclosingParens = 0x0002,
-        IncludeNulls = 0x0004,
-        Formatted = 0x0008
+        public JsonPropertyAttribute() { }
+        public JsonPropertyAttribute(string name)
+        {
+            Name = name;
+        }
+
+        public string Name { get; set; }
+        public JsonValueType SerializeAs { get; set; }
+        public string Format { get; set; }
+        public Type Converter { get; set; }
     }
 }

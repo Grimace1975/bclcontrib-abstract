@@ -25,14 +25,14 @@ THE SOFTWARE.
 #endregion
 using System.IO;
 using System.Text;
-namespace Contoso.Abstract.Parts.X.Internal
+namespace Contoso.Abstract.Micro.Internal
 {
     internal class JsonStringSerializer : JsonSerializer
     {
         public JsonStringSerializer()
-            : base(JavascriptType.String, null) { }
+            : base(JsonValueType.String, null) { }
         public JsonStringSerializer(string defaultFormat)
-            : base(JavascriptType.String, defaultFormat) { }
+            : base(JsonValueType.String, defaultFormat) { }
 
         internal override object BaseDeserialize(TextReader r)
         {
@@ -74,7 +74,7 @@ namespace Contoso.Abstract.Parts.X.Internal
                     format = DefaultFormat;
                 var serialized = (string.IsNullOrEmpty(format) ? string.Format("{0}", obj) : string.Format("{0:" + format + "}", obj));
                 w.Write('"');
-                w.Write(serialized.Replace(@"\", @"\\").Replace("\"", "\\\""));
+                w.Write(serialized.Replace(@"\", @"\\").Replace("\"", "\\\"").Replace("\r\n", "\\n").Replace("\n", "\\n"));
                 w.Write('"');
             }
             else

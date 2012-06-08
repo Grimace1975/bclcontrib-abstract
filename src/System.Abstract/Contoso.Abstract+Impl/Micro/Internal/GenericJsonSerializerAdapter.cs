@@ -24,12 +24,28 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-namespace Contoso.Abstract.Parts.X
+using System.IO;
+namespace Contoso.Abstract.Micro.Internal
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct, Inherited = true)]
-    public class JsonSerializableAttribute : Attribute
+    internal class GenericJsonSerializerAdapter<T> : JsonSerializer<T>
     {
-        public JavascriptType SerializeAs { get; set; }
-        public string Format { get; set; }
+        private JsonSerializer _innerSerializer;
+
+        public GenericJsonSerializerAdapter(JsonSerializer innerSerializer)
+            : base(false) { _innerSerializer = innerSerializer; }
+
+        public override JsonValueType SerializerType
+        {
+            get { return _innerSerializer.SerializerType; }
+        }
+
+        public override string DefaultFormat
+        {
+            get { return _innerSerializer.DefaultFormat; }
+        }
+
+        public override T Deserialize(TextReader reader) { return (T)Convert.ChangeType(_innerSerializer.BaseDeserialize(reader), typeof(T)); }
+
+        internal override void Serialize(TextWriter writer, T obj, JsonOptions options, string format, int tabDepth) { _innerSerializer.BaseSerialize(writer, (Object)obj, options, format, tabDepth); }
     }
 }

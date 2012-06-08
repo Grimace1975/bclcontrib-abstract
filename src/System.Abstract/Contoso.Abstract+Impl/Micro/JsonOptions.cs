@@ -24,18 +24,15 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-using System.Runtime.Serialization;
-namespace Contoso.Abstract.Parts.X
+namespace Contoso.Abstract.Micro
 {
-    [Serializable]
-    public class JsonSerializationException : Exception
+    [Flags]
+    public enum JsonOptions
     {
-        public JsonSerializationException(string message)
-            : base(message) { }
-        public JsonSerializationException(string message, Exception innerException)
-            : base(message, innerException) { }
-        public JsonSerializationException(SerializationInfo info, StreamingContext context)
-            : base(info, context) { }
-        public override void GetObjectData(SerializationInfo info, StreamingContext context) { base.GetObjectData(info, context); }
+        None = 0x0000,
+        QuoteNames = 0x0001,
+        EnclosingParens = 0x0002,
+        IncludeNulls = 0x0004,
+        Formatted = 0x0008
     }
 }

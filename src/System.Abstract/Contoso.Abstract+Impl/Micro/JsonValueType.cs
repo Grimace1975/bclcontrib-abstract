@@ -23,32 +23,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System;
-using System.IO;
-namespace Contoso.Abstract.Parts.X.Internal
+namespace Contoso.Abstract.Micro
 {
-    internal class JsonNumberSerializer : JsonSerializer
+    public enum JsonValueType
     {
-        public JsonNumberSerializer()
-            : base(JavascriptType.Number, null) { }
-        public JsonNumberSerializer(string defaultFormat)
-            : base(JavascriptType.Number, defaultFormat) { }
-
-        internal override object BaseDeserialize(TextReader r)
-        {
-            var token = JsonParserUtil.GetNextToken(r);
-            return (token == string.Empty || token.Equals("null", StringComparison.OrdinalIgnoreCase) ? null : (object)decimal.Parse(token));
-        }
-
-        internal override void BaseSerialize(TextWriter w, object obj, JsonOptions options, string format, int tabDepth)
-        {
-            var value = Convert.ToDecimal(obj);
-            if (string.IsNullOrEmpty(format))
-                format = DefaultFormat;
-            if (string.IsNullOrEmpty(format))
-                w.Write(value);
-            else
-                w.Write(value.ToString(format));
-        }
+        Unknown,
+        Boolean,
+        Number,
+        String,
+        Object,
+        Array
     }
 }

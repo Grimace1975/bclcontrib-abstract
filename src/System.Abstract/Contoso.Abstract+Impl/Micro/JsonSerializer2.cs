@@ -27,19 +27,18 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using Contoso.Abstract.Parts.X.Internal;
-namespace Contoso.Abstract.Parts.X
+using Contoso.Abstract.Micro.Internal;
+namespace Contoso.Abstract.Micro
 {
     public class JsonSerializer<T> : JsonSerializer
-        //where T : new()
     {
         private Dictionary<String, JsonMemberSerializationInfo> _memberSerializers = new Dictionary<String, JsonMemberSerializationInfo>();
 
         public JsonSerializer()
             : this(true) { }
 
-        public static JsonSerializer<T> CreateSerializer() { return CreateSerializer(JavascriptType.Unknown); }
-        public static JsonSerializer<T> CreateSerializer(JavascriptType serializeAs)
+        public static JsonSerializer<T> CreateSerializer() { return CreateSerializer(JsonValueType.Unknown); }
+        public static JsonSerializer<T> CreateSerializer(JsonValueType serializeAs)
         {
             var serializer = CreateSerializer(typeof(T), serializeAs);
             return (serializer is JsonSerializer<T> ? (JsonSerializer<T>)serializer : new GenericJsonSerializerAdapter<T>(serializer));
@@ -168,7 +167,7 @@ namespace Contoso.Abstract.Parts.X
                     if ((options & JsonOptions.Formatted) != 0)
                     {
                         w.WriteLine();
-                        w.Write(new String(' ', tabDepth * 2));
+                        w.Write(new string(' ', tabDepth * 2));
                     }
                     if ((options & JsonOptions.QuoteNames) != 0)
                         w.Write('"');

@@ -24,25 +24,18 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-using System.IO;
-namespace Contoso.Abstract.Parts.X.Internal
+using System.Runtime.Serialization;
+namespace Contoso.Abstract.Micro
 {
-    internal class JsonBooleanSerializer : JsonSerializer
+    [Serializable]
+    public class JsonDeserializationException : JsonSerializationException
     {
-        public JsonBooleanSerializer()
-            : base(JavascriptType.Boolean, null) { }
-        public JsonBooleanSerializer(string defaultFormat)
-            : base(JavascriptType.Boolean, defaultFormat) { }
-
-        internal override object BaseDeserialize(TextReader r)
-        {
-            var token = JsonParserUtil.GetNextToken(r);
-            return (token == string.Empty || token.Equals("null", StringComparison.OrdinalIgnoreCase) ? null : (object)bool.Parse(token));
-        }
-
-        internal override void BaseSerialize(TextWriter w, object obj, JsonOptions options, string format, int tabDepth)
-        {
-            w.Write(Convert.ToBoolean(obj).ToString().ToLower());
-        }
+        public JsonDeserializationException(string message)
+            : base(message) { }
+        public JsonDeserializationException(string message, Exception innerException)
+            : base(message, innerException) { }
+        public JsonDeserializationException(SerializationInfo info, StreamingContext context)
+            : base(info, context) { }
+        public override void GetObjectData(SerializationInfo info, StreamingContext context) { base.GetObjectData(info, context); }
     }
 }
