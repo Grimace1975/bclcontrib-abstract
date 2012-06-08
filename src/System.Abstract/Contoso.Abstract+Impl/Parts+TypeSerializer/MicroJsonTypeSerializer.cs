@@ -27,7 +27,6 @@ using System;
 using System.Abstract.Parts;
 using System.Collections.Generic;
 using System.IO;
-using Contoso.Abstract.Parts.X;
 namespace Contoso.Abstract.Parts
 {
     public class MicroJsonTypeSerializer : ITypeSerializer

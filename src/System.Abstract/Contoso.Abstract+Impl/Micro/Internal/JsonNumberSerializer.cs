@@ -25,28 +25,30 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.IO;
-namespace Contoso.Abstract.Parts.X.Internal
+namespace Contoso.Abstract.Micro.Internal
 {
-    internal class GenericJsonSerializerAdapter<T> : JsonSerializer<T>
-        //where T : new()
+    internal class JsonNumberSerializer : JsonSerializer
     {
-        private JsonSerializer _innerSerializer;
+        public JsonNumberSerializer()
+            : base(JsonValueType.Number, null) { }
+        public JsonNumberSerializer(string defaultFormat)
+            : base(JsonValueType.Number, defaultFormat) { }
 
-        public GenericJsonSerializerAdapter(JsonSerializer innerSerializer)
-            : base(false) { _innerSerializer = innerSerializer; }
-
-        public override JavascriptType SerializerType
+        internal override object BaseDeserialize(TextReader r)
         {
-            get { return _innerSerializer.SerializerType; }
+            var token = JsonParserUtil.GetNextToken(r);
+            return (token == string.Empty || token.Equals("null", StringComparison.OrdinalIgnoreCase) ? null : (object)decimal.Parse(token));
         }
 
-        public override string DefaultFormat
+        internal override void BaseSerialize(TextWriter w, object obj, JsonOptions options, string format, int tabDepth)
         {
-            get { return _innerSerializer.DefaultFormat; }
+            var value = Convert.ToDecimal(obj);
+            if (string.IsNullOrEmpty(format))
+                format = DefaultFormat;
+            if (string.IsNullOrEmpty(format))
+                w.Write(value);
+            else
+                w.Write(value.ToString(format));
         }
-
-        public override T Deserialize(TextReader reader) { return (T)Convert.ChangeType(_innerSerializer.BaseDeserialize(reader), typeof(T)); }
-
-        internal override void Serialize(TextWriter writer, T obj, JsonOptions options, string format, int tabDepth) { _innerSerializer.BaseSerialize(writer, (Object)obj, options, format, tabDepth); }
     }
 }

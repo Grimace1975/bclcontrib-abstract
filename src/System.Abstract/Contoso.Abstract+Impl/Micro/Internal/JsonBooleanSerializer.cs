@@ -1,4 +1,4 @@
-#region License
+﻿#region License
 /*
 The MIT License
 
@@ -24,20 +24,25 @@ THE SOFTWARE.
 */
 #endregion
 using System;
-namespace Contoso.Abstract.Parts.X
+using System.IO;
+namespace Contoso.Abstract.Micro.Internal
 {
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = true)]
-    public class JsonPropertyAttribute : Attribute
+    internal class JsonBooleanSerializer : JsonSerializer
     {
-        public JsonPropertyAttribute() { }
-        public JsonPropertyAttribute(string name)
+        public JsonBooleanSerializer()
+            : base(JsonValueType.Boolean, null) { }
+        public JsonBooleanSerializer(string defaultFormat)
+            : base(JsonValueType.Boolean, defaultFormat) { }
+
+        internal override object BaseDeserialize(TextReader r)
         {
-            Name = name;
+            var token = JsonParserUtil.GetNextToken(r);
+            return (token == string.Empty || token.Equals("null", StringComparison.OrdinalIgnoreCase) ? null : (object)bool.Parse(token));
         }
 
-        public string Name { get; set; }
-        public JavascriptType SerializeAs { get; set; }
-        public string Format { get; set; }
-        public Type Converter { get; set; }
+        internal override void BaseSerialize(TextWriter w, object obj, JsonOptions options, string format, int tabDepth)
+        {
+            w.Write(Convert.ToBoolean(obj).ToString().ToLower());
+        }
     }
 }

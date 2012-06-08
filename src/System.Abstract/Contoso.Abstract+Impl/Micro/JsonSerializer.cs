@@ -27,8 +27,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Contoso.Abstract.Parts.X.Internal;
-namespace Contoso.Abstract.Parts.X
+using Contoso.Abstract.Micro.Internal;
+namespace Contoso.Abstract.Micro
 {
     public abstract class JsonSerializer
     {
@@ -44,26 +44,26 @@ namespace Contoso.Abstract.Parts.X
         private static Dictionary<Type, JsonSerializer> _arraySerializers = new Dictionary<Type, JsonSerializer>();
 
         protected JsonSerializer()
-            : this(JavascriptType.Object, null) { }
-        protected JsonSerializer(JavascriptType serializerType, string defaultFormat)
+            : this(JsonValueType.Object, null) { }
+        protected JsonSerializer(JsonValueType serializerType, string defaultFormat)
         {
             SerializerType = serializerType;
             DefaultFormat = defaultFormat;
         }
 
-        internal static JsonSerializer CreateSerializer(Type t) { return CreateSerializer(t, JavascriptType.Unknown); }
-        internal static JsonSerializer CreateSerializer(Type t, JavascriptType serializeAs)
+        internal static JsonSerializer CreateSerializer(Type t) { return CreateSerializer(t, JsonValueType.Unknown); }
+        internal static JsonSerializer CreateSerializer(Type t, JsonValueType serializeAs)
         {
             var serializableAttribute = (JsonSerializableAttribute)Attribute.GetCustomAttribute(t, typeof(JsonSerializableAttribute));
-            if (serializeAs == JavascriptType.Unknown && serializableAttribute != null)
+            if (serializeAs == JsonValueType.Unknown && serializableAttribute != null)
                 serializeAs = serializableAttribute.SerializeAs;
-            if (serializeAs == JavascriptType.Boolean || (serializeAs == JavascriptType.Unknown && t == typeof(Boolean)))
+            if (serializeAs == JsonValueType.Boolean || (serializeAs == JsonValueType.Unknown && t == typeof(Boolean)))
                 return (serializableAttribute == null ? new JsonBooleanSerializer() : new JsonBooleanSerializer(serializableAttribute.Format));
-            else if (serializeAs == JavascriptType.Number || (serializeAs == JavascriptType.Unknown && (Array.IndexOf(_numberTypes, t) >= 0 || t.IsEnum)))
+            else if (serializeAs == JsonValueType.Number || (serializeAs == JsonValueType.Unknown && (Array.IndexOf(_numberTypes, t) >= 0 || t.IsEnum)))
                 return (serializableAttribute == null ? new JsonNumberSerializer() : new JsonNumberSerializer(serializableAttribute.Format));
-            else if (serializeAs == JavascriptType.String || (serializeAs == JavascriptType.Unknown && Array.IndexOf(_stringTypes, t) >= 0))
+            else if (serializeAs == JsonValueType.String || (serializeAs == JsonValueType.Unknown && Array.IndexOf(_stringTypes, t) >= 0))
                 return (serializableAttribute == null ? new JsonStringSerializer() : new JsonStringSerializer(serializableAttribute.Format));
-            else if ((serializeAs == JavascriptType.Array || serializeAs == JavascriptType.Unknown) && t.GetInterface("IEnumerable`1") != null)
+            else if ((serializeAs == JsonValueType.Array || serializeAs == JsonValueType.Unknown) && t.GetInterface("IEnumerable`1") != null)
             {
                 Type elementType;
                 if (t.IsArray)
@@ -81,7 +81,7 @@ namespace Contoso.Abstract.Parts.X
                 }
                 return _arraySerializers[t];
             }
-            else if (serializeAs == JavascriptType.Object || serializeAs == JavascriptType.Unknown)
+            else if (serializeAs == JsonValueType.Object || serializeAs == JsonValueType.Unknown)
             {
                 if (!_serializers.ContainsKey(t))
                 {
@@ -94,7 +94,7 @@ namespace Contoso.Abstract.Parts.X
             throw new JsonSerializationException("Unable to create serializer.");
         }
 
-        public virtual JavascriptType SerializerType { get; private set; }
+        public virtual JsonValueType SerializerType { get; private set; }
         public virtual string DefaultFormat { get; private set; }
         
         internal abstract object BaseDeserialize(TextReader reader);

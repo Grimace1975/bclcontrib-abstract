@@ -25,16 +25,16 @@ THE SOFTWARE.
 #endregion
 using System;
 using System.Runtime.Serialization;
-namespace Contoso.Abstract.Parts.X
+namespace Contoso.Abstract.Micro
 {
     [Serializable]
-    public class JsonDeserializationException : JsonSerializationException
+    public class JsonSerializationException : Exception
     {
-        public JsonDeserializationException(string message)
+        public JsonSerializationException(string message)
             : base(message) { }
-        public JsonDeserializationException(string message, Exception innerException)
+        public JsonSerializationException(string message, Exception innerException)
             : base(message, innerException) { }
-        public JsonDeserializationException(SerializationInfo info, StreamingContext context)
+        public JsonSerializationException(SerializationInfo info, StreamingContext context)
             : base(info, context) { }
         public override void GetObjectData(SerializationInfo info, StreamingContext context) { base.GetObjectData(info, context); }
     }

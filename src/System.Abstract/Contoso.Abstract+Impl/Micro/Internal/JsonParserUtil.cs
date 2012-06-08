@@ -26,7 +26,7 @@ THE SOFTWARE.
 using System;
 using System.IO;
 using System.Text;
-namespace Contoso.Abstract.Parts.X.Internal
+namespace Contoso.Abstract.Micro.Internal
 {
     internal static class JsonParserUtil
     {

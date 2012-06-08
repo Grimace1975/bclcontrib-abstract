@@ -465,53 +465,53 @@
     <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\EventSourcing\MemoryEventStore.cs">
       <Link>Contoso.Abstract+Impl\EventSourcing\MemoryEventStore.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Parts\MicroJsonTypeSerializer.cs">
-      <Link>Contoso.Abstract+Impl\Parts\MicroJsonTypeSerializer.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\Internal\GenericJsonSerializerAdapter.cs">
+      <Link>Contoso.Abstract+Impl\Micro\Internal\GenericJsonSerializerAdapter.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Parts\X\Internal\GenericJsonSerializerAdapter.cs">
-      <Link>Contoso.Abstract+Impl\Parts\X\Internal\GenericJsonSerializerAdapter.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\Internal\JsonArraySerializer.cs">
+      <Link>Contoso.Abstract+Impl\Micro\Internal\JsonArraySerializer.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Parts\X\Internal\JsonArraySerializer.cs">
-      <Link>Contoso.Abstract+Impl\Parts\X\Internal\JsonArraySerializer.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\Internal\JsonBooleanSerializer.cs">
+      <Link>Contoso.Abstract+Impl\Micro\Internal\JsonBooleanSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Parts\X\Internal\JsonBooleanSerializer.cs">
-      <Link>Contoso.Abstract+Impl\Parts\X\Internal\JsonBooleanSerializer.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\Internal\JsonMemberSerializationInfo.cs">
+      <Link>Contoso.Abstract+Impl\Micro\Internal\JsonMemberSerializationInfo.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Parts\X\Internal\JsonMemberSerializationInfo.cs">
-      <Link>Contoso.Abstract+Impl\Parts\X\Internal\JsonMemberSerializationInfo.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\Internal\JsonNumberSerializer.cs">
+      <Link>Contoso.Abstract+Impl\Micro\Internal\JsonNumberSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Parts\X\Internal\JsonNumberSerializer.cs">
-      <Link>Contoso.Abstract+Impl\Parts\X\Internal\JsonNumberSerializer.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\Internal\JsonParserUtil.cs">
+      <Link>Contoso.Abstract+Impl\Micro\Internal\JsonParserUtil.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Parts\X\Internal\JsonParserUtil.cs">
-      <Link>Contoso.Abstract+Impl\Parts\X\Internal\JsonParserUtil.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\Internal\JsonStringSerializer.cs">
+      <Link>Contoso.Abstract+Impl\Micro\Internal\JsonStringSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Parts\X\Internal\JsonStringSerializer.cs">
-      <Link>Contoso.Abstract+Impl\Parts\X\Internal\JsonStringSerializer.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\JsonDeserializationException.cs">
+      <Link>Contoso.Abstract+Impl\Micro\JsonDeserializationException.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Parts\X\JavascriptType.cs">
-      <Link>Contoso.Abstract+Impl\Parts\X\JavascriptType.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\JsonOptions.cs">
+      <Link>Contoso.Abstract+Impl\Micro\JsonOptions.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Parts\X\JsonDeserializationException.cs">
-      <Link>Contoso.Abstract+Impl\Parts\X\JsonDeserializationException.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\JsonPropertyAttribute.cs">
+      <Link>Contoso.Abstract+Impl\Micro\JsonPropertyAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Parts\X\JsonOptions.cs">
-      <Link>Contoso.Abstract+Impl\Parts\X\JsonOptions.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\JsonSerializableAttribute.cs">
+      <Link>Contoso.Abstract+Impl\Micro\JsonSerializableAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Parts\X\JsonPropertyAttribute.cs">
-      <Link>Contoso.Abstract+Impl\Parts\X\JsonPropertyAttribute.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\JsonSerializationException.cs">
+      <Link>Contoso.Abstract+Impl\Micro\JsonSerializationException.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Parts\X\JsonSerializableAttribute.cs">
-      <Link>Contoso.Abstract+Impl\Parts\X\JsonSerializableAttribute.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\JsonSerializer.cs">
+      <Link>Contoso.Abstract+Impl\Micro\JsonSerializer.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Parts\X\JsonSerializationException.cs">
-      <Link>Contoso.Abstract+Impl\Parts\X\JsonSerializationException.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\JsonSerializer2.cs">
+      <Link>Contoso.Abstract+Impl\Micro\JsonSerializer2.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Parts\X\JsonSerializer.cs">
-      <Link>Contoso.Abstract+Impl\Parts\X\JsonSerializer.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\JsonValueType.cs">
+      <Link>Contoso.Abstract+Impl\Micro\JsonValueType.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Parts\X\JsonSerializer2.cs">
-      <Link>Contoso.Abstract+Impl\Parts\X\JsonSerializer2.cs</Link>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Parts+TypeSerializer\MicroJsonTypeSerializer.cs">
+      <Link>Contoso.Abstract+Impl\Parts+TypeSerializer\MicroJsonTypeSerializer.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\DateTimeEx2.cs">
       <Link>DateTimeEx2.cs</Link>

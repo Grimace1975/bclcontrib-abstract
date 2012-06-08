@@ -27,7 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
-namespace Contoso.Abstract.Parts.X.Internal
+namespace Contoso.Abstract.Micro.Internal
 {
     internal class JsonMemberSerializationInfo
     {

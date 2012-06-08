@@ -26,16 +26,15 @@ THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.IO;
-namespace Contoso.Abstract.Parts.X.Internal
+namespace Contoso.Abstract.Micro.Internal
 {
     internal class JsonArraySerializer<TEnumerable, TElement> : JsonSerializer
         where TEnumerable : IEnumerable<TElement>
-        //where TElement : new()
     {
         private JsonSerializer<TElement> _elementSerializer = JsonSerializer<TElement>.CreateSerializer();
 
         public JsonArraySerializer()
-            : base(JavascriptType.Array, null) { }
+            : base(JsonValueType.Array, null) { }
 
         internal override object BaseDeserialize(TextReader r)
         {

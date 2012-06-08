@@ -23,15 +23,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-namespace Contoso.Abstract.Parts.X
+using System;
+namespace Contoso.Abstract.Micro
 {
-    public enum JavascriptType
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct, Inherited = true)]
+    public class JsonSerializableAttribute : Attribute
     {
-        Unknown,
-        Boolean,
-        Number,
-        String,
-        Object,
-        Array
+        public JsonValueType SerializeAs { get; set; }
+        public string Format { get; set; }
     }
 }
