@@ -30,7 +30,7 @@ namespace Contoso.Abstract.Micro.Internal
 {
     internal static class JsonParserUtil
     {
-        public static readonly char[] _radixTable = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+        public static readonly char[] _radixTable = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
         public static int ReadStartObject(TextReader r)
         {
@@ -161,11 +161,11 @@ namespace Contoso.Abstract.Micro.Internal
             while (digitCount < maxDigits)
             {
                 var c = PeekNextChar(r, false);
-                var val = Array.IndexOf(_radixTable, c);
+                var val = Array.IndexOf(_radixTable, char.ToLowerInvariant(c));
                 if (val == -1 || val >= radix)
                 {
                     if (digitCount < minDigits)
-                        throw new JsonDeserializationException("Excpected Digit.");
+                        throw new JsonDeserializationException("Expected Digit.");
                     else
                         break;
                 }
