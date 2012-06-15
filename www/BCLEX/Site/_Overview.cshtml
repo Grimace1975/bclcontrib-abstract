@@ -1,0 +1,17 @@
+﻿@using Docs.Core
+<ol>
+    @foreach (Topic topic in Topic.GetTopics(Page.DocsPath))
+    {
+        <li>@topic.Title
+            @if (topic.SubTopics.Any())
+            {
+                <ol>
+                    @foreach (var subTopic in topic.SubTopics)
+                    {
+                        <li><a href="@subTopic.Url">@subTopic.Title</a></li>
+                    }
+                </ol>
+            }
+        </li>
+    }
+</ol>
