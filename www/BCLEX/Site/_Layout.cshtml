@@ -14,31 +14,13 @@
 <body>
     <div id="content-wraper">
         <header>
-            <div id="logo"><a href="@Href("~/")">BclEx Docs</a></div>
+            <div id="logo"><a href="@Href("~/")">BclEx</a></div>
         </header>
         <nav>
             <ul id="menu">
                 <li><a href="@Href("~/")">Home</a></li>
-                <li>
-                    <a id="overview-trigger" href="#">Quick View</a>
-                    <div id="overview" class="overview">@RenderPage("~/_Overview.cshtml", new { DocsPath = "~/docs" })</div>
-                </li>
-                <li><a href="@Href("~/ex-abstract")">Ex-Abstract</a> </li>
-                <li>
-                    <a id="overview-trigger2" href="#">Quick View</a>
-                    <div id="overview2" class="overview">@RenderPage("~/_Overview.cshtml", new { DocsPath = "~/docs-abstract" })</div>
-                </li>
-@*                <li><a href="@Href("~/ex-extend")">Ex-Extend</a> </li>
-                <li>
-                    <a id="overview-trigger3" href="#">Quick View</a>
-                    <div id="overview3" class="overview">@RenderPage("~/_Overview.cshtml", new { DocsPath = "~/docs-extend" })</div>
-                </li>
-                <li><a href="@Href("~/ex-web")">Ex-Web</a> </li>
-                <li>
-                    <a id="overview-trigger4" href="#">Quick View</a>
-                    <div id="overview4" class="overview">@RenderPage("~/_Overview.cshtml", new { DocsPath = "~/docs-web" })</div>
-                </li>
-                <li><a href="@Href("~/docs/Contribute/Contributing-to-NuGet-Documentation")">Contribute</a></li>*@
+                <li><a href="@Href("~/suite")">Suite</a> </li>
+                <li><a href="http://docs.bclex.org">Documentation</a> </li>
             </ul>
             @*@RenderPage("~/_SearchBox.cshtml")*@
         </nav>
@@ -51,19 +33,11 @@
         <ul class="recommended">
             <li>
                 <a href="@Href("~/docs/start-here/overview")">Overview</a>
-                <p>NuGet is a Visual Studio 2010 extension that makes it easy to add, remove, and update libraries and...</p>
+                <p>BclEx is a suite of .NET Framework extensions that accelerate development.</p>
             </li>
             <li>
                 <a href="@Href("~/docs/start-here/installing-nuget")">Install</a>
-                <p>NuGet can be installed and updated using the Visual Studio Extension Manager. To check if your copy...</p>
-            </li>
-            <li>
-                <a href="@Href("~/docs/start-here/videos")">Videos</a>
-                <p>Watch screencasts and presentations about anything and everything NuGet.</p>
-            </li>
-            <li>
-                <a href="@Href("~/docs/start-here/nuget-faq")">FAQ</a>
-                <p>Read the Frequently Asked Questions about NuGet and see if your question made the list.</p>
+                <p>BclEx can be installed and updated using the NuGet Package Manager.</p>
             </li>
         </ul>
         <div class="license">
@@ -73,8 +47,8 @@
                 </a>
             </p>
             <p>
-                <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">BclEx Documentation</span> by 
-                <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.outercurve.org/" property="cc:attributionName" rel="cc:attributionURL">Outercurve Foundation</a> 
+                <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">BclEx</span> by 
+                <a xmlns:cc="http://creativecommons.org/ns#" href="http://www.NAME.org/" property="cc:attributionName" rel="cc:attributionURL">NAME Foundation</a> 
                 is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a> 
                 except where otherwise noted.
             </p>
@@ -83,10 +57,6 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
-            SetUpQuickView("#overview-trigger", "#overview");
-            SetUpQuickView("#overview-trigger2", "#overview2");
-            SetUpQuickView("#overview-trigger3", "#overview3");
-            SetUpQuickView("#overview-trigger4", "#overview4");
         });
     </script>
     @*@Microsoft.Web.Helpers.Analytics.GetGoogleAsyncHtml("")*@
