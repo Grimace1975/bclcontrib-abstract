@@ -44,10 +44,16 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Contoso.Abstract.EventStore\Abstract+EventSource\ESEventSource.cs">
+      <Link>Abstract+EventSource\ESEventSource.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.EventStore\Abstract+EventSource\EventSourcing\ESAggregateRootSnapshotStore.cs">
+      <Link>Abstract+EventSource\EventSourcing\ESAggregateRootSnapshotStore.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.EventStore\Abstract+EventSource\EventSourcing\ESEventStore.cs">
+      <Link>Abstract+EventSource\EventSourcing\ESEventStore.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="EventStore.license.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BclEx.4.snk" />
@@ -59,6 +65,7 @@
       <Name>System.Abstract.4</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
