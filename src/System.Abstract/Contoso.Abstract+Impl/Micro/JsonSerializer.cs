@@ -91,13 +91,13 @@ namespace Contoso.Abstract.Micro
                 }
                 return _serializers[t];
             }
-            throw new JsonSerializationException("Unable to create serializer.");
+            throw new JsonSerializationException("Unable to create serializer");
         }
 
         public virtual JsonValueType SerializerType { get; private set; }
         public virtual string DefaultFormat { get; private set; }
-        
-        internal abstract object BaseDeserialize(TextReader reader);
+
+        internal abstract object BaseDeserialize(TextReader r, string path);
 
         internal void BaseSerialize(TextWriter w, object obj) { BaseSerialize(w, obj, JsonOptions.None, null, 0); }
         internal void BaseSerialize(TextWriter w, object obj, JsonOptions options) { BaseSerialize(w, obj, JsonOptions.None, null, 0); }

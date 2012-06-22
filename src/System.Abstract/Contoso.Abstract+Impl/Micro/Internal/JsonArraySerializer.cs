@@ -36,17 +36,17 @@ namespace Contoso.Abstract.Micro.Internal
         public JsonArraySerializer()
             : base(JsonValueType.Array, null) { }
 
-        internal override object BaseDeserialize(TextReader r)
+        internal override object BaseDeserialize(TextReader r, string path)
         {
             var result = new List<TElement>();
             var parens = JsonParserUtil.ReadStartArray(r);
             var c = JsonParserUtil.PeekNextChar(r, true);
             while (c != ']')
             {
-                result.Add(_elementSerializer.Deserialize(r));
+                result.Add(_elementSerializer.Deserialize(r, path));
                 c = JsonParserUtil.PeekNextChar(r, true);
                 if (c != ',' && c != ']')
-                    throw new JsonDeserializationException("Expected ']'");
+                    throw new JsonDeserializationException(string.Format("Expected ']' at '{0}'", path));
                 else if (c == ',')
                     JsonParserUtil.ReadNextChar(r, true);
             }

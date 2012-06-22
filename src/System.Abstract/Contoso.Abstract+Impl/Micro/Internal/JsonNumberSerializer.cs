@@ -34,7 +34,7 @@ namespace Contoso.Abstract.Micro.Internal
         public JsonNumberSerializer(string defaultFormat)
             : base(JsonValueType.Number, defaultFormat) { }
 
-        internal override object BaseDeserialize(TextReader r)
+        internal override object BaseDeserialize(TextReader r, string path)
         {
             var token = JsonParserUtil.GetNextToken(r);
             return (token == string.Empty || token.Equals("null", StringComparison.OrdinalIgnoreCase) ? null : (object)decimal.Parse(token));

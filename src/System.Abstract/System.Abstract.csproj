@@ -141,7 +141,7 @@
     <Compile Include="Abstract+ServiceLog\ServiceLogEventType.cs" />
     <Compile Include="Contoso.Abstract+Impl\Parts+TypeSerializer\MicroJsonTypeSerializer.cs" />
     <Compile Include="Contoso.Abstract+Impl\Micro\JsonSerializer2.cs" />
-    <Compile Include="Contoso.Abstract+Impl\Micro\Internal\GenericJsonSerializerAdapter.cs" />
+    <Compile Include="Contoso.Abstract+Impl\Micro\Internal\JsonGenericSerializerAdapter.cs" />
     <Compile Include="Contoso.Abstract+Impl\Micro\Internal\JsonArraySerializer.cs" />
     <Compile Include="Contoso.Abstract+Impl\Micro\Internal\JsonBooleanSerializer.cs" />
     <Compile Include="Contoso.Abstract+Impl\Micro\Internal\JsonMemberSerializationInfo.cs" />

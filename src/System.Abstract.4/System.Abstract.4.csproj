@@ -465,14 +465,14 @@
     <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\EventSourcing\MemoryEventStore.cs">
       <Link>Contoso.Abstract+Impl\EventSourcing\MemoryEventStore.cs</Link>
     </Compile>
-    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\Internal\GenericJsonSerializerAdapter.cs">
-      <Link>Contoso.Abstract+Impl\Micro\Internal\GenericJsonSerializerAdapter.cs</Link>
-    </Compile>
     <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\Internal\JsonArraySerializer.cs">
       <Link>Contoso.Abstract+Impl\Micro\Internal\JsonArraySerializer.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\Internal\JsonBooleanSerializer.cs">
       <Link>Contoso.Abstract+Impl\Micro\Internal\JsonBooleanSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\Internal\JsonGenericSerializerAdapter.cs">
+      <Link>Contoso.Abstract+Impl\Micro\Internal\JsonGenericSerializerAdapter.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Contoso.Abstract+Impl\Micro\Internal\JsonMemberSerializationInfo.cs">
       <Link>Contoso.Abstract+Impl\Micro\Internal\JsonMemberSerializationInfo.cs</Link>

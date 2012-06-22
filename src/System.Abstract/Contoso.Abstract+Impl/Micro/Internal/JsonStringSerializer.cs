@@ -25,6 +25,7 @@ THE SOFTWARE.
 #endregion
 using System.IO;
 using System.Text;
+using System;
 namespace Contoso.Abstract.Micro.Internal
 {
     internal class JsonStringSerializer : JsonSerializer
@@ -34,12 +35,18 @@ namespace Contoso.Abstract.Micro.Internal
         public JsonStringSerializer(string defaultFormat)
             : base(JsonValueType.String, defaultFormat) { }
 
-        internal override object BaseDeserialize(TextReader r)
+        internal override object BaseDeserialize(TextReader r, string path)
         {
             var b = new StringBuilder();
             var c = JsonParserUtil.ReadNextChar(r, true);
+            if (char.ToLowerInvariant(c) == 'n')
+            {
+                if (char.ToLowerInvariant((char)r.Read()) == 'u' && char.ToLowerInvariant((char)r.Read()) == 'l' && char.ToLowerInvariant((char)r.Read()) == 'l')
+                    return null;
+                throw new JsonDeserializationException(string.Format("Expected 'null' at '{0}'", path));
+            }
             if (c != '"')
-                throw new JsonDeserializationException("Expected '\"'");
+                throw new JsonDeserializationException(string.Format("Expected '\"' at '{0}'", path));
             var escape = false;
             c = JsonParserUtil.ReadNextChar(r, true);
             while (c != '"' || escape)

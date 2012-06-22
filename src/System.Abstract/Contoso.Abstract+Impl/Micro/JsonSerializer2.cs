@@ -41,7 +41,7 @@ namespace Contoso.Abstract.Micro
         public static JsonSerializer<T> CreateSerializer(JsonValueType serializeAs)
         {
             var serializer = CreateSerializer(typeof(T), serializeAs);
-            return (serializer is JsonSerializer<T> ? (JsonSerializer<T>)serializer : new GenericJsonSerializerAdapter<T>(serializer));
+            return (serializer is JsonSerializer<T> ? (JsonSerializer<T>)serializer : new JsonGenericSerializerAdapter<T>(serializer));
         }
 
         protected internal JsonSerializer(bool createSerializers)
@@ -73,14 +73,15 @@ namespace Contoso.Abstract.Micro
             }
         }
 
-        public virtual T Deserialize(TextReader r)
+        public T Deserialize(TextReader r) { return Deserialize(r, string.Empty); }
+        protected internal virtual T Deserialize(TextReader r, string path)
         {
             var result = Activator.CreateInstance<T>();
             var parens = JsonParserUtil.ReadStartObject(r);
             var hasMembers = (JsonParserUtil.PeekNextChar(r, true) != '}');
             while (hasMembers)
             {
-                ReadMemeber(r, result);
+                ReadMemeber(r, path, result);
                 hasMembers = (JsonParserUtil.PeekNextChar(r, true) == ',');
                 if (hasMembers)
                     JsonParserUtil.ReadNextChar(r, true);
@@ -89,11 +90,11 @@ namespace Contoso.Abstract.Micro
             return result;
         }
 
-        private void ReadMemeber(TextReader r, T result)
+        private void ReadMemeber(TextReader r, string path, T result)
         {
             var name = JsonParserUtil.ReadMemberName(r);
             var sInfo = _memberSerializers[name];
-            var memberValue = sInfo.Serializer.BaseDeserialize(r);
+            var memberValue = sInfo.Serializer.BaseDeserialize(r, path + "/" + name);
             var targetType = sInfo.MemberType;
             if (targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(Nullable<>))
                 targetType = targetType.GetGenericArguments()[0];
@@ -149,7 +150,7 @@ namespace Contoso.Abstract.Micro
         public void Serialize(TextWriter w, T obj) { Serialize(w, obj, JsonOptions.None, null, 0); }
         public void Serialize(TextWriter w, T obj, JsonOptions options) { Serialize(w, obj, options, null, 0); }
         public void Serialize(TextWriter w, T obj, JsonOptions options, string format) { Serialize(w, obj, options, format, 0); }
-        internal virtual void Serialize(TextWriter w, T obj, JsonOptions options, string format, int tabDepth)
+        protected internal virtual void Serialize(TextWriter w, T obj, JsonOptions options, string format, int tabDepth)
         {
             if ((options & JsonOptions.EnclosingParens) != 0)
                 w.Write('(');
@@ -191,7 +192,18 @@ namespace Contoso.Abstract.Micro
                 w.Write(')');
         }
 
-        internal override object BaseDeserialize(TextReader r) { return (object)Deserialize(r); }
+        internal override object BaseDeserialize(TextReader r, string path)
+        {
+            var c = JsonParserUtil.PeekNextChar(r, true);
+            if (char.ToLowerInvariant(c) == 'n')
+            {
+                r.Read();
+                if (char.ToLowerInvariant((char)r.Read()) == 'u' && char.ToLowerInvariant((char)r.Read()) == 'l' && char.ToLowerInvariant((char)r.Read()) == 'l')
+                    return null;
+                throw new JsonDeserializationException(string.Format("Expected 'null' at '{0}'", path));
+            }
+            return (object)Deserialize(r, path);
+        }
         internal override void BaseSerialize(TextWriter w, object obj, JsonOptions options, string format, int tabDepth) { Serialize(w, (T)obj, options, format, tabDepth); }
     }
 }
