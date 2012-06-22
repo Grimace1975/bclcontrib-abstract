@@ -7,7 +7,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{19c0d4ef-2b19-4cd6-b96b-8406c1fddeec}</ProjectGuid>
+    <ProjectGuid>{5253939a-a898-4ec2-8e94-858cbd05d14a}</ProjectGuid>
     <SHFBSchemaVersion>1.9.3.0</SHFBSchemaVersion>
     <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
          Studio adds them anyway -->
@@ -16,19 +16,23 @@
     <Name>Documentation</Name>
     <!-- SHFB properties -->
     <OutputPath>..\..\docs\</OutputPath>
-    <HtmlHelpName>BclEx-Abstract</HtmlHelpName>
+    <HtmlHelpName>BclEx-Abstract.ServiceStack.4</HtmlHelpName>
     <Language>en-US</Language>
     <DocumentationSources>
-      <DocumentationSource sourceFile="..\System.Abstract.Configuration\bin\Release\System.Abstract.Configuration.dll" />
-<DocumentationSource sourceFile="..\System.Abstract.Configuration\bin\Release\System.Abstract.Configuration.xml" />
-<DocumentationSource sourceFile="bin\Release\System.Abstract.dll" />
-<DocumentationSource sourceFile="bin\Release\System.Abstract.xml" /></DocumentationSources>
+    </DocumentationSources>
     <BuildLogFile />
     <HtmlHelp1xCompilerPath />
     <HtmlHelp2xCompilerPath />
     <SandcastlePath />
     <WorkingPath />
-    <HelpTitle>BclEx-Abstract</HelpTitle>
+    <HelpTitle>BclEx-Abstract.ServiceStack.4 Documentation</HelpTitle>
+    <SyntaxFilters>Standard</SyntaxFilters>
+    <SdkLinkTarget>Blank</SdkLinkTarget>
+    <RootNamespaceContainer>False</RootNamespaceContainer>
+    <PresentationStyle>vs2005</PresentationStyle>
+    <Preliminary>False</Preliminary>
+    <NamingMethod>Guid</NamingMethod>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

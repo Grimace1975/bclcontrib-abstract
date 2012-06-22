@@ -27,11 +27,11 @@ using System;
 using System.IO;
 namespace Contoso.Abstract.Micro.Internal
 {
-    internal class GenericJsonSerializerAdapter<T> : JsonSerializer<T>
+    internal class JsonGenericSerializerAdapter<T> : JsonSerializer<T>
     {
         private JsonSerializer _innerSerializer;
 
-        public GenericJsonSerializerAdapter(JsonSerializer innerSerializer)
+        public JsonGenericSerializerAdapter(JsonSerializer innerSerializer)
             : base(false) { _innerSerializer = innerSerializer; }
 
         public override JsonValueType SerializerType
@@ -44,8 +44,7 @@ namespace Contoso.Abstract.Micro.Internal
             get { return _innerSerializer.DefaultFormat; }
         }
 
-        public override T Deserialize(TextReader reader) { return (T)Convert.ChangeType(_innerSerializer.BaseDeserialize(reader), typeof(T)); }
-
-        internal override void Serialize(TextWriter writer, T obj, JsonOptions options, string format, int tabDepth) { _innerSerializer.BaseSerialize(writer, (Object)obj, options, format, tabDepth); }
+        protected internal override T Deserialize(TextReader r, string path) { return (T)Convert.ChangeType(_innerSerializer.BaseDeserialize(r, path), typeof(T)); }
+        protected internal override void Serialize(TextWriter w, T obj, JsonOptions options, string format, int tabDepth) { _innerSerializer.BaseSerialize(w, (Object)obj, options, format, tabDepth); }
     }
 }
