@@ -165,7 +165,7 @@ namespace Contoso.Abstract.Micro.Internal
                 if (val == -1 || val >= radix)
                 {
                     if (digitCount < minDigits)
-                        throw new JsonDeserializationException("Expected Digit.");
+                        throw new JsonDeserializationException("Expected Digit");
                     else
                         break;
                 }
