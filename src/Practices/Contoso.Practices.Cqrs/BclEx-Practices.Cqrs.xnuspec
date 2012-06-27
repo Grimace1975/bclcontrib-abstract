@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package>
   <metadata>
-    <id>BclEx-Abstract.MSMQ</id>
+    <id>BclEx-Practices.Cqrs</id>
     <version>$version$</version>
     <title>$title$</title>
     <authors>$author$</authors>
@@ -12,15 +12,15 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes></releaseNotes>
-    <tags>servicebus msmq bclcontrib</tags>
+    <copyright>Copyright 2010</copyright>
+    <tags>bclcontrib</tags>
     <language>en-US</language>
     <dependencies>
-      <dependency id="BclEx-Abstract" version="$version$" />
+      <dependency id="BclEx-Abstract" version="1.0.0.0" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\Contoso.Abstract.MSMQ.4\bin\Release\$title$.dll" target="lib\net40" />
-    <file src="..\Contoso.Abstract.MSMQ.4\bin\Release\$title$.xml" target="lib\net40" />
+    <file src="..\Contoso.Practices.Cqrs.4\bin\Release\$title$.dll" target="lib\net40" />
+    <file src="..\Contoso.Practices.Cqrs.4\bin\Release\$title$.xml" target="lib\net40" />
   </files>
 </package>
-

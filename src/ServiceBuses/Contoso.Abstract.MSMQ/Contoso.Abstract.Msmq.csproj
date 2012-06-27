@@ -55,7 +55,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BclEx-Abstract.MSMQ.nuspec" />
+    <None Include="BclEx-Abstract.MSMQ.xnuspec" />
     <None Include="BclEx.snk" />
   </ItemGroup>
   <ItemGroup>

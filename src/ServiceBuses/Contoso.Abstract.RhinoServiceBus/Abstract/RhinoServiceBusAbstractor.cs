@@ -29,6 +29,7 @@ using Contoso.Abstract.RhinoServiceBus;
 using Rhino.ServiceBus;
 using Rhino.ServiceBus.Config;
 using Rhino.ServiceBus.Impl;
+using IServiceBus = Rhino.ServiceBus.IServiceBus;
 // [Main] http://hibernatingrhinos.com/open-source/rhino-service-bus
 namespace Contoso.Abstract
 {
@@ -37,7 +38,7 @@ namespace Contoso.Abstract
     /// </summary>
     public interface IRhinoServiceBus : IPublishingServiceBus
     {
-        Rhino.ServiceBus.IServiceBus Bus { get; }
+        IServiceBus Bus { get; }
     }
 
     /// <summary>
@@ -46,7 +47,6 @@ namespace Contoso.Abstract
     public partial class RhinoServiceBusAbstractor : IRhinoServiceBus, ServiceBusManager.ISetupRegistration
     {
         private IServiceLocator _serviceLocator;
-        private bool _passthru = true;
 
         static RhinoServiceBusAbstractor() { ServiceBusManager.EnsureRegistration(); }
         public RhinoServiceBusAbstractor()
@@ -58,8 +58,8 @@ namespace Contoso.Abstract
         public RhinoServiceBusAbstractor(IServiceLocator serviceLocator, BusConfigurationSection busConfiguration)
             : this(serviceLocator, DefaultBusCreator(serviceLocator, busConfiguration, null)) { }
         public RhinoServiceBusAbstractor(IServiceLocator serviceLocator, IStartableServiceBus bus)
-            : this(serviceLocator, (Rhino.ServiceBus.IServiceBus)bus) { bus.Start(); }
-        public RhinoServiceBusAbstractor(IServiceLocator serviceLocator, Rhino.ServiceBus.IServiceBus bus)
+            : this(serviceLocator, (IServiceBus)bus) { bus.Start(); }
+        public RhinoServiceBusAbstractor(IServiceLocator serviceLocator, IServiceBus bus)
         {
             if (serviceLocator == null)
                 throw new ArgumentNullException("serviceLocator");
@@ -85,88 +85,60 @@ namespace Contoso.Abstract
             return message;
         }
 
-        public IServiceBusCallback Send(IServiceBusEndpoint endpoint, params object[] messages)
+        public virtual IServiceBusCallback Send(IServiceBusEndpoint endpoint, params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
                 throw new ArgumentNullException("messages", "Please include at least one message.");
-            if (_passthru)
-                try
-                {
-                    if (endpoint == null) Bus.Send(messages);
-                    else if (endpoint != ServiceBus.SelfEndpoint) Bus.Send(RhinoServiceBusTransport.Cast(endpoint), messages);
-                    else Bus.SendToSelf(messages);
-                }
-                catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
-            else
+            try
             {
-                if (endpoint == null)
-                    endpoint = RhinoServiceBusTransport.EndpointByMessageType(messages[0].GetType());
-                try
-                {
-                    if (endpoint == null) Bus.Send(RhinoServiceBusTransport.Cast(messages));
-                    else if (endpoint != ServiceBus.SelfEndpoint) Bus.Send(RhinoServiceBusTransport.TransportEndpointMapper(endpoint), RhinoServiceBusTransport.Cast(messages));
-                    else Bus.SendToSelf(RhinoServiceBusTransport.Cast(messages));
-                }
-                catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
+                if (endpoint == null) Bus.Send(messages);
+                else if (endpoint != ServiceBus.SelfEndpoint) Bus.Send(RhinoServiceBusTransport.Cast(endpoint), messages);
+                else Bus.SendToSelf(messages);
             }
+            catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
             return null;
         }
 
-        public void Reply(params object[] messages)
+        public virtual void Reply(params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
                 throw new ArgumentNullException("messages", "Please include at least one message.");
-            if (_passthru)
-                try { Bus.Reply(messages); }
-                catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
-            else
-                try { Bus.Reply(RhinoServiceBusTransport.Cast(messages)); }
-                catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
+            try { Bus.Reply(messages); }
+            catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
         }
 
         #region Publishing ServiceBus
 
-        public void Publish(params object[] messages)
+        public virtual void Publish(params object[] messages)
         {
-            if (_passthru)
-                try { Bus.Publish(messages); }
-                catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
-            else
-                try { Bus.Publish(RhinoServiceBusTransport.Cast(messages)); }
-                catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
+
+            try { Bus.Publish(messages); }
+            catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
         }
 
-        public void Subscribe(Type messageType, Predicate<object> condition)
+        public virtual void Subscribe(Type messageType, Predicate<object> condition)
         {
             if (messageType == null)
                 throw new ArgumentNullException("messageType");
             if (condition != null)
                 throw new ArgumentException("condition", "Must be null.");
-            if (_passthru)
-                try { Bus.Subscribe(messageType); }
-                catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
-            else
-                try { Bus.Subscribe(RhinoServiceBusTransport.Cast(messageType)); }
-                catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
+            try { Bus.Subscribe(messageType); }
+            catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
         }
 
-        public void Unsubscribe(Type messageType)
+        public virtual void Unsubscribe(Type messageType)
         {
             if (messageType == null)
                 throw new ArgumentNullException("messageType");
-            if (_passthru)
-                try { Bus.Unsubscribe(messageType); }
-                catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
-            else
-                try { Bus.Unsubscribe(RhinoServiceBusTransport.Cast(messageType)); }
-                catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
+            try { Bus.Unsubscribe(messageType); }
+            catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
         }
 
         #endregion
 
         #region Domain-specific
 
-        public Rhino.ServiceBus.IServiceBus Bus { get; private set; }
+        public IServiceBus Bus { get; private set; }
 
         #endregion
 

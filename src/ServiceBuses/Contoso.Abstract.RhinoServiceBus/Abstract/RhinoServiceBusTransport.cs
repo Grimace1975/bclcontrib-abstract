@@ -27,6 +27,7 @@ using System;
 using System.Abstract;
 using System.Linq;
 using Rhino.ServiceBus;
+using IServiceBus = Rhino.ServiceBus.IServiceBus;
 namespace Contoso.Abstract
 {
     internal class RhinoServiceBusTransport
@@ -37,7 +38,7 @@ namespace Contoso.Abstract
         [Serializable]
         public class Transport<T>
         {
-            public T B { get; set; }
+            public T D { get; set; }
         }
 
         /// <summary>
@@ -45,9 +46,9 @@ namespace Contoso.Abstract
         /// </summary>
         public class TransportHandler<T> : ConsumerOf<Transport<T>>
         {
-            private readonly Rhino.ServiceBus.IServiceBus _bus;
-            public TransportHandler(Rhino.ServiceBus.IServiceBus bus) { _bus = bus; }
-            public void Consume(Transport<T> message) { var b = message.B; }
+            private readonly IServiceBus _bus;
+            public TransportHandler(IServiceBus bus) { _bus = bus; }
+            public void Consume(Transport<T> message) { var d = message.D; }
         }
 
         #region Endpoint-Translation
@@ -57,28 +58,27 @@ namespace Contoso.Abstract
             return null;
         }
 
-        public static Endpoint TransportEndpointMapper(IServiceBusEndpoint endpoint)
-        {
-            return null;
-        }
+        //public static Endpoint TransportEndpointMapper(IServiceBusEndpoint endpoint)
+        //{
+        //    return null;
+        //}
 
         #endregion
 
         #region message casting
 
-        public static object[] Cast(object[] messages)
+        public static object[] Wrap(object[] messages)
         {
             return messages.Select(x =>
             {
                 var type = typeof(Transport<>).MakeGenericType(x.GetType());
                 var transport = Activator.CreateInstance(type);
-                type.GetProperty("B").SetValue(transport, x, null);
+                type.GetProperty("D").SetValue(transport, x, null);
                 return transport;
             }).ToArray();
-            //return messages.Select(x => new Transport<object> { B = x }).ToArray();
         }
 
-        public static Type Cast(Type messagesType) { return typeof(Transport<>).MakeGenericType(messagesType); }
+        public static Type Wrap(Type messagesType) { return typeof(Transport<>).MakeGenericType(messagesType); }
 
         public static Endpoint Cast(IServiceBusEndpoint endpoint)
         {

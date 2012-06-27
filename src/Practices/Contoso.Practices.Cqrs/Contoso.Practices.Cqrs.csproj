@@ -59,7 +59,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BclEx-Practices.Cqrs.nuspec" />
+    <None Include="BclEx-Practices.Cqrs.xnuspec" />
     <None Include="BclEx.snk" />
   </ItemGroup>
   <ItemGroup>

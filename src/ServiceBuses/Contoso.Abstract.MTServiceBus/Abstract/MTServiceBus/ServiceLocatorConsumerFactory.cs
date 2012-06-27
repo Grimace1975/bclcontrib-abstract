@@ -6,6 +6,10 @@ using MassTransit.Exceptions;
 using MassTransit.Pipeline;
 namespace Contoso.Abstract.MTServiceBus
 {
+    /// <summary>
+    /// ServiceLocatorConsumerFactory
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ServiceLocatorConsumerFactory<T> : IConsumerFactory<T>
         where T : class
     {

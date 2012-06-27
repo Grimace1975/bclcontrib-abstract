@@ -161,7 +161,6 @@ namespace Contoso.Abstract
             switch (LifetimeForRegisters)
             {
                 case ServiceRegistrarLifetime.Transient: return bindingWhenInNamedWithOrOnSyntax.InScope(StandardScopeCallbacks.Transient);
-                case ServiceRegistrarLifetime.Request: return bindingWhenInNamedWithOrOnSyntax.InScope(StandardScopeCallbacks.Request);
                 case ServiceRegistrarLifetime.Singleton: return bindingWhenInNamedWithOrOnSyntax.InScope(StandardScopeCallbacks.Singleton);
                 case ServiceRegistrarLifetime.Thread: return bindingWhenInNamedWithOrOnSyntax.InScope(StandardScopeCallbacks.Thread);
                 default: throw new NotSupportedException();

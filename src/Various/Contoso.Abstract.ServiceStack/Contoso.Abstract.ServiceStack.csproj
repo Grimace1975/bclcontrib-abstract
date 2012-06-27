@@ -44,7 +44,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BclEx-Abstract.ServiceStack.nuspec" />
+    <None Include="BclEx-Abstract.ServiceStack.xnuspec" />
     <None Include="BclEx.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

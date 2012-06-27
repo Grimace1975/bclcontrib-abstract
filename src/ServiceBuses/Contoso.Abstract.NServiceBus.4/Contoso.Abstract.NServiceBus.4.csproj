@@ -53,11 +53,17 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\BootstrapNServiceBusHost.cs">
+      <Link>Abstract\BootstrapNServiceBusHost.cs</Link>
+    </Compile>
     <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\INServiceMessageHandler.cs">
       <Link>Abstract\INServiceMessageHandler.cs</Link>
     </Compile>
     <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\NServiceBusAbstractor.cs">
       <Link>Abstract\NServiceBusAbstractor.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\NServiceBusTransport.cs">
+      <Link>Abstract\NServiceBusTransport.cs</Link>
     </Compile>
     <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\NServiceBus\Extensions.cs">
       <Link>Abstract\NServiceBus\Extensions.cs</Link>
@@ -65,11 +71,8 @@
     <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\NServiceBus\ServiceLocatorObjectBuilder.cs">
       <Link>Abstract\NServiceBus\ServiceLocatorObjectBuilder.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\Transport.cs">
-      <Link>Abstract\Transport.cs</Link>
-    </Compile>
-    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\TransportHandler.cs">
-      <Link>Abstract\TransportHandler.cs</Link>
+    <Compile Include="..\Contoso.Abstract.NServiceBus\Abstract\NWrapServiceBusAbstractor.cs">
+      <Link>Abstract\NWrapServiceBusAbstractor.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

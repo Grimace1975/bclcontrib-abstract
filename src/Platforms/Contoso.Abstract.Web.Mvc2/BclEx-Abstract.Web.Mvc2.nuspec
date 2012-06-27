@@ -16,7 +16,7 @@
     <tags>mvc mvc2 mvc3 servicelocator bclcontrib</tags>
     <language>en-US</language>
     <dependencies>
-      <dependency id="BclEx-Abstract" version="$version$" />
+      <dependency id="BclEx-Abstract" version="1.0.0.0" />
     </dependencies>
   </metadata>
 </package>

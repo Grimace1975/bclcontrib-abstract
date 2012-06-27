@@ -78,22 +78,22 @@ namespace Contoso.Abstract
 
         // register type
         public ServiceRegistrarLifetime LifetimeForRegisters { get; private set; }
-        public void Register(Type serviceType) { _container.RegisterType(serviceType, SetLifetime(), new InjectionMember[0]); }
-        public void Register(Type serviceType, string name) { _container.RegisterType(serviceType, name, SetLifetime(), new InjectionMember[0]); }
+        public void Register(Type serviceType) { _container.RegisterType(serviceType, GetLifetime(), new InjectionMember[0]); }
+        public void Register(Type serviceType, string name) { _container.RegisterType(serviceType, name, GetLifetime(), new InjectionMember[0]); }
 
         // register implementation
         public void Register<TService, TImplementation>()
             where TService : class
-            where TImplementation : class, TService { _container.RegisterType<TService, TImplementation>(SetLifetime(), new InjectionMember[0]); }
+            where TImplementation : class, TService { _container.RegisterType<TService, TImplementation>(GetLifetime(), new InjectionMember[0]); }
         public void Register<TService, TImplementation>(string name)
             where TService : class
-            where TImplementation : class, TService { _container.RegisterType<TService, TImplementation>(name, SetLifetime(), new InjectionMember[0]); }
+            where TImplementation : class, TService { _container.RegisterType<TService, TImplementation>(name, GetLifetime(), new InjectionMember[0]); }
         public void Register<TService>(Type implementationType)
-           where TService : class { _container.RegisterType(typeof(TService), implementationType, SetLifetime(), new InjectionMember[0]); }
+           where TService : class { _container.RegisterType(typeof(TService), implementationType, GetLifetime(), new InjectionMember[0]); }
         public void Register<TService>(Type implementationType, string name)
-           where TService : class { _container.RegisterType(typeof(TService), implementationType, name, SetLifetime(), new InjectionMember[0]); }
-        public void Register(Type serviceType, Type implementationType) { _container.RegisterType(serviceType, implementationType, SetLifetime(), new InjectionMember[0]); }
-        public void Register(Type serviceType, Type implementationType, string name) { _container.RegisterType(serviceType, implementationType, name, SetLifetime(), new InjectionMember[0]); }
+           where TService : class { _container.RegisterType(typeof(TService), implementationType, name, GetLifetime(), new InjectionMember[0]); }
+        public void Register(Type serviceType, Type implementationType) { _container.RegisterType(serviceType, implementationType, GetLifetime(), new InjectionMember[0]); }
+        public void Register(Type serviceType, Type implementationType, string name) { _container.RegisterType(serviceType, implementationType, name, GetLifetime(), new InjectionMember[0]); }
 
         // register instance
         public void RegisterInstance<TService>(TService instance)
@@ -105,11 +105,11 @@ namespace Contoso.Abstract
 
         // register method
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
-            where TService : class { _container.RegisterType<TService>(SetLifetime(), new InjectionFactory(c => factoryMethod(_parent))); }
+            where TService : class { _container.RegisterType<TService>(GetLifetime(), new InjectionFactory(c => factoryMethod(_parent))); }
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
-            where TService : class { _container.RegisterType<TService>(name, SetLifetime(), new InjectionFactory(c => factoryMethod(_parent))); }
-        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { _container.RegisterType(serviceType, SetLifetime(), new InjectionFactory(c => factoryMethod(_parent))); }
-        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { _container.RegisterType(serviceType, name, SetLifetime(), new InjectionFactory(c => factoryMethod(_parent))); }
+            where TService : class { _container.RegisterType<TService>(name, GetLifetime(), new InjectionFactory(c => factoryMethod(_parent))); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { _container.RegisterType(serviceType, GetLifetime(), new InjectionFactory(c => factoryMethod(_parent))); }
+        public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { _container.RegisterType(serviceType, name, GetLifetime(), new InjectionFactory(c => factoryMethod(_parent))); }
 
         // interceptor
         public void RegisterInterceptor(IServiceLocatorInterceptor interceptor)
@@ -138,7 +138,7 @@ namespace Contoso.Abstract
                 throw new NotSupportedException();
         }
 
-        private LifetimeManager SetLifetime()
+        private LifetimeManager GetLifetime()
         {
             // must cast to IServiceRegistrar for behavior wrappers
             switch (LifetimeForRegisters)

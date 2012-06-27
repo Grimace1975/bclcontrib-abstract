@@ -16,7 +16,7 @@
     <tags>mvcturbine mvc di ioc servicelocator bclcontrib</tags>
     <language>en-US</language>
     <dependencies>
-      <dependency id="BclEx-Abstract" version="$version$" />
+      <dependency id="BclEx-Abstract" version="1.0.0.0" />
       <dependency id="MVCTurbine" version="3.4" />
     </dependencies>
   </metadata>

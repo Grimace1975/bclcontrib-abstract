@@ -38,17 +38,14 @@
     <AssemblyOriginatorKeyFile>BclEx.4.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <HintPath>..\..\..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="Magnum">
       <HintPath>..\..\..\packages\Magnum.2.0.0.4\lib\NET40\Magnum.dll</HintPath>
     </Reference>
     <Reference Include="MassTransit">
-      <HintPath>..\..\..\packages\MassTransit.2.0.1.2\lib\net40\MassTransit.dll</HintPath>
+      <HintPath>..\..\..\packages\MassTransit.2.1.1\lib\net40\MassTransit.dll</HintPath>
     </Reference>
     <Reference Include="MassTransit.Transports.MSMQ">
-      <HintPath>..\..\..\packages\MassTransit.2.0.1.2\lib\net40\MassTransit.Transports.MSMQ.dll</HintPath>
+      <HintPath>..\..\..\packages\MassTransit.2.1.1\lib\net40\MassTransit.Transports.MSMQ.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -62,6 +59,9 @@
     <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\MTServiceBusAbstractor.cs">
       <Link>Abstract\MTServiceBusAbstractor.cs</Link>
     </Compile>
+    <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\MTServiceBusTransport.cs">
+      <Link>Abstract\MTServiceBusTransport.cs</Link>
+    </Compile>
     <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\MTServiceBus\Extensions.cs">
       <Link>Abstract\MTServiceBus\Extensions.cs</Link>
     </Compile>
@@ -74,11 +74,8 @@
     <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\MTServiceBus\ServiceLocatorSagaRepositoryFactoryConfigurator.cs">
       <Link>Abstract\MTServiceBus\ServiceLocatorSagaRepositoryFactoryConfigurator.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\Transport.cs">
-      <Link>Abstract\Transport.cs</Link>
-    </Compile>
-    <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\TransportHandler.cs">
-      <Link>Abstract\TransportHandler.cs</Link>
+    <Compile Include="..\Contoso.Abstract.MTServiceBus\Abstract\MTWrapServiceBusAbstractor.cs">
+      <Link>Abstract\MTWrapServiceBusAbstractor.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

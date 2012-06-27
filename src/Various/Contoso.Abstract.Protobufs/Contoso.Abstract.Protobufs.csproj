@@ -50,7 +50,7 @@
     <Folder Include="Abstract\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BclEx-Abstract.Protobufs.nuspec" />
+    <None Include="BclEx-Abstract.Protobufs.xnuspec" />
     <None Include="BclEx.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

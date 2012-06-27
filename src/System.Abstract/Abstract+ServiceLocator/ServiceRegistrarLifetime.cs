@@ -35,5 +35,6 @@ namespace System.Abstract
         Thread,
         Pooled,
         Request,
+        Session,
     }
 }

@@ -12,7 +12,7 @@ namespace Contoso.Abstract.MTServiceBus
     public static class Extensions
     {
         public static ConsumerSubscriptionConfigurator<TConsumer> Consumer<TConsumer>(this SubscriptionBusServiceConfigurator configurator, IServiceLocator locator)
-            where TConsumer : class
+            where TConsumer : class, IConsumer
         {
             var consumerFactory = new ServiceLocatorConsumerFactory<TConsumer>(locator);
             return configurator.Consumer<TConsumer>(consumerFactory);
