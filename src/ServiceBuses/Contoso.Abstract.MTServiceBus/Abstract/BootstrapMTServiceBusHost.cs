@@ -24,7 +24,6 @@ THE SOFTWARE.
 */
 #endregion
 using System.Abstract;
-using MassTransit;
 using IServiceBus = System.Abstract.IServiceBus;
 namespace Contoso.Abstract
 {

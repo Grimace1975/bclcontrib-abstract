@@ -40,10 +40,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clrzmq, Version=2.2.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\..\packages\clrzmq-x64.2.2.2\lib\clrzmq.dll</HintPath>
+      <HintPath>..\..\..\packages\clrzmq-x64.2.2.3\lib\clrzmq.dll</HintPath>
     </Reference>
     <Reference Include="clrzmq-ext, Version=2.2.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\..\..\packages\clrzmq-x64.2.2.2\lib\clrzmq-ext.dll</HintPath>
+      <HintPath>..\..\..\packages\clrzmq-x64.2.2.3\lib\clrzmq-ext.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -52,7 +52,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BclEx-Abstract.ZeroMQx64.nuspec" />
+    <None Include="BclEx-Abstract.ZeroMQx64.xnuspec" />
     <None Include="BclEx.snk" />
     <None Include="packages.config" />
   </ItemGroup>

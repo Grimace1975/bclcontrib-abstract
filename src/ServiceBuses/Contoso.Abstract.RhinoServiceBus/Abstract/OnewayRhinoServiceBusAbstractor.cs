@@ -46,7 +46,6 @@ namespace Contoso.Abstract
     public partial class OnewayRhinoServiceBusAbstractor : IOnewayRhinoServiceBus, ServiceBusManager.ISetupRegistration
     {
         private IServiceLocator _serviceLocator;
-        private bool _passthru = true;
 
         static OnewayRhinoServiceBusAbstractor() { ServiceBusManager.EnsureRegistration(); }
         public OnewayRhinoServiceBusAbstractor()
@@ -83,32 +82,24 @@ namespace Contoso.Abstract
             return message;
         }
 
-        public IServiceBusCallback Send(IServiceBusEndpoint endpoint, params object[] messages)
+        public virtual IServiceBusCallback Send(IServiceBusEndpoint endpoint, params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
                 throw new ArgumentNullException("messages", "Please include at least one message.");
-            if (_passthru)
-                try
-                {
-                    if (endpoint == null) Bus.Send(messages);
-                    else throw new NotSupportedException();
-                }
-                catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
-            else
+            if (endpoint == null)
+                endpoint = RhinoServiceBusTransport.EndpointByMessageType(messages[0].GetType());
+            if (endpoint == null)
+                throw new ArgumentNullException("Undefined endpoint");
+            try
             {
-                if (endpoint == null)
-                    endpoint = RhinoServiceBusTransport.EndpointByMessageType(messages[0].GetType());
-                try
-                {
-                    if (endpoint == null) Bus.Send(RhinoServiceBusTransport.Cast(messages));
-                    else throw new NotSupportedException();
-                }
-                catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
+                if (endpoint == null) Bus.Send(messages);
+                else throw new NotSupportedException();
             }
+            catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
             return null;
         }
 
-        public void Reply(params object[] messages) { throw new NotSupportedException(); }
+        public virtual void Reply(params object[] messages) { throw new NotSupportedException(); }
 
         #region Domain-specific
 

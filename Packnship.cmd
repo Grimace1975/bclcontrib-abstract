@@ -19,6 +19,7 @@ for /r src\ %%x in (*.nuspec) do (
    ::pause )
 
 echo pushing packages
+pause
 for %%x in (%OUTPUTDIR%*.nupkg) do nuget push "%%x" -source http://nuget.degdarwin.com
 
 endlocal

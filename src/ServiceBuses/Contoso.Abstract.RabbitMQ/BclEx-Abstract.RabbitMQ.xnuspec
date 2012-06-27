@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package>
   <metadata>
-    <id>BclEx-Practices.DurableBus</id>
+    <id>BclEx-Abstract.RabbitMQ</id>
     <version>$version$</version>
     <title>$title$</title>
     <authors>$author$</authors>
@@ -12,15 +12,14 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes></releaseNotes>
-    <copyright>Copyright 2010</copyright>
-    <tags>bclcontrib</tags>
+    <tags>rabbitmq servicebus bclcontrib</tags>
     <language>en-US</language>
     <dependencies>
-      <dependency id="BclEx-Abstract" version="$version$" />
+      <dependency id="BclEx-Abstract" version="1.0.0.0" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\Contoso.Practices.DurableBus.4\bin\Release\$title$.dll" target="lib\net40" />
-    <file src="..\Contoso.Practices.DurableBus.4\bin\Release\$title$.xml" target="lib\net40" />
+    <file src="..\Contoso.Abstract.RabbitMQ.4\bin\Release\$title$.dll" target="lib\net40" />
+    <file src="..\Contoso.Abstract.RabbitMQ.4\bin\Release\$title$.xml" target="lib\net40" />
   </files>
 </package>

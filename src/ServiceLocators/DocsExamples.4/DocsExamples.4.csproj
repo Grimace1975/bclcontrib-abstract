@@ -79,7 +79,7 @@
       <Project>{EE635BC7-9410-471D-9C8C-A89302DF0822}</Project>
       <Name>Contoso.Abstract.Hiro.4</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.Munq.4\Contoso.Abstract.Munq.4.csproj">
+    <ProjectReference Include="..\Contoso.Abstract.Munq\Contoso.Abstract.Munq.csproj">
       <Project>{492A084B-B89A-49D1-B52A-285D69730A6C}</Project>
       <Name>Contoso.Abstract.Munq.4</Name>
     </ProjectReference>

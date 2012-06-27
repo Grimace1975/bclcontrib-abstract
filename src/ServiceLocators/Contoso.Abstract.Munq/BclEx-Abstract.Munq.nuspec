@@ -16,11 +16,7 @@
     <tags>hiro servicelocator ioc di bclcontrib</tags>
     <language>en-US</language>
     <dependencies>
-      <dependency id="BclEx-Abstract" version="$version$" />
+      <dependency id="BclEx-Abstract" version="1.0.0.0" />
     </dependencies>
   </metadata>
-  <files>
-    <file src="..\Contoso.Abstract.Munq.4\bin\Release\$title$.dll" target="lib\net40" />
-    <file src="..\Contoso.Abstract.Munq.4\bin\Release\$title$.xml" target="lib\net40" />
-  </files>
 </package>

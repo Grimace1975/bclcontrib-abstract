@@ -58,10 +58,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\BootstrapNServiceBusHost.cs" />
+    <Compile Include="Abstract\NWrapServiceBusAbstractor.cs" />
     <Compile Include="Abstract\NServiceBus\Extensions.cs" />
     <Compile Include="Abstract\NServiceBus\ServiceLocatorObjectBuilder.cs" />
-    <Compile Include="Abstract\TransportHandler.cs" />
-    <Compile Include="Abstract\Transport.cs" />
+    <Compile Include="Abstract\NServiceBusTransport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Abstract\INServiceMessageHandler.cs" />
     <Compile Include="Abstract\NServiceBusAbstractor.cs" />

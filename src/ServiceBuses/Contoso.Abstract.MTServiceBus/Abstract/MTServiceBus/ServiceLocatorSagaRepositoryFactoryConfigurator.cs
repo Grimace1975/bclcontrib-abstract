@@ -7,6 +7,9 @@ using MassTransit.Util;
 using MassTransit.Saga;
 namespace Contoso.Abstract.MTServiceBus
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ServiceLocatorSagaFactoryConfigurator
     {
         private readonly SubscriptionBusServiceConfigurator _configurator;

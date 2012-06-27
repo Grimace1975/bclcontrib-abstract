@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>BclContrib-Abstract.ApplicationBus</id>
-    <version>0.1.6</version>
+    <version>1.0.0</version>
     <authors>Sky Morey</authors>
     <owners>Sky Morey</owners>
     <description>This package contains an Application ServiceBus implementation of the abstract ServiceBus.</description> 
@@ -10,8 +10,9 @@
     <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
     <tags>applicationbus servicebus bclcontrib</tags>
     <language>en-US</language>
+    <releaseNotes>NOTE: Project has moved to http://bclex.org. with a new package name of BclEx-Abstract.ApplicationBus</releaseNotes>
     <dependencies>
-      <dependency id="BclContrib-Abstract" version="0.1.6" />
+      <dependency id="BclContrib-Abstract" version="1.0.0" />
     </dependencies>
   </metadata>
 </package>

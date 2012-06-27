@@ -50,6 +50,9 @@
     <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\OnewayRhinoServiceBusAbstractor.cs">
       <Link>Abstract\OnewayRhinoServiceBusAbstractor.cs</Link>
     </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\OnewayRhinoWrapServiceBusAbstractor.cs">
+      <Link>Abstract\OnewayRhinoWrapServiceBusAbstractor.cs</Link>
+    </Compile>
     <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBusAbstractor.cs">
       <Link>Abstract\RhinoServiceBusAbstractor.cs</Link>
     </Compile>
@@ -73,6 +76,9 @@
     </Compile>
     <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoServiceBus\ServiceLocatorLoadBalancerBootStrapper.cs">
       <Link>Abstract\RhinoServiceBus\ServiceLocatorLoadBalancerBootStrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.RhinoServiceBus\Abstract\RhinoWrapServiceBusAbstractor.cs">
+      <Link>Abstract\RhinoWrapServiceBusAbstractor.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

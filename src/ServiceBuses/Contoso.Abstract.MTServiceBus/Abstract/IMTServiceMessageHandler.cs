@@ -27,8 +27,8 @@ using System.Abstract;
 namespace Contoso.Abstract
 {
     /// <summary>
-    /// INServiceMessageHandler
+    /// IMTServiceMessageHandler
     /// </summary>
-    public interface INServiceMessageHandler<TMessage> : IServiceMessageHandler<TMessage>
+    public interface IMTServiceMessageHandler<TMessage> : IServiceMessageHandler<TMessage>
         where TMessage : class { }
 }
