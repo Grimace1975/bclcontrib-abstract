@@ -88,8 +88,6 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("messages", "Please include at least one message.");
             if (endpoint == null)
                 endpoint = RhinoServiceBusTransport.EndpointByMessageType(messages[0].GetType());
-            if (endpoint == null)
-                throw new ArgumentNullException("Undefined endpoint");
             try
             {
                 if (endpoint == null) Bus.Send(messages);
