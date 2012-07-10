@@ -110,6 +110,7 @@ namespace Contoso.Abstract
             if (serviceLocator == null)
                 serviceLocator = ServiceLocatorManager.Current;
             var configuration = new OnewayRhinoServiceBusConfiguration()
+                .UseMessageSerializer<RhinoServiceBus.Serializers.XmlMessageSerializer>()
                 .UseAbstractServiceLocator(serviceLocator);
             if (busConfiguration != null)
             {
