@@ -45,7 +45,9 @@ namespace Contoso.Abstract.RhinoServiceBus
 
         protected override void ConfigureBusFacility(AbstractRhinoServiceBusConfiguration configuration)
         {
-            configuration.UseAbstractServiceLocator(_locator);
+            configuration
+                .UseMessageSerializer<RhinoServiceBus.Serializers.XmlMessageSerializer>()
+                .UseAbstractServiceLocator(_locator);
             base.ConfigureBusFacility(configuration);
         }
 
@@ -55,13 +57,14 @@ namespace Contoso.Abstract.RhinoServiceBus
                 .Where(type => typeof(IMessageConsumer).IsAssignableFrom(type) &&
                     !typeof(IOccasionalMessageConsumer).IsAssignableFrom(type) &&
                     IsTypeAcceptableForThisBootStrapper(type));
+            var r = _locator.Registrar;
             foreach (var type in types)
-                ConfigureConsumer(type);
+                ConfigureConsumer(r, type);
         }
 
-        protected virtual void ConfigureConsumer(Type type)
+        protected virtual void ConfigureConsumer(IServiceRegistrar r, Type type)
         {
-            _locator.Registrar.Register<IMessageConsumer>(type, type.FullName);
+            r.Register<IMessageConsumer>(type, type.FullName);
         }
 
         protected virtual void ConfigureContainer()
