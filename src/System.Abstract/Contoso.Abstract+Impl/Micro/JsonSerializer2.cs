@@ -192,18 +192,7 @@ namespace Contoso.Abstract.Micro
                 w.Write(')');
         }
 
-        internal override object BaseDeserialize(TextReader r, string path)
-        {
-            var c = JsonParserUtil.PeekNextChar(r, true);
-            if (char.ToLowerInvariant(c) == 'n')
-            {
-                r.Read();
-                if (char.ToLowerInvariant((char)r.Read()) == 'u' && char.ToLowerInvariant((char)r.Read()) == 'l' && char.ToLowerInvariant((char)r.Read()) == 'l')
-                    return null;
-                throw new JsonDeserializationException(string.Format("Expected 'null' at '{0}'", path));
-            }
-            return (object)Deserialize(r, path);
-        }
+        internal override object BaseDeserialize(TextReader r, string path) { return (JsonParserUtil.PeekIsNull(r, path) ? null : (object)Deserialize(r, path)); }
         internal override void BaseSerialize(TextWriter w, object obj, JsonOptions options, string format, int tabDepth) { Serialize(w, (T)obj, options, format, tabDepth); }
     }
 }

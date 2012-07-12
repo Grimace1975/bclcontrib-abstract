@@ -182,5 +182,30 @@ namespace Contoso.Abstract.Micro.Internal
                 charCode += digits[i] * multiplier;
             return (char)charCode;
         }
+
+        public static bool PeekIsNull(TextReader r, string path)
+        {
+            var c = JsonParserUtil.PeekNextChar(r, true);
+            if (char.ToLowerInvariant(c) == 'n')
+            {
+                r.Read();
+                if (char.ToLowerInvariant((char)r.Read()) == 'u' && char.ToLowerInvariant((char)r.Read()) == 'l' && char.ToLowerInvariant((char)r.Read()) == 'l')
+                    return true;
+                throw new JsonDeserializationException(string.Format("Expected 'null' at '{0}'", path));
+            }
+            return false;
+        }
+
+        public static bool ReadIsNull(TextReader r, string path, out char c)
+        {
+            c = JsonParserUtil.ReadNextChar(r, true);
+            if (char.ToLowerInvariant(c) == 'n')
+            {
+                if (char.ToLowerInvariant((char)r.Read()) == 'u' && char.ToLowerInvariant((char)r.Read()) == 'l' && char.ToLowerInvariant((char)r.Read()) == 'l')
+                    return true;
+                throw new JsonDeserializationException(string.Format("Expected 'null' at '{0}'", path));
+            }
+            return false;
+        }
     }
 }

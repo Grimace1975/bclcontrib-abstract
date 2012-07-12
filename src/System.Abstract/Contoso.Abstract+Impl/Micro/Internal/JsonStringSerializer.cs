@@ -37,18 +37,14 @@ namespace Contoso.Abstract.Micro.Internal
 
         internal override object BaseDeserialize(TextReader r, string path)
         {
-            var b = new StringBuilder();
-            var c = JsonParserUtil.ReadNextChar(r, true);
-            if (char.ToLowerInvariant(c) == 'n')
-            {
-                if (char.ToLowerInvariant((char)r.Read()) == 'u' && char.ToLowerInvariant((char)r.Read()) == 'l' && char.ToLowerInvariant((char)r.Read()) == 'l')
-                    return null;
-                throw new JsonDeserializationException(string.Format("Expected 'null' at '{0}'", path));
-            }
+            char c;
+            if (JsonParserUtil.ReadIsNull(r, path, out c))
+                return null;
             if (c != '"')
                 throw new JsonDeserializationException(string.Format("Expected '\"' at '{0}'", path));
             var escape = false;
             c = JsonParserUtil.ReadNextChar(r, true);
+            var b = new StringBuilder();
             while (c != '"' || escape)
             {
                 if (escape)
