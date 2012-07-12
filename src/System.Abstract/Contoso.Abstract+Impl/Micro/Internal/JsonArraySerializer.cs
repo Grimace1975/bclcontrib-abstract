@@ -38,6 +38,8 @@ namespace Contoso.Abstract.Micro.Internal
 
         internal override object BaseDeserialize(TextReader r, string path)
         {
+            if (JsonParserUtil.PeekIsNull(r, path))
+                return null;
             var result = new List<TElement>();
             var parens = JsonParserUtil.ReadStartArray(r);
             var c = JsonParserUtil.PeekNextChar(r, true);
@@ -56,25 +58,30 @@ namespace Contoso.Abstract.Micro.Internal
 
         internal override void BaseSerialize(TextWriter w, object obj, JsonOptions options, string format, int tabDepth)
         {
-            if ((options & JsonOptions.EnclosingParens) != 0)
-                w.Write('(');
-            w.Write('[');
-            var first = true;
-            foreach (TElement element in (IEnumerable<TElement>)obj)
+            if (obj != null)
             {
-                if (!first)
-                    w.Write(',');
-                first = false;
-                if ((options & JsonOptions.Formatted) != 0)
+                if ((options & JsonOptions.EnclosingParens) != 0)
+                    w.Write('(');
+                w.Write('[');
+                var first = true;
+                foreach (TElement element in (IEnumerable<TElement>)obj)
                 {
-                    w.WriteLine();
-                    w.Write(new String(' ', tabDepth * 2));
+                    if (!first)
+                        w.Write(',');
+                    first = false;
+                    if ((options & JsonOptions.Formatted) != 0)
+                    {
+                        w.WriteLine();
+                        w.Write(new String(' ', tabDepth * 2));
+                    }
+                    _elementSerializer.Serialize(w, element, options, null, tabDepth + 1);
                 }
-                _elementSerializer.Serialize(w, element, options, null, tabDepth + 1);
+                w.Write(']');
+                if ((options & JsonOptions.EnclosingParens) != 0)
+                    w.Write(')');
             }
-            w.Write(']');
-            if ((options & JsonOptions.EnclosingParens) != 0)
-                w.Write(')');
+            else
+                w.Write("null");
         }
     }
 }
