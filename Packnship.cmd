@@ -15,12 +15,12 @@ for /r src\ %%x in (*.nuspec) do (
    set v=!v:BclEx-Abstract.=Contoso.Abstract.!
    set v=!v:BclEx-Practices.=Contoso.Practices.!
    ::echo.!v!
-   nuget pack "!v!" -NoDefaultExcludes -OutputDirectory %OUTPUTDIR% %BUILD% )
+   tools\nuget pack "!v!" -NoDefaultExcludes -OutputDirectory %OUTPUTDIR% %BUILD% )
    ::pause )
 
 echo pushing packages
 pause
-for %%x in (%OUTPUTDIR%*.nupkg) do nuget push "%%x" -source http://nuget.degdarwin.com
+for %%x in (%OUTPUTDIR%*.nupkg) do tools\nuget push "%%x" -source http://nuget.degdarwin.com
 
 endlocal
 choice /N /D Y /T 5
