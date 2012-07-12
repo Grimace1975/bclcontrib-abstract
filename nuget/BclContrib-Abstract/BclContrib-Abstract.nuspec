@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>BclContrib-Abstract</id>
-    <version>1.0.0</version>
+    <version>1.0.0.0</version>
     <authors>Sky Morey</authors>
     <owners>Sky Morey</owners>
     <description>This package contains abstractions to provide standard Interfaces, or Abstracts, for common services typicality re-implemented in various Projects/Assemblies. Utilizing a standards based Type allows services to flow between otherwise disconnected Assemblies.</description>
@@ -10,7 +10,7 @@
     <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
     <tags>abstract nosql interface ioc di aggregateroot servicebus servicelocator bclcontrib</tags>
     <language>en-US</language>
-    <releaseNotes>NOTE: Project has moved to http://bclex.org. with a new package name of BclEx-Abstract</releaseNotes>
+    <releaseNotes>NOTE: Project has moved to http://docs.bclex.org. with a new package name of BclEx-Abstract</releaseNotes>
     <references>
        <reference file="System.Abstract.dll" />
     </references>

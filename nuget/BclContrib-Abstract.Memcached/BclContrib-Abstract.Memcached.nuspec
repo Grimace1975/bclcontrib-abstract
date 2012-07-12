@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>BclContrib-Abstract.Memcached</id>
-    <version>0.1.6</version>
+    <version>2.11.0.0</version>
     <authors>Sky Morey</authors>
     <owners>Sky Morey</owners>
     <description>This package contains a Memcached implementation of the abstract ServiceCache.</description>
@@ -10,8 +10,9 @@
     <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
     <tags>memcache memcached cache servicecache bclcontrib</tags>
     <language>en-US</language>
+    <releaseNotes>NOTE: Project has moved to http://docs.bclex.org. with a new package name of BclEx-Abstract.Memcached</releaseNotes>
     <dependencies>
-      <dependency id="BclContrib-Abstract" version="0.1.6" />
+      <dependency id="BclContrib-Abstract" version="1.0.0.0" />
       <dependency id="EnyimMemcached" version="2.11" />
     </dependencies>
   </metadata>

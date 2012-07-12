@@ -53,7 +53,7 @@
     <Compile Include="Abstract\Mvc\ServiceLocatorModelBinder.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="BclEx-Abstract.Web.Mvc2.nuspec" />
+    <None Include="BclEx-Abstract.Web.Mvc.nuspec" />
     <None Include="BclEx.snk" />
   </ItemGroup>
   <ItemGroup>

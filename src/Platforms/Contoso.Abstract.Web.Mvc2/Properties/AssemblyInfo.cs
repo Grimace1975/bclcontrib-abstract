@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Contoso.Abstract.Web.Mvc")]
-[assembly: AssemblyDescription("This package contains integrations for use with ASP.NET MVC 2, 3 or 4 depending on your version of .Net.")]
+[assembly: AssemblyDescription("This package contains integrations for use with ASP.NET MVC 2, 3 or 4.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Contoso")]
 [assembly: AssemblyProduct("BclEx-Abstract.Web.Mvc")]
