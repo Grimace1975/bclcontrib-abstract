@@ -183,24 +183,12 @@ namespace Contoso.Abstract.Micro.Internal
             return (char)charCode;
         }
 
-        public static bool PeekIsNull(TextReader r, string path)
+        public static bool PeekIsNull(TextReader r, bool ignoreWhitespace, string path)
         {
-            var c = JsonParserUtil.PeekNextChar(r, true);
+            var c = JsonParserUtil.PeekNextChar(r, ignoreWhitespace);
             if (char.ToLowerInvariant(c) == 'n')
             {
                 r.Read();
-                if (char.ToLowerInvariant((char)r.Read()) == 'u' && char.ToLowerInvariant((char)r.Read()) == 'l' && char.ToLowerInvariant((char)r.Read()) == 'l')
-                    return true;
-                throw new JsonDeserializationException(string.Format("Expected 'null' at '{0}'", path));
-            }
-            return false;
-        }
-
-        public static bool ReadIsNull(TextReader r, string path, out char c)
-        {
-            c = JsonParserUtil.ReadNextChar(r, true);
-            if (char.ToLowerInvariant(c) == 'n')
-            {
                 if (char.ToLowerInvariant((char)r.Read()) == 'u' && char.ToLowerInvariant((char)r.Read()) == 'l' && char.ToLowerInvariant((char)r.Read()) == 'l')
                     return true;
                 throw new JsonDeserializationException(string.Format("Expected 'null' at '{0}'", path));

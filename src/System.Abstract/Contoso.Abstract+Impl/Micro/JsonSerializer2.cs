@@ -73,7 +73,7 @@ namespace Contoso.Abstract.Micro
             }
         }
 
-        public T Deserialize(TextReader r) { return Deserialize(r, string.Empty); }
+        public T Deserialize(TextReader r) { return Deserialize(WrapTextReader.Wrap(r, WrapTextReader.WrapOptions.Default), string.Empty); }
         protected internal virtual T Deserialize(TextReader r, string path)
         {
             var result = Activator.CreateInstance<T>();
@@ -192,7 +192,7 @@ namespace Contoso.Abstract.Micro
                 w.Write(')');
         }
 
-        internal override object BaseDeserialize(TextReader r, string path) { return (JsonParserUtil.PeekIsNull(r, path) ? null : (object)Deserialize(r, path)); }
+        internal override object BaseDeserialize(TextReader r, string path) { return (JsonParserUtil.PeekIsNull(r, true, path) ? null : (object)Deserialize(r, path)); }
         internal override void BaseSerialize(TextWriter w, object obj, JsonOptions options, string format, int tabDepth) { Serialize(w, (T)obj, options, format, tabDepth); }
     }
 }

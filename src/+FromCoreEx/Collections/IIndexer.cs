@@ -31,9 +31,7 @@ namespace System.Collections
     /// </summary>
     /// <typeparam name="TKey">Generic type of the key for the indexed object instance.</typeparam>
     /// <typeparam name="TValue">Generic type for the value in the indexed object instance.</typeparam>
-#if COREINTERNAL
-    internal
-#else
+#if !COREINTERNAL
     public
 #endif
  interface IIndexer<TKey, TValue>

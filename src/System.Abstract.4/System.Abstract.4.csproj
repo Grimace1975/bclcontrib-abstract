@@ -60,14 +60,17 @@
     <Compile Include="..\+fromcoreex\collections\IIndexer.cs">
       <Link>+FromCoreEx\Collections\IIndexer.cs</Link>
     </Compile>
-    <Compile Include="..\+fromcoreex\EnvironmentEx.cs">
-      <Link>+FromCoreEx\EnvironmentEx.cs</Link>
+    <Compile Include="..\+FromCoreEx\CoreExtensions+Lazy.cs">
+      <Link>+FromCoreEx\CoreExtensions+Lazy.cs</Link>
+    </Compile>
+    <Compile Include="..\+FromCoreEx\EnvironmentEx2.cs">
+      <Link>+FromCoreEx\EnvironmentEx2.cs</Link>
     </Compile>
     <Compile Include="..\+fromcoreex\ExceptionEx.cs">
       <Link>+FromCoreEx\ExceptionEx.cs</Link>
     </Compile>
-    <Compile Include="..\+FromCoreEx\LazyExtensions.cs">
-      <Link>+FromCoreEx\LazyExtensions.cs</Link>
+    <Compile Include="..\+FromCoreEx\IO\WrapTextReader.cs">
+      <Link>+FromCoreEx\IO\WrapTextReader.cs</Link>
     </Compile>
     <Compile Include="..\+fromcoreex\linq\expressions\ExpressionEx.cs">
       <Link>+FromCoreEx\Linq\Expressions\ExpressionEx.cs</Link>

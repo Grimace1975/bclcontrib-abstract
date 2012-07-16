@@ -37,9 +37,9 @@ namespace Contoso.Abstract.Micro.Internal
 
         internal override object BaseDeserialize(TextReader r, string path)
         {
-            char c;
-            if (JsonParserUtil.ReadIsNull(r, path, out c))
+            if (JsonParserUtil.PeekIsNull(r, true, path))
                 return null;
+            var c = JsonParserUtil.ReadNextChar(r, true);
             if (c != '"')
                 throw new JsonDeserializationException(string.Format("Expected '\"' at '{0}'", path));
             var escape = false;

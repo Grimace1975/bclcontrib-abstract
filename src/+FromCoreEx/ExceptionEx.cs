@@ -30,9 +30,7 @@ namespace System
     /// <summary>
     /// ExceptionEx
     /// </summary>
-#if COREINTERNAL
-    internal
-#else
+#if !COREINTERNAL
     public
 #endif
  static class ExceptionExtensions

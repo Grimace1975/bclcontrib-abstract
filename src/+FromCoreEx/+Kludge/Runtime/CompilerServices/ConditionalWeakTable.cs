@@ -50,9 +50,7 @@ namespace System.Runtime.CompilerServices
     *    may be delayed until appdomain shutdown.
     */
     [ComVisible(false)]
-#if COREINTERNAL
-    internal
-#else
+#if !COREINTERNAL
     public
 #endif
  sealed class ConditionalWeakTable<TKey, TValue>
@@ -345,7 +343,7 @@ namespace System.Runtime.CompilerServices
         private void VerifyIntegrity()
         {
             if (_invalid)
-                throw new InvalidOperationException(EnvironmentEx.GetResourceString("CollectionCorrupted"));
+                throw new InvalidOperationException(EnvironmentEx2.GetResourceString("CollectionCorrupted"));
         }
     }
 }
