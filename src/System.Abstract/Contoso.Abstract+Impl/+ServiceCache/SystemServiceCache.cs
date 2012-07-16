@@ -37,7 +37,17 @@ namespace Contoso.Abstract
     /// </summary>
     public interface ISystemServiceCache : IServiceCache
     {
+        /// <summary>
+        /// Gets the cache.
+        /// </summary>
         SystemCaching.ObjectCache Cache { get; }
+        /// <summary>
+        /// Gets the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="regionName">Name of the region.</param>
+        /// <param name="names">The names.</param>
+        /// <returns></returns>
         object Get(object tag, string regionName, IEnumerable<string> names);
     }
 
@@ -47,10 +57,21 @@ namespace Contoso.Abstract
     public class SystemServiceCache : ISystemServiceCache, ServiceCacheManager.ISetupRegistration
     {
         static SystemServiceCache() { ServiceCacheManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SystemServiceCache"/> class.
+        /// </summary>
         public SystemServiceCache()
             : this(SystemCaching.MemoryCache.Default) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SystemServiceCache"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
         public SystemServiceCache(string name)
             : this(new SystemCaching.MemoryCache(name)) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SystemServiceCache"/> class.
+        /// </summary>
+        /// <param name="cache">The cache.</param>
         public SystemServiceCache(SystemCaching.ObjectCache cache)
         {
             Cache = cache;
@@ -62,14 +83,33 @@ namespace Contoso.Abstract
             get { return (locator, name) => ServiceCacheManager.RegisterInstance<ISystemServiceCache>(this, locator, name); }
         }
 
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType"/>.-or- null if there is no service object of type <paramref name="serviceType"/>.
+        /// </returns>
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
+        /// <summary>
+        /// Gets or sets the <see cref="System.Object"/> with the specified name.
+        /// </summary>
         public object this[string name]
         {
             get { return Get(null, name); }
             set { Set(null, name, CacheItemPolicy.Default, value, ServiceCacheByDispatcher.Empty); }
         }
 
+        /// <summary>
+        /// Adds the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="itemPolicy">The item policy.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="dispatch">The dispatch.</param>
+        /// <returns></returns>
         public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             if (itemPolicy == null)
@@ -83,14 +123,42 @@ namespace Contoso.Abstract
             return Cache.Add(name, value, GetCacheDependency(tag, itemPolicy, dispatch), regionName);
         }
 
+        /// <summary>
+        /// Gets the item from cache associated with the key provided.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>
+        /// The cached item.
+        /// </returns>
         public object Get(object tag, string name)
         {
             string regionName;
             Settings.TryGetRegion(ref name, out regionName);
             return Cache.Get(name, regionName);
         }
+        /// <summary>
+        /// Gets the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="names">The names.</param>
+        /// <returns></returns>
         public object Get(object tag, IEnumerable<string> names) { return Cache.GetValues(null, names.ToArray()); }
+        /// <summary>
+        /// Gets the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="regionName">Name of the region.</param>
+        /// <param name="names">The names.</param>
+        /// <returns></returns>
         public object Get(object tag, string regionName, IEnumerable<string> names) { return Cache.GetValues(regionName, names.ToArray()); }
+        /// <summary>
+        /// Tries the get.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public bool TryGet(object tag, string name, out object value)
         {
             string regionName;
@@ -105,6 +173,15 @@ namespace Contoso.Abstract
             return false;
         }
 
+        /// <summary>
+        /// Adds an object into cache based on the parameters provided.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="itemPolicy">The itemPolicy object.</param>
+        /// <param name="value">The value to store in cache.</param>
+        /// <param name="dispatch">The dispatch.</param>
+        /// <returns></returns>
         public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             if (itemPolicy == null)
@@ -119,6 +196,14 @@ namespace Contoso.Abstract
             return value;
         }
 
+        /// <summary>
+        /// Removes from cache the item associated with the key provided.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>
+        /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
+        /// </returns>
         public object Remove(object tag, string name)
         {
             string regionName;
@@ -126,6 +211,9 @@ namespace Contoso.Abstract
             return Cache.Remove(name, regionName);
         }
 
+        /// <summary>
+        /// Settings
+        /// </summary>
         public ServiceCacheSettings Settings { get; private set; }
 
         #region TouchableCacheItem
@@ -137,8 +225,18 @@ namespace Contoso.Abstract
         {
             private SystemServiceCache _parent;
             private ITouchableCacheItem _base;
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DefaultTouchableCacheItem"/> class.
+            /// </summary>
+            /// <param name="parent">The parent.</param>
+            /// <param name="base">The @base.</param>
             public DefaultTouchableCacheItem(SystemServiceCache parent, ITouchableCacheItem @base) { _parent = parent; _base = @base; }
 
+            /// <summary>
+            /// Touches the specified tag.
+            /// </summary>
+            /// <param name="tag">The tag.</param>
+            /// <param name="names">The names.</param>
             public void Touch(object tag, string[] names)
             {
                 if (names == null || names.Length == 0)
@@ -156,6 +254,12 @@ namespace Contoso.Abstract
                     _base.Touch(tag, names);
             }
 
+            /// <summary>
+            /// Makes the dependency.
+            /// </summary>
+            /// <param name="tag">The tag.</param>
+            /// <param name="names">The names.</param>
+            /// <returns></returns>
             public object MakeDependency(object tag, string[] names)
             {
                 if (names == null || names.Length == 0)
@@ -170,9 +274,20 @@ namespace Contoso.Abstract
         /// </summary>
         public class DefaultFileTouchableCacheItem : ServiceCache.FileTouchableCacheItemBase
         {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DefaultFileTouchableCacheItem"/> class.
+            /// </summary>
+            /// <param name="parent">The parent.</param>
+            /// <param name="base">The @base.</param>
             public DefaultFileTouchableCacheItem(SystemServiceCache parent, ITouchableCacheItem @base)
                 : base(parent, @base) { }
 
+            /// <summary>
+            /// Makes the dependency internal.
+            /// </summary>
+            /// <param name="tag">The tag.</param>
+            /// <param name="names">The names.</param>
+            /// <returns></returns>
             protected override object MakeDependencyInternal(object tag, string[] names) { return new SystemCaching.HostFileChangeMonitor(names.Select(x => GetFilePathForName(x)).ToArray()); }
         }
 
@@ -180,6 +295,9 @@ namespace Contoso.Abstract
 
         #region Domain-specific
 
+        /// <summary>
+        /// Gets the cache.
+        /// </summary>
         public SystemCaching.ObjectCache Cache { get; private set; }
 
         #endregion

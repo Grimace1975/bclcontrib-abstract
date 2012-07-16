@@ -30,14 +30,39 @@ namespace System.Abstract.Parts
 {
     public static partial class PartsExtensions
     {
+        /// <summary>
+        /// Reads the object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serializer">The serializer.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="text">The text.</param>
+        /// <returns></returns>
         public static T ReadObject<T>(this ITypeSerializer serializer, Type type, string text)
             where T : class { return ReadObject<T>(serializer, type, text, Encoding.Default); }
+        /// <summary>
+        /// Reads the object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serializer">The serializer.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="encoding">The encoding.</param>
+        /// <returns></returns>
         public static T ReadObject<T>(this ITypeSerializer serializer, Type type, string text, Encoding encoding)
             where T : class
         {
             using (var s = new MemoryStream(encoding.GetBytes(text)))
                 return serializer.ReadObject<T>(type, s);
         }
+        /// <summary>
+        /// Reads the object base64.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serializer">The serializer.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="text">The text.</param>
+        /// <returns></returns>
         public static T ReadObjectBase64<T>(this ITypeSerializer serializer, Type type, string text)
             where T : class
         {
@@ -45,8 +70,25 @@ namespace System.Abstract.Parts
                 return serializer.ReadObject<T>(type, s);
         }
 
+        /// <summary>
+        /// Writes the object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serializer">The serializer.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="graph">The graph.</param>
+        /// <returns></returns>
         public static string WriteObject<T>(this ITypeSerializer serializer, Type type, T graph)
             where T : class { return WriteObject<T>(serializer, type, graph, Encoding.Default); }
+        /// <summary>
+        /// Writes the object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serializer">The serializer.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="graph">The graph.</param>
+        /// <param name="encoding">The encoding.</param>
+        /// <returns></returns>
         public static string WriteObject<T>(this ITypeSerializer serializer, Type type, T graph, Encoding encoding)
             where T : class
         {
@@ -57,6 +99,14 @@ namespace System.Abstract.Parts
                 return encoding.GetString(s.ToArray());
             }
         }
+        /// <summary>
+        /// Writes the object base64.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serializer">The serializer.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="graph">The graph.</param>
+        /// <returns></returns>
         public static string WriteObjectBase64<T>(this ITypeSerializer serializer, Type type, T graph)
             where T : class
         {

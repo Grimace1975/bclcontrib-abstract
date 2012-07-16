@@ -31,8 +31,26 @@ namespace System.Abstract.EventSourcing
     [Serializable]
 	public abstract class Event : IEvent
     {
+        /// <summary>
+        /// Gets or sets the aggregate ID.
+        /// </summary>
+        /// <value>
+        /// The aggregate ID.
+        /// </value>
         public object AggregateID { get; set; }
+        /// <summary>
+        /// Gets or sets the event date.
+        /// </summary>
+        /// <value>
+        /// The event date.
+        /// </value>
         public DateTime EventDate { get; set; }
+        /// <summary>
+        /// Gets or sets the event sequence.
+        /// </summary>
+        /// <value>
+        /// The event sequence.
+        /// </value>
         public int? EventSequence { get; set; }
     }
 }

@@ -32,12 +32,21 @@ namespace System
         [ThreadStatic]
         private static OperatingSystemEx _osVersionExMock;
 
+        /// <summary>
+        /// Gets or sets the OS version ex mock.
+        /// </summary>
+        /// <value>
+        /// The OS version ex mock.
+        /// </value>
         public static OperatingSystemEx OSVersionExMock
         {
             get { return _osVersionExMock; }
             set { _osVersionExMock = value; }
         }
 
+        /// <summary>
+        /// Gets the OS version ex.
+        /// </summary>
         public static OperatingSystemEx OSVersionEx
         {
             get { return (_osVersionExMock == null ? GetOSVersionEx() : _osVersionExMock); }

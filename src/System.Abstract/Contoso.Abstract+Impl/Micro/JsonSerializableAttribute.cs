@@ -26,10 +26,25 @@ THE SOFTWARE.
 using System;
 namespace Contoso.Abstract.Micro
 {
+    /// <summary>
+    /// JsonSerializableAttribute
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct, Inherited = true)]
     public class JsonSerializableAttribute : Attribute
     {
+        /// <summary>
+        /// Gets or sets the serialize as.
+        /// </summary>
+        /// <value>
+        /// The serialize as.
+        /// </value>
         public JsonValueType SerializeAs { get; set; }
+        /// <summary>
+        /// Gets or sets the format.
+        /// </summary>
+        /// <value>
+        /// The format.
+        /// </value>
         public string Format { get; set; }
     }
 }

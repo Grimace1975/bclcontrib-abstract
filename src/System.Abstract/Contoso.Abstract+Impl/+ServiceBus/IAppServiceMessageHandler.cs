@@ -27,8 +27,9 @@ using System.Abstract;
 namespace Contoso.Abstract
 {
     /// <summary>
-    /// IAppServiceMessageHandler
+    /// An application service bus message handler interface
     /// </summary>
+    /// <typeparam name="TMessage">The type of the message.</typeparam>
     public interface IAppServiceMessageHandler<TMessage> : IServiceMessageHandler<TMessage>
         where TMessage : class { }
 }

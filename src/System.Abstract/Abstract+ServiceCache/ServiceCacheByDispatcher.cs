@@ -25,16 +25,33 @@ THE SOFTWARE.
 #endregion
 namespace System.Abstract
 {
+    /// <summary>
+    /// ServiceCacheByDispatcher
+    /// </summary>
     public struct ServiceCacheByDispatcher
     {
+        /// <summary>
+        /// Empty
+        /// </summary>
         public static readonly ServiceCacheByDispatcher Empty = new ServiceCacheByDispatcher(null, null);
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceCacheByDispatcher"/> struct.
+        /// </summary>
+        /// <param name="registration">The registration.</param>
+        /// <param name="values">The values.</param>
         public ServiceCacheByDispatcher(ServiceCacheRegistration registration, object[] values)
         {
             Registration = registration;
             Values = values;
         }
 
+        /// <summary>
+        /// Registration
+        /// </summary>
         public ServiceCacheRegistration Registration;
+        /// <summary>
+        /// Values
+        /// </summary>
         public object[] Values;
     }
 }

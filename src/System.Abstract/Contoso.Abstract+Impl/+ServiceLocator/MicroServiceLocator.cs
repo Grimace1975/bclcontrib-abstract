@@ -9,6 +9,9 @@ namespace Contoso.Abstract
     /// </summary>
     public interface IMicroServiceLocator : IServiceLocator
     {
+        /// <summary>
+        /// Gets the container.
+        /// </summary>
         IDictionary<string, IDictionary<Type, object>> Container { get; }
     }
 
@@ -24,8 +27,15 @@ namespace Contoso.Abstract
         internal class Trampoline { public bool AsSingleton; public Type Type; public Func<IServiceLocator, object> Factory; }
 
         static MicroServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MicroServiceLocator"/> class.
+        /// </summary>
         public MicroServiceLocator()
             : this(new Dictionary<Type, object>()) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MicroServiceLocator"/> class.
+        /// </summary>
+        /// <param name="container">The container.</param>
         public MicroServiceLocator(IDictionary<Type, object> container)
         {
             if (container == null)
@@ -34,6 +44,10 @@ namespace Contoso.Abstract
                 {string.Empty, container}
             };
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MicroServiceLocator"/> class.
+        /// </summary>
+        /// <param name="container">The container.</param>
         public MicroServiceLocator(IDictionary<string, IDictionary<Type, object>> container)
         {
             if (container == null)
@@ -46,23 +60,62 @@ namespace Contoso.Abstract
             get { return (locator, name) => ServiceLocatorManager.RegisterInstance<IMicroServiceLocator>(this, locator, name); }
         }
 
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType"/>.
+        /// -or-
+        /// null if there is no service object of type <paramref name="serviceType"/>.
+        /// </returns>
         public object GetService(Type serviceType) { return Resolve(serviceType); }
 
+        /// <summary>
+        /// Gets the underlying container.
+        /// </summary>
+        /// <typeparam name="TContainer">The type of the container.</typeparam>
+        /// <returns></returns>
         public TContainer GetUnderlyingContainer<TContainer>()
             where TContainer : class { return (_containers as TContainer); }
 
         // registrar
+        /// <summary>
+        /// Gets the registrar.
+        /// </summary>
         public IServiceRegistrar Registrar
         {
             get { return _registrar; }
         }
 
         // resolve
+        /// <summary>
+        /// Resolves this instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <returns></returns>
         public TService Resolve<TService>()
             where TService : class { return (TService)Resolve(typeof(TService), string.Empty); }
+        /// <summary>
+        /// Resolves the specified name.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public TService Resolve<TService>(string name)
             where TService : class { return (TService)Resolve(typeof(TService), name); }
+        /// <summary>
+        /// Resolves the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns></returns>
         public object Resolve(Type serviceType) { return Resolve(serviceType, string.Empty); }
+        /// <summary>
+        /// Resolves the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public object Resolve(Type serviceType, string name)
         {
             try
@@ -119,8 +172,18 @@ namespace Contoso.Abstract
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
         //
+        /// <summary>
+        /// Resolves all.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <returns></returns>
         public IEnumerable<TService> ResolveAll<TService>()
             where TService : class { return ResolveAll(typeof(TService)).Cast<TService>(); }
+        /// <summary>
+        /// Resolves all.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns></returns>
         public IEnumerable<object> ResolveAll(Type serviceType)
         {
             var items = _containers.SelectMany(x => x.Value, (a, b) => new { Name = a.Key, Services = b })
@@ -133,17 +196,38 @@ namespace Contoso.Abstract
         }
 
         // inject
+        /// <summary>
+        /// Injects the specified instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <returns></returns>
         public TService Inject<TService>(TService instance)
             where TService : class { throw new NotSupportedException(); }
 
         // release and teardown
+        /// <summary>
+        /// Releases the specified instance.
+        /// </summary>
+        /// <param name="instance">The instance.</param>
         public void Release(object instance) { }
+        /// <summary>
+        /// Tears down.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="instance">The instance.</param>
         public void TearDown<TService>(TService instance)
             where TService : class { }
+        /// <summary>
+        /// Resets this instance.
+        /// </summary>
         public void Reset() { }
 
         #region Domain specific
 
+        /// <summary>
+        /// Gets the container.
+        /// </summary>
         public IDictionary<string, IDictionary<Type, object>> Container
         {
             get { return _containers; }

@@ -29,7 +29,7 @@ namespace System.Abstract
     /// Defines a delegate type for use by <see cref="M:Instinct.CacheCommand.OnCreatedCallback">CacheCommand.OnCreatedCallback</see>.
     /// Used to provide notification of removal of an item from an instance of a <see cref="T:Instinct.Cache">Cache</see> object.
     /// </summary>
-    /// <param name="key">Key of the item being removed from cache.</param>
+    /// <param name="name">The name of the item being removed from cache.</param>
     /// <param name="value">Value of the item being removed from cache.</param>
 	public delegate void CacheEntryUpdateCallback(string name, object value);
 }

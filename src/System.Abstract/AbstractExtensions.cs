@@ -30,6 +30,11 @@ namespace System
     /// </summary>
     public static class AbstractExtensions
     {
+        /// <summary>
+        /// Toes the short name.
+        /// </summary>
+        /// <param name="environment">The environment.</param>
+        /// <returns></returns>
         public static string ToShortName(this DeploymentEnvironment environment)
         {
             switch (environment)
@@ -44,11 +49,23 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Determines whether [is external deployment] [the specified environment].
+        /// </summary>
+        /// <param name="environment">The environment.</param>
+        /// <returns>
+        ///   <c>true</c> if [is external deployment] [the specified environment]; otherwise, <c>false</c>.
+        /// </returns>
         public static bool IsExternalDeployment(this DeploymentEnvironment environment)
         {
             return (environment == DeploymentEnvironment.Production || environment == DeploymentEnvironment.BetaTesting);
         }
 
+        /// <summary>
+        /// Toes the code.
+        /// </summary>
+        /// <param name="environment">The environment.</param>
+        /// <returns></returns>
         public static string ToCode(this DeploymentEnvironment environment)
         {
             switch (environment)
@@ -63,6 +80,11 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Toes the code.
+        /// </summary>
+        /// <param name="stage">The stage.</param>
+        /// <returns></returns>
         public static string ToCode(this DevelopmentStage stage)
         {
             switch (stage)

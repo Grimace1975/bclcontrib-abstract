@@ -30,7 +30,21 @@ namespace System
     /// </summary>
     public interface IConvertFormatter
     {
+        /// <summary>
+        /// Formats the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="param">The param.</param>
+        /// <returns></returns>
         string Format(object value, string defaultValue, Nparams param);
+        /// <summary>
+        /// Formats the specified value.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="param">The param.</param>
+        /// <returns></returns>
         string Format(string value, string defaultValue, Nparams param);
     }
 }

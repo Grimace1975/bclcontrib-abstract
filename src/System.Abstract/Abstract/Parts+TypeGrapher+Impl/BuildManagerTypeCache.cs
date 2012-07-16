@@ -34,8 +34,17 @@ namespace System.Abstract.Parts
     /// </summary>
     public class BuildManagerTypeCache : ITypeCache
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BuildManagerTypeCache"/> class.
+        /// </summary>
+        /// <param name="buildManager">The build manager.</param>
         public BuildManagerTypeCache(IBuildManager buildManager)
             : this(buildManager, new TypeCacheSerializer()) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BuildManagerTypeCache"/> class.
+        /// </summary>
+        /// <param name="buildManager">The build manager.</param>
+        /// <param name="serializer">The serializer.</param>
         public BuildManagerTypeCache(IBuildManager buildManager, ITypeCacheSerializer serializer)
         {
             if (buildManager == null)
@@ -46,10 +55,29 @@ namespace System.Abstract.Parts
             Serializer = serializer;
         }
 
+        /// <summary>
+        /// Gets the build manager.
+        /// </summary>
         public IBuildManager BuildManager { get; private set; }
+        /// <summary>
+        /// Gets the serializer.
+        /// </summary>
         public ITypeCacheSerializer Serializer { get; private set; }
 
+        /// <summary>
+        /// Gets the filtered types from assemblies.
+        /// </summary>
+        /// <param name="cacheName">Name of the cache.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns></returns>
         public IEnumerable<Type> GetFilteredTypesFromAssemblies(string cacheName, Predicate<Type> predicate) { return GetFilteredTypesFromAssemblies(cacheName, predicate, BuildManager.GetReferencedAssemblies()); }
+        /// <summary>
+        /// Gets the filtered types from assemblies.
+        /// </summary>
+        /// <param name="cacheName">Name of the cache.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <param name="assemblies">The assemblies.</param>
+        /// <returns></returns>
         public IEnumerable<Type> GetFilteredTypesFromAssemblies(string cacheName, Predicate<Type> predicate, IEnumerable<Assembly> assemblies)
         {
             var matchingTypes = TypeCacheManager.ReadTypesFromCache(BuildManager, cacheName, predicate, Serializer);

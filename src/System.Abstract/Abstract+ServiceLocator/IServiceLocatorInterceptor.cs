@@ -31,7 +31,17 @@ namespace System.Abstract
     /// </summary>
     public interface IServiceLocatorInterceptor
     {
+        /// <summary>
+        /// Items the created.
+        /// </summary>
+        /// <param name="createdItem">The created item.</param>
+        /// <param name="isTransient">if set to <c>true</c> [is transient].</param>
         void ItemCreated(Type createdItem, bool isTransient);
+        /// <summary>
+        /// Matches the specified type.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
         bool Match(Type type);
     }
 }

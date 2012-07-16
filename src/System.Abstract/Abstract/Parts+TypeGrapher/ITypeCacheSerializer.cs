@@ -32,7 +32,17 @@ namespace System.Abstract.Parts
     /// </summary>
     public interface ITypeCacheSerializer
     {
+        /// <summary>
+        /// Deserializes the types.
+        /// </summary>
+        /// <param name="i">The i.</param>
+        /// <returns></returns>
         IEnumerable<Type> DeserializeTypes(TextReader i);
+        /// <summary>
+        /// Serializes the types.
+        /// </summary>
+        /// <param name="types">The types.</param>
+        /// <param name="o">The o.</param>
         void SerializeTypes(IEnumerable<Type> types, TextWriter o);
     }
 }

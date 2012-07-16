@@ -36,6 +36,12 @@ namespace Contoso.Abstract.EventSourcing
     {
         private readonly List<Event> _events = new List<Event>();
 
+        /// <summary>
+        /// Gets the events by ID.
+        /// </summary>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <param name="startSequence">The start sequence.</param>
+        /// <returns></returns>
         public IEnumerable<Event> GetEventsByID(object aggregateID, int startSequence)
         {
             return _events
@@ -43,11 +49,21 @@ namespace Contoso.Abstract.EventSourcing
                 .ToList();
         }
 
+        /// <summary>
+        /// Gets the events by event types.
+        /// </summary>
+        /// <param name="eventTypes">The event types.</param>
+        /// <returns></returns>
         public IEnumerable<Event> GetEventsByEventTypes(IEnumerable<Type> eventTypes)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Saves the events.
+        /// </summary>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <param name="events">The events.</param>
         public void SaveEvents(object aggregateID, IEnumerable<Event> events)
         {
             _events.AddRange(events);

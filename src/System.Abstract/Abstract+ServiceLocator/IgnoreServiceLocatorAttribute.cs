@@ -31,6 +31,13 @@ namespace System.Abstract
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = true)]
     public class IgnoreServiceLocatorAttribute : Attribute
     {
+        /// <summary>
+        /// Determines whether [has ignore service locator] [the specified type].
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if [has ignore service locator] [the specified type]; otherwise, <c>false</c>.
+        /// </returns>
         public static bool HasIgnoreServiceLocator(Type type)
         {
             return (type.GetCustomAttributes(typeof(IgnoreServiceLocatorAttribute), false).Length > 0);

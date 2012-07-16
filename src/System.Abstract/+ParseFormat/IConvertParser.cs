@@ -30,8 +30,29 @@ namespace System
     /// </summary>
     public interface IConvertParser
     {
+        /// <summary>
+        /// Parses the specified text.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="param">The param.</param>
+        /// <returns></returns>
         object Parse(string text, object defaultValue, Nparams param);
+        /// <summary>
+        /// Parses the specified text.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="param">The param.</param>
+        /// <returns></returns>
         string Parse(string text, string defaultValue, Nparams param);
+        /// <summary>
+        /// Tries the parse.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <param name="param">The param.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         bool TryParse(string text, Nparams param, out object value);
     }
 }

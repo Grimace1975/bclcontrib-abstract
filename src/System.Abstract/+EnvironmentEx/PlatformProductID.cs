@@ -30,8 +30,17 @@ namespace System
 	/// </summary>
 	public enum PlatformProductID
 	{
+        /// <summary>
+        /// Workstation
+        /// </summary>
 		Workstation = 1,
-		DomainController = 2, 
+        /// <summary>
+        /// DomainController
+        /// </summary>
+		DomainController = 2,
+        /// <summary>
+        /// Server
+        /// </summary>
 		Server = 3
 	}
 }

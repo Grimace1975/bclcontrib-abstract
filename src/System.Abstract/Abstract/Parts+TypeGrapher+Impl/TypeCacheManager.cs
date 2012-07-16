@@ -34,6 +34,14 @@ namespace System.Abstract.Parts
     /// </summary>
     public class TypeCacheManager
     {
+        /// <summary>
+        /// Reads the types from cache.
+        /// </summary>
+        /// <param name="buildManager">The build manager.</param>
+        /// <param name="cacheName">Name of the cache.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <param name="serializer">The serializer.</param>
+        /// <returns></returns>
         public static IEnumerable<Type> ReadTypesFromCache(IBuildManager buildManager, string cacheName, Predicate<Type> predicate, ITypeCacheSerializer serializer)
         {
             Func<Type, bool> func = type => (TypeIsPublicClass(type) && predicate(type));
@@ -53,6 +61,13 @@ namespace System.Abstract.Parts
             return null;
         }
 
+        /// <summary>
+        /// Saves the types to cache.
+        /// </summary>
+        /// <param name="buildManager">The build manager.</param>
+        /// <param name="cacheName">Name of the cache.</param>
+        /// <param name="matchingTypes">The matching types.</param>
+        /// <param name="serializer">The serializer.</param>
         public static void SaveTypesToCache(IBuildManager buildManager, string cacheName, IEnumerable<Type> matchingTypes, ITypeCacheSerializer serializer)
         {
             try
@@ -65,6 +80,11 @@ namespace System.Abstract.Parts
             catch { }
         }
 
+        /// <summary>
+        /// Types the is public class.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
         public static bool TypeIsPublicClass(Type type)
         {
             return (type != null && type.IsPublic && type.IsClass && !type.IsAbstract);

@@ -31,7 +31,13 @@ namespace System.Abstract
     /// </summary>
     public class CacheItemPolicy
     {
+        /// <summary>
+        /// Default
+        /// </summary>
         public static readonly CacheItemPolicy Default = new CacheItemPolicy { };
+        /// <summary>
+        /// Infinite
+        /// </summary>
         public static readonly CacheItemPolicy Infinite = new CacheItemPolicy(-1);
         private DateTime _absoluteExpiration;
         private TimeSpan _floatingAbsoluteExpiration;
@@ -39,13 +45,11 @@ namespace System.Abstract
         /// <summary>
         /// Initializes a new instance of the <see cref="CacheItemPolicy"/> class.
         /// </summary>
-        /// <param name="key">The key.</param>
         public CacheItemPolicy() { }
         /// <summary>
         /// Initializes a new instance of the <see cref="CacheItemPolicy"/> class.
         /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="floatingMinuteTimeout">The floating minute timeout.</param>
+        /// <param name="floatingAbsoluteMinuteTimeout">The floating absolute minute timeout.</param>
         public CacheItemPolicy(int floatingAbsoluteMinuteTimeout)
         {
             if (floatingAbsoluteMinuteTimeout < -1)

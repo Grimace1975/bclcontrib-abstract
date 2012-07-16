@@ -30,7 +30,18 @@ namespace System.Abstract
 	/// </summary>
 	public interface ITouchableCacheItem
 	{
+        /// <summary>
+        /// Touches the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="names">The names.</param>
 		void Touch(object tag, string[] names);
+        /// <summary>
+        /// Makes the dependency.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="names">The names.</param>
+        /// <returns></returns>
 		object MakeDependency(object tag, string[] names);
 	}
 }

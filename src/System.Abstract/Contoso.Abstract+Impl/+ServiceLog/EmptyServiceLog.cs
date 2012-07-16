@@ -32,16 +32,40 @@ namespace Contoso.Abstract
     /// </summary>
     public class EmptyServiceLog : IServiceLog
     {
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType"/>.
+        /// -or-
+        /// null if there is no service object of type <paramref name="serviceType"/>.
+        /// </returns>
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         // get
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
         public string Name
         {
             get { return null; }
         }
+        /// <summary>
+        /// Gets the specified name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public IServiceLog Get(string name) { return this; }
 
         // log
+        /// <summary>
+        /// Writes the specified level.
+        /// </summary>
+        /// <param name="level">The level.</param>
+        /// <param name="ex">The ex.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
         public void Write(ServiceLog.LogLevel level, Exception ex, string s, params object[] args) { }
     }
 }

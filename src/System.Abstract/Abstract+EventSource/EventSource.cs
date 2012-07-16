@@ -33,11 +33,18 @@ namespace System.Abstract
     /// </summary>
     public interface IEventSource : IServiceProvider
     {
+        /// <summary>
+        /// Makes the repository.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="arg">The arg.</param>
+        /// <param name="serializer">The serializer.</param>
+        /// <returns></returns>
         IAggregateRootRepository MakeRepository<T>(T arg, ITypeSerializer serializer);
     }
 
     /// <summary>
-    /// IEventSource
+    /// EventSource
     /// </summary>
     public class EventSource : IEventSource, EventSourceManager.ISetupRegistration
     {
@@ -46,16 +53,40 @@ namespace System.Abstract
         private readonly Action<IEnumerable<Event>> _eventDispatcher;
         private readonly Func<Type, AggregateRoot> _factory;
 
+        /// <summary>
+        /// DefaultFactory
+        /// </summary>
         public static class DefaultFactory
         {
+            /// <summary>
+            /// Factory
+            /// </summary>
             public static Func<Type, AggregateRoot> Factory = (t => (AggregateRoot)Activator.CreateInstance(t));
         }
 
         static EventSource() { EventSourceManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventSource"/> class.
+        /// </summary>
+        /// <param name="eventStore">The event store.</param>
+        /// <param name="snapshotStore">The snapshot store.</param>
         public EventSource(IEventStore eventStore, IAggregateRootSnapshotStore snapshotStore)
             : this(eventStore, snapshotStore, null, DefaultFactory.Factory) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventSource"/> class.
+        /// </summary>
+        /// <param name="eventStore">The event store.</param>
+        /// <param name="snapshotStore">The snapshot store.</param>
+        /// <param name="eventDispatcher">The event dispatcher.</param>
         public EventSource(IEventStore eventStore, IAggregateRootSnapshotStore snapshotStore, Action<IEnumerable<Event>> eventDispatcher)
             : this(eventStore, snapshotStore, eventDispatcher, DefaultFactory.Factory) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventSource"/> class.
+        /// </summary>
+        /// <param name="eventStore">The event store.</param>
+        /// <param name="snapshotStore">The snapshot store.</param>
+        /// <param name="eventDispatcher">The event dispatcher.</param>
+        /// <param name="factory">The factory.</param>
         public EventSource(IEventStore eventStore, IAggregateRootSnapshotStore snapshotStore, Action<IEnumerable<Event>> eventDispatcher, Func<Type, AggregateRoot> factory)
         {
             _eventStore = eventStore;
@@ -69,8 +100,24 @@ namespace System.Abstract
             get { return (locator, name) => EventSourceManager.RegisterInstance<IEventSource>(this, locator, name); }
         }
 
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType"/>.
+        /// -or-
+        /// null if there is no service object of type <paramref name="serviceType"/>.
+        /// </returns>
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
+        /// <summary>
+        /// Makes the repository.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="arg">The arg.</param>
+        /// <param name="serializer">The serializer.</param>
+        /// <returns></returns>
         public IAggregateRootRepository MakeRepository<T>(T arg, ITypeSerializer serializer) { return new AggregateRootRepository(_eventStore, _snapshotStore, _eventDispatcher, _factory); }
     }
 }

@@ -32,7 +32,20 @@ namespace System.Abstract.Parts
     /// </summary>
     public interface ITypeCache
     {
+        /// <summary>
+        /// Gets the filtered types from assemblies.
+        /// </summary>
+        /// <param name="cacheName">Name of the cache.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <returns></returns>
         IEnumerable<Type> GetFilteredTypesFromAssemblies(string cacheName, Predicate<Type> predicate);
+        /// <summary>
+        /// Gets the filtered types from assemblies.
+        /// </summary>
+        /// <param name="cacheName">Name of the cache.</param>
+        /// <param name="predicate">The predicate.</param>
+        /// <param name="assemblies">The assemblies.</param>
+        /// <returns></returns>
         IEnumerable<Type> GetFilteredTypesFromAssemblies(string cacheName, Predicate<Type> predicate, IEnumerable<Assembly> assemblies);
     }
 }

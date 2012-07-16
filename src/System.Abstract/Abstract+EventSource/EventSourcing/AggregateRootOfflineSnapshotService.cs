@@ -32,6 +32,10 @@ namespace System.Abstract.EventSourcing
     /// </summary>
     public interface IAggregateRootOfflineSnapshotService
     {
+        /// <summary>
+        /// Makes the snapshots.
+        /// </summary>
+        /// <param name="aggregateTypes">The aggregate types.</param>
         void MakeSnapshots(IEnumerable<Type> aggregateTypes);
     }
 
@@ -43,6 +47,11 @@ namespace System.Abstract.EventSourcing
         private readonly IAggregateRootRepository _repository;
         private readonly IOfflineSnaphotQuery _snaphotQuery;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AggregateRootOfflineSnapshotService"/> class.
+        /// </summary>
+        /// <param name="repository">The repository.</param>
+        /// <param name="snaphotQuery">The snaphot query.</param>
         public AggregateRootOfflineSnapshotService(IAggregateRootRepository repository, IOfflineSnaphotQuery snaphotQuery)
         {
             if (repository == null)
@@ -53,6 +62,10 @@ namespace System.Abstract.EventSourcing
             _snaphotQuery = snaphotQuery;
         }
 
+        /// <summary>
+        /// Makes the snapshots.
+        /// </summary>
+        /// <param name="aggregateTypes">The aggregate types.</param>
         public void MakeSnapshots(IEnumerable<Type> aggregateTypes)
         {
             foreach (var item in _snaphotQuery.GetAggregatesToSnapshot(aggregateTypes))

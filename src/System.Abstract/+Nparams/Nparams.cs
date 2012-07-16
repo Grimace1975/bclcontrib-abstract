@@ -32,8 +32,23 @@ namespace System
     /// </summary>
     public interface INparams : IDictionary<string, object>
     {
+        /// <summary>
+        /// Adds the range.
+        /// </summary>
+        /// <param name="args">The args.</param>
         void AddRange(IDictionary<string, object> args);
+        /// <summary>
+        /// Toes the string array.
+        /// </summary>
+        /// <returns></returns>
         string[] ToStringArray();
+        /// <summary>
+        /// Slices the specified key.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key">The key.</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <returns></returns>
         T Slice<T>(string key, T defaultValue);
     }
 
@@ -44,40 +59,92 @@ namespace System
     {
         internal INparams _base;
 
+        /// <summary>
+        /// Creates this instance.
+        /// </summary>
+        /// <returns></returns>
         public static Nparams Create() { return NparamsManager.Create(); }
+        /// <summary>
+        /// Parses the specified args.
+        /// </summary>
+        /// <param name="args">The args.</param>
+        /// <returns></returns>
         public static Nparams Parse(Nparams args) { return args; }
+        /// <summary>
+        /// Parses the specified args.
+        /// </summary>
+        /// <param name="args">The args.</param>
+        /// <returns></returns>
         public static Nparams Parse(IDictionary<string, object> args) { return (args != null ? NparamsManager.Parse(args) : null); }
+        /// <summary>
+        /// Parses the specified args.
+        /// </summary>
+        /// <param name="args">The args.</param>
+        /// <returns></returns>
         public static Nparams Parse(string[] args) { return (args != null && args.Length > 0 ? NparamsManager.Parse(args) : null); }
+        /// <summary>
+        /// Parses the specified args.
+        /// </summary>
+        /// <param name="args">The args.</param>
+        /// <returns></returns>
         public static Nparams Parse(object args) { return (args != null ? NparamsManager.Parse(args) : null); }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Nparams"/> class.
+        /// </summary>
+        /// <param name="base">The @base.</param>
         public Nparams(INparams @base) { _base = @base; }
 
         Collections.IEnumerator Collections.IEnumerable.GetEnumerator() { return (_base != null ? _base.GetEnumerator() : null); }
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
         public IEnumerator<KeyValuePair<string, object>> GetEnumerator() { return (_base != null ? _base.GetEnumerator() : null); }
 
         #region Properties
 
+        /// <summary>
+        /// Gets the count.
+        /// </summary>
         public int Count
         {
             get { return (_base != null ? _base.Count : 0); }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is read only.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is read only; otherwise, <c>false</c>.
+        /// </value>
         public bool IsReadOnly
         {
             get { return (_base != null ? _base.IsReadOnly : false); }
         }
 
+        /// <summary>
+        /// Gets or sets the <see cref="System.Object"/> with the specified key.
+        /// </summary>
         public object this[string key]
         {
             get { return (_base != null ? _base[key] : null); }
             set { if (_base == null) throw new InvalidOperationException(); _base[key] = value; }
         }
 
+        /// <summary>
+        /// Gets the keys.
+        /// </summary>
         public ICollection<string> Keys
         {
             get { return (_base != null ? _base.Keys : null); }
         }
 
+        /// <summary>
+        /// Gets the values.
+        /// </summary>
         public ICollection<object> Values
         {
             get { return (_base != null ? _base.Values : null); }

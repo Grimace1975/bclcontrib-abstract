@@ -30,26 +30,52 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 namespace Contoso.Abstract
 {
-    /// <summary>
-    /// IAppServiceBus
-    /// </summary>
+    /// <remark>
+    /// An application service bus specific service bus interface
+    /// </remark>
     public interface IAppServiceBus : IServiceBus
     {
+        /// <summary>
+        /// Adds this instance.
+        /// </summary>
+        /// <typeparam name="TMessageHandler">The type of the message handler.</typeparam>
+        /// <returns></returns>
         IAppServiceBus Add<TMessageHandler>()
             where TMessageHandler : class;
+        /// <summary>
+        /// Adds the specified message handler type.
+        /// </summary>
+        /// <param name="messageHandlerType">Type of the message handler.</param>
+        /// <returns></returns>
         IAppServiceBus Add(Type messageHandlerType);
     }
 
-    /// <summary>
-    /// AppServiceBus
-    /// </summary>
+    /// <remark>
+    /// An application service bus implementation
+    /// </remark>
+    /// <example>
+    /// <code>
+    /// ServiceBusManager.SetProvider(() => new AppServiceBus()
+    ///         .Add(Handler1)
+    ///         .Add(Handler2))
+    ///     .RegisterWithServiceLocator();
+    /// ServiceBusManager.Send&lt;Message1&gt;(x => x.Body = "Message");
+    /// </code>
+    /// </example>
     public class AppServiceBus : Collection<AppServiceBusRegistration>, IAppServiceBus, ServiceBusManager.ISetupRegistration
     {
         private readonly IServiceMessageHandlerFactory _messageHandlerFactory;
 
         static AppServiceBus() { ServiceBusManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppServiceBus"/> class.
+        /// </summary>
         public AppServiceBus()
             : this(null) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AppServiceBus"/> class.
+        /// </summary>
+        /// <param name="messageHandlerFactory">The message handler factory.</param>
         public AppServiceBus(IServiceMessageHandlerFactory messageHandlerFactory)
         {
             _messageHandlerFactory = messageHandlerFactory;
@@ -60,13 +86,36 @@ namespace Contoso.Abstract
             get { return (locator, name) => ServiceBusManager.RegisterInstance<IAppServiceBus>(this, locator, name); }
         }
 
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>
+        /// Throws NotImplementedException.
+        /// </returns>
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
+        /// <summary>
+        /// Creates a new message.
+        /// </summary>
+        /// <typeparam name="TMessage">The type of the message.</typeparam>
+        /// <param name="messageBuilder">The message builder.</param>
+        /// <returns>The newly created message.</returns>
         public TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder)
             where TMessage : class { throw new NotImplementedException(); }
 
+        /// <summary>
+        /// Adds a message handler.
+        /// </summary>
+        /// <typeparam name="TMessageHandler">The type of the message handler.</typeparam>
+        /// <returns>Fluent</returns>
         public IAppServiceBus Add<TMessageHandler>()
             where TMessageHandler : class { return Add(typeof(TMessageHandler)); }
+        /// <summary>
+        /// Adds a message handler
+        /// </summary>
+        /// <param name="messageHandlerType"></param>
+        /// <returns>Fluent</returns>
         public IAppServiceBus Add(Type messageHandlerType)
         {
             var messageType = GetMessageTypeFromHandler(messageHandlerType);
@@ -80,6 +129,12 @@ namespace Contoso.Abstract
             return this;
         }
 
+        /// <summary>
+        /// Sends a message on the bus
+        /// </summary>
+        /// <param name="destination"></param>
+        /// <param name="messages"></param>
+        /// <returns>Null</returns>
         public IServiceBusCallback Send(IServiceBusEndpoint destination, params object[] messages)
         {
             if (messages == null)
@@ -114,7 +169,17 @@ namespace Contoso.Abstract
             //    .SingleOrDefault();
         }
 
+        /// <summary>
+        /// Replies messages back up the bus.
+        /// </summary>
+        /// <param name="messages">The messages.</param>
         public void Reply(params object[] messages) { throw new NotImplementedException(); }
+
+        /// <summary>
+        /// Returns a value back up the bus.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value">The value.</param>
         public void Return<T>(T value) { throw new NotImplementedException(); }
     }
 }

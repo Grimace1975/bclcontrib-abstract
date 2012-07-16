@@ -30,6 +30,12 @@ namespace System.Abstract
     /// </summary>
     public interface IServiceMessageHandlerFactory
     {
+        /// <summary>
+        /// Creates the specified type.
+        /// </summary>
+        /// <typeparam name="TMessage">The type of the message.</typeparam>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
         IServiceMessageHandler<TMessage> Create<TMessage>(Type type)
             where TMessage : class;
     }

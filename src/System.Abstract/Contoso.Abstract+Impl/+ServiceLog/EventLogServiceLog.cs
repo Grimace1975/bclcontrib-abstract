@@ -34,6 +34,9 @@ namespace Contoso.Abstract
     /// </summary>
     public interface IEventLogServiceLog : IServiceLog
     {
+        /// <summary>
+        /// Gets the log.
+        /// </summary>
         EventLog Log { get; }
     }
 
@@ -43,8 +46,17 @@ namespace Contoso.Abstract
     public class EventLogServiceLog : IEventLogServiceLog, IDisposable, ServiceLogManager.ISetupRegistration
     {
         static EventLogServiceLog() { ServiceLogManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventLogServiceLog"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
         public EventLogServiceLog(string name)
             : this(name, "default") { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventLogServiceLog"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="source">The source.</param>
         public EventLogServiceLog(string name, string source)
         {
             if (!EventLog.SourceExists(source))
@@ -52,6 +64,12 @@ namespace Contoso.Abstract
             Name = name;
             Log = new EventLog(name) { Source = source };
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventLogServiceLog"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="machineName">Name of the machine.</param>
+        /// <param name="source">The source.</param>
         public EventLogServiceLog(string name, string machineName, string source)
         {
             if (!EventLog.SourceExists(source, machineName))
@@ -59,12 +77,19 @@ namespace Contoso.Abstract
             Name = name;
             Log = new EventLog(name, machineName, source);
         }
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="EventLogServiceLog"/> is reclaimed by garbage collection.
+        /// </summary>
         ~EventLogServiceLog()
         {
             try { ((IDisposable)this).Dispose(); }
             catch { }
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             if (Log != null)
@@ -80,10 +105,27 @@ namespace Contoso.Abstract
             get { return (locator, name) => ServiceLogManager.RegisterInstance<IEventLogServiceLog>(this, locator, name); }
         }
 
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType"/>.
+        /// -or-
+        /// null if there is no service object of type <paramref name="serviceType"/>.
+        /// </returns>
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         // get
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
         public string Name { get; private set; }
+        /// <summary>
+        /// Gets the specified name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public IServiceLog Get(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -92,6 +134,13 @@ namespace Contoso.Abstract
         }
 
         // log
+        /// <summary>
+        /// Writes the specified level.
+        /// </summary>
+        /// <param name="level">The level.</param>
+        /// <param name="ex">The ex.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
         public void Write(ServiceLog.LogLevel level, Exception ex, string s, params object[] args)
         {
             if (Log == null)
@@ -107,6 +156,9 @@ namespace Contoso.Abstract
 
         #region Domain-specific
 
+        /// <summary>
+        /// Gets the log.
+        /// </summary>
         public EventLog Log { get; private set; }
 
         #endregion

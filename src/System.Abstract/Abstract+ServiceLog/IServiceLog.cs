@@ -31,10 +31,25 @@ namespace System.Abstract
     public interface IServiceLog : IServiceProvider
     {
         // get
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
         string Name { get; }
+        /// <summary>
+        /// Gets the specified name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         IServiceLog Get(string name);
 
         // log
+        /// <summary>
+        /// Writes the specified level.
+        /// </summary>
+        /// <param name="level">The level.</param>
+        /// <param name="ex">The ex.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
         void Write(ServiceLog.LogLevel level, Exception ex, string s, params object[] args);
     }
 }

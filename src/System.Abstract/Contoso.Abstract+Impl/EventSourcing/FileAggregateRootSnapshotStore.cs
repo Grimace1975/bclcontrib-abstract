@@ -32,17 +32,31 @@ namespace Contoso.Abstract.EventSourcing
     /// </summary>
     public class FileAggregateRootSnapshotStore : IAggregateRootSnapshotStore
     {
+        /// <summary>
+        /// Gets the inline snapshot predicate.
+        /// </summary>
         public Func<IAggregateRootRepository, AggregateRoot, bool> InlineSnapshotPredicate
         {
             get { throw new NotImplementedException(); }
         }
 
+        /// <summary>
+        /// Gets the latest snapshot.
+        /// </summary>
+        /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <returns></returns>
         public AggregateRootSnapshot GetLatestSnapshot<TAggregateRoot>(object aggregateID)
             where TAggregateRoot : AggregateRoot
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Saves the snapshot.
+        /// </summary>
+        /// <param name="aggregateType">Type of the aggregate.</param>
+        /// <param name="snapshot">The snapshot.</param>
         public void SaveSnapshot(Type aggregateType, AggregateRootSnapshot snapshot)
         {
             throw new NotImplementedException();

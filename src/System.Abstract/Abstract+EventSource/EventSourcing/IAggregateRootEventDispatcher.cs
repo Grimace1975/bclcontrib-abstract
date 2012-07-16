@@ -31,7 +31,16 @@ namespace System.Abstract.EventSourcing
     /// </summary>
     public interface IAggregateRootEventDispatcher
     {
+        /// <summary>
+        /// Applies the event.
+        /// </summary>
+        /// <param name="aggregate">The aggregate.</param>
+        /// <param name="e">The e.</param>
         void ApplyEvent(AggregateRoot aggregate, Event e);
+        /// <summary>
+        /// Gets the event types.
+        /// </summary>
+        /// <returns></returns>
         IEnumerable<Type> GetEventTypes();
     }
 }

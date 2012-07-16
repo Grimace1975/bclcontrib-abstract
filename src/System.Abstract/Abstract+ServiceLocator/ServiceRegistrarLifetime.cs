@@ -30,11 +30,29 @@ namespace System.Abstract
     /// </summary>
     public enum ServiceRegistrarLifetime
     {
+        /// <summary>
+        /// Transient
+        /// </summary>
         Transient,
+        /// <summary>
+        /// Singleton
+        /// </summary>
         Singleton,
+        /// <summary>
+        /// Thread
+        /// </summary>
         Thread,
+        /// <summary>
+        /// Pooled
+        /// </summary>
         Pooled,
+        /// <summary>
+        /// Request
+        /// </summary>
         Request,
+        /// <summary>
+        /// Session
+        /// </summary>
         Session,
     }
 }

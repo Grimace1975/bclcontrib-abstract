@@ -37,6 +37,11 @@ namespace System.Abstract.Parts
     {
         private static readonly Guid _versionId = typeof(TypeCacheSerializer).Module.ModuleVersionId;
 
+        /// <summary>
+        /// Deserializes the types.
+        /// </summary>
+        /// <param name="i">The i.</param>
+        /// <returns></returns>
         public IEnumerable<Type> DeserializeTypes(TextReader i)
         {
             var document = new XmlDocument();
@@ -65,6 +70,11 @@ namespace System.Abstract.Parts
             return list;
         }
 
+        /// <summary>
+        /// Serializes the types.
+        /// </summary>
+        /// <param name="types">The types.</param>
+        /// <param name="o">The o.</param>
         public void SerializeTypes(IEnumerable<Type> types, TextWriter o)
         {
             var document = new XmlDocument();

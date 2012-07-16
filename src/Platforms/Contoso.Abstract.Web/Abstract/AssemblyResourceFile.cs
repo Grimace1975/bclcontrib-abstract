@@ -29,11 +29,20 @@ using System.Reflection;
 using System.Web.Hosting;
 namespace Contoso.Abstract
 {
+    /// <summary>
+    /// AssemblyResourceFile
+    /// </summary>
     public class AssemblyResourceFile : VirtualFile
     {
         private readonly Assembly _assembly;
         private readonly string _name;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AssemblyResourceFile"/> class.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="virtualPath">The virtual path.</param>
         public AssemblyResourceFile(Assembly assembly, string name, string virtualPath)
             : base(virtualPath)
         {
@@ -45,6 +54,12 @@ namespace Contoso.Abstract
             _name = name;
         }
 
+        /// <summary>
+        /// When overridden in a derived class, returns a read-only stream to the virtual resource.
+        /// </summary>
+        /// <returns>
+        /// A read-only stream to the virtual file.
+        /// </returns>
         public override Stream Open() { return _assembly.GetManifestResourceStream(_name); }
     }
 }

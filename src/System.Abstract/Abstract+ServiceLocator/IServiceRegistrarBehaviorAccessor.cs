@@ -30,7 +30,19 @@ namespace System.Abstract
     /// </summary>
     public interface IServiceRegistrarBehaviorAccessor
     {
+        /// <summary>
+        /// Gets a value indicating whether [register in locator].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [register in locator]; otherwise, <c>false</c>.
+        /// </value>
         bool RegisterInLocator { get; }
+        /// <summary>
+        /// Gets or sets the lifetime.
+        /// </summary>
+        /// <value>
+        /// The lifetime.
+        /// </value>
         ServiceRegistrarLifetime Lifetime { get; set; }
     }
 }

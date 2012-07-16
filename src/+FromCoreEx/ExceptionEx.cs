@@ -33,14 +33,16 @@ namespace System
 #if !COREINTERNAL
     public
 #endif
- static class ExceptionExtensions
+    static class ExceptionExtensions
     {
         private static readonly MethodInfo _prepForRemotingMethod = typeof(Exception).GetMethod("PrepForRemoting", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly MethodInfo _internalPreserveStackTraceMethod = typeof(Exception).GetMethod("InternalPreserveStackTrace", BindingFlags.NonPublic | BindingFlags.Instance);
 
         public static bool IsCritical(this Exception exception)
         {
+#pragma warning disable 618
             return (exception is AccessViolationException || exception is NullReferenceException || exception is StackOverflowException || exception is OutOfMemoryException || exception is ExecutionEngineException || exception is ThreadAbortException);
+#pragma warning restore 618
         }
 
         public static Exception PrepareForRethrow(this Exception exception) { return PrepareForRethrow(exception, false); }

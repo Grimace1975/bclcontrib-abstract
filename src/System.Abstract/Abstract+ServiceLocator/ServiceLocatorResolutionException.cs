@@ -32,15 +32,47 @@ namespace System.Abstract
     [Serializable]
     public class ServiceLocatorResolutionException : Exception
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceLocatorResolutionException"/> class.
+        /// </summary>
+        /// <param name="service">The service.</param>
         public ServiceLocatorResolutionException(Type service)
             : base(string.Format(Local.InvalidServiceTypeA, service)) { ServiceType = service; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceLocatorResolutionException"/> class.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="arg0">The arg0.</param>
         public ServiceLocatorResolutionException(Type service, string arg0)
             : base(string.Format(Local.InvalidServiceTypeAB, service, arg0)) { ServiceType = service; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceLocatorResolutionException"/> class.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="innerException">The inner exception.</param>
         public ServiceLocatorResolutionException(Type service, Exception innerException)
             : base(string.Format(Local.InvalidServiceTypeA, service), innerException) { ServiceType = service; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceLocatorResolutionException"/> class.
+        /// </summary>
+        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+        /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+        /// <exception cref="T:System.ArgumentNullException">
+        /// The <paramref name="info"/> parameter is null.
+        ///   </exception>
+        ///   
+        /// <exception cref="T:System.Runtime.Serialization.SerializationException">
+        /// The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0).
+        ///   </exception>
         protected ServiceLocatorResolutionException(SerializationInfo info, StreamingContext context)
             : base(info, context) { }
 
+        /// <summary>
+        /// Gets or sets the type of the service.
+        /// </summary>
+        /// <value>
+        /// The type of the service.
+        /// </value>
         public Type ServiceType { get; set; }
     }
 }

@@ -30,20 +30,40 @@ using System.Reflection;
 using Contoso.Abstract.Micro.Internal;
 namespace Contoso.Abstract.Micro
 {
+    /// <summary>
+    /// JsonSerializer
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class JsonSerializer<T> : JsonSerializer
     {
         private Dictionary<String, JsonMemberSerializationInfo> _memberSerializers = new Dictionary<String, JsonMemberSerializationInfo>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsonSerializer&lt;T&gt;"/> class.
+        /// </summary>
         public JsonSerializer()
             : this(true) { }
 
+        /// <summary>
+        /// Creates the serializer.
+        /// </summary>
+        /// <returns></returns>
         public static JsonSerializer<T> CreateSerializer() { return CreateSerializer(JsonValueType.Unknown); }
+        /// <summary>
+        /// Creates the serializer.
+        /// </summary>
+        /// <param name="serializeAs">The serialize as.</param>
+        /// <returns></returns>
         public static JsonSerializer<T> CreateSerializer(JsonValueType serializeAs)
         {
             var serializer = CreateSerializer(typeof(T), serializeAs);
             return (serializer is JsonSerializer<T> ? (JsonSerializer<T>)serializer : new JsonGenericSerializerAdapter<T>(serializer));
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsonSerializer&lt;T&gt;"/> class.
+        /// </summary>
+        /// <param name="createSerializers">if set to <c>true</c> [create serializers].</param>
         protected internal JsonSerializer(bool createSerializers)
         {
             if (createSerializers)
@@ -73,7 +93,18 @@ namespace Contoso.Abstract.Micro
             }
         }
 
+        /// <summary>
+        /// Deserializes the specified r.
+        /// </summary>
+        /// <param name="r">The r.</param>
+        /// <returns></returns>
         public T Deserialize(TextReader r) { return Deserialize(WrapTextReader.Wrap(r, WrapTextReader.WrapOptions.Default), string.Empty); }
+        /// <summary>
+        /// Deserializes the specified r.
+        /// </summary>
+        /// <param name="r">The r.</param>
+        /// <param name="path">The path.</param>
+        /// <returns></returns>
         protected internal virtual T Deserialize(TextReader r, string path)
         {
             var result = Activator.CreateInstance<T>();
@@ -147,9 +178,35 @@ namespace Contoso.Abstract.Micro
             }
         }
 
+        /// <summary>
+        /// Serializes the specified w.
+        /// </summary>
+        /// <param name="w">The w.</param>
+        /// <param name="obj">The obj.</param>
         public void Serialize(TextWriter w, T obj) { Serialize(w, obj, JsonOptions.None, null, 0); }
+        /// <summary>
+        /// Serializes the specified w.
+        /// </summary>
+        /// <param name="w">The w.</param>
+        /// <param name="obj">The obj.</param>
+        /// <param name="options">The options.</param>
         public void Serialize(TextWriter w, T obj, JsonOptions options) { Serialize(w, obj, options, null, 0); }
+        /// <summary>
+        /// Serializes the specified w.
+        /// </summary>
+        /// <param name="w">The w.</param>
+        /// <param name="obj">The obj.</param>
+        /// <param name="options">The options.</param>
+        /// <param name="format">The format.</param>
         public void Serialize(TextWriter w, T obj, JsonOptions options, string format) { Serialize(w, obj, options, format, 0); }
+        /// <summary>
+        /// Serializes the specified w.
+        /// </summary>
+        /// <param name="w">The w.</param>
+        /// <param name="obj">The obj.</param>
+        /// <param name="options">The options.</param>
+        /// <param name="format">The format.</param>
+        /// <param name="tabDepth">The tab depth.</param>
         protected internal virtual void Serialize(TextWriter w, T obj, JsonOptions options, string format, int tabDepth)
         {
             if ((options & JsonOptions.EnclosingParens) != 0)

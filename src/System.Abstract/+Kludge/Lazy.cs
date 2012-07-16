@@ -9,6 +9,10 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 namespace System
 {
+    /// <summary>
+    /// Lazy
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     [Serializable, DebuggerDisplay("ThreadSafetyMode={Mode}, IsValueCreated={IsValueCreated}, IsValueFaulted={IsValueFaulted}, Value={ValueForDebugDisplay}"), DebuggerTypeProxy(typeof(System_LazyDebugView<>)), ComVisible(false), HostProtection(SecurityAction.LinkDemand, Synchronization = true, ExternalThreading = true)]
     public class Lazy<T>
     {
@@ -22,19 +26,44 @@ namespace System
         static Lazy() { }
 
         //[TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Lazy&lt;T&gt;"/> class.
+        /// </summary>
         public Lazy()
             : this(LazyThreadSafetyMode.ExecutionAndPublication) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Lazy&lt;T&gt;"/> class.
+        /// </summary>
+        /// <param name="isThreadSafe">if set to <c>true</c> [is thread safe].</param>
         public Lazy(bool isThreadSafe)
             : this(isThreadSafe ? LazyThreadSafetyMode.ExecutionAndPublication : LazyThreadSafetyMode.None) { }
         //[TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Lazy&lt;T&gt;"/> class.
+        /// </summary>
+        /// <param name="valueFactory">The value factory.</param>
         public Lazy(Func<T> valueFactory)
             : this(valueFactory, LazyThreadSafetyMode.ExecutionAndPublication) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Lazy&lt;T&gt;"/> class.
+        /// </summary>
+        /// <param name="mode">The mode.</param>
         public Lazy(LazyThreadSafetyMode mode)
         {
             _threadSafeObj = GetObjectFromMode(mode);
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Lazy&lt;T&gt;"/> class.
+        /// </summary>
+        /// <param name="valueFactory">The value factory.</param>
+        /// <param name="isThreadSafe">if set to <c>true</c> [is thread safe].</param>
         public Lazy(Func<T> valueFactory, bool isThreadSafe)
             : this(valueFactory, isThreadSafe ? LazyThreadSafetyMode.ExecutionAndPublication : LazyThreadSafetyMode.None) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Lazy&lt;T&gt;"/> class.
+        /// </summary>
+        /// <param name="valueFactory">The value factory.</param>
+        /// <param name="mode">The mode.</param>
         public Lazy(Func<T> valueFactory, LazyThreadSafetyMode mode)
         {
             if (valueFactory == null)
@@ -98,8 +127,10 @@ namespace System
                     break;
                 case LazyThreadSafetyMode.PublicationOnly:
                     boxed = CreateValue();
+                    #pragma warning disable 420
                     if (Interlocked.CompareExchange(ref _boxed, boxed, null) != null)
                         boxed = (Boxed)_boxed;
+                    #pragma warning restore 420
                     break;
                 default:
                     lock (_threadSafeObj)
@@ -130,6 +161,12 @@ namespace System
             T local1 = Value;
         }
 
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             if (!IsValueCreated)
@@ -137,6 +174,12 @@ namespace System
             return this.Value.ToString();
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is value created.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is value created; otherwise, <c>false</c>.
+        /// </value>
         public bool IsValueCreated
         {
             //[TargetedPatchingOptOut("Performance critical to inline across NGen image boundaries")]
@@ -154,12 +197,15 @@ namespace System
             {
                 if (_threadSafeObj == null)
                     return LazyThreadSafetyMode.None;
-                if (_threadSafeObj == PUBLICATION_ONLY_OR_ALREADY_INITIALIZED)
+                if (_threadSafeObj == (object)PUBLICATION_ONLY_OR_ALREADY_INITIALIZED)
                     return LazyThreadSafetyMode.PublicationOnly;
                 return LazyThreadSafetyMode.ExecutionAndPublication;
             }
         }
 
+        /// <summary>
+        /// Gets the value.
+        /// </summary>
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         public T Value
         {

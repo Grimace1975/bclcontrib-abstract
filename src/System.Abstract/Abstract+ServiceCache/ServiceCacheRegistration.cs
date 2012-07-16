@@ -38,14 +38,24 @@ namespace System.Abstract
         /// </summary>
         public interface IDispatcher
         {
+            /// <summary>
+            /// Gets the specified cache.
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="cache">The cache.</param>
+            /// <param name="registration">The registration.</param>
+            /// <param name="tag">The tag.</param>
+            /// <param name="values">The values.</param>
+            /// <returns></returns>
             T Get<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values);
+            /// <summary>
+            /// Removes the specified cache.
+            /// </summary>
+            /// <param name="cache">The cache.</param>
+            /// <param name="registration">The registration.</param>
             void Remove(IServiceCache cache, ServiceCacheRegistration registration);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceCacheRegistration"/> class.
-        /// </summary>
-        /// <param name="name">The name.</param>
         internal ServiceCacheRegistration(string name)
         {
             // used for registration-links only
@@ -60,7 +70,6 @@ namespace System.Abstract
         /// </summary>
         /// <param name="name">The key.</param>
         /// <param name="builder">The builder.</param>
-        /// <param name="cacheTags">The dependency array.</param>
         public ServiceCacheRegistration(string name, CacheItemBuilder builder)
             : this(name, new CacheItemPolicy(), builder) { }
         /// <summary>
@@ -84,7 +93,7 @@ namespace System.Abstract
         /// </summary>
         /// <param name="name">The key.</param>
         /// <param name="builder">The builder.</param>
-        /// <param name="cacheTags">The dependency array.</param>
+        /// <param name="dependency">The dependency.</param>
         public ServiceCacheRegistration(string name, CacheItemBuilder builder, CacheItemDependency dependency)
             : this(name, new CacheItemPolicy(), builder) { SetItemPolicyDependency(dependency); }
         /// <summary>
@@ -111,15 +120,15 @@ namespace System.Abstract
         /// <param name="name">The key.</param>
         /// <param name="minuteTimeout">The minute timeout.</param>
         /// <param name="builder">The builder.</param>
-        /// <param name="cacheTags">The dependency array.</param>
+        /// <param name="dependency">The dependency.</param>
         public ServiceCacheRegistration(string name, int minuteTimeout, CacheItemBuilder builder, CacheItemDependency dependency)
             : this(name, new CacheItemPolicy(minuteTimeout), builder) { SetItemPolicyDependency(dependency); }
         /// <summary>
         /// Adds the data source.
         /// </summary>
         /// <param name="name">The key.</param>
+        /// <param name="itemPolicy">The item policy.</param>
         /// <param name="builder">The builder.</param>
-        /// <param name="cacheTags">The dependency array.</param>
         public ServiceCacheRegistration(string name, CacheItemPolicy itemPolicy, CacheItemBuilder builder)
         {
             if (string.IsNullOrEmpty(name))
@@ -158,46 +167,49 @@ namespace System.Abstract
         /// <param name="name">The name.</param>
         /// <param name="itemPolicy">The cache command.</param>
         /// <param name="builder">The builder.</param>
-        /// <param name="cacheTags">The dependency array.</param>
+        /// <param name="dependency">The dependency.</param>
         public ServiceCacheRegistration(string name, CacheItemPolicy itemPolicy, CacheItemBuilder builder, CacheItemDependency dependency)
             : this(name, itemPolicy, builder) { SetItemPolicyDependency(dependency); }
 
         /// <summary>
         /// Gets or sets the key.
         /// </summary>
-        /// <value>The key.</value>
+        /// <value>
+        /// The key.
+        /// </value>
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the cache command.
         /// </summary>
-        /// <value>The cache command.</value>
+        /// <value>
+        /// The cache command.
+        /// </value>
         public CacheItemPolicy ItemPolicy { get; set; }
 
         /// <summary>
         /// Gets or sets the builder.
         /// </summary>
-        /// <value>The builder.</value>
+        /// <value>
+        /// The builder.
+        /// </value>
         public CacheItemBuilder Builder { get; set; }
 
         /// <summary>
         /// AbsoluteName
         /// </summary>
+        /// <value>
+        /// The name of the absolute.
+        /// </value>
         public string AbsoluteName
         {
             get { return _absoluteName; }
         }
 
-        /// <summary>
-        /// Namespaces
-        /// </summary>
         internal List<string> Namespaces;
 
         #region Registrar
 
-        /// <summary>
-        /// Registrar
-        /// </summary>
         internal ServiceCacheRegistrar Registrar;
 
         internal void SetRegistrar(ServiceCacheRegistrar registrar, string absoluteName)

@@ -34,9 +34,29 @@ namespace System.Abstract.Parts
     /// </summary>
     public interface IBuildManager
     {
+        /// <summary>
+        /// Creates the cached file.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns></returns>
         Stream CreateCachedFile(string fileName);
+        /// <summary>
+        /// Creates the instance from virtual path.
+        /// </summary>
+        /// <param name="virtualPath">The virtual path.</param>
+        /// <param name="requiredBaseType">Type of the required base.</param>
+        /// <returns></returns>
         object CreateInstanceFromVirtualPath(string virtualPath, Type requiredBaseType);
+        /// <summary>
+        /// Gets the referenced assemblies.
+        /// </summary>
+        /// <returns></returns>
         IEnumerable<Assembly> GetReferencedAssemblies();
+        /// <summary>
+        /// Reads the cached file.
+        /// </summary>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns></returns>
         Stream ReadCachedFile(string fileName);
     }
 }

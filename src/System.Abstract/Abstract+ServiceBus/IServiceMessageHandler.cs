@@ -31,6 +31,10 @@ namespace System.Abstract
     public interface IServiceMessageHandler<TMessage>
         where TMessage : class
     {
+        /// <summary>
+        /// Handles the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
         void Handle(TMessage message);
     }
 }

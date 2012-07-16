@@ -33,6 +33,12 @@ namespace System
 		[ThreadStatic]
 		private static DateTime? _utcNowMock;
 
+        /// <summary>
+        /// Gets or sets the now mock.
+        /// </summary>
+        /// <value>
+        /// The now mock.
+        /// </value>
 		public static DateTime? NowMock
 		{
 			get { return (_utcNowMock.HasValue ? (DateTime?)_utcNowMock.Value.ToLocalTime() : null); }
@@ -45,22 +51,37 @@ namespace System
 			}
 		}
 
+        /// <summary>
+        /// Gets or sets the UTC now mock.
+        /// </summary>
+        /// <value>
+        /// The UTC now mock.
+        /// </value>
 		public static DateTime? UtcNowMock
 		{
 			get { return _utcNowMock; }
 			set { _utcNowMock = value; }
 		}
 
+        /// <summary>
+        /// Gets the today.
+        /// </summary>
         public static DateTime Today
         {
             get { return Now.Date; }
         }
 
+        /// <summary>
+        /// Gets the now.
+        /// </summary>
 		public static DateTime Now
 		{
 			get { return (!_utcNowMock.HasValue ? DateTime.Now : _utcNowMock.Value.ToLocalTime()); }
 		}
 
+        /// <summary>
+        /// Gets the UTC now.
+        /// </summary>
 		public static DateTime UtcNow
 		{
 			get { return (!_utcNowMock.HasValue ? DateTime.UtcNow : _utcNowMock.Value); }

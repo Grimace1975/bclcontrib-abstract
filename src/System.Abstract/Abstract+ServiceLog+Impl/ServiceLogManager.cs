@@ -32,6 +32,9 @@ namespace System.Abstract
     /// </summary>
     public class ServiceLogManager : ServiceManagerBase<IServiceLog, Action<IServiceLog>>
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public static readonly Lazy<IServiceLog> EmptyServiceLog = new Lazy<IServiceLog>(() => new EmptyServiceLog());
 
         static ServiceLogManager()
@@ -58,11 +61,36 @@ namespace System.Abstract
                 SetProvider(() => new ConsoleServiceLog("Default"));
         }
 
+        /// <summary>
+        /// Sets the provider.
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <returns></returns>
         public static Lazy<IServiceLog> SetProvider(Func<IServiceLog> provider) { return (Lazy = MakeByProviderProtected(provider, null)); }
+        /// <summary>
+        /// Sets the provider.
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <param name="setupDescriptor">The setup descriptor.</param>
+        /// <returns></returns>
         public static Lazy<IServiceLog> SetProvider(Func<IServiceLog> provider, ISetupDescriptor setupDescriptor) { return (Lazy = MakeByProviderProtected(provider, setupDescriptor)); }
+        /// <summary>
+        /// Makes the by provider.
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <returns></returns>
         public static Lazy<IServiceLog> MakeByProvider(Func<IServiceLog> provider) { return MakeByProviderProtected(provider, null); }
+        /// <summary>
+        /// Makes the by provider.
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <param name="setupDescriptor">The setup descriptor.</param>
+        /// <returns></returns>
         public static Lazy<IServiceLog> MakeByProvider(Func<IServiceLog> provider, ISetupDescriptor setupDescriptor) { return MakeByProviderProtected(provider, setupDescriptor); }
 
+        /// <summary>
+        /// Gets the current.
+        /// </summary>
         public static IServiceLog Current
         {
             get
@@ -73,10 +101,28 @@ namespace System.Abstract
             }
         }
 
+        /// <summary>
+        /// Ensures the registration.
+        /// </summary>
         public static void EnsureRegistration() { }
+        /// <summary>
+        /// Gets the setup descriptor.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <returns></returns>
         public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLog> service) { return GetSetupDescriptorProtected(service, null); }
 
+        /// <summary>
+        /// Gets this instance.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static IServiceLog Get<T>() { return (ServiceLogManager.Lazy ?? EmptyServiceLog).Value.Get<T>(); }
+        /// <summary>
+        /// Gets the specified name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public static IServiceLog Get(string name) { return (ServiceLogManager.Lazy ?? EmptyServiceLog).Value.Get(name); }
     }
 }

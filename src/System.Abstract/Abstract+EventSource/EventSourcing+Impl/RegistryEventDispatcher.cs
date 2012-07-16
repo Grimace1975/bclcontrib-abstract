@@ -37,7 +37,14 @@ namespace System.Abstract.EventSourcing
     {
         private readonly IDictionary<Type, Action<Event>> _handlerRegistry = new Dictionary<Type, Action<Event>>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RegistryEventDispatcher"/> class.
+        /// </summary>
         public RegistryEventDispatcher() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RegistryEventDispatcher"/> class.
+        /// </summary>
+        /// <param name="aggregate">The aggregate.</param>
         public RegistryEventDispatcher(AggregateRoot aggregate)
         {
             RegisterByConvention(aggregate);
@@ -49,6 +56,10 @@ namespace System.Abstract.EventSourcing
             public Action<Event> Handler;
         }
 
+        /// <summary>
+        /// Registers the by convention.
+        /// </summary>
+        /// <param name="aggregate">The aggregate.</param>
         public void RegisterByConvention(AggregateRoot aggregate)
         {
             if (aggregate == null)
@@ -75,18 +86,37 @@ namespace System.Abstract.EventSourcing
                 RegisterHandler(handlerInfo.EventType, (Action<Event>)handlerInfo.Handler);
         }
 
+        /// <summary>
+        /// Registers the handler.
+        /// </summary>
+        /// <typeparam name="TEvent">The type of the event.</typeparam>
+        /// <param name="handler">The handler.</param>
         public void RegisterHandler<TEvent>(Action<TEvent> handler)
            where TEvent : Event { var castHandler = ExpressionEx.CovariantCast<Event, TEvent>(e => handler(e)); RegisterHandler(typeof(TEvent), castHandler); }
+        /// <summary>
+        /// Registers the handler.
+        /// </summary>
+        /// <param name="eventType">Type of the event.</param>
+        /// <param name="handler">The handler.</param>
         public void RegisterHandler(Type eventType, Action<Event> handler)
         {
             _handlerRegistry.Add(eventType, handler);
         }
 
+        /// <summary>
+        /// Gets the event types.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<Type> GetEventTypes()
         {
             return _handlerRegistry.Keys;
         }
 
+        /// <summary>
+        /// Applies the event.
+        /// </summary>
+        /// <param name="aggregate">The aggregate.</param>
+        /// <param name="e">The e.</param>
         public void ApplyEvent(AggregateRoot aggregate, Event e)
         {
             Action<Event> handler;

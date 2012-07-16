@@ -31,22 +31,38 @@ namespace System
     /// </summary>
     public class NparamsManager
     {
-        public static Nparams Create()
-        {
-            return new Nparams(new StdParams());
-        }
+        /// <summary>
+        /// Creates this instance.
+        /// </summary>
+        /// <returns></returns>
+        public static Nparams Create() { return new Nparams(new StdParams()); }
+        /// <summary>
+        /// Parses the specified args.
+        /// </summary>
+        /// <param name="args">The args.</param>
+        /// <returns></returns>
         public static Nparams Parse(IDictionary<string, object> args)
         {
             if (args == null)
                 throw new ArgumentNullException("args");
             return new Nparams(new StdParams(args));
         }
+        /// <summary>
+        /// Parses the specified args.
+        /// </summary>
+        /// <param name="args">The args.</param>
+        /// <returns></returns>
         public static Nparams Parse(string[] args)
         {
             if (args == null)
                 throw new ArgumentNullException("args");
             return new Nparams(new StdParams(args));
         }
+        /// <summary>
+        /// Parses the specified args.
+        /// </summary>
+        /// <param name="args">The args.</param>
+        /// <returns></returns>
         public static Nparams Parse(object args)
         {
             if (args == null)

@@ -31,7 +31,19 @@ namespace System.Abstract
     public static class ServiceLogExtensions
     {
         // get
+        /// <summary>
+        /// Gets the specified service.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="service">The service.</param>
+        /// <returns></returns>
         public static IServiceLog Get<T>(this IServiceLog service) { return service.Get(typeof(T).Name); }
+        /// <summary>
+        /// Gets the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
         public static IServiceLog Get(this IServiceLog service, Type type)
         {
             if (type == null)
@@ -40,27 +52,141 @@ namespace System.Abstract
         }
 
         // log
+        /// <summary>
+        /// Fatals the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
         public static void Fatal(this IServiceLog service, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Fatal, null, s, args); }
+        /// <summary>
+        /// Fatals the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="ex">The ex.</param>
         public static void Fatal(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Fatal, ex, null, null); }
+        /// <summary>
+        /// Fatals the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="ex">The ex.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
         public static void Fatal(this IServiceLog service, Exception ex, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Fatal, ex, s, args); }
+        /// <summary>
+        /// Errors the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
         public static void Error(this IServiceLog service, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Error, null, s, args); }
+        /// <summary>
+        /// Errors the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="ex">The ex.</param>
         public static void Error(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Error, ex, null, null); }
+        /// <summary>
+        /// Errors the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="ex">The ex.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
         public static void Error(this IServiceLog service, Exception ex, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Error, ex, s, args); }
+        /// <summary>
+        /// Warnings the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
         public static void Warning(this IServiceLog service, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Warning, null, s, args); }
+        /// <summary>
+        /// Warnings the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="ex">The ex.</param>
         public static void Warning(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Warning, ex, null, null); }
+        /// <summary>
+        /// Warnings the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="ex">The ex.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
         public static void Warning(this IServiceLog service, Exception ex, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Warning, ex, s, args); }
+        /// <summary>
+        /// Informations the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
         public static void Information(this IServiceLog service, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Information, null, s, args); }
+        /// <summary>
+        /// Informations the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="ex">The ex.</param>
         public static void Information(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Information, ex, null, null); }
+        /// <summary>
+        /// Informations the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="ex">The ex.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
         public static void Information(this IServiceLog service, Exception ex, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Information, ex, s, args); }
+        /// <summary>
+        /// Debugs the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
         public static void Debug(this IServiceLog service, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Debug, null, s, args); }
+        /// <summary>
+        /// Debugs the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="ex">The ex.</param>
         public static void Debug(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Debug, ex, null, null); }
+        /// <summary>
+        /// Debugs the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="ex">The ex.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
         public static void Debug(this IServiceLog service, Exception ex, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Debug, ex, s, args); }
 
         #region Lazy Setup
 
+        /// <summary>
+        /// Registers the with service locator.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <returns></returns>
         public static Lazy<IServiceLog> RegisterWithServiceLocator(this Lazy<IServiceLog> service) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, null); return service; }
+        /// <summary>
+        /// Registers the with service locator.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public static Lazy<IServiceLog> RegisterWithServiceLocator(this Lazy<IServiceLog> service, string name) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, name); return service; }
+        /// <summary>
+        /// Registers the with service locator.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="locator">The locator.</param>
+        /// <returns></returns>
         public static Lazy<IServiceLog> RegisterWithServiceLocator(this Lazy<IServiceLog> service, Lazy<IServiceLocator> locator) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, locator, null); return service; }
+        /// <summary>
+        /// Registers the with service locator.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="locator">The locator.</param>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public static Lazy<IServiceLog> RegisterWithServiceLocator(this Lazy<IServiceLog> service, Lazy<IServiceLocator> locator, string name) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator(service, locator, name); return service; }
 
         #endregion
