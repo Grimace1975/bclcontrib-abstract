@@ -26,15 +26,7 @@ THE SOFTWARE.
 using System.Reflection;
 namespace System
 {
-    /// <summary>
-    /// Internal
-    /// </summary>
-#if COREINTERNAL
-    internal
-#else
-	public
-#endif
- static class LazyExtensions
+    static partial class CoreExtensions
     {
         public static Lazy<T> HookValueFactory<T>(this Lazy<T> lazy, Func<Func<T>, T> valueFactory) { LazyHelper<T>.HookValueFactory(lazy, valueFactory); return lazy; }
 

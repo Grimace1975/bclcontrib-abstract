@@ -52,7 +52,7 @@ namespace System
                 try
                 {
                     if ((mode != LazyThreadSafetyMode.PublicationOnly) && (m_valueFactory == PUBLICATION_ONLY_OR_ALREADY_INITIALIZED))
-                        throw new InvalidOperationException(EnvironmentEx.GetResourceString("Lazy_Value_RecursiveCallsToValue"));
+                        throw new InvalidOperationException(EnvironmentEx2.GetResourceString("Lazy_Value_RecursiveCallsToValue"));
                     var valueFactory = m_valueFactory;
                     if (mode != LazyThreadSafetyMode.PublicationOnly)
                         m_valueFactory = PUBLICATION_ONLY_OR_ALREADY_INITIALIZED;
@@ -68,7 +68,7 @@ namespace System
             try { boxed = new Boxed((T)Activator.CreateInstance(typeof(T))); }
             catch (MissingMethodException)
             {
-                Exception ex = new MissingMemberException(EnvironmentEx.GetResourceString("Lazy_CreateValue_NoParameterlessCtorForT"));
+                Exception ex = new MissingMemberException(EnvironmentEx2.GetResourceString("Lazy_CreateValue_NoParameterlessCtorForT"));
                 if (mode != LazyThreadSafetyMode.PublicationOnly)
                     _boxed = new LazyInternalExceptionHolder(ex);
                 throw ex;
@@ -83,7 +83,7 @@ namespace System
             if (mode == LazyThreadSafetyMode.PublicationOnly)
                 return PUBLICATION_ONLY_OR_ALREADY_INITIALIZED;
             if (mode != LazyThreadSafetyMode.None)
-                throw new ArgumentOutOfRangeException("mode", EnvironmentEx.GetResourceString("Lazy_ctor_ModeInvalid"));
+                throw new ArgumentOutOfRangeException("mode", EnvironmentEx2.GetResourceString("Lazy_ctor_ModeInvalid"));
             return null;
         }
 
@@ -133,7 +133,7 @@ namespace System
         public override string ToString()
         {
             if (!IsValueCreated)
-                return EnvironmentEx.GetResourceString("Lazy_ToString_ValueNotCreated");
+                return EnvironmentEx2.GetResourceString("Lazy_ToString_ValueNotCreated");
             return this.Value.ToString();
         }
 

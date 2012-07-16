@@ -38,7 +38,7 @@ namespace Contoso.Abstract.Micro.Internal
 
         internal override object BaseDeserialize(TextReader r, string path)
         {
-            if (JsonParserUtil.PeekIsNull(r, path))
+            if (JsonParserUtil.PeekIsNull(r, true, path))
                 return null;
             var result = new List<TElement>();
             var parens = JsonParserUtil.ReadStartArray(r);

@@ -56,5 +56,35 @@ namespace System.Reflection
                 if (basedOnType.IsAssignableFrom(t) && !t.Equals(basedOnType) && !t.IsInterface && !t.IsAbstract && (predicate == null || predicate(t)))
                     yield return t;
         }
+
+
+        //public Type[] GetDerivedTypes(Type type, bool concretable)
+        //{
+        //    var expression = _assemblies.SelectMany(a => a.GetTypes())
+        //        .Where(t => (t != type) && (type.IsAssignableFrom(t)));
+        //    if (concretable)
+        //        expression = expression.Where(t => (!t.IsInterface) && (!t.IsAbstract));
+        //    return expression.ToArray();
+        //}
+
+        //public Type[] GetInterfaceImplementations(Type type, bool concretable)
+        //{
+        //    var expression = _assemblies.SelectMany(a => a.GetTypes())
+        //        .Where(t => t.GetInterfaces().Contains(type));
+        //    if (concretable)
+        //        expression = expression.Where(t => (!t.IsInterface) && (!t.IsAbstract));
+        //    return expression.Distinct()
+        //        .ToArray();
+        //}
+
+        //public Type[] GetGenericInterfaceImplementations(Type type, bool concretable)
+        //{
+        //    var expression = _assemblies.SelectMany(a => a.GetTypes())
+        //        .Where(t => t.GetInterfaces().Any(i => i.IsGenericType && (i.GetGenericTypeDefinition() == type)));
+        //    if (concretable)
+        //        expression = expression.Where(t => (!t.IsInterface) && (!t.IsAbstract));
+        //    return expression.Distinct()
+        //        .ToArray();
+        //}
     }
 }

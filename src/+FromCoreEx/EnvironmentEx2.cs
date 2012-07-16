@@ -23,25 +23,28 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Security;
 using System.Globalization;
+using System.Security;
 namespace System
 {
     /// <summary>
-    /// EnvironmentEx
+    /// EnvironmentEx2
     /// </summary>
-    static partial class EnvironmentEx
+#if !COREINTERNAL
+    public
+#endif
+ static partial class EnvironmentEx2
     {
         [SecurityCritical]
-        internal static string GetResourceFromDefault(string key) { return key; }
+        public static string GetResourceFromDefault(string key) { return key; }
 
         [SecuritySafeCritical] //, TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
-        internal static string GetResourceString(string key) { return GetResourceFromDefault(key); }
+        public static string GetResourceString(string key) { return GetResourceFromDefault(key); }
 
         [SecuritySafeCritical]
-        internal static string GetResourceString(string key, params object[] values)
+        public static string GetResourceString(string key, params object[] values)
         {
-            string resourceFromDefault = GetResourceFromDefault(key);
+            var resourceFromDefault = GetResourceFromDefault(key);
             return string.Format(CultureInfo.CurrentCulture, resourceFromDefault, values);
         }
     }
