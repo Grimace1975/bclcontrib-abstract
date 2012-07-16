@@ -7,8 +7,7 @@ properties {
   $lib_dir = "$base_dir\SharedLibs"
   $35_lib_dir = "$base_dir\SharedLibs\3.5\"
   $release_dir = "$base_dir\Release"
-  $sln_file = "$base_dir\BCLEX-ABSTRACT.sln"
-  $version = Get-Version-From-Git-Tag
+  $sln_file = "$base_dir\BCLEX-ABSTRACT.b.sln"
   $tools_dir = "$base_dir\tools"
   $config = "Release"
   $run_tests = $true
@@ -16,9 +15,9 @@ properties {
 
 $framework = '4.0'
 
-include .\psake_ext.ps1
+#include .\psake_ext.ps1
 	
-task default -depends Package
+task default -depends Release
 
 task Clean {
   remove-item -force -recurse $build_dir -ErrorAction SilentlyContinue
@@ -26,34 +25,13 @@ task Clean {
 }
 
 task Init -depends Clean {
-	#$infos = (
-	#	"$base_dir\Rhino.ServiceBus\Properties\AssemblyInfo.cs",
-	#	"$base_dir\Rhino.ServiceBus.Tests\Properties\AssemblyInfo.cs",
-	#	"$base_dir\Rhino.ServiceBus.Host\Properties\AssemblyInfo.cs",
-	#	"$base_dir\Rhino.ServiceBus.Castle\Properties\AssemblyInfo.cs",
-	#	"$base_dir\Rhino.ServiceBus.StructureMap\Properties\AssemblyInfo.cs",
-	#	"$base_dir\Rhino.ServiceBus.Autofac\Properties\AssemblyInfo.cs",
-	#	"$base_dir\Rhino.ServiceBus.Unity\Properties\AssemblyInfo.cs",
-	#	"$base_dir\Rhino.ServiceBus.Spring\Properties\AssemblyInfo.cs"
-	#);
-	#
-	#$infos | foreach { Generate-Assembly-Info `
-	#	-file $_ `
-	#	-title "Rhino Service Bus $version" `
-	#	-description "Developer friendly service bus for .NET" `
-	#	-company "Hibernating Rhinos" `
-	#	-product "Rhino Service Bus $version" `
-	#	-version $version `
-	#	-copyright "Hibernating Rhinos & Ayende Rahien 2004 - 2009" `
-	#}
-
 	new-item $release_dir -itemType directory 
 	new-item $build_dir -itemType directory 
 }
 
 task Compile -depends Init {
-  msbuild $sln_file /p:"OutDir=$35_build_dir;Configuration=$config;TargetFrameworkVersion=V3.5;LibDir=$35_lib_dir"
-  msbuild $sln_file /target:Rebuild /p:"OutDir=$40_build_dir;Configuration=$config;TargetFrameworkVersion=4.0"
+  #msbuild $sln_file /p:"OutDir=$35_build_dir;Configuration=$config;TargetFrameworkVersion=V3.5;LibDir=$35_lib_dir"
+  msbuild $sln_file /target:Rebuild /p:"OutDir=$40_build_dir;Configuration=$config;TargetFrameworkVersion=4.0;AssemblyOriginatorKeyFile=BclEx.4.snk"
 }
 
 task Test -depends Compile -precondition { return $run_tests }{
@@ -75,9 +53,9 @@ task Release -depends Compile, Test {
 }
 
 task Package -depends Release {
-  #$spec_files = @(Get-ChildItem $packageinfo_dir)
-  #foreach ($spec in $spec_files)
-  #{
-  #  & $tools_dir\NuGet.exe pack $spec.FullName -o $release_dir -Version $version -Symbols -BasePath $base_dir
-  #}
+  $spec_files = @(Get-ChildItem $packageinfo_dir)
+  foreach ($spec in $spec_files)
+  {
+    & $tools_dir\NuGet.exe pack $spec.FullName -o $release_dir -Version $version -Symbols -BasePath $base_dir
+  }
 }
