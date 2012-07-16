@@ -31,6 +31,11 @@ namespace System.Abstract.EventSourcing
     /// </summary>
     public interface IOfflineSnaphotQuery
     {
+        /// <summary>
+        /// Gets the aggregates to snapshot.
+        /// </summary>
+        /// <param name="aggregateTypes">The aggregate types.</param>
+        /// <returns></returns>
         IEnumerable<AggregateTuple<Type>> GetAggregatesToSnapshot(IEnumerable<Type> aggregateTypes);
     }
 }

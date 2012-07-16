@@ -30,8 +30,21 @@ namespace System.Abstract
     /// </summary>
     public interface IPublishingServiceBus : IServiceBus
     {
+        /// <summary>
+        /// Publishes the specified messages.
+        /// </summary>
+        /// <param name="messages">The messages.</param>
         void Publish(params object[] messages);
+        /// <summary>
+        /// Subscribes the specified message type.
+        /// </summary>
+        /// <param name="messageType">Type of the message.</param>
+        /// <param name="condition">The condition.</param>
         void Subscribe(Type messageType, Predicate<object> condition);
+        /// <summary>
+        /// Unsubscribes the specified message type.
+        /// </summary>
+        /// <param name="messageType">Type of the message.</param>
         void Unsubscribe(Type messageType);
     }
 }

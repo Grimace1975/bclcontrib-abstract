@@ -29,10 +29,20 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 namespace System.Abstract.Parts
 {
+    /// <summary>
+    /// BinaryTypeSerializer
+    /// </summary>
     public class BinaryTypeSerializer : ITypeSerializer
     {
         private readonly BinaryFormatter _binaryFormatter = new BinaryFormatter();
 
+        /// <summary>
+        /// Reads the object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
         public T ReadObject<T>(Type type, Stream s)
             where T : class
         {
@@ -43,6 +53,13 @@ namespace System.Abstract.Parts
             return (_binaryFormatter.Deserialize(s) as T);
         }
 
+        /// <summary>
+        /// Reads the objects.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
         public IEnumerable<T> ReadObjects<T>(Type type, Stream s)
             where T : class
         {
@@ -56,6 +73,13 @@ namespace System.Abstract.Parts
             return graphs.Cast<T>();
         }
 
+        /// <summary>
+        /// Writes the object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="graph">The graph.</param>
         public void WriteObject<T>(Type type, Stream s, T graph)
             where T : class
         {
@@ -68,6 +92,13 @@ namespace System.Abstract.Parts
             _binaryFormatter.Serialize(s, graph);
         }
 
+        /// <summary>
+        /// Writes the objects.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="graphs">The graphs.</param>
         public void WriteObjects<T>(Type type, Stream s, IEnumerable<T> graphs)
             where T : class
         {

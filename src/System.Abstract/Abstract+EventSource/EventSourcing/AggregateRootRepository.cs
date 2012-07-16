@@ -34,13 +34,45 @@ namespace System.Abstract.EventSourcing
     /// </summary>
     public interface IAggregateRootRepository
     {
+        /// <summary>
+        /// Gets the by ID.
+        /// </summary>
+        /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <param name="queryOptions">The query options.</param>
+        /// <returns></returns>
         TAggregateRoot GetByID<TAggregateRoot>(object aggregateID, AggregateRootQueryOptions queryOptions)
             where TAggregateRoot : AggregateRoot;
+        /// <summary>
+        /// Gets the many by I ds.
+        /// </summary>
+        /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
+        /// <param name="aggregateIDs">The aggregate I ds.</param>
+        /// <param name="queryOptions">The query options.</param>
+        /// <returns></returns>
         IEnumerable<TAggregateRoot> GetManyByIDs<TAggregateRoot>(IEnumerable<object> aggregateIDs, AggregateRootQueryOptions queryOptions)
             where TAggregateRoot : AggregateRoot;
+        /// <summary>
+        /// Gets the events by ID.
+        /// </summary>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <returns></returns>
         IEnumerable<Event> GetEventsByID(object aggregateID);
+        /// <summary>
+        /// Saves the specified aggregate.
+        /// </summary>
+        /// <param name="aggregate">The aggregate.</param>
         void Save(AggregateRoot aggregate);
+        /// <summary>
+        /// Saves the specified aggregate.
+        /// </summary>
+        /// <param name="aggregate">The aggregate.</param>
         void Save(IEnumerable<AggregateRoot> aggregate);
+        /// <summary>
+        /// Makes the snapshot.
+        /// </summary>
+        /// <param name="aggregate">The aggregate.</param>
+        /// <param name="predicate">The predicate.</param>
         void MakeSnapshot(AggregateRoot aggregate, Func<IAggregateRootRepository, AggregateRoot, bool> predicate);
     }
 
@@ -56,10 +88,28 @@ namespace System.Abstract.EventSourcing
         private readonly Action<IEnumerable<Event>> _eventDispatcher;
         private readonly Func<Type, AggregateRoot> _factory;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AggregateRootRepository"/> class.
+        /// </summary>
+        /// <param name="eventStore">The event store.</param>
+        /// <param name="snapshotStore">The snapshot store.</param>
         public AggregateRootRepository(IEventStore eventStore, IAggregateRootSnapshotStore snapshotStore)
             : this(eventStore, snapshotStore, null, EventSource.DefaultFactory.Factory) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AggregateRootRepository"/> class.
+        /// </summary>
+        /// <param name="eventStore">The event store.</param>
+        /// <param name="snapshotStore">The snapshot store.</param>
+        /// <param name="eventDispatcher">The event dispatcher.</param>
         public AggregateRootRepository(IEventStore eventStore, IAggregateRootSnapshotStore snapshotStore, Action<IEnumerable<Event>> eventDispatcher)
             : this(eventStore, snapshotStore, eventDispatcher, EventSource.DefaultFactory.Factory) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AggregateRootRepository"/> class.
+        /// </summary>
+        /// <param name="eventStore">The event store.</param>
+        /// <param name="snapshotStore">The snapshot store.</param>
+        /// <param name="eventDispatcher">The event dispatcher.</param>
+        /// <param name="factory">The factory.</param>
         public AggregateRootRepository(IEventStore eventStore, IAggregateRootSnapshotStore snapshotStore, Action<IEnumerable<Event>> eventDispatcher, Func<Type, AggregateRoot> factory)
         {
             if (eventStore == null)
@@ -72,11 +122,23 @@ namespace System.Abstract.EventSourcing
             _factory = (factory ?? EventSource.DefaultFactory.Factory);
         }
 
+        /// <summary>
+        /// Gets the events by ID.
+        /// </summary>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <returns></returns>
         public IEnumerable<Event> GetEventsByID(object aggregateID)
         {
             return _eventStore.GetEventsByID(aggregateID, 0);
         }
 
+        /// <summary>
+        /// Gets the by ID.
+        /// </summary>
+        /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <param name="queryOptions">The query options.</param>
+        /// <returns></returns>
         public TAggregateRoot GetByID<TAggregateRoot>(object aggregateID, AggregateRootQueryOptions queryOptions)
              where TAggregateRoot : AggregateRoot
         {
@@ -103,6 +165,13 @@ namespace System.Abstract.EventSourcing
             return ((queryOptions & AggregateRootQueryOptions.UseNullAggregates) == 0 ? aggregate : (loaded ? aggregate : null));
         }
 
+        /// <summary>
+        /// Gets the many by I ds.
+        /// </summary>
+        /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
+        /// <param name="aggregateIDs">The aggregate I ds.</param>
+        /// <param name="queryOptions">The query options.</param>
+        /// <returns></returns>
         public IEnumerable<TAggregateRoot> GetManyByIDs<TAggregateRoot>(IEnumerable<object> aggregateIDs, AggregateRootQueryOptions queryOptions)
             where TAggregateRoot : AggregateRoot
         {
@@ -111,6 +180,10 @@ namespace System.Abstract.EventSourcing
             return aggregateIDs.Select(x => GetByID<TAggregateRoot>(x, queryOptions)).ToList();
         }
 
+        /// <summary>
+        /// Saves the specified aggregate.
+        /// </summary>
+        /// <param name="aggregate">The aggregate.</param>
         public void Save(AggregateRoot aggregate)
         {
             if (aggregate == null)
@@ -125,6 +198,10 @@ namespace System.Abstract.EventSourcing
             if (_snapshotStore != null && (inlineSnapshotPredicate = _snapshotStore.InlineSnapshotPredicate) != null && aggregate is ICanAggregateRootSnapshot)
                 MakeSnapshot(aggregate, inlineSnapshotPredicate);
         }
+        /// <summary>
+        /// Saves the specified aggregates.
+        /// </summary>
+        /// <param name="aggregates">The aggregates.</param>
         public void Save(IEnumerable<AggregateRoot> aggregates)
         {
             if (aggregates == null)
@@ -133,6 +210,11 @@ namespace System.Abstract.EventSourcing
                 Save(aggregate);
         }
 
+        /// <summary>
+        /// Makes the snapshot.
+        /// </summary>
+        /// <param name="aggregate">The aggregate.</param>
+        /// <param name="predicate">The predicate.</param>
         public void MakeSnapshot(AggregateRoot aggregate, Func<IAggregateRootRepository, AggregateRoot, bool> predicate)
         {
             if (aggregate == null)

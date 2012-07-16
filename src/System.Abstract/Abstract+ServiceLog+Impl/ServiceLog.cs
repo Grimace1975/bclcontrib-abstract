@@ -36,11 +36,29 @@ namespace System.Abstract
         /// </summary>
         public enum LogLevel
         {
+            /// <summary>
+            /// None
+            /// </summary>
             None,
+            /// <summary>
+            /// Fatal
+            /// </summary>
             Fatal,
+            /// <summary>
+            /// Error
+            /// </summary>
             Error,
+            /// <summary>
+            /// Warning
+            /// </summary>
             Warning,
+            /// <summary>
+            /// Information
+            /// </summary>
             Information,
+            /// <summary>
+            /// Debug
+            /// </summary>
             Debug
         }
     }

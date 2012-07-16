@@ -31,8 +31,20 @@ namespace System.Abstract.EventSourcing
     /// </summary>
     public interface IAggregateRootStateAccessor
     {
+        /// <summary>
+        /// Loads from history.
+        /// </summary>
+        /// <param name="events">The events.</param>
+        /// <returns></returns>
         bool LoadFromHistory(IEnumerable<Event> events);
+        /// <summary>
+        /// Gets the uncommitted changes.
+        /// </summary>
+        /// <returns></returns>
         IEnumerable<Event> GetUncommittedChanges();
+        /// <summary>
+        /// Marks the changes as committed.
+        /// </summary>
         void MarkChangesAsCommitted();
     }
 }

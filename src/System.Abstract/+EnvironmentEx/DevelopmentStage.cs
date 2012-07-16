@@ -31,9 +31,21 @@ namespace System
 	// [Wiki] http://en.wikipedia.org/wiki/Software_release_life_cycle
 	public enum DevelopmentStage
 	{
+        /// <summary>
+        /// PreAlpha
+        /// </summary>
 		PreAlpha,
+        /// <summary>
+        /// Alpha
+        /// </summary>
 		Alpha,
+        /// <summary>
+        /// Beta
+        /// </summary>
 		Beta,
+        /// <summary>
+        /// Release
+        /// </summary>
 		Release,
 	}
 }

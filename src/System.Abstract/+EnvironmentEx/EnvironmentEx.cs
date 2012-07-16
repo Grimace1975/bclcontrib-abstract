@@ -40,19 +40,32 @@ namespace System
         /// </summary>
         public abstract class MockBase
         {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="MockBase"/> class.
+            /// </summary>
             protected MockBase() { }
 
+            /// <summary>
+            /// Gets the deployment environment.
+            /// </summary>
             public virtual DeploymentEnvironment DeploymentEnvironment
             {
                 get { throw new NotImplementedException(); }
             }
 
+            /// <summary>
+            /// Gets the development stage.
+            /// </summary>
             public virtual DevelopmentStage DevelopmentStage
             {
                 get { throw new NotImplementedException(); }
             }
 
 #if !CLRSQL
+            /// <summary>
+            /// Nexts the ID.
+            /// </summary>
+            /// <returns></returns>
             public virtual int NextID() { throw new NotImplementedException(); }
 #endif
         }
@@ -67,14 +80,29 @@ namespace System
         [ThreadStatic]
         private static MockBase _mock;
 
+        /// <summary>
+        /// Gets or sets the mock.
+        /// </summary>
+        /// <value>
+        /// The mock.
+        /// </value>
         public static MockBase Mock
         {
             get { return _mock; }
             set { _mock = value; }
         }
 
+        /// <summary>
+        /// Gets the application ID.
+        /// </summary>
         public static string ApplicationID { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the deployment environment.
+        /// </summary>
+        /// <value>
+        /// The deployment environment.
+        /// </value>
         public static DeploymentEnvironment DeploymentEnvironment
         {
             get { return (_mock == null ? _deploymentEnvironment : _mock.DeploymentEnvironment); }
@@ -87,6 +115,12 @@ namespace System
             }
         }
 
+        /// <summary>
+        /// Gets or sets the development stage.
+        /// </summary>
+        /// <value>
+        /// The development stage.
+        /// </value>
         public static DevelopmentStage DevelopmentStage
         {
             get { return (_mock == null ? _developmentStage : _mock.DevelopmentStage); }

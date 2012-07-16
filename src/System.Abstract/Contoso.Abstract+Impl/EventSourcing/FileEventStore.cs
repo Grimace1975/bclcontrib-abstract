@@ -33,11 +33,22 @@ namespace Contoso.Abstract.EventSourcing
     /// </summary>
     public class FileEventStore : IEventStore
     {
+        /// <summary>
+        /// Gets the events by ID.
+        /// </summary>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <param name="startSequence">The start sequence.</param>
+        /// <returns></returns>
         public IEnumerable<Event> GetEventsByID(object aggregateID, int startSequence)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Saves the events.
+        /// </summary>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <param name="events">The events.</param>
         public void SaveEvents(object aggregateID, IEnumerable<Event> events)
         {
             throw new NotImplementedException();

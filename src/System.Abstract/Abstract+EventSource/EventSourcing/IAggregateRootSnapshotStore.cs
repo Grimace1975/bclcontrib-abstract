@@ -30,9 +30,23 @@ namespace System.Abstract.EventSourcing
     /// </summary>
     public interface IAggregateRootSnapshotStore
     {
+        /// <summary>
+        /// Gets the inline snapshot predicate.
+        /// </summary>
         Func<IAggregateRootRepository, AggregateRoot, bool> InlineSnapshotPredicate { get; }
+        /// <summary>
+        /// Gets the latest snapshot.
+        /// </summary>
+        /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <returns></returns>
         AggregateRootSnapshot GetLatestSnapshot<TAggregateRoot>(object aggregateID)
             where TAggregateRoot : AggregateRoot;
+        /// <summary>
+        /// Saves the snapshot.
+        /// </summary>
+        /// <param name="aggregateType">Type of the aggregate.</param>
+        /// <param name="snapshot">The snapshot.</param>
         void SaveSnapshot(Type aggregateType, AggregateRootSnapshot snapshot);
     }
 }

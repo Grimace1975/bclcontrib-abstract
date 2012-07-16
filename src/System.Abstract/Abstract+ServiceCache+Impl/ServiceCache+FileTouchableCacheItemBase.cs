@@ -41,14 +41,24 @@ namespace System.Abstract
             private IServiceCache _parent;
             private ITouchableCacheItem _base;
             private string _directory;
-            private Func<object, IEnumerable<string>, CacheItemDependency> _dependencyFactory;
+            //private Func<object, IEnumerable<string>, CacheItemDependency> _dependencyFactory;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="FileTouchableCacheItemBase"/> class.
+            /// </summary>
+            /// <param name="parent">The parent.</param>
+            /// <param name="base">The @base.</param>
             public FileTouchableCacheItemBase(IServiceCache parent, ITouchableCacheItem @base)
             {
                 _parent = parent;
                 _base = @base;
             }
 
+            /// <summary>
+            /// Touches the specified tag.
+            /// </summary>
+            /// <param name="tag">The tag.</param>
+            /// <param name="names">The names.</param>
             public virtual void Touch(object tag, string[] names)
             {
                 if (string.IsNullOrEmpty(Directory))
@@ -79,6 +89,12 @@ namespace System.Abstract
                     _base.Touch(tag, newNames.ToArray());
             }
 
+            /// <summary>
+            /// Gets or sets the directory.
+            /// </summary>
+            /// <value>
+            /// The directory.
+            /// </value>
             public string Directory
             {
                 get { return _directory; }
@@ -90,6 +106,12 @@ namespace System.Abstract
                 }
             }
 
+            /// <summary>
+            /// Makes the dependency.
+            /// </summary>
+            /// <param name="tag">The tag.</param>
+            /// <param name="names">The names.</param>
+            /// <returns></returns>
             public virtual object MakeDependency(object tag, string[] names)
             {
                 if (string.IsNullOrEmpty(Directory))
@@ -102,10 +124,26 @@ namespace System.Abstract
                 return MakeDependencyInternal(tag, newNames);
             }
 
+            /// <summary>
+            /// Makes the dependency internal.
+            /// </summary>
+            /// <param name="tag">The tag.</param>
+            /// <param name="names">The names.</param>
+            /// <returns></returns>
             protected abstract object MakeDependencyInternal(object tag, string[] names);
 
+            /// <summary>
+            /// Gets the name of the file path for.
+            /// </summary>
+            /// <param name="name">The name.</param>
+            /// <returns></returns>
             protected virtual string GetFilePathForName(string name) { return Path.Combine(Directory, name + ".txt"); }
 
+            /// <summary>
+            /// Writes the name of the body for.
+            /// </summary>
+            /// <param name="name">The name.</param>
+            /// <param name="path">The path.</param>
             protected virtual void WriteBodyForName(string name, string path) { File.WriteAllText(path, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\r\n"); }
 
             private void EnsureKeysExist(object tag, string[] names, out string[] newNames)
@@ -135,6 +173,14 @@ namespace System.Abstract
                 newNames = newNames2.ToArray();
             }
 
+            /// <summary>
+            /// Determines whether this instance can touch the specified tag.
+            /// </summary>
+            /// <param name="tag">The tag.</param>
+            /// <param name="name">The name.</param>
+            /// <returns>
+            ///   <c>true</c> if this instance can touch the specified tag; otherwise, <c>false</c>.
+            /// </returns>
             public virtual bool CanTouch(object tag, ref string name)
             {
                 if (name == null || !name.StartsWith("#"))

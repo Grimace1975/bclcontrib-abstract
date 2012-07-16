@@ -36,6 +36,12 @@ namespace Contoso.Abstract.EventSourcing
     {
         private readonly List<AggregateRootSnapshot> _snapshots = new List<AggregateRootSnapshot>();
 
+        /// <summary>
+        /// Gets the latest snapshot.
+        /// </summary>
+        /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <returns></returns>
         public AggregateRootSnapshot GetLatestSnapshot<TAggregateRoot>(object aggregateID)
             where TAggregateRoot : AggregateRoot
         {
@@ -45,11 +51,19 @@ namespace Contoso.Abstract.EventSourcing
                 .SingleOrDefault();
         }
 
+        /// <summary>
+        /// Saves the snapshot.
+        /// </summary>
+        /// <param name="aggregateType">Type of the aggregate.</param>
+        /// <param name="snapshot">The snapshot.</param>
         public void SaveSnapshot(Type aggregateType, AggregateRootSnapshot snapshot)
         {
             _snapshots.Add(snapshot);
         }
 
+        /// <summary>
+        /// Gets the inline snapshot predicate.
+        /// </summary>
         public Func<IAggregateRootRepository, AggregateRoot, bool> InlineSnapshotPredicate { get; set; }
     }
 }

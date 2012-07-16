@@ -46,18 +46,24 @@ namespace System.Abstract
         /// </summary>
         public interface IDispatch { }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataSourceRegistrar"/> class.
-        /// </summary>
-        /// <param name="anchorType">Type of the anchor.</param>
         internal ServiceCacheRegistrar(Type anchorType)
         {
             _namePrefix = "SC\\" + anchorType.FullName + "::";
             AnchorType = anchorType;
         }
 
+        /// <summary>
+        /// Gets this instance.
+        /// </summary>
+        /// <typeparam name="TAnchor">The type of the anchor.</typeparam>
+        /// <returns></returns>
         public static ServiceCacheRegistrar Get<TAnchor>()
             where TAnchor : IServiceRegistrar { return Get(typeof(TAnchor)); }
+        /// <summary>
+        /// Gets the specified anchor type.
+        /// </summary>
+        /// <param name="anchorType">Type of the anchor.</param>
+        /// <returns></returns>
         public static ServiceCacheRegistrar Get(Type anchorType)
         {
             ServiceCacheRegistrar registrar;
@@ -65,7 +71,15 @@ namespace System.Abstract
             return registrar;
         }
 
+        /// <summary>
+        /// Registers all below.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         public static void RegisterAllBelow<T>() { RegisterAllBelow(typeof(T)); }
+        /// <summary>
+        /// Registers all below.
+        /// </summary>
+        /// <param name="type">The type.</param>
         public static void RegisterAllBelow(Type type)
         {
             var registrationType = typeof(ServiceCacheRegistration);
@@ -209,6 +223,13 @@ namespace System.Abstract
             return _set;
         }
 
+        /// <summary>
+        /// Tries the get.
+        /// </summary>
+        /// <param name="anchorType">Type of the anchor.</param>
+        /// <param name="registrar">The registrar.</param>
+        /// <param name="createIfRequired">if set to <c>true</c> [create if required].</param>
+        /// <returns></returns>
         public static bool TryGet(Type anchorType, out ServiceCacheRegistrar registrar, bool createIfRequired)
         {
             if (anchorType == null)
@@ -235,6 +256,13 @@ namespace System.Abstract
             finally { _rwLock.ExitUpgradeableReadLock(); }
         }
 
+        /// <summary>
+        /// Tries the get value.
+        /// </summary>
+        /// <param name="registration">The registration.</param>
+        /// <param name="recurses">The recurses.</param>
+        /// <param name="foundRegistration">The found registration.</param>
+        /// <returns></returns>
         public static bool TryGetValue(ServiceCacheRegistration registration, ref int recurses, out ServiceCacheRegistration foundRegistration)
         {
             _rwLock.EnterReadLock();
@@ -264,6 +292,14 @@ namespace System.Abstract
             finally { _rwLock.ExitReadLock(); }
         }
 
+        /// <summary>
+        /// Tries the get value.
+        /// </summary>
+        /// <param name="anchorType">Type of the anchor.</param>
+        /// <param name="registrationName">Name of the registration.</param>
+        /// <param name="recurses">The recurses.</param>
+        /// <param name="foundRegistration">The found registration.</param>
+        /// <returns></returns>
         public static bool TryGetValue(Type anchorType, string registrationName, ref int recurses, out ServiceCacheRegistration foundRegistration)
         {
             _rwLock.EnterReadLock();

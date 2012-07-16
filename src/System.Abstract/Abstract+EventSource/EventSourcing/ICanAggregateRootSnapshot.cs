@@ -30,7 +30,15 @@ namespace System.Abstract.EventSourcing
     /// </summary>
     public interface ICanAggregateRootSnapshot
     {
+        /// <summary>
+        /// Gets the snapshot.
+        /// </summary>
+        /// <returns></returns>
         AggregateRootSnapshot GetSnapshot();
+        /// <summary>
+        /// Loads the snapshot.
+        /// </summary>
+        /// <param name="snapshot">The snapshot.</param>
         void LoadSnapshot(AggregateRootSnapshot snapshot);
     }
 }

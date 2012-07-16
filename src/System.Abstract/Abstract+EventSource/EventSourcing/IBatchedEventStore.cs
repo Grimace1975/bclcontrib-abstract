@@ -31,7 +31,16 @@ namespace System.Abstract.EventSourcing
     /// </summary>
     public interface IBatchedEventStore : IEventStore
     {
+        /// <summary>
+        /// Gets the events by I ds.
+        /// </summary>
+        /// <param name="aggregateIDs">The aggregate I ds.</param>
+        /// <returns></returns>
         IEnumerable<AggregateTuple<IEnumerable<Event>>> GetEventsByIDs(IEnumerable<AggregateTuple<int>> aggregateIDs);
+        /// <summary>
+        /// Saves the events.
+        /// </summary>
+        /// <param name="events">The events.</param>
         void SaveEvents(IEnumerable<AggregateTuple<IEnumerable<Event>>> events);
     }
 }

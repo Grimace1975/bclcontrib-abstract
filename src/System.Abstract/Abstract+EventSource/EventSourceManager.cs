@@ -52,11 +52,36 @@ namespace System.Abstract
             };
         }
 
+        /// <summary>
+        /// Sets the provider.
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <returns></returns>
         public static Lazy<IEventSource> SetProvider(Func<IEventSource> provider) { return (Lazy = MakeByProviderProtected(provider, null)); }
+        /// <summary>
+        /// Sets the provider.
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <param name="setupDescriptor">The setup descriptor.</param>
+        /// <returns></returns>
         public static Lazy<IEventSource> SetProvider(Func<IEventSource> provider, ISetupDescriptor setupDescriptor) { return (Lazy = MakeByProviderProtected(provider, setupDescriptor)); }
+        /// <summary>
+        /// Makes the by provider.
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <returns></returns>
         public static Lazy<IEventSource> MakeByProvider(Func<IEventSource> provider) { return MakeByProviderProtected(provider, null); }
+        /// <summary>
+        /// Makes the by provider.
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <param name="setupDescriptor">The setup descriptor.</param>
+        /// <returns></returns>
         public static Lazy<IEventSource> MakeByProvider(Func<IEventSource> provider, ISetupDescriptor setupDescriptor) { return MakeByProviderProtected(provider, setupDescriptor); }
 
+        /// <summary>
+        /// Gets the current.
+        /// </summary>
         public static IEventSource Current
         {
             get
@@ -67,7 +92,15 @@ namespace System.Abstract
             }
         }
 
+        /// <summary>
+        /// Ensures the registration.
+        /// </summary>
         public static void EnsureRegistration() { }
+        /// <summary>
+        /// Gets the setup descriptor.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <returns></returns>
         public static ISetupDescriptor GetSetupDescriptor(Lazy<IEventSource> service) { return GetSetupDescriptorProtected(service, null); }
     }
 }

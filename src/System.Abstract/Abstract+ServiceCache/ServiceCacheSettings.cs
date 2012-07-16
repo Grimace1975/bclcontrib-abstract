@@ -32,12 +32,19 @@ namespace System.Abstract
 	/// </summary>
 	public class ServiceCacheSettings
 	{
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceCacheSettings"/> class.
+        /// </summary>
 		public ServiceCacheSettings()
 		{
 			RegionMarker = "@";
 			RegistrationDispatcher = new DefaultServiceCacheRegistrationDispatcher();
             Options = ServiceCacheOptions.UseDBNullWithRegistrations;
 		}
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceCacheSettings"/> class.
+        /// </summary>
+        /// <param name="touchable">The touchable.</param>
 		public ServiceCacheSettings(ITouchableCacheItem touchable)
 			: this() { Touchable = touchable; }
 

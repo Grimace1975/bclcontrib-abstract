@@ -31,11 +31,46 @@ namespace System.Abstract.EventSourcing
     /// </summary>
     public static class EventSourcingExtensions
     {
+        /// <summary>
+        /// Gets the by ID.
+        /// </summary>
+        /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
+        /// <param name="repository">The repository.</param>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <returns></returns>
         public static TAggregateRoot GetByID<TAggregateRoot>(this IAggregateRootRepository repository, object aggregateID)
             where TAggregateRoot : AggregateRoot { return repository.GetByID<TAggregateRoot>(aggregateID, 0); }
+        /// <summary>
+        /// Gets the by ID.
+        /// </summary>
+        /// <param name="repository">The repository.</param>
+        /// <param name="aggregateType">Type of the aggregate.</param>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <returns></returns>
         public static object GetByID(this IAggregateRootRepository repository, Type aggregateType, object aggregateID) { return repository.GetByID<AggregateRoot>(aggregateID, 0); }
+        /// <summary>
+        /// Gets the by ID.
+        /// </summary>
+        /// <param name="repository">The repository.</param>
+        /// <param name="aggregateType">Type of the aggregate.</param>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <param name="queryOptions">The query options.</param>
+        /// <returns></returns>
         public static AggregateRoot GetByID(this IAggregateRootRepository repository, Type aggregateType, object aggregateID, AggregateRootQueryOptions queryOptions) { return repository.GetByID<AggregateRoot>(aggregateID, queryOptions); }
+        /// <summary>
+        /// Gets the many by I ds.
+        /// </summary>
+        /// <param name="repository">The repository.</param>
+        /// <param name="aggregateIDs">The aggregate I ds.</param>
+        /// <param name="aggregateType">Type of the aggregate.</param>
+        /// <param name="queryOptions">The query options.</param>
+        /// <returns></returns>
         public static IEnumerable<AggregateRoot> GetManyByIDs(this IAggregateRootRepository repository, IEnumerable<object> aggregateIDs, Type aggregateType, AggregateRootQueryOptions queryOptions) { return repository.GetManyByIDs<AggregateRoot>(aggregateIDs, queryOptions); }
+        /// <summary>
+        /// Makes the snapshot.
+        /// </summary>
+        /// <param name="repository">The repository.</param>
+        /// <param name="aggregate">The aggregate.</param>
         public static void MakeSnapshot(this IAggregateRootRepository repository, AggregateRoot aggregate) { repository.MakeSnapshot(aggregate, null); }
     }
 }

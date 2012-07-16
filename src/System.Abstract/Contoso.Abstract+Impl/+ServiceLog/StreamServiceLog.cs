@@ -35,6 +35,9 @@ namespace Contoso.Abstract
     /// </summary>
     public interface IStreamLogServiceLog : IServiceLog
     {
+        /// <summary>
+        /// Gets the log.
+        /// </summary>
         StreamWriter Log { get; }
     }
 
@@ -44,24 +47,54 @@ namespace Contoso.Abstract
     public class StreamServiceLog : IStreamLogServiceLog, IDisposable, ServiceLogManager.ISetupRegistration
     {
         static StreamServiceLog() { ServiceLogManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StreamServiceLog"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="s">The s.</param>
         public StreamServiceLog(string name, Stream s)
             : this(name, new StreamWriter(s)) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StreamServiceLog"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="sw">The sw.</param>
         public StreamServiceLog(string name, StreamWriter sw)
         {
             Name = name;
             sw.AutoFlush = true;
             Log = sw;
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StreamServiceLog"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="encoding">The encoding.</param>
         public StreamServiceLog(string name, Stream s, Encoding encoding)
             : this(name, new StreamWriter(s, encoding)) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StreamServiceLog"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="encoding">The encoding.</param>
+        /// <param name="bufferSize">Size of the buffer.</param>
         public StreamServiceLog(string name, Stream s, Encoding encoding, int bufferSize)
             : this(name, new StreamWriter(s, encoding, bufferSize)) { }
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="StreamServiceLog"/> is reclaimed by garbage collection.
+        /// </summary>
         ~StreamServiceLog()
         {
             try { ((IDisposable)this).Dispose(); }
             catch { }
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             if (Log != null)
@@ -77,10 +110,27 @@ namespace Contoso.Abstract
             get { return (locator, name) => ServiceLogManager.RegisterInstance<IStreamLogServiceLog>(this, locator, name); }
         }
 
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType"/>.
+        /// -or-
+        /// null if there is no service object of type <paramref name="serviceType"/>.
+        /// </returns>
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         // get
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
         public string Name { get; private set; }
+        /// <summary>
+        /// Gets the specified name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public IServiceLog Get(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -89,6 +139,13 @@ namespace Contoso.Abstract
         }
 
         // log
+        /// <summary>
+        /// Writes the specified level.
+        /// </summary>
+        /// <param name="level">The level.</param>
+        /// <param name="ex">The ex.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
         public void Write(ServiceLog.LogLevel level, Exception ex, string s, params object[] args)
         {
             if (Log == null)
@@ -101,6 +158,9 @@ namespace Contoso.Abstract
 
         #region Domain-specific
 
+        /// <summary>
+        /// Gets the log.
+        /// </summary>
         public StreamWriter Log { get; private set; }
 
         #endregion

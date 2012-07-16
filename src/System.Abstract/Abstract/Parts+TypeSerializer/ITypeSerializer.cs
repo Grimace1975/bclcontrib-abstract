@@ -32,12 +32,40 @@ namespace System.Abstract.Parts
     /// </summary>
     public interface ITypeSerializer
     {
+        /// <summary>
+        /// Reads the object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
         T ReadObject<T>(Type type, Stream s)
             where T : class;
+        /// <summary>
+        /// Reads the objects.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
         IEnumerable<T> ReadObjects<T>(Type type, Stream s)
             where T : class;
+        /// <summary>
+        /// Writes the object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="graph">The graph.</param>
         void WriteObject<T>(Type type, Stream s, T graph)
             where T : class;
+        /// <summary>
+        /// Writes the objects.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="graph">The graph.</param>
         void WriteObjects<T>(Type type, Stream s, IEnumerable<T> graph)
             where T : class;
     }

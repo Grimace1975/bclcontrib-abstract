@@ -31,8 +31,19 @@ namespace System.Abstract.EventSourcing
     /// </summary>
     public interface IBatchedAggregateRootSnapshotStore : IAggregateRootSnapshotStore
     {
+        /// <summary>
+        /// Gets the latest snapshots.
+        /// </summary>
+        /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
+        /// <param name="aggregateIDs">The aggregate I ds.</param>
+        /// <returns></returns>
         IEnumerable<AggregateTuple<AggregateRootSnapshot>> GetLatestSnapshots<TAggregateRoot>(IEnumerable<object> aggregateIDs)
             where TAggregateRoot : AggregateRoot;
+        /// <summary>
+        /// Saves the snapshots.
+        /// </summary>
+        /// <param name="aggregateType">Type of the aggregate.</param>
+        /// <param name="snapshots">The snapshots.</param>
         void SaveSnapshots(Type aggregateType, IEnumerable<AggregateRootSnapshot> snapshots);
     }
 }

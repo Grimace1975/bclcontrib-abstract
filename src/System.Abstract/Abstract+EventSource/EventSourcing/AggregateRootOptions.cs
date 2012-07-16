@@ -31,6 +31,9 @@ namespace System.Abstract.EventSourcing
     [Flags]
     public enum AggregateRootOptions
     {
+        /// <summary>
+        /// UseStorageBasedSequencing
+        /// </summary>
         UseStorageBasedSequencing = 0x1,
     }
 }

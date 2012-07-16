@@ -32,38 +32,66 @@ namespace System.Abstract
 	/// </summary>
 	public interface IServiceCache : IServiceProvider
 	{
+        /// <summary>
+        /// Gets or sets the <see cref="System.Object"/> with the specified name.
+        /// </summary>
 		object this[string name] { get; set; }
 
+        /// <summary>
+        /// Adds the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="itemPolicy">The item policy.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="dispatch">The dispatch.</param>
+        /// <returns></returns>
         object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch);
 
-		/// <summary>
-		/// Gets the item from cache associated with the key provided.
-		/// </summary>
-		/// <param name="tag">The tag.</param>
-		/// <param name="name">The name.</param>
-		/// <returns>
-		/// The cached item.
-		/// </returns>
+        /// <summary>
+        /// Gets the item from cache associated with the key provided.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>
+        /// The cached item.
+        /// </returns>
 		object Get(object tag, string name);
+        /// <summary>
+        /// Gets the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="names">The names.</param>
+        /// <returns></returns>
 		object Get(object tag, IEnumerable<string> names);
+        /// <summary>
+        /// Tries the get.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
 		bool TryGet(object tag, string name, out object value);
 
-		/// <summary>
-		/// Removes from cache the item associated with the key provided.
-		/// </summary>
-		/// <param name="tag">The tag.</param>
-		/// <param name="name">The name.</param>
-		/// <returns>The item removed from the Cache. If the value in the key parameter is not found, returns null.</returns>
+        /// <summary>
+        /// Removes from cache the item associated with the key provided.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>
+        /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
+        /// </returns>
 		object Remove(object tag, string name);
 
-		/// <summary>
-		/// Adds an object into cache based on the parameters provided.
-		/// </summary>
-		/// <param name="tag">The tag.</param>
-		/// <param name="name">The name.</param>
-		/// <param name="itemPolicy">The itemPolicy object.</param>
-		/// <param name="value">The value to store in cache.</param>
-		/// <returns></returns>
+        /// <summary>
+        /// Adds an object into cache based on the parameters provided.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="itemPolicy">The itemPolicy object.</param>
+        /// <param name="value">The value to store in cache.</param>
+        /// <param name="dispatch">The dispatch.</param>
+        /// <returns></returns>
         object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch);
 
 		/// <summary>

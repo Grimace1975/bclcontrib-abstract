@@ -31,12 +31,19 @@ namespace System.Abstract
     /// </summary>
     public class LiteralServiceBusEndpoint : IServiceBusEndpoint
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LiteralServiceBusEndpoint"/> class.
+        /// </summary>
+        /// <param name="literal">The literal.</param>
         public LiteralServiceBusEndpoint(string literal)
         {
             if (literal == null)
                 throw new ArgumentNullException("literal");
             Value = literal;
         }
+        /// <summary>
+        /// Gets the value.
+        /// </summary>
         public string Value { get; private set; }
     }
 }

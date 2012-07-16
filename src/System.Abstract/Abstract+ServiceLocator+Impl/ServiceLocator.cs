@@ -31,8 +31,18 @@ namespace System.Abstract
     /// </summary>
     public static class ServiceLocator
     {
+        /// <summary>
+        /// Resolves this instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <returns></returns>
         public static TService Resolve<TService>()
             where TService : class { return ServiceLocatorManager.Current.Resolve<TService>(); }
+        /// <summary>
+        /// Resolves all.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <returns></returns>
         public static IEnumerable<TService> ResolveAll<TService>()
             where TService : class { return ServiceLocatorManager.Current.ResolveAll<TService>(); }
     }

@@ -30,8 +30,18 @@ namespace System.Abstract
     /// </summary>
     public interface IServiceBusHostBootstrap
     {
+        /// <summary>
+        /// Initializes this instance.
+        /// </summary>
         void Initialize();
+        /// <summary>
+        /// Opens the specified bus.
+        /// </summary>
+        /// <param name="bus">The bus.</param>
         void Open(IServiceBus bus);
+        /// <summary>
+        /// Closes this instance.
+        /// </summary>
         void Close();
     }
 }

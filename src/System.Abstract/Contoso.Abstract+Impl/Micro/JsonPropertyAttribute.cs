@@ -26,18 +26,52 @@ THE SOFTWARE.
 using System;
 namespace Contoso.Abstract.Micro
 {
+    /// <summary>
+    /// JsonPropertyAttribute
+    /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, Inherited = true)]
     public class JsonPropertyAttribute : Attribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsonPropertyAttribute"/> class.
+        /// </summary>
         public JsonPropertyAttribute() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsonPropertyAttribute"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
         public JsonPropertyAttribute(string name)
         {
             Name = name;
         }
 
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
         public string Name { get; set; }
+        /// <summary>
+        /// Gets or sets the serialize as.
+        /// </summary>
+        /// <value>
+        /// The serialize as.
+        /// </value>
         public JsonValueType SerializeAs { get; set; }
+        /// <summary>
+        /// Gets or sets the format.
+        /// </summary>
+        /// <value>
+        /// The format.
+        /// </value>
         public string Format { get; set; }
+        /// <summary>
+        /// Gets or sets the converter.
+        /// </summary>
+        /// <value>
+        /// The converter.
+        /// </value>
         public Type Converter { get; set; }
     }
 }

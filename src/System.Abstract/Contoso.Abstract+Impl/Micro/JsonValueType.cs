@@ -25,13 +25,34 @@ THE SOFTWARE.
 #endregion
 namespace Contoso.Abstract.Micro
 {
+    /// <summary>
+    /// JsonValueType
+    /// </summary>
     public enum JsonValueType
     {
+        /// <summary>
+        /// Unknown
+        /// </summary>
         Unknown,
+        /// <summary>
+        /// Boolean
+        /// </summary>
         Boolean,
+        /// <summary>
+        /// Number
+        /// </summary>
         Number,
+        /// <summary>
+        /// String
+        /// </summary>
         String,
+        /// <summary>
+        /// Object
+        /// </summary>
         Object,
+        /// <summary>
+        /// Array
+        /// </summary>
         Array
     }
 }

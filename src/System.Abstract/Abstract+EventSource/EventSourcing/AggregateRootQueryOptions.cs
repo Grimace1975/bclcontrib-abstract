@@ -31,6 +31,9 @@ namespace System.Abstract.EventSourcing
     [Flags]
     public enum AggregateRootQueryOptions
     {
+        /// <summary>
+        /// UseNullAggregates
+        /// </summary>
         UseNullAggregates = 0x1,
     }
 }

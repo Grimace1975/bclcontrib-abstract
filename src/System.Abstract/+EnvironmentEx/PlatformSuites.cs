@@ -30,18 +30,57 @@ namespace System
 	/// </summary>
 	public enum PlatformSuites
 	{
+        /// <summary>
+        /// BackOffice
+        /// </summary>
 		BackOffice = 0x00000004,
+        /// <summary>
+        /// Blade
+        /// </summary>
 		Blade = 0x00000400,
+        /// <summary>
+        /// ComputeServer
+        /// </summary>
 		ComputeServer = 0x00004000,
+        /// <summary>
+        /// DataCenter
+        /// </summary>
 		DataCenter = 0x00000080,
+        /// <summary>
+        /// Enterprise
+        /// </summary>
 		Enterprise = 0x00000002,
+        /// <summary>
+        /// EmbeddedNT
+        /// </summary>
 		EmbeddedNT = 0x00000040,
+        /// <summary>
+        /// Personal
+        /// </summary>
 		Personal = 0x00000200,
+        /// <summary>
+        /// SingleUserTS
+        /// </summary>
 		SingleUserTS = 0x00000100,
+        /// <summary>
+        /// SmallBusiness
+        /// </summary>
 		SmallBusiness = 0x00000001,
+        /// <summary>
+        /// SmallBusinessRestricted
+        /// </summary>
 		SmallBusinessRestricted = 0x00000020,
+        /// <summary>
+        /// StorageServer
+        /// </summary>
 		StorageServer = 0x00002000,
+        /// <summary>
+        /// Terminal
+        /// </summary>
 		Terminal = 0x00000010,
+        /// <summary>
+        /// WHServer
+        /// </summary>
 		WHServer = 0x00008000,
 	}
 }

@@ -30,7 +30,19 @@ namespace System.Abstract.EventSourcing
     /// </summary>
     public class AggregateTuple<T1>
     {
+        /// <summary>
+        /// Gets or sets the aggregate ID.
+        /// </summary>
+        /// <value>
+        /// The aggregate ID.
+        /// </value>
         public object AggregateID { get; set; }
+        /// <summary>
+        /// Gets or sets the item1.
+        /// </summary>
+        /// <value>
+        /// The item1.
+        /// </value>
         public T1 Item1 { get; set; }
     }
     /// <summary>
@@ -38,8 +50,26 @@ namespace System.Abstract.EventSourcing
     /// </summary>
     public class AggregateTuple<T1, T2>
     {
+        /// <summary>
+        /// Gets or sets the aggregate ID.
+        /// </summary>
+        /// <value>
+        /// The aggregate ID.
+        /// </value>
         public object AggregateID { get; set; }
+        /// <summary>
+        /// Gets or sets the item1.
+        /// </summary>
+        /// <value>
+        /// The item1.
+        /// </value>
         public T1 Item1 { get; set; }
+        /// <summary>
+        /// Gets or sets the item2.
+        /// </summary>
+        /// <value>
+        /// The item2.
+        /// </value>
         public T2 Item2 { get; set; }
     }
 }

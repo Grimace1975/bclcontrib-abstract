@@ -31,30 +31,85 @@ namespace System.Abstract
     /// </summary>
     public interface IServiceLocator : IServiceProvider
     {
+        /// <summary>
+        /// Gets the underlying container.
+        /// </summary>
+        /// <typeparam name="TContainer">The type of the container.</typeparam>
+        /// <returns></returns>
         TContainer GetUnderlyingContainer<TContainer>()
             where TContainer : class;
 
         // registrar
+        /// <summary>
+        /// Gets the registrar.
+        /// </summary>
         IServiceRegistrar Registrar { get; }
 
         // resolve
+        /// <summary>
+        /// Resolves this instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <returns></returns>
         TService Resolve<TService>()
             where TService : class;
+        /// <summary>
+        /// Resolves the specified name.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         TService Resolve<TService>(string name)
             where TService : class;
+        /// <summary>
+        /// Resolves the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns></returns>
         object Resolve(Type serviceType);
+        /// <summary>
+        /// Resolves the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         object Resolve(Type serviceType, string name);
         //
+        /// <summary>
+        /// Resolves all.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <returns></returns>
         IEnumerable<TService> ResolveAll<TService>()
             where TService : class;
+        /// <summary>
+        /// Resolves all.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns></returns>
         IEnumerable<object> ResolveAll(Type serviceType);
 
         // inject
+        /// <summary>
+        /// Injects the specified instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <returns></returns>
         TService Inject<TService>(TService instance)
             where TService : class;
 
         // release and teardown
+        /// <summary>
+        /// Releases the specified instance.
+        /// </summary>
+        /// <param name="instance">The instance.</param>
         void Release(object instance);
+        /// <summary>
+        /// Tears down.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="instance">The instance.</param>
         void TearDown<TService>(TService instance)
             where TService : class;
     }

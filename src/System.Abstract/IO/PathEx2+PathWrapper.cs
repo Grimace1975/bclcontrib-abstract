@@ -32,21 +32,97 @@ namespace System.IO
         /// </summary>
         public class PathWrapper : MockBase
         {
-            public virtual string ChangeExtension(string path, string extension) { return Path.ChangeExtension(path, extension); }
-            public virtual string Combine(string path1, string path2) { return Path.Combine(path1, path2); }
-            public virtual string GetDirectoryName(string path) { return Path.GetDirectoryName(path); }
-            public virtual string GetExtension(string path) { return Path.GetExtension(path); }
-            public virtual string GetFileName(string path) { return Path.GetFileName(path); }
-            public virtual string GetFileNameWithoutExtension(string path) { return Path.GetFileNameWithoutExtension(path); }
-            public virtual string GetFullPath(string path) { return Path.GetFullPath(path); }
-            public virtual char[] GetInvalidFileNameChars() { return Path.GetInvalidFileNameChars(); }
-            public virtual char[] GetInvalidPathChars() { return Path.GetInvalidPathChars(); }
-            public virtual string GetPathRoot(string path) { return Path.GetPathRoot(path); }
-            public virtual string GetRandomFileName() { return Path.GetRandomFileName(); }
-            public virtual string GetTempFileName() { return Path.GetTempFileName(); }
-            public virtual string GetTempPath() { return Path.GetTempPath(); }
-            public virtual bool HasExtension(string path) { return Path.HasExtension(path); }
-            public virtual bool IsPathRooted(string path) { return Path.IsPathRooted(path); }
+            /// <summary>
+            /// Changes the extension.
+            /// </summary>
+            /// <param name="path">The path.</param>
+            /// <param name="extension">The extension.</param>
+            /// <returns></returns>
+            public override string ChangeExtension(string path, string extension) { return Path.ChangeExtension(path, extension); }
+            /// <summary>
+            /// Combines the specified path1.
+            /// </summary>
+            /// <param name="path1">The path1.</param>
+            /// <param name="path2">The path2.</param>
+            /// <returns></returns>
+            public override string Combine(string path1, string path2) { return Path.Combine(path1, path2); }
+            /// <summary>
+            /// Gets the name of the directory.
+            /// </summary>
+            /// <param name="path">The path.</param>
+            /// <returns></returns>
+            public override string GetDirectoryName(string path) { return Path.GetDirectoryName(path); }
+            /// <summary>
+            /// Gets the extension.
+            /// </summary>
+            /// <param name="path">The path.</param>
+            /// <returns></returns>
+            public override string GetExtension(string path) { return Path.GetExtension(path); }
+            /// <summary>
+            /// Gets the name of the file.
+            /// </summary>
+            /// <param name="path">The path.</param>
+            /// <returns></returns>
+            public override string GetFileName(string path) { return Path.GetFileName(path); }
+            /// <summary>
+            /// Gets the file name without extension.
+            /// </summary>
+            /// <param name="path">The path.</param>
+            /// <returns></returns>
+            public override string GetFileNameWithoutExtension(string path) { return Path.GetFileNameWithoutExtension(path); }
+            /// <summary>
+            /// Gets the full path.
+            /// </summary>
+            /// <param name="path">The path.</param>
+            /// <returns></returns>
+            public override string GetFullPath(string path) { return Path.GetFullPath(path); }
+            /// <summary>
+            /// Gets the invalid file name chars.
+            /// </summary>
+            /// <returns></returns>
+            public override char[] GetInvalidFileNameChars() { return Path.GetInvalidFileNameChars(); }
+            /// <summary>
+            /// Gets the invalid path chars.
+            /// </summary>
+            /// <returns></returns>
+            public override char[] GetInvalidPathChars() { return Path.GetInvalidPathChars(); }
+            /// <summary>
+            /// Gets the path root.
+            /// </summary>
+            /// <param name="path">The path.</param>
+            /// <returns></returns>
+            public override string GetPathRoot(string path) { return Path.GetPathRoot(path); }
+            /// <summary>
+            /// Gets the random name of the file.
+            /// </summary>
+            /// <returns></returns>
+            public override string GetRandomFileName() { return Path.GetRandomFileName(); }
+            /// <summary>
+            /// Gets the name of the temp file.
+            /// </summary>
+            /// <returns></returns>
+            public override string GetTempFileName() { return Path.GetTempFileName(); }
+            /// <summary>
+            /// Gets the temp path.
+            /// </summary>
+            /// <returns></returns>
+            public override string GetTempPath() { return Path.GetTempPath(); }
+            /// <summary>
+            /// Determines whether the specified path has extension.
+            /// </summary>
+            /// <param name="path">The path.</param>
+            /// <returns>
+            ///   <c>true</c> if the specified path has extension; otherwise, <c>false</c>.
+            /// </returns>
+            public override bool HasExtension(string path) { return Path.HasExtension(path); }
+            /// <summary>
+            /// Determines whether [is path rooted] [the specified path].
+            /// </summary>
+            /// <param name="path">The path.</param>
+            /// <returns>
+            ///   <c>true</c> if [is path rooted] [the specified path]; otherwise, <c>false</c>.
+            /// </returns>
+            public override bool IsPathRooted(string path) { return Path.IsPathRooted(path); }
         }
     }
 }

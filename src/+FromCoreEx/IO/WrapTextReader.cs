@@ -57,6 +57,7 @@ namespace System.IO
         public override void Close() { R.Close(); }
         protected override void Dispose(bool disposing) { if (disposing) R.Dispose(); }
         public override bool Equals(object obj) { return R.Equals(obj); }
+        public override int GetHashCode() { return R.GetHashCode(); }
 
         private int? _pendingC;
 

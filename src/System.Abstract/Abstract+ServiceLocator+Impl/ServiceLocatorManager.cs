@@ -63,11 +63,36 @@ namespace System.Abstract
                 SetProvider(() => new MicroServiceLocator());
         }
 
+        /// <summary>
+        /// Sets the provider.
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <returns></returns>
         public static Lazy<IServiceLocator> SetProvider(Func<IServiceLocator> provider) { return (Lazy = MakeByProviderProtected(provider, null)); }
+        /// <summary>
+        /// Sets the provider.
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <param name="setupDescriptor">The setup descriptor.</param>
+        /// <returns></returns>
         public static Lazy<IServiceLocator> SetProvider(Func<IServiceLocator> provider, ISetupDescriptor setupDescriptor) { return (Lazy = MakeByProviderProtected(provider, setupDescriptor)); }
+        /// <summary>
+        /// Makes the by provider.
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <returns></returns>
         public static Lazy<IServiceLocator> MakeByProvider(Func<IServiceLocator> provider) { return MakeByProviderProtected(provider, null); }
+        /// <summary>
+        /// Makes the by provider.
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <param name="setupDescriptor">The setup descriptor.</param>
+        /// <returns></returns>
         public static Lazy<IServiceLocator> MakeByProvider(Func<IServiceLocator> provider, ISetupDescriptor setupDescriptor) { return MakeByProviderProtected(provider, setupDescriptor); }
 
+        /// <summary>
+        /// Gets the current.
+        /// </summary>
         public static IServiceLocator Current
         {
             get
@@ -87,7 +112,15 @@ namespace System.Abstract
             }
         }
 
+        /// <summary>
+        /// Ensures the registration.
+        /// </summary>
         public static void EnsureRegistration() { }
+        /// <summary>
+        /// Gets the setup descriptor.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <returns></returns>
         public static ISetupDescriptor GetSetupDescriptor(Lazy<IServiceLocator> service) { return GetSetupDescriptorProtected(service, null); }
 
         private static void RegisterSelfInLocator(IServiceLocator locator)
@@ -95,8 +128,29 @@ namespace System.Abstract
             locator.Registrar.RegisterInstance<IServiceLocator>(locator);
         }
 
+        /// <summary>
+        /// Determines whether [has ignore service locator] [the specified instance].
+        /// </summary>
+        /// <param name="instance">The instance.</param>
+        /// <returns>
+        ///   <c>true</c> if [has ignore service locator] [the specified instance]; otherwise, <c>false</c>.
+        /// </returns>
         public static bool HasIgnoreServiceLocator(object instance) { return (instance == null || HasIgnoreServiceLocator(instance.GetType())); }
+        /// <summary>
+        /// Determines whether [has ignore service locator].
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <returns>
+        ///   <c>true</c> if [has ignore service locator]; otherwise, <c>false</c>.
+        /// </returns>
         public static bool HasIgnoreServiceLocator<TService>() { return HasIgnoreServiceLocator(typeof(TService)); }
+        /// <summary>
+        /// Determines whether [has ignore service locator] [the specified type].
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns>
+        ///   <c>true</c> if [has ignore service locator] [the specified type]; otherwise, <c>false</c>.
+        /// </returns>
         public static bool HasIgnoreServiceLocator(Type type)
         {
             return (type == null || _ignoreServiceLocatorType.IsAssignableFrom(type) || IgnoreServiceLocatorAttribute.HasIgnoreServiceLocator(type));

@@ -35,6 +35,9 @@ namespace System.Abstract.EventSourcing
     /// </summary>
     public interface IAggregateRoot
     {
+        /// <summary>
+        /// Gets the aggregate ID.
+        /// </summary>
         object AggregateID { get; }
     }
 
@@ -43,6 +46,9 @@ namespace System.Abstract.EventSourcing
     /// </summary>
     public abstract class AggregateRoot : IAggregateRoot, IAggregateRootStateAccessor
     {
+        /// <summary>
+        /// EmptyEventDispatcher
+        /// </summary>
         public static readonly IAggregateRootEventDispatcher EmptyEventDispatcher = new EmptyAggregateRootEventDispatcher();
         private readonly List<Event> _changes = new List<Event>();
         private IAggregateRootEventDispatcher _eventDispatcher;
@@ -54,16 +60,41 @@ namespace System.Abstract.EventSourcing
             public IEnumerable<Type> GetEventTypes() { return null; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AggregateRoot"/> class.
+        /// </summary>
         public AggregateRoot() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AggregateRoot"/> class.
+        /// </summary>
+        /// <param name="options">The options.</param>
         public AggregateRoot(AggregateRootOptions options)
         {
             _useStorageBasedSequencing = ((options & AggregateRootOptions.UseStorageBasedSequencing) != 0);
         }
 
+        /// <summary>
+        /// Gets or sets the aggregate ID.
+        /// </summary>
+        /// <value>
+        /// The aggregate ID.
+        /// </value>
         public object AggregateID { get; protected set; }
+        /// <summary>
+        /// Gets the last event date.
+        /// </summary>
         protected internal DateTime LastEventDate { get; private set; }
+        /// <summary>
+        /// Gets the last event sequence.
+        /// </summary>
         protected internal int LastEventSequence { get; private set; }
 
+        /// <summary>
+        /// Gets or sets the event dispatcher.
+        /// </summary>
+        /// <value>
+        /// The event dispatcher.
+        /// </value>
         protected IAggregateRootEventDispatcher EventDispatcher
         {
             get { return _eventDispatcher; }
@@ -75,6 +106,10 @@ namespace System.Abstract.EventSourcing
             }
         }
 
+        /// <summary>
+        /// Applies the event.
+        /// </summary>
+        /// <param name="e">The e.</param>
         protected void ApplyEvent(Event e)
         {
             if (e == null)
@@ -89,6 +124,12 @@ namespace System.Abstract.EventSourcing
             _changes.Add(e); // trackAsChange
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance has changed.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance has changed; otherwise, <c>false</c>.
+        /// </value>
         public bool HasChanged
         {
             get { return (_changes.Count > 0); }

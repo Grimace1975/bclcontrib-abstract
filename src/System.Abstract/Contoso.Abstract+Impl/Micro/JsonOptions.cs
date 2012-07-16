@@ -26,13 +26,31 @@ THE SOFTWARE.
 using System;
 namespace Contoso.Abstract.Micro
 {
+    /// <summary>
+    /// JsonOptions
+    /// </summary>
     [Flags]
     public enum JsonOptions
     {
+        /// <summary>
+        /// None
+        /// </summary>
         None = 0x0000,
+        /// <summary>
+        /// QuoteNames
+        /// </summary>
         QuoteNames = 0x0001,
+        /// <summary>
+        /// EnclosingParens
+        /// </summary>
         EnclosingParens = 0x0002,
+        /// <summary>
+        /// IncludeNulls
+        /// </summary>
         IncludeNulls = 0x0004,
+        /// <summary>
+        /// Formatted
+        /// </summary>
         Formatted = 0x0008
     }
 }

@@ -34,17 +34,37 @@ namespace System.Abstract
     [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class ServiceDependencyAttribute : Attribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceDependencyAttribute"/> class.
+        /// </summary>
         public ServiceDependencyAttribute()
             : this(null) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceDependencyAttribute"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
         public ServiceDependencyAttribute(string name) { Name = name; }
 
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
         public string Name { get; private set; }
 
+        /// <summary>
+        /// Gets the service dependencies.
+        /// </summary>
+        /// <param name="parameter">The parameter.</param>
+        /// <returns></returns>
         public static IEnumerable<ServiceDependencyAttribute> GetServiceDependencies(ParameterInfo parameter)
         {
             return parameter.GetCustomAttributes(false)
                 .OfType<ServiceDependencyAttribute>();
         }
+        /// <summary>
+        /// Gets the service dependencies.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns></returns>
         public static IEnumerable<ServiceDependencyAttribute> GetServiceDependencies(PropertyInfo property)
         {
             return property.GetCustomAttributes(typeof(ServiceDependencyAttribute), false)

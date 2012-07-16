@@ -34,18 +34,52 @@ namespace System
     {
         private TMetadata _metadata;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Lazy&lt;T, TMetadata&gt;"/> class.
+        /// </summary>
+        /// <param name="metadata">The metadata.</param>
         public Lazy(TMetadata metadata) { _metadata = metadata; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Lazy&lt;T, TMetadata&gt;"/> class.
+        /// </summary>
+        /// <param name="valueFactory">The value factory.</param>
+        /// <param name="metadata">The metadata.</param>
         public Lazy(Func<T> valueFactory, TMetadata metadata)
             : base(valueFactory) { _metadata = metadata; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Lazy&lt;T, TMetadata&gt;"/> class.
+        /// </summary>
+        /// <param name="metadata">The metadata.</param>
+        /// <param name="isThreadSafe">if set to <c>true</c> [is thread safe].</param>
         public Lazy(TMetadata metadata, bool isThreadSafe)
             : base(isThreadSafe) { _metadata = metadata; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Lazy&lt;T, TMetadata&gt;"/> class.
+        /// </summary>
+        /// <param name="metadata">The metadata.</param>
+        /// <param name="mode">The mode.</param>
         public Lazy(TMetadata metadata, LazyThreadSafetyMode mode)
             : base(mode) { _metadata = metadata; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Lazy&lt;T, TMetadata&gt;"/> class.
+        /// </summary>
+        /// <param name="valueFactory">The value factory.</param>
+        /// <param name="metadata">The metadata.</param>
+        /// <param name="isThreadSafe">if set to <c>true</c> [is thread safe].</param>
         public Lazy(Func<T> valueFactory, TMetadata metadata, bool isThreadSafe)
             : base(valueFactory, isThreadSafe) { _metadata = metadata; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Lazy&lt;T, TMetadata&gt;"/> class.
+        /// </summary>
+        /// <param name="valueFactory">The value factory.</param>
+        /// <param name="metadata">The metadata.</param>
+        /// <param name="mode">The mode.</param>
         public Lazy(Func<T> valueFactory, TMetadata metadata, LazyThreadSafetyMode mode)
             : base(valueFactory, mode) { _metadata = metadata; }
 
+        /// <summary>
+        /// Gets the metadata.
+        /// </summary>
         public TMetadata Metadata
         {
             get { return _metadata; }

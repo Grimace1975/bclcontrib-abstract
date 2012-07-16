@@ -30,6 +30,9 @@ using System.Text;
 using Contoso.Abstract.Micro.Internal;
 namespace Contoso.Abstract.Micro
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public abstract class JsonSerializer
     {
         private static readonly Type[] _numberTypes = new[] { 
@@ -43,8 +46,16 @@ namespace Contoso.Abstract.Micro
         private static Dictionary<Type, JsonSerializer> _serializers = new Dictionary<Type, JsonSerializer>();
         private static Dictionary<Type, JsonSerializer> _arraySerializers = new Dictionary<Type, JsonSerializer>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsonSerializer"/> class.
+        /// </summary>
         protected JsonSerializer()
             : this(JsonValueType.Object, null) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JsonSerializer"/> class.
+        /// </summary>
+        /// <param name="serializerType">Type of the serializer.</param>
+        /// <param name="defaultFormat">The default format.</param>
         protected JsonSerializer(JsonValueType serializerType, string defaultFormat)
         {
             SerializerType = serializerType;
@@ -94,7 +105,16 @@ namespace Contoso.Abstract.Micro
             throw new JsonSerializationException("Unable to create serializer");
         }
 
+        /// <summary>
+        /// Gets the type of the serializer.
+        /// </summary>
+        /// <value>
+        /// The type of the serializer.
+        /// </value>
         public virtual JsonValueType SerializerType { get; private set; }
+        /// <summary>
+        /// Gets the default format.
+        /// </summary>
         public virtual string DefaultFormat { get; private set; }
 
         internal abstract object BaseDeserialize(TextReader r, string path);

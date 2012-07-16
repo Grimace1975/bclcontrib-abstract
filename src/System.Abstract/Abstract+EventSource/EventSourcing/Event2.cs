@@ -31,6 +31,12 @@ namespace System.Abstract.EventSourcing
     [Serializable]
     public abstract class Event<TData> : Event
     {
+        /// <summary>
+        /// Gets or sets the data.
+        /// </summary>
+        /// <value>
+        /// The data.
+        /// </value>
         public TData Data { get; set; }
     }
 }

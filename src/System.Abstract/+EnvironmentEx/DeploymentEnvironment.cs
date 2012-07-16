@@ -31,11 +31,29 @@ namespace System
     // [Wiki] http://en.wikipedia.org/wiki/Software_testing
 	public enum DeploymentEnvironment
 	{
+        /// <summary>
+        /// ProofOfConcept
+        /// </summary>
         ProofOfConcept,
+        /// <summary>
+        /// Local
+        /// </summary>
         Local,
+        /// <summary>
+        /// Development
+        /// </summary>
 		Development,
+        /// <summary>
+        /// AlphaTesting
+        /// </summary>
 		AlphaTesting,
+        /// <summary>
+        /// BetaTesting
+        /// </summary>
 		BetaTesting,
+        /// <summary>
+        /// Production
+        /// </summary>
         Production
 	}
 }

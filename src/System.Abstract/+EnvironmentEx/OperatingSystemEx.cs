@@ -31,28 +31,62 @@ namespace System
 	public class OperatingSystemEx
 	{
 		private OperatingSystem _parent;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OperatingSystemEx"/> class.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
 		public OperatingSystemEx(OperatingSystem parent) { _parent = parent; }
 
+        /// <summary>
+        /// Gets the platform.
+        /// </summary>
 		public virtual PlatformID Platform
 		{
 			get { return (_parent != null ? _parent.Platform : (PlatformID)0); }
 		}
+        /// <summary>
+        /// Gets the service pack.
+        /// </summary>
 		public virtual string ServicePack
 		{
 			get { return (_parent != null ? _parent.ServicePack : null); }
 		}
+        /// <summary>
+        /// Gets the version.
+        /// </summary>
 		public virtual Version Version
 		{
 			get { return (_parent != null ? _parent.Version : null); }
 		}
+        /// <summary>
+        /// Gets the version string.
+        /// </summary>
 		public virtual string VersionString
 		{
 			get { return (_parent != null ? _parent.VersionString : null); }
 		}
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
 		public override string ToString() { return (_parent != null ? _parent.ToString() : null); }
 
+        /// <summary>
+        /// Gets or sets the platform suites.
+        /// </summary>
+        /// <value>
+        /// The platform suites.
+        /// </value>
 		public virtual PlatformSuites PlatformSuites { get; set; }
 
+        /// <summary>
+        /// Gets or sets the platform product ID.
+        /// </summary>
+        /// <value>
+        /// The platform product ID.
+        /// </value>
 		public virtual PlatformProductID PlatformProductID { get; set; }		
 	}
 }

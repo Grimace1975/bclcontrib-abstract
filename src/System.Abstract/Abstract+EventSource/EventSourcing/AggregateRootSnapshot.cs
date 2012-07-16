@@ -30,7 +30,14 @@ namespace System.Abstract.EventSourcing
     /// </summary>
     public abstract class AggregateRootSnapshot
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AggregateRootSnapshot"/> class.
+        /// </summary>
         public AggregateRootSnapshot() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AggregateRootSnapshot"/> class.
+        /// </summary>
+        /// <param name="aggregate">The aggregate.</param>
         public AggregateRootSnapshot(AggregateRoot aggregate)
         {
             AggregateID = aggregate.AggregateID;
@@ -38,8 +45,26 @@ namespace System.Abstract.EventSourcing
             LastEventSequence = aggregate.LastEventSequence;
         }
 
+        /// <summary>
+        /// Gets or sets the aggregate ID.
+        /// </summary>
+        /// <value>
+        /// The aggregate ID.
+        /// </value>
         public object AggregateID { get; set; }
+        /// <summary>
+        /// Gets or sets the last event date.
+        /// </summary>
+        /// <value>
+        /// The last event date.
+        /// </value>
         public DateTime LastEventDate { get; set; }
+        /// <summary>
+        /// Gets or sets the last event sequence.
+        /// </summary>
+        /// <value>
+        /// The last event sequence.
+        /// </value>
         public int LastEventSequence { get; set; }
     }
 }

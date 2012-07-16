@@ -29,23 +29,32 @@ using System.Abstract;
 using System.Collections.Generic;
 namespace Contoso.Abstract
 {
-    /// <summary>
-    /// IStaticServiceCache
-    /// </summary>
+    /// <remark>
+    /// An static dictionary specific service cache interface
+    /// </remark>
     public interface IStaticServiceCache : IServiceCache
     {
+        /// <summary>
+        /// Gets the cache.
+        /// </summary>
         Dictionary<string, object> Cache { get; }
     }
 
     //: might need to make thread safe
-    /// <summary>
-    /// Provides the core factory method mechanism for generating or accessing a singleton-based Cache Provider.
-    /// </summary>
+    /// <remark>
+    /// Provides a static dictionary adapter for the service cache sub-system.
+    /// </remark>
+    /// <example>
+    /// ServiceCacheManager.SetProvider(() => new StaticServiceCache())
+    /// </example>
     public class StaticServiceCache : IStaticServiceCache, ServiceCacheManager.ISetupRegistration
     {
-        public static readonly Dictionary<string, object> _cache = new Dictionary<string, object>();
+        private static readonly Dictionary<string, object> _cache = new Dictionary<string, object>();
 
         static StaticServiceCache() { ServiceCacheManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StaticServiceCache"/> class.
+        /// </summary>
         public StaticServiceCache()
         {
             Settings = new ServiceCacheSettings(new DefaultFileTouchableCacheItem(this, new DefaultTouchableCacheItem(this, null)));
@@ -56,8 +65,20 @@ namespace Contoso.Abstract
             get { return (locator, name) => ServiceCacheManager.RegisterInstance<IStaticServiceCache>(this, locator, name); }
         }
 
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType"/>.
+        /// -or-
+        /// null if there is no service object of type <paramref name="serviceType"/>.
+        /// </returns>
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
+        /// <summary>
+        /// Gets or sets the <see cref="System.Object"/> with the specified name.
+        /// </summary>
         public object this[string name]
         {
             get { return Get(null, name); }
@@ -67,15 +88,12 @@ namespace Contoso.Abstract
         /// <summary>
         /// Adds an object into cache based on the parameters provided.
         /// </summary>
-        /// <param name="tag">The tag.</param>
+        /// <param name="tag">Not used</param>
         /// <param name="name">The key used to identify the item in cache.</param>
-        /// <param name="dependency">The dependency object defining caching validity dependencies.</param>
-        /// <param name="absoluteExpiration">The absolute expiration value used to determine when a cache item must be considerd invalid.</param>
-        /// <param name="slidingExpiration">The sliding expiration value used to determine when a cache item is considered invalid due to lack of use.</param>
-        /// <param name="priority">The priority.</param>
-        /// <param name="onRemoveCallback">The delegate to invoke when the item is removed from cache.</param>
+        /// <param name="itemPolicy">Not used</param>
         /// <param name="value">The value to store in cache.</param>
-        /// <returns></returns>
+        /// <param name="dispatch">Not used</param>
+        /// <returns>Last value that what in cache.</returns>
         public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             // TODO: Throw on dependency or other stuff not supported by this simple system
@@ -91,14 +109,23 @@ namespace Contoso.Abstract
         /// <summary>
         /// Gets the item from cache associated with the key provided.
         /// </summary>
+        /// <param name="tag">The tag.</param>
         /// <param name="name">The key.</param>
-        /// <returns>The cached item.</returns>
+        /// <returns>
+        /// The cached item.
+        /// </returns>
         public object Get(object tag, string name)
         {
             object value;
             return (_cache.TryGetValue(name, out value) ? value : null);
         }
 
+        /// <summary>
+        /// Gets the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="names">The names.</param>
+        /// <returns></returns>
         public object Get(object tag, IEnumerable<string> names)
         {
             if (names == null)
@@ -106,18 +133,24 @@ namespace Contoso.Abstract
             return names.Select(name => new { name, value = Get(null, name) }).ToDictionary(x => x.name, x => x.value);
         }
 
+        /// <summary>
+        /// Tries the get.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public bool TryGet(object tag, string name, out object value) { return _cache.TryGetValue(name, out value); }
 
         /// <summary>
         /// Adds an object into cache based on the parameters provided.
         /// </summary>
-        /// <param name="name">The key used to identify the item in cache.</param>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name used to identify the item in cache.</param>
+        /// <param name="itemPolicy">The itemPolicy defining caching policies.</param>
         /// <param name="value">The value to store in cache.</param>
-        /// <param name="dependency">The dependency object defining caching validity dependencies.</param>
-        /// <param name="absoluteExpiration">The absolute expiration value used to determine when a cache item must be considerd invalid.</param>
-        /// <param name="slidingExpiration">The sliding expiration value used to determine when a cache item is considered invalid due to lack of use.</param>
-        /// <param name="priority">The priority.</param>
-        /// <param name="onRemoveCallback">The delegate to invoke when the item is removed from cache.</param>
+        /// <param name="dispatch"></param>
+        /// <returns></returns>
         public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             return (_cache[name] = value);
@@ -126,6 +159,7 @@ namespace Contoso.Abstract
         /// <summary>
         /// Removes from cache the item associated with the key provided.
         /// </summary>
+        /// <param name="tag">The tag.</param>
         /// <param name="name">The key.</param>
         /// <returns>
         /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
@@ -141,6 +175,9 @@ namespace Contoso.Abstract
             return null;
         }
 
+        /// <summary>
+        /// Settings
+        /// </summary>
         public ServiceCacheSettings Settings { get; private set; }
 
         #region TouchableCacheItem
@@ -152,8 +189,18 @@ namespace Contoso.Abstract
         {
             private StaticServiceCache _parent;
             private ITouchableCacheItem _base;
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DefaultTouchableCacheItem"/> class.
+            /// </summary>
+            /// <param name="parent">The parent.</param>
+            /// <param name="base">The @base.</param>
             public DefaultTouchableCacheItem(StaticServiceCache parent, ITouchableCacheItem @base) { _parent = parent; _base = @base; }
 
+            /// <summary>
+            /// Touches the specified tag.
+            /// </summary>
+            /// <param name="tag">The tag.</param>
+            /// <param name="names">The names.</param>
             public void Touch(object tag, string[] names)
             {
                 if (names == null || names.Length == 0)
@@ -163,6 +210,12 @@ namespace Contoso.Abstract
                     _base.Touch(tag, names);
             }
 
+            /// <summary>
+            /// Makes the dependency.
+            /// </summary>
+            /// <param name="tag">The tag.</param>
+            /// <param name="names">The names.</param>
+            /// <returns></returns>
             public object MakeDependency(object tag, string[] names)
             {
                 if (names == null || names.Length == 0)
@@ -176,9 +229,20 @@ namespace Contoso.Abstract
         /// </summary>
         public class DefaultFileTouchableCacheItem : ServiceCache.FileTouchableCacheItemBase
         {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DefaultFileTouchableCacheItem"/> class.
+            /// </summary>
+            /// <param name="parent">The parent.</param>
+            /// <param name="base">The @base.</param>
             public DefaultFileTouchableCacheItem(StaticServiceCache parent, ITouchableCacheItem @base)
                 : base(parent, @base) { }
 
+            /// <summary>
+            /// Makes the dependency internal.
+            /// </summary>
+            /// <param name="tag">The tag.</param>
+            /// <param name="names">The names.</param>
+            /// <returns></returns>
             protected override object MakeDependencyInternal(object tag, string[] names) { return null; }
         }
 
@@ -186,6 +250,9 @@ namespace Contoso.Abstract
 
         #region Domain-specific
 
+        /// <summary>
+        /// Gets the cache.
+        /// </summary>
         public Dictionary<string, object> Cache
         {
             get { return _cache; }

@@ -37,11 +37,20 @@ namespace System.Abstract.Parts
     {
         private static readonly ConditionalWeakTable<Lazy<TIService>, ISetupDescriptor> _setupDescriptors = new ConditionalWeakTable<Lazy<TIService>, ISetupDescriptor>();
         private static readonly object _lock = new object();
+        /// <summary>
+        /// 
+        /// </summary>
         protected static TIService LazyValue;
 
         // Force "precise" initialization
         static ServiceManagerBase() { }
 
+        /// <summary>
+        /// Gets or sets the lazy.
+        /// </summary>
+        /// <value>
+        /// The lazy.
+        /// </value>
         public static Lazy<TIService> Lazy { get; protected set; }
 
         //public static Lazy<TIService> SetProvider(Func<TIService> provider) { return (Lazy = MakeByProviderProtected(provider, null)); }
@@ -49,6 +58,12 @@ namespace System.Abstract.Parts
         //public static Lazy<TIService> MakeByProvider(Func<TIService> provider) { return MakeByProviderProtected(provider, null); }
         //public static Lazy<TIService> MakeByProvider(Func<TIService> provider, ISetupDescriptor setupDescriptor) { return MakeByProviderProtected(provider, setupDescriptor); }
 
+        /// <summary>
+        /// Makes the by provider protected.
+        /// </summary>
+        /// <param name="provider">The provider.</param>
+        /// <param name="setupDescriptor">The setup descriptor.</param>
+        /// <returns></returns>
         public static Lazy<TIService> MakeByProviderProtected(Func<TIService> provider, ISetupDescriptor setupDescriptor)
         {
             if (provider == null)
@@ -58,23 +73,35 @@ namespace System.Abstract.Parts
             return lazy;
         }
 
+        /// <summary>
+        /// Gets or sets the registration.
+        /// </summary>
+        /// <value>
+        /// The registration.
+        /// </value>
         protected static SetupRegistration Registration { get; set; }
 
         #region Setup
 
         /// <summary>
         /// ISetupRegistration
-        /// </summary
+        /// </summary>
         public interface ISetupRegistration
         {
+            /// <summary>
+            /// Gets the on service registrar.
+            /// </summary>
             Action<IServiceLocator, string> OnServiceRegistrar { get; }
         }
 
         /// <summary>
         /// SetupRegistration
-        /// </summary
+        /// </summary>
         protected class SetupRegistration
         {
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ServiceManagerBase&lt;TIService, TServiceSetupAction&gt;.SetupRegistration"/> class.
+            /// </summary>
             public SetupRegistration()
             {
                 OnServiceRegistrar = (service, locator, name) =>
@@ -90,9 +117,33 @@ namespace System.Abstract.Parts
                 };
             }
 
+            /// <summary>
+            /// Gets or sets the on setup.
+            /// </summary>
+            /// <value>
+            /// The on setup.
+            /// </value>
             public Func<TIService, ISetupDescriptor, TIService> OnSetup { get; set; }
+            /// <summary>
+            /// Gets or sets the on change.
+            /// </summary>
+            /// <value>
+            /// The on change.
+            /// </value>
             public Action<TIService, ISetupDescriptor> OnChange { get; set; }
+            /// <summary>
+            /// Gets or sets the on service registrar.
+            /// </summary>
+            /// <value>
+            /// The on service registrar.
+            /// </value>
             public Action<TIService, IServiceLocator, string> OnServiceRegistrar { get; set; }
+            /// <summary>
+            /// Gets or sets the make action.
+            /// </summary>
+            /// <value>
+            /// The make action.
+            /// </value>
             public Func<Action<TIService>, TServiceSetupAction> MakeAction { get; set; }
         }
 
@@ -184,11 +235,39 @@ namespace System.Abstract.Parts
         /// </summary>
         public interface ISetupDescriptor
         {
+            /// <summary>
+            /// Does the specified action.
+            /// </summary>
+            /// <param name="action">The action.</param>
             void Do(Action<TIService> action);
+            /// <summary>
+            /// Does the specified action.
+            /// </summary>
+            /// <param name="action">The action.</param>
             void Do(TServiceSetupAction action);
+            /// <summary>
+            /// Registers the with service locator.
+            /// </summary>
+            /// <param name="service">The service.</param>
+            /// <param name="name">The name.</param>
             void RegisterWithServiceLocator(Lazy<TIService> service, string name);
+            /// <summary>
+            /// Registers the with service locator.
+            /// </summary>
+            /// <param name="service">The service.</param>
+            /// <param name="locator">The locator.</param>
+            /// <param name="name">The name.</param>
             void RegisterWithServiceLocator(Lazy<TIService> service, Lazy<IServiceLocator> locator, string name);
+            /// <summary>
+            /// Registers the with service locator.
+            /// </summary>
+            /// <param name="service">The service.</param>
+            /// <param name="locator">The locator.</param>
+            /// <param name="name">The name.</param>
             void RegisterWithServiceLocator(Lazy<TIService> service, IServiceLocator locator, string name);
+            /// <summary>
+            /// Gets the actions.
+            /// </summary>
             IEnumerable<TServiceSetupAction> Actions { get; }
         }
 
@@ -201,6 +280,11 @@ namespace System.Abstract.Parts
             private SetupRegistration _registration;
             private Action<ISetupDescriptor> _postAction;
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ServiceManagerBase&lt;TIService, TServiceSetupAction&gt;.SetupDescriptor"/> class.
+            /// </summary>
+            /// <param name="registration">The registration.</param>
+            /// <param name="postAction">The post action.</param>
             public SetupDescriptor(SetupRegistration registration, Action<ISetupDescriptor> postAction)
             {
                 if (registration == null)

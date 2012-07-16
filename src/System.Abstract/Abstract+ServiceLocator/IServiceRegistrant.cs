@@ -30,6 +30,10 @@ namespace System.Abstract
     /// </summary>
     public interface IServiceRegistrant
     {
+        /// <summary>
+        /// Registers the specified registrar.
+        /// </summary>
+        /// <param name="registrar">The registrar.</param>
         void Register(IServiceRegistrar registrar);
     }
 }

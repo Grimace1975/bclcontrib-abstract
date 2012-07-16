@@ -30,6 +30,10 @@ namespace System.Abstract
     /// </summary>
     public class ServiceCacheForeignRegistration : ServiceCacheRegistration
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceCacheForeignRegistration"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
         public ServiceCacheForeignRegistration(string name)
             : base(name) { }
         /// <summary>

@@ -30,9 +30,33 @@ namespace System.Abstract
     /// </summary>
     public struct ServiceRegistration
     {
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
         public string Name { get; set; }
+        /// <summary>
+        /// Gets or sets the type of the service.
+        /// </summary>
+        /// <value>
+        /// The type of the service.
+        /// </value>
         public Type ServiceType { get; set; }
+        /// <summary>
+        /// Gets or sets the type of the implementation.
+        /// </summary>
+        /// <value>
+        /// The type of the implementation.
+        /// </value>
         public Type ImplementationType { get; set; }
+        /// <summary>
+        /// Gets or sets the tag.
+        /// </summary>
+        /// <value>
+        /// The tag.
+        /// </value>
         public object Tag { get; set; }
     }
 }

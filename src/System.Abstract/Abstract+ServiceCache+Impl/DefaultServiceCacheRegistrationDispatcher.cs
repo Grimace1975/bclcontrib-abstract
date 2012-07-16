@@ -33,6 +33,15 @@ namespace System.Abstract
     {
         private static readonly ReaderWriterLockSlim _rwLock = new ReaderWriterLockSlim();
 
+        /// <summary>
+        /// Gets the specified cache.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="cache">The cache.</param>
+        /// <param name="registration">The registration.</param>
+        /// <param name="tag">The tag.</param>
+        /// <param name="values">The values.</param>
+        /// <returns></returns>
         public T Get<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values)
         {
             if (cache == null)
@@ -123,6 +132,11 @@ namespace System.Abstract
             return value;
         }
 
+        /// <summary>
+        /// Removes the specified cache.
+        /// </summary>
+        /// <param name="cache">The cache.</param>
+        /// <param name="registration">The registration.</param>
         public void Remove(IServiceCache cache, ServiceCacheRegistration registration)
         {
             if (cache == null)

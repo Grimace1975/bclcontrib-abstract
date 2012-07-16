@@ -30,7 +30,18 @@ namespace System.Abstract
     /// </summary>
     public interface IServiceBusCallback
     {
+        /// <summary>
+        /// Registers the specified callback.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="callback">The callback.</param>
         void Register<T>(Action<T> callback);
+        /// <summary>
+        /// Registers the specified callback.
+        /// </summary>
+        /// <param name="callback">The callback.</param>
+        /// <param name="state">The state.</param>
+        /// <returns></returns>
         IAsyncResult Register(AsyncCallback callback, object state);
     }
 }
