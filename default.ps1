@@ -7,7 +7,7 @@ properties {
   $lib_dir = "$base_dir\SharedLibs"
   $35_lib_dir = "$base_dir\SharedLibs\3.5\"
   $release_dir = "$base_dir\Release"
-  $sln_file = "$base_dir\BCLEX-ABSTRACT.b.sln"
+  $sln_file = "$base_dir\BCLEX-ABSTRACT.sln"
   $tools_dir = "$base_dir\tools"
   $config = "Release"
   $run_tests = $true
