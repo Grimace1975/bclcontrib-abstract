@@ -36,6 +36,10 @@ namespace Contoso.Abstract.EventSourcing
     {
         private readonly IStoreEvents _store;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ESEventStore"/> class.
+        /// </summary>
+        /// <param name="store">The store.</param>
         public ESEventStore(IStoreEvents store)
         {
             if (store == null)
@@ -43,6 +47,12 @@ namespace Contoso.Abstract.EventSourcing
             _store = store;
         }
 
+        /// <summary>
+        /// Gets the events by ID.
+        /// </summary>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <param name="startSequence">The start sequence.</param>
+        /// <returns></returns>
         public IEnumerable<Event> GetEventsByID(object aggregateID, int startSequence)
         {
             var streamID = (Guid)aggregateID;
@@ -53,6 +63,11 @@ namespace Contoso.Abstract.EventSourcing
             }
         }
 
+        /// <summary>
+        /// Saves the events.
+        /// </summary>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <param name="events">The events.</param>
         public void SaveEvents(object aggregateID, IEnumerable<Event> events)
         {
             var streamID = (Guid)aggregateID;

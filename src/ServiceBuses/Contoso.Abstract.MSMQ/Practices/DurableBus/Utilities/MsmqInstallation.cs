@@ -144,6 +144,12 @@ namespace Contoso.Practices.DurableBus.Utilities
 			return Process.Start("sysocmgr", @"/i:sysoc.inf /x /q /w /u:%temp%\" + Path.GetFileName(path));
 		}
 
+        /// <summary>
+        /// Determines whether [is installation good].
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if [is installation good]; otherwise, <c>false</c>.
+        /// </returns>
 		public static bool IsInstallationGood()
 		{
 			var msmqSetup = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\MSMQ\Setup");
@@ -187,6 +193,9 @@ namespace Contoso.Practices.DurableBus.Utilities
 			}
 		}
 
+        /// <summary>
+        /// Starts the MSMQ if necessary.
+        /// </summary>
 		public static void StartMsmqIfNecessary()
 		{
 			InstallMsmqIfNecessary();

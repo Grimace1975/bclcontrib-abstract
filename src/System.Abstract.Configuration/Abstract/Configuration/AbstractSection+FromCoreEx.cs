@@ -28,8 +28,15 @@ using System.Collections;
 using System.Configuration;
 namespace System.Abstract.Configuration
 {
+    /// <summary>
+    /// An abstract class representing a simplified configuration section object. This provides a basic
+    /// facade over the <see cref="T:System.Configuration.ConfigurationSection">ConfigurationSection</see> class.
+    /// </summary>
     public partial class AbstractSection : ConfigurationSection
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AbstractSection"/> class.
+        /// </summary>
         public AbstractSection() { _attributeIndex = new AttributeIndex(this); }
 #else
 namespace System.Configuration
@@ -41,7 +48,7 @@ namespace System.Configuration
     public abstract class ConfigurationSectionEx : ConfigurationSection
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ConfigurationSectionBase"/> class.
+        /// Initializes a new instance of the <see cref="ConfigurationSectionEx"/> class.
         /// </summary>
         protected ConfigurationSectionEx() { _attributeIndex = new AttributeIndex(this); }
 #endif
@@ -69,7 +76,7 @@ namespace System.Configuration
         /// <summary>
         /// Applies the configuration.
         /// </summary>
-        /// <param name="inherit">The inherit.</param>
+        /// <param name="inheritConfiguration">The inherit configuration.</param>
         public void ApplyConfiguration(ConfigurationSection inheritConfiguration)
         {
             ApplyConfigurationValues(inheritConfiguration);
@@ -85,7 +92,7 @@ namespace System.Configuration
         /// <summary>
         /// Applies the configuration elements.
         /// </summary>
-        /// <param name="inherit">The inherit.</param>
+        /// <param name="inheritConfiguration">The inherit configuration.</param>
         protected virtual void ApplyConfigurationElements(ConfigurationSection inheritConfiguration) { }
 
         /// <summary>
@@ -96,21 +103,37 @@ namespace System.Configuration
         #endregion
 
         #region Attribute
+
 #if COREINTERNAL
+        /// <summary>
+        /// Gets the AttributeIndex of this class.
+        /// </summary>
+        /// <value>
+        /// The attribute.
+        /// </value>
         public AttributeIndex Attribute
         {
             get { return _attributeIndex; }
         }
+        /// <summary>
+        /// AttributeIndex
+        /// </summary>
         public class AttributeIndex
         {
             private AbstractSection _parent;
+            /// <summary>
+            /// Initializes a new instance of the <see cref="AttributeIndex"/> class.
+            /// </summary>
+            /// <param name="parent">The parent.</param>
             public AttributeIndex(AbstractSection parent) { _parent = parent; }
 #else
         /// <summary>
         /// Gets the AttributeIndex of this class.
         /// </summary>
-        /// <value>The attribute.</value>
-        public IIndexer<ConfigurationProperty, object> Attribute
+        /// <value>
+        /// The attribute.
+        /// </value>
+        protected IIndexer<ConfigurationProperty, object> Attribute
         {
             get { return _attributeIndex; }
         }
@@ -121,13 +144,12 @@ namespace System.Configuration
             /// <summary>
             /// Initializes a new instance of the <see cref="AttributeIndex"/> class.
             /// </summary>
-            /// <param name="config">The config.</param>
+            /// <param name="parent">The parent.</param>
             public AttributeIndex(ConfigurationSectionEx parent) { _parent = parent; }
 #endif
             /// <summary>
             /// Gets or sets the <see cref="System.Object"/> with the specified key.
             /// </summary>
-            /// <value></value>
             public object this[ConfigurationProperty key]
             {
                 get { return _parent[key]; }

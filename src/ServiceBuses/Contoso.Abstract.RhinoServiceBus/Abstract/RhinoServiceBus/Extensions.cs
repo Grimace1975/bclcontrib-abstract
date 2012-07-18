@@ -27,9 +27,23 @@ using System.Abstract;
 using Rhino.ServiceBus.Impl;
 namespace Contoso.Abstract.RhinoServiceBus
 {
+    /// <summary>
+    /// Extensions
+    /// </summary>
     public static class Extensions
     {
+        /// <summary>
+        /// Uses the abstract service locator.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <returns></returns>
         public static AbstractRhinoServiceBusConfiguration UseAbstractServiceLocator(this AbstractRhinoServiceBusConfiguration configuration) { return UseAbstractServiceLocator(configuration, ServiceLocatorManager.Current); }
+        /// <summary>
+        /// Uses the abstract service locator.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
+        /// <param name="locator">The locator.</param>
+        /// <returns></returns>
         public static AbstractRhinoServiceBusConfiguration UseAbstractServiceLocator(this AbstractRhinoServiceBusConfiguration configuration, IServiceLocator locator)
         {
             new ServiceLocatorBuilder(locator, configuration);

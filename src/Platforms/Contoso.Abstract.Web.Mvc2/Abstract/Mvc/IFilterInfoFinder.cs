@@ -32,6 +32,11 @@ namespace Contoso.Abstract.Mvc
     /// </summary>
     public interface IFilterInfoFinder
     {
+        /// <summary>
+        /// Finds the filters.
+        /// </summary>
+        /// <param name="actionDescriptor">The action descriptor.</param>
+        /// <returns></returns>
         FilterInfo FindFilters(ActionDescriptor actionDescriptor);
     }
 }

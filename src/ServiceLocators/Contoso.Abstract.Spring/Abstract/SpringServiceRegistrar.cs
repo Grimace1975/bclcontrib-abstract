@@ -39,12 +39,20 @@ namespace Contoso.Abstract
     /// </summary>
     public interface ISpringServiceRegistrar : IServiceRegistrar { }
 
+    /// <summary>
+    /// SpringServiceRegistrar
+    /// </summary>
     public class SpringServiceRegistrar : ISpringServiceRegistrar, ICloneable, IServiceRegistrarBehaviorAccessor
     {
         private SpringServiceLocator _parent;
         private GenericApplicationContext _container; // IConfigurableApplicationContext
         private IObjectDefinitionFactory _factory = new DefaultObjectDefinitionFactory();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpringServiceRegistrar"/> class.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="container">The container.</param>
         public SpringServiceRegistrar(SpringServiceLocator parent, GenericApplicationContext container)
         {
             _parent = parent;
@@ -55,14 +63,36 @@ namespace Contoso.Abstract
         object ICloneable.Clone() { return MemberwiseClone(); }
 
         // locator
+        /// <summary>
+        /// Gets the locator.
+        /// </summary>
         public IServiceLocator Locator
         {
             get { return _parent; }
         }
 
         // enumerate
+        /// <summary>
+        /// Determines whether this instance has registered.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <returns>
+        ///   <c>true</c> if this instance has registered; otherwise, <c>false</c>.
+        /// </returns>
         public bool HasRegistered<TService>() { return (_container.GetObjectsOfType(typeof(TService)).Count > 0); }
+        /// <summary>
+        /// Determines whether the specified service type has registered.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified service type has registered; otherwise, <c>false</c>.
+        /// </returns>
         public bool HasRegistered(Type serviceType) { return (_container.GetObjectsOfType(serviceType).Count > 0); }
+        /// <summary>
+        /// Gets the registrations for.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns></returns>
         public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType)
         {
             return _container.GetObjectsOfType(serviceType).Cast<DictionaryEntry>()
@@ -73,6 +103,9 @@ namespace Contoso.Abstract
                     return new ServiceRegistration { ServiceType = objectDefinition.ObjectType, ImplementationType = objectDefinition.ObjectType, Name = objectName };
                 });
         }
+        /// <summary>
+        /// Gets the registrations.
+        /// </summary>
         public IEnumerable<ServiceRegistration> Registrations
         {
             get
@@ -88,13 +121,25 @@ namespace Contoso.Abstract
         }
 
         // register type
+        /// <summary>
+        /// Gets the lifetime for registers.
+        /// </summary>
         public ServiceRegistrarLifetime LifetimeForRegisters { get; private set; }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
         public void Register(Type serviceType)
         {
             var b = SetLifetime(ObjectDefinitionBuilder.RootObjectDefinition(_factory, serviceType));
             _container.RegisterObjectDefinition(SpringServiceLocator.GetName(serviceType), b.ObjectDefinition);
         }
 
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="name">The name.</param>
         public void Register(Type serviceType, string name)
         {
             var b = SetLifetime(ObjectDefinitionBuilder.RootObjectDefinition(_factory, serviceType));
@@ -102,6 +147,11 @@ namespace Contoso.Abstract
         }
 
         // register implementation
+        /// <summary>
+        /// Registers this instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
         public void Register<TService, TImplementation>()
             where TService : class
             where TImplementation : class, TService
@@ -109,6 +159,12 @@ namespace Contoso.Abstract
             var b = SetLifetime(ObjectDefinitionBuilder.RootObjectDefinition(_factory, typeof(TImplementation)));
             _container.RegisterObjectDefinition(SpringServiceLocator.GetName(typeof(TImplementation)), b.ObjectDefinition);
         }
+        /// <summary>
+        /// Registers the specified name.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
+        /// <param name="name">The name.</param>
         public void Register<TService, TImplementation>(string name)
             where TService : class
             where TImplementation : class, TService
@@ -116,23 +172,45 @@ namespace Contoso.Abstract
             var b = SetLifetime(ObjectDefinitionBuilder.RootObjectDefinition(_factory, typeof(TImplementation)));
             _container.RegisterObjectDefinition(name, b.ObjectDefinition);
         }
+        /// <summary>
+        /// Registers the specified implementation type.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="implementationType">Type of the implementation.</param>
         public void Register<TService>(Type implementationType)
             where TService : class
         {
             var b = SetLifetime(ObjectDefinitionBuilder.RootObjectDefinition(_factory, implementationType));
             _container.RegisterObjectDefinition(SpringServiceLocator.GetName(implementationType), b.ObjectDefinition);
         }
+        /// <summary>
+        /// Registers the specified implementation type.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="implementationType">Type of the implementation.</param>
+        /// <param name="name">The name.</param>
         public void Register<TService>(Type implementationType, string name)
             where TService : class
         {
             var b = ObjectDefinitionBuilder.RootObjectDefinition(_factory, implementationType);
             _container.RegisterObjectDefinition(name, b.ObjectDefinition);
         }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="implementationType">Type of the implementation.</param>
         public void Register(Type serviceType, Type implementationType)
         {
             var b = SetLifetime(ObjectDefinitionBuilder.RootObjectDefinition(_factory, implementationType));
             _container.RegisterObjectDefinition(SpringServiceLocator.GetName(implementationType), b.ObjectDefinition);
         }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="implementationType">Type of the implementation.</param>
+        /// <param name="name">The name.</param>
         public void Register(Type serviceType, Type implementationType, string name)
         {
             var b = SetLifetime(ObjectDefinitionBuilder.RootObjectDefinition(_factory, implementationType));
@@ -140,14 +218,41 @@ namespace Contoso.Abstract
         }
 
         // register instance
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="instance">The instance.</param>
         public void RegisterInstance<TService>(TService instance)
             where TService : class { EnsureTransientLifestyle(); _container.ObjectFactory.RegisterSingleton(SpringServiceLocator.GetName(typeof(TService)), instance); }
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="name">The name.</param>
         public void RegisterInstance<TService>(TService instance, string name)
             where TService : class { EnsureTransientLifestyle(); _container.ObjectFactory.RegisterSingleton(name, instance); }
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="instance">The instance.</param>
         public void RegisterInstance(Type serviceType, object instance) { EnsureTransientLifestyle(); _container.ObjectFactory.RegisterSingleton(SpringServiceLocator.GetName(serviceType), instance); }
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="instance">The instance.</param>
+        /// <param name="name">The name.</param>
         public void RegisterInstance(Type serviceType, object instance, string name) { EnsureTransientLifestyle(); _container.ObjectFactory.RegisterSingleton(name, instance); }
 
         // register method
+        /// <summary>
+        /// Registers the specified factory method.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="factoryMethod">The factory method.</param>
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class
         {
@@ -155,6 +260,12 @@ namespace Contoso.Abstract
             Func<TService> func = () => factoryMethod(_parent);
             _container.ObjectFactory.RegisterSingleton(SpringServiceLocator.GetName(typeof(TService)), func);
         }
+        /// <summary>
+        /// Registers the specified factory method.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="factoryMethod">The factory method.</param>
+        /// <param name="name">The name.</param>
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
             where TService : class
         {
@@ -162,12 +273,23 @@ namespace Contoso.Abstract
             Func<TService> func = () => factoryMethod(_parent);
             _container.ObjectFactory.RegisterSingleton(name, func);
         }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="factoryMethod">The factory method.</param>
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod)
         {
             EnsureTransientLifestyle();
             Func<object> func = () => factoryMethod(_parent);
             _container.ObjectFactory.RegisterSingleton(SpringServiceLocator.GetName(serviceType), func);
         }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="factoryMethod">The factory method.</param>
+        /// <param name="name">The name.</param>
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name)
         {
             EnsureTransientLifestyle();
@@ -176,6 +298,10 @@ namespace Contoso.Abstract
         }
 
         // interceptor
+        /// <summary>
+        /// Registers the interceptor.
+        /// </summary>
+        /// <param name="interceptor">The interceptor.</param>
         public void RegisterInterceptor(IServiceLocatorInterceptor interceptor) { _container.ObjectFactory.AddObjectPostProcessor(new Interceptor(interceptor, _container)); }
 
         #region Behavior

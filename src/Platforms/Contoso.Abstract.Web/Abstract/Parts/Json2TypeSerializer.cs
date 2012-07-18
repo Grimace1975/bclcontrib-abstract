@@ -30,8 +30,18 @@ using System.IO;
 using System.Web.Script.Serialization;
 namespace Contoso.Abstract.Parts
 {
+    /// <summary>
+    /// Json2TypeSerializer
+    /// </summary>
     public class Json2TypeSerializer : ITypeSerializer
     {
+        /// <summary>
+        /// Reads the object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
         public T ReadObject<T>(Type type, Stream s)
             where T : class
         {
@@ -44,6 +54,13 @@ namespace Contoso.Abstract.Parts
             return serializer.Deserialize<T>(r.ReadString());
         }
 
+        /// <summary>
+        /// Reads the objects.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
         public IEnumerable<T> ReadObjects<T>(Type type, Stream s)
             where T : class
         {
@@ -56,6 +73,13 @@ namespace Contoso.Abstract.Parts
             return serializer.Deserialize<IEnumerable<T>>(r.ReadString());
         }
 
+        /// <summary>
+        /// Writes the object.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="graph">The graph.</param>
         public void WriteObject<T>(Type type, Stream s, T graph)
             where T : class
         {
@@ -72,6 +96,13 @@ namespace Contoso.Abstract.Parts
             w.Write(value);
         }
 
+        /// <summary>
+        /// Writes the objects.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type">The type.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="graphs">The graphs.</param>
         public void WriteObjects<T>(Type type, Stream s, IEnumerable<T> graphs)
             where T : class
         {

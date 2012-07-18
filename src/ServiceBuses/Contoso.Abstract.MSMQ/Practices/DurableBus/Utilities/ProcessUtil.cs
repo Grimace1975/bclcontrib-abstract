@@ -35,6 +35,12 @@ namespace Contoso.Practices.DurableBus.Utilities
 	{
         private static readonly IServiceLog ServiceLog = ServiceLogManager.Get("DurableBus.Utilities");
 
+        /// <summary>
+        /// Changes the service status.
+        /// </summary>
+        /// <param name="controller">The controller.</param>
+        /// <param name="status">The status.</param>
+        /// <param name="changeStatus">The change status.</param>
 		public static void ChangeServiceStatus(ServiceController controller, ServiceControllerStatus status, Action changeStatus)
 		{
 			if (controller.Status == status)

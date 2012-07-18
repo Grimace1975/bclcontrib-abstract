@@ -27,12 +27,26 @@ using Rhino.ServiceBus.Impl;
 using Rhino.ServiceBus.LoadBalancer;
 namespace Contoso.Abstract.RhinoServiceBus
 {
+    /// <summary>
+    /// ServiceLocatorLoadBalancerBootStrapper
+    /// </summary>
     public class ServiceLocatorLoadBalancerBootStrapper : ServiceLocatorBootStrapper
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceLocatorLoadBalancerBootStrapper"/> class.
+        /// </summary>
         protected ServiceLocatorLoadBalancerBootStrapper() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceLocatorLoadBalancerBootStrapper"/> class.
+        /// </summary>
+        /// <param name="locator">The locator.</param>
         protected ServiceLocatorLoadBalancerBootStrapper(System.Abstract.IServiceLocator locator)
             : base(locator) { }
 
+        /// <summary>
+        /// Creates the configuration.
+        /// </summary>
+        /// <returns></returns>
         protected override AbstractRhinoServiceBusConfiguration CreateConfiguration()
         {
             return new LoadBalancerConfiguration();

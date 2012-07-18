@@ -31,6 +31,12 @@ namespace System.Abstract.Configuration.ServiceBus
     /// </summary>
     public partial class EndpointElement
     {
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
         [ConfigurationProperty("name", IsRequired = true)]
         public string Name
         {
@@ -38,6 +44,9 @@ namespace System.Abstract.Configuration.ServiceBus
             set { base["name"] = value; }
         }
 
+        /// <summary>
+        /// Gets the endpoint.
+        /// </summary>
         [ConfigurationProperty("endpoint", IsRequired = true)]
         public string Endpoint
         {

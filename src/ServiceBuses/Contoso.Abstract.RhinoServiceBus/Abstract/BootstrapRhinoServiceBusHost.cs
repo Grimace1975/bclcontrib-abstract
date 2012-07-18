@@ -34,18 +34,46 @@ namespace Contoso.Abstract
     {
         private string _name;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BootstrapRhinoServiceBusHost"/> class.
+        /// </summary>
         protected BootstrapRhinoServiceBusHost()
             : base(ServiceLocatorManager.Current) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BootstrapRhinoServiceBusHost"/> class.
+        /// </summary>
+        /// <param name="locator">The locator.</param>
         protected BootstrapRhinoServiceBusHost(IServiceLocator locator)
             : base(locator) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BootstrapRhinoServiceBusHost"/> class.
+        /// </summary>
+        /// <param name="locator">The locator.</param>
+        /// <param name="name">The name.</param>
         protected BootstrapRhinoServiceBusHost(IServiceLocator locator, string name)
             : base(locator) { _name = name; }
 
+        /// <summary>
+        /// Initializes this instance.
+        /// </summary>
         public virtual void Initialize() { }
+        /// <summary>
+        /// Opens the specified bus.
+        /// </summary>
+        /// <param name="bus">The bus.</param>
         public virtual void Open(IServiceBus bus) { }
+        /// <summary>
+        /// Closes this instance.
+        /// </summary>
         public virtual void Close() { }
 
+        /// <summary>
+        /// Initializes the container.
+        /// </summary>
         public override void InitializeContainer() { Initialize(); base.InitializeContainer(); }
+        /// <summary>
+        /// Called when [end start].
+        /// </summary>
         protected override void OnEndStart()
         {
             base.OnEndStart();
@@ -54,6 +82,9 @@ namespace Contoso.Abstract
             // also opens to connection, thus registering IServiceBus
             Open(ServiceBusManager.Current);
         }
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
         public override void Dispose() { base.Dispose(); Close(); }
     }
 }

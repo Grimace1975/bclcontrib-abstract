@@ -39,6 +39,10 @@ namespace Contoso.Practices.Cqrs
     public abstract class CommandHandler<TCommand> : ICommandHandler<TCommand>
         where TCommand : class, ICommand
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandHandler&lt;TCommand&gt;"/> class.
+        /// </summary>
+        /// <param name="context">The context.</param>
         public CommandHandler(ICqrsContext context)
         {
             if (context == null)
@@ -55,11 +59,29 @@ namespace Contoso.Practices.Cqrs
                 HandleError(command, HandlerErrorIntent.ValidationFailure, validateResult);
         }
 
+        /// <summary>
+        /// Gets the context.
+        /// </summary>
         public ICqrsContext Context { get; private set; }
 
+        /// <summary>
+        /// Validates the specified command.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <returns></returns>
         protected virtual object Validate(TCommand command) { return null; }
 
+        /// <summary>
+        /// Handles the specified command.
+        /// </summary>
+        /// <param name="command">The command.</param>
         public abstract void Handle(TCommand command);
+        /// <summary>
+        /// Handles the error.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="errorIntent">The error intent.</param>
+        /// <param name="value">The value.</param>
         protected virtual void HandleError(TCommand command, HandlerErrorIntent errorIntent, object value) { throw new InvalidOperationException(); }
     }
 }

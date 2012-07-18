@@ -38,6 +38,10 @@ namespace Contoso.Abstract.Mvc
     /// </summary>
     public class ServiceLocatorFilterInfoFinder : IFilterInfoFinder
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceLocatorFilterInfoFinder"/> class.
+        /// </summary>
+        /// <param name="serviceLocator">The service locator.</param>
         public ServiceLocatorFilterInfoFinder(IServiceLocator serviceLocator)
         {
             if (serviceLocator == null)
@@ -45,8 +49,17 @@ namespace Contoso.Abstract.Mvc
             ServiceLocator = serviceLocator;
         }
 
+        /// <summary>
+        /// Makes the mergeable filter info.
+        /// </summary>
+        /// <returns></returns>
         protected virtual MergeableFilterInfo MakeMergeableFilterInfo() { return new MergeableFilterInfo(); }
 
+        /// <summary>
+        /// Finds the filters.
+        /// </summary>
+        /// <param name="actionDescriptor">The action descriptor.</param>
+        /// <returns></returns>
         public FilterInfo FindFilters(ActionDescriptor actionDescriptor)
         {
             return (actionDescriptor != null ? MakeMergeableFilterInfo()
@@ -78,6 +91,11 @@ namespace Contoso.Abstract.Mvc
                 , LocateInjectableFilters<IResultFilter>(attributes));
         }
 
+        /// <summary>
+        /// Locates all filters.
+        /// </summary>
+        /// <typeparam name="TFilter">The type of the filter.</typeparam>
+        /// <returns></returns>
         protected virtual IEnumerable<TFilter> LocateAllFilters<TFilter>()
             where TFilter : class
         {
@@ -88,6 +106,12 @@ namespace Contoso.Abstract.Mvc
                 .ToList();
         }
 
+        /// <summary>
+        /// Locates the injectable filters.
+        /// </summary>
+        /// <typeparam name="TFilter">The type of the filter.</typeparam>
+        /// <param name="filterAttributes">The filter attributes.</param>
+        /// <returns></returns>
         protected virtual IList<TFilter> LocateInjectableFilters<TFilter>(InjectableFilterAttribute[] filterAttributes)
             where TFilter : class
         {
@@ -98,6 +122,9 @@ namespace Contoso.Abstract.Mvc
                 .ToList();
         }
 
+        /// <summary>
+        /// Gets the service locator.
+        /// </summary>
         public IServiceLocator ServiceLocator { get; private set; }
     }
 }

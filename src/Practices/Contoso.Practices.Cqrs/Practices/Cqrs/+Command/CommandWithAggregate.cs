@@ -38,6 +38,9 @@ namespace Contoso.Practices.Cqrs
 	[Serializable]
 	public class CommandWithAggregate : ICommandWithAggregate
 	{
+        /// <summary>
+        /// Gets the aggregate ID.
+        /// </summary>
 		public object AggregateID { get; set; }
 	}
 }

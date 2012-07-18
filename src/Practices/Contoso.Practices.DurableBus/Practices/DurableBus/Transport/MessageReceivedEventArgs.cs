@@ -31,7 +31,14 @@ namespace Contoso.Practices.DurableBus.Transport
 	/// </summary>
 	public class MessageReceivedEventArgs : EventArgs
 	{
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MessageReceivedEventArgs"/> class.
+        /// </summary>
+        /// <param name="m">The m.</param>
 		public MessageReceivedEventArgs(TransportMessage m) { Message = m; }
+        /// <summary>
+        /// Gets the message.
+        /// </summary>
 		public TransportMessage Message { get; private set; }
 	}
 }

@@ -36,17 +36,44 @@ namespace Contoso.Abstract
     public partial class OnewayRhinoWrapServiceBusAbstractor : OnewayRhinoServiceBusAbstractor
     {
         static OnewayRhinoWrapServiceBusAbstractor() { ServiceBusManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OnewayRhinoWrapServiceBusAbstractor"/> class.
+        /// </summary>
         public OnewayRhinoWrapServiceBusAbstractor()
             : base() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OnewayRhinoWrapServiceBusAbstractor"/> class.
+        /// </summary>
+        /// <param name="serviceLocator">The service locator.</param>
         public OnewayRhinoWrapServiceBusAbstractor(IServiceLocator serviceLocator)
             : base(serviceLocator) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OnewayRhinoWrapServiceBusAbstractor"/> class.
+        /// </summary>
+        /// <param name="busConfiguration">The bus configuration.</param>
         public OnewayRhinoWrapServiceBusAbstractor(BusConfigurationSection busConfiguration)
             : base(busConfiguration) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OnewayRhinoWrapServiceBusAbstractor"/> class.
+        /// </summary>
+        /// <param name="serviceLocator">The service locator.</param>
+        /// <param name="busConfiguration">The bus configuration.</param>
         public OnewayRhinoWrapServiceBusAbstractor(IServiceLocator serviceLocator, BusConfigurationSection busConfiguration)
             : base(serviceLocator, busConfiguration) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OnewayRhinoWrapServiceBusAbstractor"/> class.
+        /// </summary>
+        /// <param name="serviceLocator">The service locator.</param>
+        /// <param name="bus">The bus.</param>
         public OnewayRhinoWrapServiceBusAbstractor(IServiceLocator serviceLocator, IOnewayBus bus)
             : base(serviceLocator, bus) { }
 
+        /// <summary>
+        /// Sends the specified endpoint.
+        /// </summary>
+        /// <param name="endpoint">The endpoint.</param>
+        /// <param name="messages">The messages.</param>
+        /// <returns></returns>
         public override IServiceBusCallback Send(IServiceBusEndpoint endpoint, params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)

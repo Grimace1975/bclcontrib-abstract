@@ -30,10 +30,25 @@ namespace Contoso.Practices.DurableBus.Transport
 	/// </summary>
 	public enum MessageIntent
 	{
+        /// <summary>
+        /// Init
+        /// </summary>
 		Init,
+        /// <summary>
+        /// Send
+        /// </summary>
 		Send,
+        /// <summary>
+        /// Publish
+        /// </summary>
 		Publish,
+        /// <summary>
+        /// Subscribe
+        /// </summary>
 		Subscribe,
+        /// <summary>
+        /// Unsubscribe
+        /// </summary>
 		Unsubscribe
 	}
 }

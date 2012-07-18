@@ -8,7 +8,7 @@ using MassTransit.Util;
 namespace Contoso.Abstract.MTServiceBus
 {
     /// <summary>
-    /// 
+    /// ServiceLocatorConsumerFactoryConfigurator
     /// </summary>
     public class ServiceLocatorConsumerFactoryConfigurator
     {
@@ -16,10 +16,10 @@ namespace Contoso.Abstract.MTServiceBus
         private readonly IServiceLocator _locator;
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the <see cref="ServiceLocatorConsumerFactoryConfigurator"/> class.
         /// </summary>
-        /// <param name="configurator"></param>
-        /// <param name="locator"></param>
+        /// <param name="configurator">The configurator.</param>
+        /// <param name="locator">The locator.</param>
         public ServiceLocatorConsumerFactoryConfigurator(SubscriptionBusServiceConfigurator configurator, IServiceLocator locator)
         {
             _configurator = configurator;
@@ -27,14 +27,18 @@ namespace Contoso.Abstract.MTServiceBus
         }
 
         /// <summary>
-        /// 
+        /// Configures the consumer.
         /// </summary>
-        /// <param name="messageType"></param>
+        /// <param name="messageType">Type of the message.</param>
         public void ConfigureConsumer(Type messageType)
         {
             this.FastInvoke(new[] { messageType }, "Configure");
         }
 
+        /// <summary>
+        /// Configures this instance.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         [UsedImplicitly]
         public void Configure<T>()
             where T : class, IConsumer { _configurator.Consumer(new ServiceLocatorConsumerFactory<T>(_locator)); }

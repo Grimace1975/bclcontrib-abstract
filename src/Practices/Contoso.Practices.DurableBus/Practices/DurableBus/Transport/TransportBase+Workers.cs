@@ -32,8 +32,17 @@ namespace Contoso.Practices.DurableBus.Transport
 	{
 		private readonly IList<WorkerThread> _workerThreads = new List<WorkerThread>();
 
+        /// <summary>
+        /// Gets or sets the process action.
+        /// </summary>
+        /// <value>
+        /// The process action.
+        /// </value>
         protected Action ProcessAction { get; set; }
 
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
 		public void Dispose()
 		{
 			lock (_workerThreads)
@@ -57,6 +66,12 @@ namespace Contoso.Practices.DurableBus.Transport
 			}
 		}
 
+        /// <summary>
+        /// Gets or sets the worker threads.
+        /// </summary>
+        /// <value>
+        /// The worker threads.
+        /// </value>
 		public int WorkerThreads
 		{
 			get { return _workerThreads.Count; }

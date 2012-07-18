@@ -34,6 +34,9 @@ using System.Abstract.EventSourcing;
 using Contoso.Abstract.Parts;
 namespace Contoso.Abstract.EventSourcing
 {
+    /// <summary>
+    /// MSSqlAggregateRootSnapshotStore
+    /// </summary>
     public class MSSqlAggregateRootSnapshotStore : IBatchedAggregateRootSnapshotStore
     {
         private readonly string _connectionString;
@@ -41,9 +44,20 @@ namespace Contoso.Abstract.EventSourcing
         private readonly Func<string, object> _makeAggregateID;
         private readonly ITypeSerializer _serializer;
 
+        /// <summary>
+        /// SnapshotOrdinal
+        /// </summary>
         protected class SnapshotOrdinal
         {
+            /// <summary>
+            /// 
+            /// </summary>
             public int AggregateID, Type, Blob;
+            /// <summary>
+            /// Initializes a new instance of the <see cref="SnapshotOrdinal"/> class.
+            /// </summary>
+            /// <param name="r">The r.</param>
+            /// <param name="hasAggregateID">if set to <c>true</c> [has aggregate ID].</param>
             public SnapshotOrdinal(IDataReader r, bool hasAggregateID)
             {
                 if (hasAggregateID)
@@ -53,12 +67,36 @@ namespace Contoso.Abstract.EventSourcing
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MSSqlAggregateRootSnapshotStore"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="serializer">The serializer.</param>
         public MSSqlAggregateRootSnapshotStore(string connectionString, ITypeSerializer serializer)
             : this(connectionString, "AggregateSnapshot", null, serializer) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MSSqlAggregateRootSnapshotStore"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="serializer">The serializer.</param>
         public MSSqlAggregateRootSnapshotStore(string connectionString, string tableName, ITypeSerializer serializer)
             : this(connectionString, tableName, null, serializer) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MSSqlAggregateRootSnapshotStore"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="makeAggregateID">The make aggregate ID.</param>
+        /// <param name="serializer">The serializer.</param>
         public MSSqlAggregateRootSnapshotStore(string connectionString, Func<string, object> makeAggregateID, ITypeSerializer serializer)
             : this(connectionString, "AggregateSnapshot", makeAggregateID, serializer) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MSSqlAggregateRootSnapshotStore"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="makeAggregateID">The make aggregate ID.</param>
+        /// <param name="serializer">The serializer.</param>
         public MSSqlAggregateRootSnapshotStore(string connectionString, string tableName, Func<string, object> makeAggregateID, ITypeSerializer serializer)
         {
             if (string.IsNullOrEmpty(connectionString))
@@ -73,6 +111,12 @@ namespace Contoso.Abstract.EventSourcing
             _serializer = serializer;
         }
 
+        /// <summary>
+        /// Gets the latest snapshot.
+        /// </summary>
+        /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <returns></returns>
         public AggregateRootSnapshot GetLatestSnapshot<TAggregateRoot>(object aggregateID)
             where TAggregateRoot : AggregateRoot
         {
@@ -96,6 +140,12 @@ From dbo.[{0}]
             }
         }
 
+        /// <summary>
+        /// Gets the latest snapshots.
+        /// </summary>
+        /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
+        /// <param name="aggregateIDs">The aggregate I ds.</param>
+        /// <returns></returns>
         public IEnumerable<AggregateTuple<AggregateRootSnapshot>> GetLatestSnapshots<TAggregateRoot>(IEnumerable<object> aggregateIDs)
             where TAggregateRoot : AggregateRoot
         {
@@ -127,6 +177,11 @@ From dbo.[{0}]
             }
         }
 
+        /// <summary>
+        /// Saves the snapshot.
+        /// </summary>
+        /// <param name="aggregateType">Type of the aggregate.</param>
+        /// <param name="snapshot">The snapshot.</param>
         public void SaveSnapshot(Type aggregateType, AggregateRootSnapshot snapshot)
         {
             var snapshotType = snapshot.GetType();
@@ -163,6 +218,11 @@ When Not Matched By Target Then
             }
         }
 
+        /// <summary>
+        /// Saves the snapshots.
+        /// </summary>
+        /// <param name="aggregateType">Type of the aggregate.</param>
+        /// <param name="snapshots">The snapshots.</param>
         public void SaveSnapshots(Type aggregateType, IEnumerable<AggregateRootSnapshot> snapshots)
         {
             var xml = new XElement("r", snapshots
@@ -221,6 +281,9 @@ When Not Matched By Target Then
             };
         }
 
+        /// <summary>
+        /// Gets the inline snapshot predicate.
+        /// </summary>
         public Func<IAggregateRootRepository, AggregateRoot, bool> InlineSnapshotPredicate { get; set; }
     }
 }

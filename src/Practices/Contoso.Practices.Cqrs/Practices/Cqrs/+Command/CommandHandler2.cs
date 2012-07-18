@@ -35,9 +35,17 @@ namespace Contoso.Practices.Cqrs
 		where TCommand : class, ICommandWithAggregate
 		where TAggregate : AggregateRoot
 	{
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandHandler&lt;TCommand, TAggregate&gt;"/> class.
+        /// </summary>
+        /// <param name="context">The context.</param>
         public CommandHandler(ICqrsContext context)
             : base(context) { }
 
+        /// <summary>
+        /// Handles the specified command.
+        /// </summary>
+        /// <param name="command">The command.</param>
 		public override void Handle(TCommand command)
 		{
 			var aggregateRepository = GetAggregateRepository();
@@ -53,6 +61,11 @@ namespace Contoso.Practices.Cqrs
 			HandleError(command, HandlerErrorIntent.NullAggregate, command.AggregateID);
 		}
 
+        /// <summary>
+        /// Handles the specified command.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="aggregate">The aggregate.</param>
 		protected abstract void Handle(TCommand command, TAggregate aggregate);
 
 		private IAggregateRootRepository GetAggregateRepository()

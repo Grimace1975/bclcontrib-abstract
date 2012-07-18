@@ -30,13 +30,25 @@ using Microsoft.Practices.SharePoint.Common;
 using Microsoft.Practices.SharePoint.Common.ServiceLocation;
 namespace Contoso.Abstract.SPG2010
 {
+    /// <summary>
+    /// ActivatingServiceLocatorFactory
+    /// </summary>
     public class ActivatingServiceLocatorFactory : IServiceLocatorFactory
     {
+        /// <summary>
+        /// Creates this instance.
+        /// </summary>
+        /// <returns></returns>
         public IServiceLocator Create()
         {
             return new ActivatingServiceLocator();
         }
 
+        /// <summary>
+        /// Loads the type mappings.
+        /// </summary>
+        /// <param name="serviceLocator">The service locator.</param>
+        /// <param name="typeMappings">The type mappings.</param>
         [SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0")]
         public void LoadTypeMappings(IServiceLocator serviceLocator, IEnumerable<TypeMapping> typeMappings)
         {

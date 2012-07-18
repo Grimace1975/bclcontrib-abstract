@@ -15,11 +15,22 @@ namespace Contoso.Abstract.MTServiceBus
     {
         private readonly IServiceLocator _locator;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceLocatorConsumerFactory&lt;T&gt;"/> class.
+        /// </summary>
+        /// <param name="locator">The locator.</param>
         public ServiceLocatorConsumerFactory(IServiceLocator locator)
         {
             _locator = locator;
         }
 
+        /// <summary>
+        /// Gets the consumer.
+        /// </summary>
+        /// <typeparam name="TMessage">The type of the message.</typeparam>
+        /// <param name="context">The context.</param>
+        /// <param name="selector">The selector.</param>
+        /// <returns></returns>
         public IEnumerable<Action<IConsumeContext<TMessage>>> GetConsumer<TMessage>(IConsumeContext<TMessage> context, InstanceHandlerSelector<T, TMessage> selector)
             where TMessage : class
         {

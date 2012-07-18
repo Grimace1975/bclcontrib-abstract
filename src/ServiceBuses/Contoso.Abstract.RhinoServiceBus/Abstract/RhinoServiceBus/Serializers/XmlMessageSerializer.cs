@@ -15,6 +15,9 @@ using Rhino.ServiceBus.DataStructures;
 
 namespace Contoso.Abstract.RhinoServiceBus.Serializers
 {
+    /// <summary>
+    /// XmlMessageSerializer
+    /// </summary>
     public class XmlMessageSerializer : IMessageSerializer
     {
         private const int MaxNumberOfAllowedItemsInCollection = int.MaxValue;
@@ -24,6 +27,11 @@ namespace Contoso.Abstract.RhinoServiceBus.Serializers
         private ICustomElementSerializer[] customElementSerializers;
         private IElementSerializationBehavior[] elementSerializationBehaviors;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XmlMessageSerializer"/> class.
+        /// </summary>
+        /// <param name="reflection">The reflection.</param>
+        /// <param name="serviceLocator">The service locator.</param>
         public XmlMessageSerializer(IReflection reflection, IServiceLocator serviceLocator)
         {
             this.reflection = reflection;
@@ -32,6 +40,11 @@ namespace Contoso.Abstract.RhinoServiceBus.Serializers
             elementSerializationBehaviors = this.serviceLocator.ResolveAll<IElementSerializationBehavior>().ToArray();
         }
 
+        /// <summary>
+        /// Serializes the specified messages.
+        /// </summary>
+        /// <param name="messages">The messages.</param>
+        /// <param name="messageStream">The message stream.</param>
         public void Serialize(object[] messages, Stream messageStream)
         {
             if (messages.Length > MaxNumberOfAllowedItemsInCollection)
@@ -257,6 +270,12 @@ namespace Contoso.Abstract.RhinoServiceBus.Serializers
             return value is ValueType || value is string || value is Uri;
         }
 
+        /// <summary>
+        /// Froms the string.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public static object FromString(Type type, string value)
         {
             if (type == typeof(string))
@@ -342,6 +361,11 @@ namespace Contoso.Abstract.RhinoServiceBus.Serializers
             return namespaces;
         }
 
+        /// <summary>
+        /// Deserializes the specified message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <returns></returns>
         public object[] Deserialize(Stream message)
         {
             var namespaces = GetNamespaces(new object[0]);

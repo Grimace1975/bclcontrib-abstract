@@ -29,8 +29,16 @@ using Microsoft.Practices.SharePoint.Common.Configuration;
 using Microsoft.Practices.SharePoint.Common.Logging;
 namespace Contoso.Abstract.SPG2010
 {
+    /// <summary>
+    /// LoggingConfiguration
+    /// </summary>
     public static class LoggingConfiguration
     {
+        /// <summary>
+        /// Configures the area.
+        /// </summary>
+        /// <param name="areaName">Name of the area.</param>
+        /// <param name="categories">The categories.</param>
         public static void ConfigureArea(string areaName, string[] categories)
         {
             var diagnosticsArea = new DiagnosticsArea(areaName);
@@ -64,6 +72,10 @@ namespace Contoso.Abstract.SPG2010
             areas.SaveConfiguration();
         }
 
+        /// <summary>
+        /// Removes the area.
+        /// </summary>
+        /// <param name="areaName">Name of the area.</param>
         public static void RemoveArea(string areaName)
         {
             var areas = GetAreas();

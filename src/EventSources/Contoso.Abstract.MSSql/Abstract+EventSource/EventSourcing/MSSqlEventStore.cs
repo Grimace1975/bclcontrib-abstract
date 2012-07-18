@@ -34,6 +34,9 @@ using System.Abstract.EventSourcing;
 using Contoso.Abstract.Parts;
 namespace Contoso.Abstract.EventSourcing
 {
+    /// <summary>
+    /// MSSqlEventStore
+    /// </summary>
     public class MSSqlEventStore : IBatchedEventStore
     {
         internal readonly string _connectionString;
@@ -41,9 +44,20 @@ namespace Contoso.Abstract.EventSourcing
         internal readonly Func<string, object> _makeAggregateID;
         private readonly ITypeSerializer _serializer;
 
+        /// <summary>
+        /// EventOrdinal
+        /// </summary>
         protected class EventOrdinal
         {
+            /// <summary>
+            /// 
+            /// </summary>
             public int AggregateID, Type, Blob;
+            /// <summary>
+            /// Initializes a new instance of the <see cref="EventOrdinal"/> class.
+            /// </summary>
+            /// <param name="r">The r.</param>
+            /// <param name="hasAggregateID">if set to <c>true</c> [has aggregate ID].</param>
             public EventOrdinal(IDataReader r, bool hasAggregateID)
             {
                 if (hasAggregateID)
@@ -53,12 +67,36 @@ namespace Contoso.Abstract.EventSourcing
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MSSqlEventStore"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="serializer">The serializer.</param>
         public MSSqlEventStore(string connectionString, ITypeSerializer serializer)
             : this(connectionString, "AggregateEvent", null, serializer) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MSSqlEventStore"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="serializer">The serializer.</param>
         public MSSqlEventStore(string connectionString, string tableName, ITypeSerializer serializer)
             : this(connectionString, tableName, null, serializer) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MSSqlEventStore"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="makeAggregateID">The make aggregate ID.</param>
+        /// <param name="serializer">The serializer.</param>
         public MSSqlEventStore(string connectionString, Func<string, object> makeAggregateID, ITypeSerializer serializer)
             : this(connectionString, "AggregateEvent", makeAggregateID, serializer) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MSSqlEventStore"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="makeAggregateID">The make aggregate ID.</param>
+        /// <param name="serializer">The serializer.</param>
         public MSSqlEventStore(string connectionString, string tableName, Func<string, object> makeAggregateID, ITypeSerializer serializer)
         {
             if (string.IsNullOrEmpty(connectionString))
@@ -75,10 +113,22 @@ namespace Contoso.Abstract.EventSourcing
             TypeMappingFrom = new Dictionary<Type, string>();
         }
 
+        /// <summary>
+        /// Gets the type mapping to.
+        /// </summary>
         public Dictionary<string, Type> TypeMappingTo { get; private set; }
 
+        /// <summary>
+        /// Gets the type mapping from.
+        /// </summary>
         public Dictionary<Type, string> TypeMappingFrom { get; private set; }
 
+        /// <summary>
+        /// Gets the events by ID.
+        /// </summary>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <param name="startSequence">The start sequence.</param>
+        /// <returns></returns>
         public IEnumerable<Event> GetEventsByID(object aggregateID, int startSequence)
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -103,6 +153,11 @@ Order By EventSequence;", _tableName);
             }
         }
 
+        /// <summary>
+        /// Gets the events by I ds.
+        /// </summary>
+        /// <param name="aggregateIDs">The aggregate I ds.</param>
+        /// <returns></returns>
         public IEnumerable<AggregateTuple<IEnumerable<Event>>> GetEventsByIDs(IEnumerable<AggregateTuple<int>> aggregateIDs)
         {
             var xml = new XElement("r", aggregateIDs
@@ -155,6 +210,11 @@ Order By AggregateID, EventSequence;", _tableName);
             }
         }
 
+        /// <summary>
+        /// Saves the events.
+        /// </summary>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <param name="events">The events.</param>
         public void SaveEvents(object aggregateID, IEnumerable<Event> events)
         {
             var xml = new XElement("r", events
@@ -182,6 +242,10 @@ From @xml.nodes(N'/r/e') _xml(item);", _tableName);
             }
         }
 
+        /// <summary>
+        /// Saves the events.
+        /// </summary>
+        /// <param name="events">The events.</param>
         public void SaveEvents(IEnumerable<AggregateTuple<IEnumerable<Event>>> events)
         {
             var xml = new XElement("r", events

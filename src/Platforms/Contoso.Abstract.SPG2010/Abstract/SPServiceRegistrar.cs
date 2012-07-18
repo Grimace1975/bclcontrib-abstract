@@ -39,8 +39,20 @@ namespace Contoso.Abstract
     /// </summary>
     public interface ISPServiceRegistrar : IServiceRegistrar
     {
+        /// <summary>
+        /// Gets the config.
+        /// </summary>
         IServiceLocatorConfig Config { get; }
+        /// <summary>
+        /// Removes this instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
         void Remove<TService>();
+        /// <summary>
+        /// Removes the specified name.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="name">The name.</param>
         void Remove<TService>(string name);
     }
 
@@ -53,6 +65,11 @@ namespace Contoso.Abstract
         private SPIServiceLocator _container;
         private ServiceLocatorConfig _registrar;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SPServiceRegistrar"/> class.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="container">The container.</param>
         public SPServiceRegistrar(SPServiceLocator parent, SPIServiceLocator container)
         {
             _parent = parent;
@@ -63,23 +80,51 @@ namespace Contoso.Abstract
             LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose() { }
         object ICloneable.Clone() { return MemberwiseClone(); }
 
         // locator
+        /// <summary>
+        /// Gets the locator.
+        /// </summary>
         public IServiceLocator Locator
         {
             get { return _parent; }
         }
 
         // enumerate
+        /// <summary>
+        /// Determines whether this instance has registered.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <returns>
+        ///   <c>true</c> if this instance has registered; otherwise, <c>false</c>.
+        /// </returns>
         public bool HasRegistered<TService>() { throw new NotSupportedException(); }
+        /// <summary>
+        /// Determines whether the specified service type has registered.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified service type has registered; otherwise, <c>false</c>.
+        /// </returns>
         public bool HasRegistered(Type serviceType) { throw new NotSupportedException(); }
+        /// <summary>
+        /// Gets the registrations for.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns></returns>
         public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType)
         {
             return Registrations
                 .Where(x => serviceType.IsAssignableFrom(x.ServiceType));
         }
+        /// <summary>
+        /// Gets the registrations.
+        /// </summary>
         public IEnumerable<ServiceRegistration> Registrations
         {
             get
@@ -95,41 +140,134 @@ namespace Contoso.Abstract
         }
 
         // register type
+        /// <summary>
+        /// Gets the lifetime for registers.
+        /// </summary>
         public ServiceRegistrarLifetime LifetimeForRegisters { get; private set; }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
         public void Register(Type serviceType) { throw new NotSupportedException(); }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="name">The name.</param>
         public void Register(Type serviceType, string name) { throw new NotSupportedException(); }
 
         // register implementation
+        /// <summary>
+        /// Registers this instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
         public void Register<TService, TImplementation>()
             where TService : class
             where TImplementation : class, TService { _registrar.RegisterTypeMapping<TService, TImplementation>(null, GetLifestyle()); }
+        /// <summary>
+        /// Registers the specified name.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
+        /// <param name="name">The name.</param>
         public void Register<TService, TImplementation>(string name)
             where TService : class
             where TImplementation : class, TService { _registrar.RegisterTypeMapping<TService, TImplementation>(name, GetLifestyle()); }
+        /// <summary>
+        /// Registers the specified implementation type.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="implementationType">Type of the implementation.</param>
         public void Register<TService>(Type implementationType)
              where TService : class { throw new NotSupportedException(); }
+        /// <summary>
+        /// Registers the specified implementation type.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="implementationType">Type of the implementation.</param>
+        /// <param name="name">The name.</param>
         public void Register<TService>(Type implementationType, string name)
              where TService : class { throw new NotSupportedException(); }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="implementationType">Type of the implementation.</param>
         public void Register(Type serviceType, Type implementationType) { throw new NotSupportedException(); }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="implementationType">Type of the implementation.</param>
+        /// <param name="name">The name.</param>
         public void Register(Type serviceType, Type implementationType, string name) { throw new NotSupportedException(); }
 
         // register instance
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="instance">The instance.</param>
         public void RegisterInstance<TService>(TService instance)
             where TService : class { throw new NotSupportedException(); }
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="name">The name.</param>
         public void RegisterInstance<TService>(TService instance, string name)
             where TService : class { throw new NotSupportedException(); }
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="instance">The instance.</param>
         public void RegisterInstance(Type serviceType, object instance) { throw new NotSupportedException(); }
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="instance">The instance.</param>
+        /// <param name="name">The name.</param>
         public void RegisterInstance(Type serviceType, object instance, string name) { throw new NotSupportedException(); }
 
         // register method
+        /// <summary>
+        /// Registers the specified factory method.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="factoryMethod">The factory method.</param>
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { throw new NotSupportedException(); }
+        /// <summary>
+        /// Registers the specified factory method.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="factoryMethod">The factory method.</param>
+        /// <param name="name">The name.</param>
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
             where TService : class { throw new NotSupportedException(); }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="factoryMethod">The factory method.</param>
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { throw new NotSupportedException(); }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="factoryMethod">The factory method.</param>
+        /// <param name="name">The name.</param>
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { throw new NotSupportedException(); }
 
         // interceptor
+        /// <summary>
+        /// Registers the interceptor.
+        /// </summary>
+        /// <param name="interceptor">The interceptor.</param>
         public void RegisterInterceptor(IServiceLocatorInterceptor interceptor) { throw new NotSupportedException(); }
 
         #region Behavior
@@ -169,12 +307,24 @@ namespace Contoso.Abstract
 
         #region Domain specific
 
+        /// <summary>
+        /// Gets the config.
+        /// </summary>
         public IServiceLocatorConfig Config
         {
             get { return _registrar; }
         }
 
+        /// <summary>
+        /// Removes this instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
         public void Remove<TService>() { _registrar.RemoveTypeMappings<TService>(); }
+        /// <summary>
+        /// Removes the specified name.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="name">The name.</param>
         public void Remove<TService>(string name) { _registrar.RemoveTypeMapping<TService>(name); }
 
         #endregion

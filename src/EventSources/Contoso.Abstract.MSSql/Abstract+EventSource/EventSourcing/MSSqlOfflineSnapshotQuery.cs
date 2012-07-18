@@ -32,6 +32,9 @@ using System.Data;
 using System.Abstract.EventSourcing;
 namespace Contoso.Abstract.EventSourcing
 {
+    /// <summary>
+    /// MSSqlOfflineSnapshotQuery
+    /// </summary>
     public class MSSqlOfflineSnapshotQuery
     {
         private readonly string _connectionString;
@@ -39,9 +42,19 @@ namespace Contoso.Abstract.EventSourcing
         private readonly string _eventTableName;
         private readonly Func<string, object> _makeAggregateID;
 
+        /// <summary>
+        /// ItemOrdinal
+        /// </summary>
         protected class ItemOrdinal
         {
+            /// <summary>
+            /// 
+            /// </summary>
             public int AggregateType, AggregateID;
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ItemOrdinal"/> class.
+            /// </summary>
+            /// <param name="r">The r.</param>
             public ItemOrdinal(IDataReader r)
             {
                 AggregateType = r.GetOrdinal("AggregateType");
@@ -49,6 +62,11 @@ namespace Contoso.Abstract.EventSourcing
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MSSqlOfflineSnapshotQuery"/> class.
+        /// </summary>
+        /// <param name="snapshotStore">The snapshot store.</param>
+        /// <param name="eventStore">The event store.</param>
         public MSSqlOfflineSnapshotQuery(MSSqlAggregateRootSnapshotStore snapshotStore, MSSqlEventStore eventStore)
         {
             if (snapshotStore == null)
@@ -61,6 +79,11 @@ namespace Contoso.Abstract.EventSourcing
             _connectionString = eventStore._connectionString;
         }
 
+        /// <summary>
+        /// Gets the aggregates to snapshot.
+        /// </summary>
+        /// <param name="aggregateTypes">The aggregate types.</param>
+        /// <returns></returns>
         public IEnumerable<AggregateTuple<Type>> GetAggregatesToSnapshot(IEnumerable<Type> aggregateTypes)
         {
             var xml = new XElement("r", aggregateTypes

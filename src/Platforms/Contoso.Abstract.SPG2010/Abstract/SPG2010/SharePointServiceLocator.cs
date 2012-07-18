@@ -36,6 +36,9 @@ using Microsoft.SharePoint;
 using Microsoft.SharePoint.Security;
 namespace Contoso.Abstract.SPG2010
 {
+    /// <summary>
+    /// SharePointServiceLocator
+    /// </summary>
     public class SharePointServiceLocator
     {
         private const int defaultSiteCacheIntervalInSeconds = 60;
@@ -55,6 +58,12 @@ namespace Contoso.Abstract.SPG2010
 
         static int _siteCacheInterval = -1;
 
+        /// <summary>
+        /// Gets or sets the site caching timeout in seconds.
+        /// </summary>
+        /// <value>
+        /// The site caching timeout in seconds.
+        /// </value>
         public static int SiteCachingTimeoutInSeconds
         {
             get
@@ -95,18 +104,36 @@ namespace Contoso.Abstract.SPG2010
         }
 
 
+        /// <summary>
+        /// Gets the current.
+        /// </summary>
+        /// <returns></returns>
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
         public static IServiceLocator GetCurrent() { return SharePointLocator.DoGetCurrent(); }
 
+        /// <summary>
+        /// Gets the current.
+        /// </summary>
+        /// <param name="site">The site.</param>
+        /// <returns></returns>
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
         public static IServiceLocator GetCurrent(SPSite site) { return SharePointLocator.DoGetCurrent(site); }
 
+        /// <summary>
+        /// Gets the current farm.
+        /// </summary>
+        /// <returns></returns>
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
         public static IServiceLocator GetCurrentFarm() { return SharePointLocator.GetCurrentFarmLocator(); }
 
+        /// <summary>
+        /// Does the get current.
+        /// </summary>
+        /// <param name="site">The site.</param>
+        /// <returns></returns>
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
         protected IServiceLocator DoGetCurrent(SPSite site)
@@ -126,6 +153,10 @@ namespace Contoso.Abstract.SPG2010
             return locator;
         }
 
+        /// <summary>
+        /// Does the get current.
+        /// </summary>
+        /// <returns></returns>
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
         protected IServiceLocator DoGetCurrent()
@@ -171,11 +202,20 @@ namespace Contoso.Abstract.SPG2010
             return serviceLocator;
         }
 
+        /// <summary>
+        /// Gets the service locator config.
+        /// </summary>
+        /// <returns></returns>
         protected virtual IServiceLocatorConfig GetServiceLocatorConfig()
         {
             return new ServiceLocatorConfig();
         }
 
+        /// <summary>
+        /// Gets the service locator config.
+        /// </summary>
+        /// <param name="site">The site.</param>
+        /// <returns></returns>
         protected virtual IServiceLocatorConfig GetServiceLocatorConfig(SPSite site)
         {
             var config = new ServiceLocatorConfig();
@@ -303,6 +343,10 @@ namespace Contoso.Abstract.SPG2010
             return null;
         }
 
+        /// <summary>
+        /// Gets the site cache interval.
+        /// </summary>
+        /// <returns></returns>
         public int GetSiteCacheInterval()
         {
             var config = GetServiceLocatorConfig();
@@ -312,6 +356,10 @@ namespace Contoso.Abstract.SPG2010
             return cacheInterval;
         }
 
+        /// <summary>
+        /// Replaces the current service locator.
+        /// </summary>
+        /// <param name="newServiceLocator">The new service locator.</param>
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
         public static void ReplaceCurrentServiceLocator(IServiceLocator newServiceLocator)
@@ -320,6 +368,9 @@ namespace Contoso.Abstract.SPG2010
             _serviceLocatorInstance = newServiceLocator;
         }
 
+        /// <summary>
+        /// Resets this instance.
+        /// </summary>
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
         public static void Reset()

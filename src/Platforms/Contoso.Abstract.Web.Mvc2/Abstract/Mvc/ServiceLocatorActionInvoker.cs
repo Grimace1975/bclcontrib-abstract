@@ -39,6 +39,10 @@ namespace Contoso.Abstract.Mvc
         private static readonly object _lock = new object();
         private static IFilterInfoFinder _filterInfoFinder;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceLocatorActionInvoker"/> class.
+        /// </summary>
+        /// <param name="serviceLocator">The service locator.</param>
         public ServiceLocatorActionInvoker(IServiceLocator serviceLocator)
         {
             if (serviceLocator == null)
@@ -46,8 +50,21 @@ namespace Contoso.Abstract.Mvc
             ServiceLocator = serviceLocator;
         }
 
+        /// <summary>
+        /// Makes the mergeable filter info.
+        /// </summary>
+        /// <returns></returns>
         protected virtual MergeableFilterInfo MakeMergeableFilterInfo() { return new MergeableFilterInfo(); }
 
+        /// <summary>
+        /// Finds the information about the action method.
+        /// </summary>
+        /// <param name="controllerContext">The controller context.</param>
+        /// <param name="controllerDescriptor">The controller descriptor.</param>
+        /// <param name="actionName">The name of the action.</param>
+        /// <returns>
+        /// Information about the action method.
+        /// </returns>
         protected override ActionDescriptor FindAction(ControllerContext controllerContext, ControllerDescriptor controllerDescriptor, string actionName)
         {
             ActionDescriptor descriptor;
@@ -56,11 +73,21 @@ namespace Contoso.Abstract.Mvc
             return (descriptor ?? new InferredActionDescriptor(actionName, controllerDescriptor, FindInferredAction(controllerDescriptor, actionName)));
         }
 
+        /// <summary>
+        /// Finds the inferred action.
+        /// </summary>
+        /// <param name="controllerDescriptor">The controller descriptor.</param>
+        /// <param name="actionName">Name of the action.</param>
+        /// <returns></returns>
         protected virtual InferredAction FindInferredAction(ControllerDescriptor controllerDescriptor, string actionName)
         {
             return null;
         }
 
+        /// <summary>
+        /// Gets the filter info finder.
+        /// </summary>
+        /// <returns></returns>
         protected virtual IFilterInfoFinder GetFilterInfoFinder()
         {
             if (_filterInfoFinder == null)
@@ -71,6 +98,14 @@ namespace Contoso.Abstract.Mvc
             return _filterInfoFinder;
         }
 
+        /// <summary>
+        /// Retrieves information about the action filters.
+        /// </summary>
+        /// <param name="controllerContext">The controller context.</param>
+        /// <param name="actionDescriptor">The action descriptor.</param>
+        /// <returns>
+        /// Information about the action filters.
+        /// </returns>
         protected override FilterInfo GetFilters(ControllerContext controllerContext, ActionDescriptor actionDescriptor)
         {
             var filter = (base.GetFilters(controllerContext, actionDescriptor) ?? new FilterInfo());
@@ -80,6 +115,10 @@ namespace Contoso.Abstract.Mvc
                 .Merge(GetFilterInfoFinder().FindFilters(actionDescriptor));
         }
 
+        /// <summary>
+        /// Injects the dependencies.
+        /// </summary>
+        /// <param name="filter">The filter.</param>
         public virtual void InjectDependencies(FilterInfo filter)
         {
             var serviceLocator = ServiceLocator;
@@ -93,6 +132,9 @@ namespace Contoso.Abstract.Mvc
                 serviceLocator.Inject<IExceptionFilter>(f);
         }
 
+        /// <summary>
+        /// Gets the service locator.
+        /// </summary>
         public IServiceLocator ServiceLocator { get; private set; }
     }
 }

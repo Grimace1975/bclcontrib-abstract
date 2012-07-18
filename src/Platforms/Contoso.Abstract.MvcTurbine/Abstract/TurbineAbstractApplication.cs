@@ -31,9 +31,12 @@ namespace Contoso.Abstract
 {
 	/// <summary>
     /// TurbineAbstractApplication
-	/// </summary
+	/// </summary>
     public class TurbineAbstractApplication : TurbineApplication
 	{
+        /// <summary>
+        /// Performs any startup processing.
+        /// </summary>
         public override void Startup()
         {
             ServiceLocatorManager.SetLocatorProvider(() => new TurbineServiceLocatorAbstractor());

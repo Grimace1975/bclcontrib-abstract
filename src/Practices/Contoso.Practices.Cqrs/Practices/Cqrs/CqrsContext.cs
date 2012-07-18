@@ -33,11 +33,29 @@ namespace Contoso.Practices.Cqrs
 	/// </summary>
 	public interface ICqrsContext : IDisposable
 	{
+        /// <summary>
+        /// Starts this instance.
+        /// </summary>
 		void Start();
+        /// <summary>
+        /// Stops this instance.
+        /// </summary>
 		void Stop();
+        /// <summary>
+        /// Gets the aggregate repository.
+        /// </summary>
 		IAggregateRootRepository AggregateRepository { get; }
+        /// <summary>
+        /// Gets the command bus.
+        /// </summary>
         ICommandBus CommandBus { get; }
+        /// <summary>
+        /// Gets the event bus.
+        /// </summary>
         IEventBus EventBus { get; }
+        /// <summary>
+        /// Gets the locator.
+        /// </summary>
 		IServiceLocator Locator { get; }
 	}
 
@@ -49,33 +67,85 @@ namespace Contoso.Practices.Cqrs
 		private Lazy<IServiceLocator> _locator;
 		private string _name;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CqrsContext"/> class.
+        /// </summary>
 		public CqrsContext()
 			: this(ServiceLocatorManager.Lazy, null) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CqrsContext"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
 		public CqrsContext(string name)
             : this(ServiceLocatorManager.Lazy, name) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CqrsContext"/> class.
+        /// </summary>
+        /// <param name="locator">The locator.</param>
 		public CqrsContext(Lazy<IServiceLocator> locator)
 			: this(locator, null) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CqrsContext"/> class.
+        /// </summary>
+        /// <param name="locator">The locator.</param>
+        /// <param name="name">The name.</param>
 		public CqrsContext(Lazy<IServiceLocator> locator, string name)
 		{
 			_locator = locator;
 			_name = name;
 		}
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
 		public void Dispose()
 		{
 			if (HasStarted)
 				Stop();
 		}
-		
+
+        /// <summary>
+        /// Gets or sets the aggregate repository.
+        /// </summary>
+        /// <value>
+        /// The aggregate repository.
+        /// </value>
 		public IAggregateRootRepository AggregateRepository { get; protected set; }
+        /// <summary>
+        /// Gets or sets the command bus.
+        /// </summary>
+        /// <value>
+        /// The command bus.
+        /// </value>
         public ICommandBus CommandBus { get; protected set; }
+        /// <summary>
+        /// Gets or sets the event bus.
+        /// </summary>
+        /// <value>
+        /// The event bus.
+        /// </value>
 		public IEventBus EventBus { get; protected set; }
+        /// <summary>
+        /// Gets or sets the locator.
+        /// </summary>
+        /// <value>
+        /// The locator.
+        /// </value>
 		public IServiceLocator Locator { get; protected set; }
 
 		#region Start/Stop
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance has started.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance has started; otherwise, <c>false</c>.
+        /// </value>
 		public bool HasStarted { get; protected set; }
 
+        /// <summary>
+        /// Starts this instance.
+        /// </summary>
 		public void Start()
 		{
 			if (HasStarted)
@@ -97,10 +167,25 @@ namespace Contoso.Practices.Cqrs
 		{
 			registrar.RegisterInstance<ICqrsContext>(this, _name);
 		}
+        /// <summary>
+        /// Gets the command bus.
+        /// </summary>
+        /// <returns></returns>
         protected virtual ICommandBus GetCommandBus() { return Locator.Resolve<ICommandBus>(); }
+        /// <summary>
+        /// Gets the event bus.
+        /// </summary>
+        /// <returns></returns>
         protected virtual IEventBus GetEventBus() { return Locator.Resolve<IEventBus>(); }
+        /// <summary>
+        /// Gets the aggregate repository.
+        /// </summary>
+        /// <returns></returns>
 		protected virtual IAggregateRootRepository GetAggregateRepository() { return Locator.Resolve<IAggregateRootRepository>(); }
 
+        /// <summary>
+        /// Stops this instance.
+        /// </summary>
 		public void Stop()
 		{
 			if (!HasStarted)

@@ -31,8 +31,5 @@ namespace System.Abstract.Configuration
     /// </summary>
     public partial class ServiceCacheConfiguration
     {
-        public static void LoadFromConfiguration()
-        {
-        }
     }
 }

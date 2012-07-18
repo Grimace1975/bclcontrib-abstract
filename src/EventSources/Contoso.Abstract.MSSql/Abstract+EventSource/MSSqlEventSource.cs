@@ -43,6 +43,10 @@ namespace Contoso.Abstract
         private readonly string _connectionString;
 
         static MSSqlEventSource() { EventSourceManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MSSqlEventSource"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
         public MSSqlEventSource(string connectionString)
         {
             _connectionString = connectionString;
@@ -53,8 +57,22 @@ namespace Contoso.Abstract
             get { return (locator, name) => EventSourceManager.RegisterInstance<IMSSqlEventSource>(this, locator, name); }
         }
 
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType"/>.-or- null if there is no service object of type <paramref name="serviceType"/>.
+        /// </returns>
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
+        /// <summary>
+        /// Makes the repository.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="arg">The arg.</param>
+        /// <param name="serializer">The serializer.</param>
+        /// <returns></returns>
         public IAggregateRootRepository MakeRepository<T>(T arg, ITypeSerializer serializer) { return new AggregateRootRepository(new MSSqlEventStore(_connectionString, serializer), new MSSqlAggregateRootSnapshotStore(_connectionString, serializer)); }
     }
 }

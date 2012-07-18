@@ -26,6 +26,9 @@ THE SOFTWARE.
 using System;
 namespace Contoso.Practices.DurableBus.Transport
 {
+    /// <summary>
+    /// MsmqTransport
+    /// </summary>
 	public partial class MsmqTransport
 	{
 	}

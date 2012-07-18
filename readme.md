@@ -1,4 +1,4 @@
-Rhino Service Bus - A developer friendly service bus for .NET
+BclEx-Abstract - A developer friendly service bus for .NET
 =====================================================
 
 ##DESCRIPTION

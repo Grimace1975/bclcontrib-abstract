@@ -34,14 +34,29 @@ using Microsoft.Practices.SharePoint.Common;
 using Microsoft.Practices.SharePoint.Common.ServiceLocation;
 namespace Contoso.Abstract.SPG2010
 {
+    /// <summary>
+    /// ActivatingServiceLocator
+    /// </summary>
     public class ActivatingServiceLocator : ServiceLocatorImplBase
     {
         private readonly object _syncRoot = new object();
         private Dictionary<string, Dictionary<string, TypeMapping>> _typeMappingsDictionary = new Dictionary<string, Dictionary<string, TypeMapping>>();
         private Dictionary<string, Dictionary<string, object>> _singletonsDictionary = new Dictionary<string, Dictionary<string, object>>();
 
+        /// <summary>
+        /// Occurs when [mapping registered event].
+        /// </summary>
         public event EventHandler<TypeMappingChangedArgs> MappingRegisteredEvent;
 
+        /// <summary>
+        /// When implemented by inheriting classes, this method will do the actual work of resolving
+        /// the requested service instance.
+        /// </summary>
+        /// <param name="serviceType">Type of instance requested.</param>
+        /// <param name="key">Name of registered service you want. May be null.</param>
+        /// <returns>
+        /// The requested service instance.
+        /// </returns>
         [SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0")]
         protected override object DoGetInstance(Type serviceType, string key)
         {
@@ -90,6 +105,12 @@ namespace Contoso.Abstract.SPG2010
             return new ActivationException(string.Format(CultureInfo.CurrentCulture, "Properties.Resources.TypeMappingNotRegistered", serviceType.Name, key));
         }
 
+        /// <summary>
+        /// Creates the instance from type mapping.
+        /// </summary>
+        /// <param name="typeMapping">The type mapping.</param>
+        /// <param name="serviceLocator">The service locator.</param>
+        /// <returns></returns>
         [SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0")]
         public static object CreateInstanceFromTypeMapping(TypeMapping typeMapping, IServiceLocator serviceLocator)
         {
@@ -116,6 +137,14 @@ namespace Contoso.Abstract.SPG2010
             return Activator.CreateInstance(typeToCreate, parameters.ToArray());
         }
 
+        /// <summary>
+        /// When implemented by inheriting classes, this method will do the actual work of
+        /// resolving all the requested service instances.
+        /// </summary>
+        /// <param name="serviceType">Type of service requested.</param>
+        /// <returns>
+        /// Sequence of service instance objects.
+        /// </returns>
         protected override IEnumerable<object> DoGetAllInstances(Type serviceType)
         {
             if (!_typeMappingsDictionary.ContainsKey(serviceType.AssemblyQualifiedName))
@@ -128,19 +157,61 @@ namespace Contoso.Abstract.SPG2010
                     yield return CreateInstanceFromTypeMapping(typeMapping, this);
         }
 
+        /// <summary>
+        /// Registers the type mapping.
+        /// </summary>
+        /// <typeparam name="TFrom">The type of from.</typeparam>
+        /// <typeparam name="TTo">The type of to.</typeparam>
+        /// <returns></returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter", Justification = "Normal service locator method")]
         public ActivatingServiceLocator RegisterTypeMapping<TFrom, TTo>()
             where TTo : TFrom, new() { return RegisterTypeMapping(typeof(TFrom), typeof(TTo), null, InstantiationType.NewInstanceForEachRequest); }
+        /// <summary>
+        /// Registers the type mapping.
+        /// </summary>
+        /// <typeparam name="TFrom">The type of from.</typeparam>
+        /// <typeparam name="TTo">The type of to.</typeparam>
+        /// <param name="instantiationType">Type of the instantiation.</param>
+        /// <returns></returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public ActivatingServiceLocator RegisterTypeMapping<TFrom, TTo>(InstantiationType instantiationType)
             where TTo : TFrom, new() { return RegisterTypeMapping(typeof(TFrom), typeof(TTo), null, instantiationType); }
+        /// <summary>
+        /// Registers the type mapping.
+        /// </summary>
+        /// <typeparam name="TFrom">The type of from.</typeparam>
+        /// <typeparam name="TTo">The type of to.</typeparam>
+        /// <param name="key">The key.</param>
+        /// <param name="instantiationType">Type of the instantiation.</param>
+        /// <returns></returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public ActivatingServiceLocator RegisterTypeMapping<TFrom, TTo>(string key, InstantiationType instantiationType)
             where TTo : TFrom, new() { return RegisterTypeMapping(typeof(TFrom), typeof(TTo), key, instantiationType); }
+        /// <summary>
+        /// Registers the type mapping.
+        /// </summary>
+        /// <typeparam name="TFrom">The type of from.</typeparam>
+        /// <typeparam name="TTo">The type of to.</typeparam>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public ActivatingServiceLocator RegisterTypeMapping<TFrom, TTo>(string key)
             where TTo : TFrom, new() { return RegisterTypeMapping(typeof(TFrom), typeof(TTo), key, InstantiationType.NewInstanceForEachRequest); }
+        /// <summary>
+        /// Registers the type mapping.
+        /// </summary>
+        /// <param name="fromType">From type.</param>
+        /// <param name="toType">To type.</param>
+        /// <returns></returns>
         public ActivatingServiceLocator RegisterTypeMapping(Type fromType, Type toType) { return RegisterTypeMapping(fromType, toType, null, InstantiationType.NewInstanceForEachRequest); }
+        /// <summary>
+        /// Registers the type mapping.
+        /// </summary>
+        /// <param name="fromType">From type.</param>
+        /// <param name="toType">To type.</param>
+        /// <param name="key">The key.</param>
+        /// <param name="instantiationType">Type of the instantiation.</param>
+        /// <returns></returns>
         public ActivatingServiceLocator RegisterTypeMapping(Type fromType, Type toType, string key, InstantiationType instantiationType)
         {
             Validation.ArgumentNotNull(fromType, "fromType");
@@ -148,6 +219,11 @@ namespace Contoso.Abstract.SPG2010
             return RegisterTypeMapping(new TypeMapping(fromType, toType, key) { InstantiationType = instantiationType });
         }
 
+        /// <summary>
+        /// Registers the type mapping.
+        /// </summary>
+        /// <param name="mapping">The mapping.</param>
+        /// <returns></returns>
         [SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0")]
         public ActivatingServiceLocator RegisterTypeMapping(TypeMapping mapping)
         {
@@ -166,17 +242,47 @@ namespace Contoso.Abstract.SPG2010
             return this;
         }
 
+        /// <summary>
+        /// Determines whether [is type registered].
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <returns>
+        ///   <c>true</c> if [is type registered]; otherwise, <c>false</c>.
+        /// </returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public bool IsTypeRegistered<TService>() { return IsTypeRegistered(typeof(TService)); }
+        /// <summary>
+        /// Determines whether [is type registered] [the specified t].
+        /// </summary>
+        /// <param name="t">The t.</param>
+        /// <returns>
+        ///   <c>true</c> if [is type registered] [the specified t]; otherwise, <c>false</c>.
+        /// </returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public bool IsTypeRegistered(Type t)
         {
             return this._typeMappingsDictionary.ContainsKey(t.AssemblyQualifiedName);
         }
 
+        /// <summary>
+        /// Determines whether [is type registered] [the specified key].
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="key">The key.</param>
+        /// <returns>
+        ///   <c>true</c> if [is type registered] [the specified key]; otherwise, <c>false</c>.
+        /// </returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public bool IsTypeRegistered<TService>(string key) { return IsTypeRegistered(typeof(TService), key); }
 
+        /// <summary>
+        /// Determines whether [is type registered] [the specified t].
+        /// </summary>
+        /// <param name="t">The t.</param>
+        /// <param name="key">The key.</param>
+        /// <returns>
+        ///   <c>true</c> if [is type registered] [the specified t]; otherwise, <c>false</c>.
+        /// </returns>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         public bool IsTypeRegistered(Type t, string key)
         {
