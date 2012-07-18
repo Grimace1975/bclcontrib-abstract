@@ -34,6 +34,12 @@ namespace Contoso.Abstract.Mvc
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = true, AllowMultiple = true)]
     public abstract class InjectableFilterAttribute : FilterAttribute
     {
+        /// <summary>
+        /// Gets the type of the filter.
+        /// </summary>
+        /// <value>
+        /// The type of the filter.
+        /// </value>
         public abstract Type FilterType { get; }
     }
 }

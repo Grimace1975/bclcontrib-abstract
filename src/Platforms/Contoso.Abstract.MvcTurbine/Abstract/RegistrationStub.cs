@@ -31,7 +31,7 @@ namespace Contoso.Abstract
 {
     /// <summary>
     /// RegistrationStub
-    /// </summary
+    /// </summary>
     internal sealed class RegistrationStub : IServiceRegistrar, IDisposable
     {
         public void Dispose() { }

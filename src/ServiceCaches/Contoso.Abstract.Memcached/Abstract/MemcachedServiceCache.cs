@@ -38,11 +38,39 @@ namespace Contoso.Abstract
     /// </summary>
     public interface IMemcachedServiceCache : IDistributedServiceCache
     {
+        /// <summary>
+        /// Gets the cache.
+        /// </summary>
         IMemcachedClient Cache { get; }
+        /// <summary>
+        /// Flushes all.
+        /// </summary>
         void FlushAll();
+        /// <summary>
+        /// Gets the with cas.
+        /// </summary>
+        /// <param name="keys">The keys.</param>
+        /// <returns></returns>
         IDictionary<string, CasResult<object>> GetWithCas(IEnumerable<string> keys);
+        /// <summary>
+        /// Gets the with cas.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
         CasResult<object> GetWithCas(string key);
+        /// <summary>
+        /// Gets the with cas.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
         CasResult<T> GetWithCas<T>(string key);
+        /// <summary>
+        /// Tries the get with cas.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         bool TryGetWithCas(string key, out CasResult<object> value);
     }
 
@@ -55,27 +83,61 @@ namespace Contoso.Abstract
 
         #region Tags
 
+        /// <summary>
+        /// IncrementTag
+        /// </summary>
         public struct IncrementTag
         {
+            /// <summary>
+            /// DefaultValue
+            /// </summary>
             public ulong DefaultValue;
+            /// <summary>
+            /// Delta
+            /// </summary>
             public ulong Delta;
         }
 
+        /// <summary>
+        /// DecrementTag
+        /// </summary>
         public struct DecrementTag
         {
+            /// <summary>
+            /// DefaultValue
+            /// </summary>
             public ulong DefaultValue;
+            /// <summary>
+            /// Delta
+            /// </summary>
             public ulong Delta;
         }
 
         #endregion
 
         static MemcachedServiceCache() { ServiceCacheManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MemcachedServiceCache"/> class.
+        /// </summary>
         public MemcachedServiceCache()
             : this(new MemcachedClient(), new TagMapper()) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MemcachedServiceCache"/> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
         public MemcachedServiceCache(IMemcachedClientConfiguration configuration)
             : this(configuration == null ? new MemcachedClient() : new MemcachedClient(configuration), new TagMapper()) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MemcachedServiceCache"/> class.
+        /// </summary>
+        /// <param name="client">The client.</param>
         public MemcachedServiceCache(IMemcachedClient client)
             : this(client, new TagMapper()) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MemcachedServiceCache"/> class.
+        /// </summary>
+        /// <param name="client">The client.</param>
+        /// <param name="tagMapper">The tag mapper.</param>
         public MemcachedServiceCache(IMemcachedClient client, ITagMapper tagMapper)
         {
             if (client == null)
@@ -84,12 +146,19 @@ namespace Contoso.Abstract
             _tagMapper = tagMapper;
             Settings = new ServiceCacheSettings();
         }
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="MemcachedServiceCache"/> is reclaimed by garbage collection.
+        /// </summary>
         ~MemcachedServiceCache()
         {
             try { ((IDisposable)this).Dispose(); }
             catch { }
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             if (Cache != null)
@@ -131,14 +200,35 @@ namespace Contoso.Abstract
             get { return (locator, name) => ServiceCacheManager.RegisterInstance<IMemcachedServiceCache>(this, locator, name); }
         }
 
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType"/>.
+        /// -or-
+        /// null if there is no service object of type <paramref name="serviceType"/>.
+        /// </returns>
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
+        /// <summary>
+        /// Gets or sets the <see cref="System.Object"/> with the specified name.
+        /// </summary>
         public object this[string name]
         {
             get { return Get(null, name); }
             set { Set(null, name, CacheItemPolicy.Default, value, ServiceCacheByDispatcher.Empty); }
         }
 
+        /// <summary>
+        /// Adds the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="itemPolicy">The item policy.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="dispatch">The dispatch.</param>
+        /// <returns></returns>
         public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             if (itemPolicy == null)
@@ -183,7 +273,21 @@ namespace Contoso.Abstract
             throw new InvalidOperationException("absoluteExpiration && slidingExpiration");
         }
 
+        /// <summary>
+        /// Gets the item from cache associated with the key provided.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>
+        /// The cached item.
+        /// </returns>
         public object Get(object tag, string name) { return Cache.Get(name); }
+        /// <summary>
+        /// Gets the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="names">The names.</param>
+        /// <returns></returns>
         public object Get(object tag, IEnumerable<string> names)
         {
             object opvalue;
@@ -200,10 +304,34 @@ namespace Contoso.Abstract
                 default: throw new InvalidOperationException();
             }
         }
+        /// <summary>
+        /// Tries the get.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public bool TryGet(object tag, string name, out object value) { return Cache.TryGet(name, out value); }
 
+        /// <summary>
+        /// Removes from cache the item associated with the key provided.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>
+        /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
+        /// </returns>
         public object Remove(object tag, string name) { return Cache.Remove(name); }
 
+        /// <summary>
+        /// Adds an object into cache based on the parameters provided.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="itemPolicy">The itemPolicy object.</param>
+        /// <param name="value">The value to store in cache.</param>
+        /// <param name="dispatch">The dispatch.</param>
+        /// <returns></returns>
         public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             if (itemPolicy == null)
@@ -264,6 +392,9 @@ namespace Contoso.Abstract
             throw new InvalidOperationException("absoluteExpiration && slidingExpiration");
         }
 
+        /// <summary>
+        /// Settings
+        /// </summary>
         public ServiceCacheSettings Settings { get; private set; }
 
         #region TouchableCacheItem
@@ -296,12 +427,40 @@ namespace Contoso.Abstract
 
         #region Domain-specific
 
+        /// <summary>
+        /// Gets the cache.
+        /// </summary>
         public IMemcachedClient Cache { get; private set; }
 
+        /// <summary>
+        /// Flushes all.
+        /// </summary>
         public void FlushAll() { Cache.FlushAll(); }
+        /// <summary>
+        /// Gets the with cas.
+        /// </summary>
+        /// <param name="keys">The keys.</param>
+        /// <returns></returns>
         public IDictionary<string, CasResult<object>> GetWithCas(IEnumerable<string> keys) { return Cache.GetWithCas(keys); }
+        /// <summary>
+        /// Gets the with cas.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
         public CasResult<object> GetWithCas(string key) { return Cache.GetWithCas(key); }
+        /// <summary>
+        /// Gets the with cas.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
         public CasResult<T> GetWithCas<T>(string key) { return Cache.GetWithCas<T>(key); }
+        /// <summary>
+        /// Tries the get with cas.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public bool TryGetWithCas(string key, out CasResult<object> value) { return Cache.TryGetWithCas(key, out value); }
 
         #endregion

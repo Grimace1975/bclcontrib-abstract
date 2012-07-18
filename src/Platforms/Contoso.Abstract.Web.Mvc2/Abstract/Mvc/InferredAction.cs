@@ -33,8 +33,26 @@ namespace Contoso.Abstract.Mvc
     [Serializable]
     public class InferredAction
     {
+        /// <summary>
+        /// Gets or sets the controller.
+        /// </summary>
+        /// <value>
+        /// The controller.
+        /// </value>
         public Type Controller { get; set; }
+        /// <summary>
+        /// Gets or sets the name of the action.
+        /// </summary>
+        /// <value>
+        /// The name of the action.
+        /// </value>
         public string ActionName { get; set; }
+        /// <summary>
+        /// Gets or sets the on executing.
+        /// </summary>
+        /// <value>
+        /// The on executing.
+        /// </value>
         public Action<ControllerContext> OnExecuting { get; set; }
     }
 }

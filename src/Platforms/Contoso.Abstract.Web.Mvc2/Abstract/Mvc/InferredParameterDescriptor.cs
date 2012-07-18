@@ -36,22 +36,39 @@ namespace Contoso.Abstract.Mvc
         private readonly ActionDescriptor _descriptor;
         private readonly string _parameterName;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InferredParameterDescriptor"/> class.
+        /// </summary>
+        /// <param name="descriptor">The descriptor.</param>
+        /// <param name="parameterName">Name of the parameter.</param>
         public InferredParameterDescriptor(ActionDescriptor descriptor, string parameterName)
         {
             _descriptor = descriptor;
             _parameterName = parameterName;
         }
 
+        /// <summary>
+        /// Gets the action descriptor.
+        /// </summary>
+        /// <returns>The action descriptor.</returns>
         public override ActionDescriptor ActionDescriptor
         {
             get { return _descriptor; }
         }
 
+        /// <summary>
+        /// Gets the name of the parameter.
+        /// </summary>
+        /// <returns>The name of the parameter.</returns>
         public override string ParameterName
         {
             get { return _parameterName; }
         }
 
+        /// <summary>
+        /// Gets the type of the parameter.
+        /// </summary>
+        /// <returns>The type of the parameter.</returns>
         public override Type ParameterType
         {
             get { return typeof(string); }

@@ -37,13 +37,31 @@ namespace Contoso.Abstract
     public class MTWrapServiceBusAbstractor : MTServiceBusAbstractor
     {
         static MTWrapServiceBusAbstractor() { ServiceBusManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MTWrapServiceBusAbstractor"/> class.
+        /// </summary>
         public MTWrapServiceBusAbstractor()
             : base() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MTWrapServiceBusAbstractor"/> class.
+        /// </summary>
+        /// <param name="serviceLocator">The service locator.</param>
         public MTWrapServiceBusAbstractor(IServiceLocator serviceLocator)
             : base(serviceLocator) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MTWrapServiceBusAbstractor"/> class.
+        /// </summary>
+        /// <param name="serviceLocator">The service locator.</param>
+        /// <param name="bus">The bus.</param>
         public MTWrapServiceBusAbstractor(IServiceLocator serviceLocator, IServiceBus bus)
             : base(serviceLocator, bus) { }
 
+        /// <summary>
+        /// Sends the specified endpoint.
+        /// </summary>
+        /// <param name="endpoint">The endpoint.</param>
+        /// <param name="messages">The messages.</param>
+        /// <returns></returns>
         public override IServiceBusCallback Send(IServiceBusEndpoint endpoint, params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
@@ -58,6 +76,10 @@ namespace Contoso.Abstract
             return null;
         }
 
+        /// <summary>
+        /// Replies the specified messages.
+        /// </summary>
+        /// <param name="messages">The messages.</param>
         public override void Reply(params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
@@ -68,6 +90,10 @@ namespace Contoso.Abstract
 
         #region Publishing ServiceBus
 
+        /// <summary>
+        /// Publishes the specified messages.
+        /// </summary>
+        /// <param name="messages">The messages.</param>
         public override void Publish(params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
@@ -76,6 +102,11 @@ namespace Contoso.Abstract
             //catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
         }
 
+        /// <summary>
+        /// Subscribes the specified message type.
+        /// </summary>
+        /// <param name="messageType">Type of the message.</param>
+        /// <param name="predicate">The predicate.</param>
         public override void Subscribe(Type messageType, Predicate<object> predicate)
         {
             if (messageType == null)
@@ -88,6 +119,10 @@ namespace Contoso.Abstract
             catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
         }
 
+        /// <summary>
+        /// Unsubscribes the specified message type.
+        /// </summary>
+        /// <param name="messageType">Type of the message.</param>
         public override void Unsubscribe(Type messageType)
         {
             if (messageType == null)

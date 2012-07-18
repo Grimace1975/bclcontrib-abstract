@@ -38,12 +38,20 @@ namespace Contoso.Abstract
     /// </summary>
     public interface INinjectServiceRegistrar : IServiceRegistrar { }
 
+    /// <summary>
+    /// NinjectServiceRegistrar
+    /// </summary>
     public class NinjectServiceRegistrar : NinjectModule, INinjectServiceRegistrar, IDisposable, ICloneable, IServiceRegistrarBehaviorAccessor
     {
         private NinjectServiceLocator _parent;
         private IKernel _container;
         private Guid _moduleId;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NinjectServiceRegistrar"/> class.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="kernel">The kernel.</param>
         public NinjectServiceRegistrar(NinjectServiceLocator parent, IKernel kernel)
         {
             _parent = parent;
@@ -55,19 +63,44 @@ namespace Contoso.Abstract
         object ICloneable.Clone() { return MemberwiseClone(); }
 
         // locator
+        /// <summary>
+        /// Gets the locator.
+        /// </summary>
         public IServiceLocator Locator
         {
             get { return _parent; }
         }
 
         // enumerate
+        /// <summary>
+        /// Determines whether this instance has registered.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <returns>
+        ///   <c>true</c> if this instance has registered; otherwise, <c>false</c>.
+        /// </returns>
         public bool HasRegistered<TService>() { return Kernel.GetBindings(typeof(TService)).Any(); }
+        /// <summary>
+        /// Determines whether the specified service type has registered.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified service type has registered; otherwise, <c>false</c>.
+        /// </returns>
         public bool HasRegistered(Type serviceType) { return Kernel.GetBindings(serviceType).Any(); }
+        /// <summary>
+        /// Gets the registrations for.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns></returns>
         public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType)
         {
             return Kernel.GetBindings(serviceType)
                 .Select(x => new ServiceRegistration { ServiceType = x.Service });
         }
+        /// <summary>
+        /// Gets the registrations.
+        /// </summary>
         public IEnumerable<ServiceRegistration> Registrations
         {
             get
@@ -78,42 +111,135 @@ namespace Contoso.Abstract
         }
 
         // register type
+        /// <summary>
+        /// Gets the lifetime for registers.
+        /// </summary>
         public ServiceRegistrarLifetime LifetimeForRegisters { get; private set; }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
         public void Register(Type serviceType) { Bind(serviceType).ToSelf(); }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="name">The name.</param>
         public void Register(Type serviceType, string name) { Bind(serviceType).ToSelf().Named(name); }
 
         // register implementation
+        /// <summary>
+        /// Registers this instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
         public void Register<TService, TImplementation>()
             where TService : class
             where TImplementation : class, TService { SetLifetime(Bind<TService>().To<TImplementation>()); }
+        /// <summary>
+        /// Registers the specified name.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
+        /// <param name="name">The name.</param>
         public void Register<TService, TImplementation>(string name)
             where TService : class
             where TImplementation : class, TService { SetLifetime(Bind<TService>().To(typeof(TImplementation))).Named(name); }
 
+        /// <summary>
+        /// Registers the specified implementation type.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="implementationType">Type of the implementation.</param>
         public void Register<TService>(Type implementationType)
             where TService : class { SetLifetime(Bind<TService>().To(implementationType)); }
+        /// <summary>
+        /// Registers the specified implementation type.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="implementationType">Type of the implementation.</param>
+        /// <param name="name">The name.</param>
         public void Register<TService>(Type implementationType, string name)
             where TService : class { SetLifetime(Bind<TService>().To(implementationType)).Named(name); }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="implementationType">Type of the implementation.</param>
         public void Register(Type serviceType, Type implementationType) { SetLifetime(Bind(serviceType).To(implementationType)); }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="implementationType">Type of the implementation.</param>
+        /// <param name="name">The name.</param>
         public void Register(Type serviceType, Type implementationType, string name) { SetLifetime(Bind(serviceType).To(implementationType)).Named(name); }
 
         // register instance
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="instance">The instance.</param>
         public void RegisterInstance<TService>(TService instance)
             where TService : class { EnsureTransientLifestyle(); Bind<TService>().ToConstant(instance); }
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="name">The name.</param>
         public void RegisterInstance<TService>(TService instance, string name)
             where TService : class { EnsureTransientLifestyle(); Bind<TService>().ToConstant(instance).Named(name); }
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="instance">The instance.</param>
         public void RegisterInstance(Type serviceType, object instance) { EnsureTransientLifestyle(); Bind(serviceType).ToConstant(instance); }
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="instance">The instance.</param>
+        /// <param name="name">The name.</param>
         public void RegisterInstance(Type serviceType, object instance, string name) { EnsureTransientLifestyle(); Bind(serviceType).ToConstant(instance).Named(name); }
 
         // register method
+        /// <summary>
+        /// Registers the specified factory method.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="factoryMethod">The factory method.</param>
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class { SetLifetime(Bind<TService>().ToMethod(x => factoryMethod(_parent))); }
+        /// <summary>
+        /// Registers the specified factory method.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="factoryMethod">The factory method.</param>
+        /// <param name="name">The name.</param>
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
             where TService : class { SetLifetime(Bind<TService>().ToMethod(x => factoryMethod(_parent))).Named(name); }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="factoryMethod">The factory method.</param>
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod) { SetLifetime(Bind(serviceType).ToMethod(x => factoryMethod(_parent))); }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="factoryMethod">The factory method.</param>
+        /// <param name="name">The name.</param>
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name) { SetLifetime(Bind(serviceType).ToMethod(x => factoryMethod(_parent))).Named(name); }
 
         // interceptor
+        /// <summary>
+        /// Registers the interceptor.
+        /// </summary>
+        /// <param name="interceptor">The interceptor.</param>
         public void RegisterInterceptor(IServiceLocatorInterceptor interceptor)
         {
             throw new NotSupportedException();
@@ -121,11 +247,17 @@ namespace Contoso.Abstract
 
         #region Domain specific
 
+        /// <summary>
+        /// Loads the module into the kernel.
+        /// </summary>
         public override void Load()
         {
             _moduleId = Guid.NewGuid();
         }
 
+        /// <summary>
+        /// Gets the module's name. Only a single module with a given name can be loaded at one time.
+        /// </summary>
         public override string Name
         {
             get { return _moduleId.ToString(); }

@@ -33,6 +33,9 @@ using System.Web.Caching;
 using System.Web.Hosting;
 namespace Contoso.Abstract
 {
+    /// <summary>
+    /// AssemblyResourcePathProvider
+    /// </summary>
     public class AssemblyResourcePathProvider : VirtualPathProvider
     {
         private readonly Assembly _assembly;
@@ -45,8 +48,19 @@ namespace Contoso.Abstract
             public string Path;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AssemblyResourcePathProvider"/> class.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        /// <param name="selector">The selector.</param>
         public AssemblyResourcePathProvider(Assembly assembly, Func<string, string> selector)
             : this("/", assembly, selector) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AssemblyResourcePathProvider"/> class.
+        /// </summary>
+        /// <param name="path">The path.</param>
+        /// <param name="assembly">The assembly.</param>
+        /// <param name="selector">The selector.</param>
         public AssemblyResourcePathProvider(string path, Assembly assembly, Func<string, string> selector)
         {
             if (string.IsNullOrEmpty(path))
@@ -62,6 +76,13 @@ namespace Contoso.Abstract
                 .ToDictionary(x => x.Path);
         }
 
+        /// <summary>
+        /// Gets a value that indicates whether a file exists in the virtual file system.
+        /// </summary>
+        /// <param name="virtualPath">The path to the virtual file.</param>
+        /// <returns>
+        /// true if the file exists in the virtual file system; otherwise, false.
+        /// </returns>
         public override bool FileExists(string virtualPath)
         {
             if (virtualPath == null)
@@ -71,6 +92,15 @@ namespace Contoso.Abstract
             return Previous.FileExists(absolutePath);
         }
 
+        /// <summary>
+        /// Creates a cache dependency based on the specified virtual paths.
+        /// </summary>
+        /// <param name="virtualPath">The path to the primary virtual resource.</param>
+        /// <param name="virtualPathDependencies">An array of paths to other resources required by the primary virtual resource.</param>
+        /// <param name="utcStart">The UTC time at which the virtual resources were read.</param>
+        /// <returns>
+        /// A <see cref="T:System.Web.Caching.CacheDependency"/> object for the specified virtual resources.
+        /// </returns>
         public override CacheDependency GetCacheDependency(string virtualPath, IEnumerable virtualPathDependencies, DateTime utcStart)
         {
             if (virtualPath == null)
@@ -80,6 +110,13 @@ namespace Contoso.Abstract
             return Previous.GetCacheDependency(virtualPath, virtualPathDependencies, utcStart);
         }
 
+        /// <summary>
+        /// Gets a virtual file from the virtual file system.
+        /// </summary>
+        /// <param name="virtualPath">The path to the virtual file.</param>
+        /// <returns>
+        /// A descendent of the <see cref="T:System.Web.Hosting.VirtualFile"/> class that represents a file in the virtual file system.
+        /// </returns>
         public override VirtualFile GetFile(string virtualPath)
         {
             if (virtualPath == null)

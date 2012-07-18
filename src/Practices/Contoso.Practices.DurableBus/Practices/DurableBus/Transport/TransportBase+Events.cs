@@ -29,11 +29,28 @@ namespace Contoso.Practices.DurableBus.Transport
 {
     public abstract partial class TransportBase<T>
     {
+        /// <summary>
+        /// Occurs when [message received].
+        /// </summary>
         public event EventHandler<MessageReceivedEventArgs> MessageReceived;
+        /// <summary>
+        /// Occurs when [message processing].
+        /// </summary>
         public event EventHandler MessageProcessing;
+        /// <summary>
+        /// Occurs when [message processing failed].
+        /// </summary>
         public event EventHandler MessageProcessingFailed;
+        /// <summary>
+        /// Occurs when [message processed].
+        /// </summary>
         public event EventHandler MessageProcessed;
 
+        /// <summary>
+        /// Called when [message received].
+        /// </summary>
+        /// <param name="m">The m.</param>
+        /// <returns></returns>
         protected virtual bool OnMessageReceived(TransportMessage m)
         {
             try
@@ -46,6 +63,10 @@ namespace Contoso.Practices.DurableBus.Transport
             return true;
         }
 
+        /// <summary>
+        /// Called when [message processing].
+        /// </summary>
+        /// <returns></returns>
         protected virtual bool OnMessageProcessing()
         {
             try
@@ -58,6 +79,10 @@ namespace Contoso.Practices.DurableBus.Transport
             return true;
         }
 
+        /// <summary>
+        /// Called when [message processing failed].
+        /// </summary>
+        /// <returns></returns>
         protected virtual bool OnMessageProcessingFailed()
         {
             try
@@ -70,6 +95,10 @@ namespace Contoso.Practices.DurableBus.Transport
             return true;
         }
 
+        /// <summary>
+        /// Called when [message processed].
+        /// </summary>
+        /// <returns></returns>
         protected virtual bool OnMessageProcessed()
         {
             try

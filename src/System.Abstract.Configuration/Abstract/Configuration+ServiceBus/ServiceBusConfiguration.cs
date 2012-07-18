@@ -32,6 +32,9 @@ namespace System.Abstract.Configuration
     /// </summary>
     public partial class ServiceBusConfiguration
     {
+        /// <summary>
+        /// Gets the endpoints.
+        /// </summary>
         [ConfigurationProperty("endpoints")]
         public EndpointElementCollection Endpoints
         {

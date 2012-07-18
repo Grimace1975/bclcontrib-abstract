@@ -38,11 +38,40 @@ namespace Contoso.Abstract
     /// </summary>
     public interface IServerAppFabricServiceCache : IDistributedServiceCache
     {
+        /// <summary>
+        /// Gets the cache.
+        /// </summary>
         DataCache Cache { get; }
         //
+        /// <summary>
+        /// Gets the and lock.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="timeout">The timeout.</param>
+        /// <param name="lockHandle">The lock handle.</param>
+        /// <returns></returns>
         object GetAndLock(string name, TimeSpan timeout, out DataCacheLockHandle lockHandle);
+        /// <summary>
+        /// Gets the and lock.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="timeout">The timeout.</param>
+        /// <param name="lockHandle">The lock handle.</param>
+        /// <param name="forceLock">if set to <c>true</c> [force lock].</param>
+        /// <returns></returns>
         object GetAndLock(string name, TimeSpan timeout, out DataCacheLockHandle lockHandle, bool forceLock);
+        /// <summary>
+        /// Unlocks the specified name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="lockHandle">The lock handle.</param>
         void Unlock(string name, DataCacheLockHandle lockHandle);
+        /// <summary>
+        /// Unlocks the specified name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="lockHandle">The lock handle.</param>
+        /// <param name="timeout">The timeout.</param>
         void Unlock(string name, DataCacheLockHandle lockHandle, TimeSpan timeout);
     }
 
@@ -52,14 +81,34 @@ namespace Contoso.Abstract
     public class ServerAppFabricServiceCache : IServerAppFabricServiceCache, ServiceCacheManager.ISetupRegistration
     {
         static ServerAppFabricServiceCache() { ServiceCacheManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache"/> class.
+        /// </summary>
         public ServerAppFabricServiceCache()
             : this(new DataCacheFactory()) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache"/> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
         public ServerAppFabricServiceCache(DataCacheFactoryConfiguration configuration)
             : this(new DataCacheFactory(configuration)) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache"/> class.
+        /// </summary>
+        /// <param name="cacheFactory">The cache factory.</param>
         public ServerAppFabricServiceCache(DataCacheFactory cacheFactory)
             : this(cacheFactory.GetDefaultCache()) { CacheFactory = cacheFactory; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache"/> class.
+        /// </summary>
+        /// <param name="cacheFactory">The cache factory.</param>
+        /// <param name="cacheName">Name of the cache.</param>
         public ServerAppFabricServiceCache(DataCacheFactory cacheFactory, string cacheName)
             : this(cacheFactory.GetCache(cacheName)) { CacheFactory = cacheFactory; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache"/> class.
+        /// </summary>
+        /// <param name="cache">The cache.</param>
         public ServerAppFabricServiceCache(DataCache cache)
         {
             Cache = cache;
@@ -70,14 +119,35 @@ namespace Contoso.Abstract
         {
             get { return (locator, name) => ServiceCacheManager.RegisterInstance<IServerAppFabricServiceCache>(this, locator, name); }
         }
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType"/>.
+        /// -or-
+        /// null if there is no service object of type <paramref name="serviceType"/>.
+        /// </returns>
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
+        /// <summary>
+        /// Gets or sets the <see cref="System.Object"/> with the specified name.
+        /// </summary>
         public object this[string name]
         {
             get { return Get(null, name); }
             set { Set(null, name, CacheItemPolicy.Default, value, ServiceCacheByDispatcher.Empty); }
         }
 
+        /// <summary>
+        /// Adds the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="itemPolicy">The item policy.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="dispatch">The dispatch.</param>
+        /// <returns></returns>
         public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             if (itemPolicy == null)
@@ -117,6 +187,14 @@ namespace Contoso.Abstract
             return value;
         }
 
+        /// <summary>
+        /// Gets the item from cache associated with the key provided.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>
+        /// The cached item.
+        /// </returns>
         public object Get(object tag, string name)
         {
             var version = (tag as DataCacheItemVersion);
@@ -126,6 +204,12 @@ namespace Contoso.Abstract
             return (!Settings.TryGetRegion(ref name, out regionName) ? Cache.GetIfNewer(name, ref version) : Cache.GetIfNewer(name, ref version, regionName));
         }
 
+        /// <summary>
+        /// Gets the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="names">The names.</param>
+        /// <returns></returns>
         public object Get(object tag, IEnumerable<string> names)
         {
             if (names == null)
@@ -133,11 +217,27 @@ namespace Contoso.Abstract
             return names.Select(name => new { name, value = Get(null, name) }).ToDictionary(x => x.name, x => x.value);
         }
 
+        /// <summary>
+        /// Tries the get.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public bool TryGet(object tag, string name, out object value)
         {
             throw new NotSupportedException();
         }
 
+        /// <summary>
+        /// Adds an object into cache based on the parameters provided.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="itemPolicy">The itemPolicy object.</param>
+        /// <param name="value">The value to store in cache.</param>
+        /// <param name="dispatch">The dispatch.</param>
+        /// <returns></returns>
         public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
             if (itemPolicy == null)
@@ -223,6 +323,14 @@ namespace Contoso.Abstract
             return value;
         }
 
+        /// <summary>
+        /// Removes from cache the item associated with the key provided.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <returns>
+        /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
+        /// </returns>
         public object Remove(object tag, string name)
         {
             string regionName;
@@ -248,6 +356,9 @@ namespace Contoso.Abstract
             return value;
         }
 
+        /// <summary>
+        /// Settings
+        /// </summary>
         public ServiceCacheSettings Settings { get; private set; }
 
         #region TouchableCacheItem
@@ -259,8 +370,18 @@ namespace Contoso.Abstract
         {
             private ServerAppFabricServiceCache _parent;
             private ITouchableCacheItem _base;
+            /// <summary>
+            /// Initializes a new instance of the <see cref="DefaultTouchableCacheItem"/> class.
+            /// </summary>
+            /// <param name="parent">The parent.</param>
+            /// <param name="base">The @base.</param>
             public DefaultTouchableCacheItem(ServerAppFabricServiceCache parent, ITouchableCacheItem @base) { _parent = parent; _base = @base; }
 
+            /// <summary>
+            /// Touches the specified tag.
+            /// </summary>
+            /// <param name="tag">The tag.</param>
+            /// <param name="names">The names.</param>
             public void Touch(object tag, string[] names)
             {
                 if (names == null || names.Length == 0)
@@ -268,6 +389,12 @@ namespace Contoso.Abstract
                 throw new NotSupportedException();
             }
 
+            /// <summary>
+            /// Makes the dependency.
+            /// </summary>
+            /// <param name="tag">The tag.</param>
+            /// <param name="names">The names.</param>
+            /// <returns></returns>
             public object MakeDependency(object tag, string[] names)
             {
                 if (names == null || names.Length == 0)
@@ -281,26 +408,58 @@ namespace Contoso.Abstract
 
         #region Domain-specific
 
+        /// <summary>
+        /// Gets the cache factory.
+        /// </summary>
         public static DataCacheFactory CacheFactory { get; private set; }
+        /// <summary>
+        /// Gets the cache.
+        /// </summary>
         public DataCache Cache { get; private set; }
 
+        /// <summary>
+        /// Gets the and lock.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="timeout">The timeout.</param>
+        /// <param name="lockHandle">The lock handle.</param>
+        /// <returns></returns>
         public object GetAndLock(string name, TimeSpan timeout, out DataCacheLockHandle lockHandle)
         {
             string region;
             return (!Settings.TryGetRegion(ref name, out region) ? Cache.GetAndLock(name, timeout, out lockHandle) : Cache.GetAndLock(name, timeout, out lockHandle, region));
         }
+        /// <summary>
+        /// Gets the and lock.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="timeout">The timeout.</param>
+        /// <param name="lockHandle">The lock handle.</param>
+        /// <param name="forceLock">if set to <c>true</c> [force lock].</param>
+        /// <returns></returns>
         public object GetAndLock(string name, TimeSpan timeout, out DataCacheLockHandle lockHandle, bool forceLock)
         {
             string region;
             return (!Settings.TryGetRegion(ref name, out region) ? Cache.GetAndLock(name, timeout, out lockHandle, forceLock) : Cache.GetAndLock(name, timeout, out lockHandle, region, forceLock));
         }
 
+        /// <summary>
+        /// Unlocks the specified name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="lockHandle">The lock handle.</param>
         public void Unlock(string name, DataCacheLockHandle lockHandle)
         {
             string region;
             if (!Settings.TryGetRegion(ref name, out region)) Cache.Unlock(name, lockHandle);
             else Cache.Unlock(name, lockHandle);
         }
+        /// <summary>
+        /// Unlocks the specified name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="lockHandle">The lock handle.</param>
+        /// <param name="timeout">The timeout.</param>
         public void Unlock(string name, DataCacheLockHandle lockHandle, TimeSpan timeout)
         {
             string region;

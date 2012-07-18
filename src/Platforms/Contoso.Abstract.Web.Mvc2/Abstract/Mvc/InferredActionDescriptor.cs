@@ -38,6 +38,12 @@ namespace Contoso.Abstract.Mvc
         private readonly ControllerDescriptor _controllerDescriptor;
         private readonly InferredAction _inferredAction;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InferredActionDescriptor"/> class.
+        /// </summary>
+        /// <param name="actionName">Name of the action.</param>
+        /// <param name="controllerDescriptor">The controller descriptor.</param>
+        /// <param name="inferredAction">The inferred action.</param>
         public InferredActionDescriptor(string actionName, ControllerDescriptor controllerDescriptor, InferredAction inferredAction)
         {
             _actionName = actionName;
@@ -45,6 +51,14 @@ namespace Contoso.Abstract.Mvc
             _inferredAction = inferredAction;
         }
 
+        /// <summary>
+        /// Executes the action method by using the specified parameters and controller context.
+        /// </summary>
+        /// <param name="controllerContext">The controller context.</param>
+        /// <param name="parameters">The parameters of the action method.</param>
+        /// <returns>
+        /// The result of executing the action method.
+        /// </returns>
         public override object Execute(ControllerContext controllerContext, IDictionary<string, object> parameters)
         {
             Action<ControllerContext> onExecuting;
@@ -53,18 +67,35 @@ namespace Contoso.Abstract.Mvc
             return new InferredViewResult { ViewName = ActionName };
         }
 
+        /// <summary>
+        /// Returns the parameters of the action method.
+        /// </summary>
+        /// <returns>
+        /// The parameters of the action method.
+        /// </returns>
         public override ParameterDescriptor[] GetParameters() { return new ParameterDescriptor[] { new InferredParameterDescriptor(this, ActionName) }; }
 
+        /// <summary>
+        /// Gets the name of the action method.
+        /// </summary>
+        /// <returns>The name of the action method.</returns>
         public override string ActionName
         {
             get { return _actionName; }
         }
 
+        /// <summary>
+        /// Gets the controller descriptor.
+        /// </summary>
+        /// <returns>The controller descriptor.</returns>
         public override ControllerDescriptor ControllerDescriptor
         {
             get { return _controllerDescriptor; }
         }
 
+        /// <summary>
+        /// Gets the inferred action.
+        /// </summary>
         public InferredAction InferredAction { get; private set; }
     }
 }

@@ -31,41 +31,126 @@ namespace Contoso.Abstract
 {
     public partial class MemcachedServiceCache
     {
+        /// <summary>
+        /// ITagMapper
+        /// </summary>
         public interface ITagMapper
         {
+            /// <summary>
+            /// Toes the add opcode.
+            /// </summary>
+            /// <param name="tag">The tag.</param>
+            /// <param name="name">The name.</param>
+            /// <param name="cas">The cas.</param>
+            /// <param name="opvalue">The opvalue.</param>
+            /// <returns></returns>
             TagMapper.AddOpcode ToAddOpcode(object tag, ref string name, out ulong cas, out object opvalue);
+            /// <summary>
+            /// Toes the set opcode.
+            /// </summary>
+            /// <param name="tag">The tag.</param>
+            /// <param name="name">The name.</param>
+            /// <param name="cas">The cas.</param>
+            /// <param name="opvalue">The opvalue.</param>
+            /// <param name="storeMode">The store mode.</param>
+            /// <returns></returns>
             TagMapper.SetOpcode ToSetOpcode(object tag, ref string name, out ulong cas, out object opvalue, out StoreMode storeMode);
+            /// <summary>
+            /// Toes the get opcode.
+            /// </summary>
+            /// <param name="tag">The tag.</param>
+            /// <param name="opvalue">The opvalue.</param>
+            /// <returns></returns>
             TagMapper.GetOpcode ToGetOpcode(object tag, out object opvalue);
         }
 
+        /// <summary>
+        /// TagMapper
+        /// </summary>
         public class TagMapper : ITagMapper
         {
+            /// <summary>
+            /// AddOpcode
+            /// </summary>
             public enum AddOpcode
             {
+                /// <summary>
+                /// Append
+                /// </summary>
                 Append,
+                /// <summary>
+                /// AppendCas
+                /// </summary>
                 AppendCas,
+                /// <summary>
+                /// Store
+                /// </summary>
                 Store,
+                /// <summary>
+                /// Cas
+                /// </summary>
                 Cas,
             }
 
+            /// <summary>
+            /// SetOpcode
+            /// </summary>
             public enum SetOpcode
             {
+                /// <summary>
+                /// Prepend
+                /// </summary>
                 Prepend,
+                /// <summary>
+                /// PrependCas
+                /// </summary>
                 PrependCas,
+                /// <summary>
+                /// Store
+                /// </summary>
                 Store,
+                /// <summary>
+                /// Cas
+                /// </summary>
                 Cas,
+                /// <summary>
+                /// Decrement
+                /// </summary>
                 Decrement,
+                /// <summary>
+                /// DecrementCas
+                /// </summary>
                 DecrementCas,
+                /// <summary>
+                /// Increment
+                /// </summary>
                 Increment,
+                /// <summary>
+                /// IncrementCas
+                /// </summary>
                 IncrementCas
             }
 
+            /// <summary>
+            /// GetOpcode
+            /// </summary>
             public enum GetOpcode
             {
+                /// <summary>
+                /// Get
+                /// </summary>
                 Get,
                 //PerformMultiGet,
             }
 
+            /// <summary>
+            /// Toes the add opcode.
+            /// </summary>
+            /// <param name="tag">The tag.</param>
+            /// <param name="name">The name.</param>
+            /// <param name="cas">The cas.</param>
+            /// <param name="opvalue">The opvalue.</param>
+            /// <returns></returns>
             public AddOpcode ToAddOpcode(object tag, ref string name, out ulong cas, out object opvalue)
             {
                 if (name == null)
@@ -106,6 +191,15 @@ namespace Contoso.Abstract
                 throw new InvalidOperationException();
             }
 
+            /// <summary>
+            /// Toes the set opcode.
+            /// </summary>
+            /// <param name="tag">The tag.</param>
+            /// <param name="name">The name.</param>
+            /// <param name="cas">The cas.</param>
+            /// <param name="opvalue">The opvalue.</param>
+            /// <param name="storeMode">The store mode.</param>
+            /// <returns></returns>
             public SetOpcode ToSetOpcode(object tag, ref string name, out ulong cas, out object opvalue, out StoreMode storeMode)
             {
                 if (name == null)
@@ -179,6 +273,12 @@ namespace Contoso.Abstract
                 throw new InvalidOperationException();
             }
 
+            /// <summary>
+            /// Toes the get opcode.
+            /// </summary>
+            /// <param name="tag">The tag.</param>
+            /// <param name="opvalue">The opvalue.</param>
+            /// <returns></returns>
             public GetOpcode ToGetOpcode(object tag, out object opvalue)
             {
                 opvalue = tag;

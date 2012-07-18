@@ -28,8 +28,15 @@ using System.Collections;
 using System.Configuration;
 namespace System.Patterns.ReleaseManagement
 {
+    /// <summary>
+    /// An abstract class representing a simplified configuration setting object. This provides a basic
+    /// facade over the <see cref="T:System.Configuration.ConfigurationElement">ConfigurationElement</see> class.
+    /// </summary>
     public partial class ReleaseManagementConfiguration : ConfigurationElement
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReleaseManagementConfiguration"/> class.
+        /// </summary>
         public ReleaseManagementConfiguration() { _attributeIndex = new AttributeIndex(this); }
 #else
 namespace System.Configuration
@@ -41,7 +48,7 @@ namespace System.Configuration
     public abstract class ConfigurationElementEx : ConfigurationElement
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Configuration"/> class.
+        /// Initializes a new instance of the <see cref="ConfigurationElementEx"/> class.
         /// </summary>
         protected ConfigurationElementEx() { _attributeIndex = new AttributeIndex(this); }
 #endif
@@ -59,7 +66,9 @@ namespace System.Configuration
         /// <summary>
         /// Gets or sets the name of the configuration setting.
         /// </summary>
-        /// <value>The name.</value>
+        /// <value>
+        /// The name.
+        /// </value>
         public virtual string Name
         {
             get { return string.Empty; }
@@ -81,7 +90,7 @@ namespace System.Configuration
         /// <summary>
         /// Applies the configuration.
         /// </summary>
-        /// <param name="inherit">The inherit.</param>
+        /// <param name="inheritConfiguration">The inherit configuration.</param>
         public void ApplyConfiguration(ConfigurationElement inheritConfiguration)
         {
             ApplyConfigurationValues(inheritConfiguration);
@@ -97,7 +106,7 @@ namespace System.Configuration
         /// <summary>
         /// Applies the configuration elements.
         /// </summary>
-        /// <param name="inherit">The inherit.</param>
+        /// <param name="inheritConfiguration">The inherit configuration.</param>
         protected virtual void ApplyConfigurationElements(ConfigurationElement inheritConfiguration) { }
 
         /// <summary>
@@ -110,20 +119,32 @@ namespace System.Configuration
         #region Attribute
 
 #if COREINTERNAL
-        public AttributeIndex Attribute
+        /// <summary>
+        /// Gets the attribute.
+        /// </summary>
+        protected AttributeIndex Attribute
         {
             get { return _attributeIndex; }
         }
-        public class AttributeIndex
+        /// <summary>
+        /// AttributeIndex
+        /// </summary>
+        protected class AttributeIndex
         {
             private ReleaseManagementConfiguration _parent;
+            /// <summary>
+            /// Initializes a new instance of the <see cref="AttributeIndex"/> class.
+            /// </summary>
+            /// <param name="parent">The parent.</param>
             public AttributeIndex(ReleaseManagementConfiguration parent) { _parent = parent; }
 #else
         /// <summary>
         /// Gets the AttributeIndex of this class.
         /// </summary>
-        /// <value>The attribute.</value>
-        public IIndexer<ConfigurationProperty, object> Attribute
+        /// <value>
+        /// The attribute.
+        /// </value>
+        protected IIndexer<ConfigurationProperty, object> Attribute
         {
             get { return _attributeIndex; }
         }
@@ -134,7 +155,7 @@ namespace System.Configuration
             /// <summary>
             /// Initializes a new instance of the <see cref="AttributeIndex"/> class.
             /// </summary>
-            /// <param name="config">The config.</param>
+            /// <param name="parent">The parent.</param>
             public AttributeIndex(ConfigurationElementEx parent)
             {
                 _parent = parent;
@@ -143,7 +164,6 @@ namespace System.Configuration
             /// <summary>
             /// Gets or sets the <see cref="System.Object"/> with the specified key.
             /// </summary>
-            /// <value></value>
             public object this[ConfigurationProperty key]
             {
                 get { return _parent[key]; }
@@ -156,7 +176,7 @@ namespace System.Configuration
         /// </summary>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        public object GetAttribute(string name)
+        protected object GetAttribute(string name)
         {
             return (!Properties.Contains(name) ? this[name] : null);
         }
@@ -166,7 +186,7 @@ namespace System.Configuration
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="value">The value.</param>
-        public void SetAttribute(string name, object value)
+        protected void SetAttribute(string name, object value)
         {
             if (!Properties.Contains(name))
                 Properties.Add(new ConfigurationProperty(name, typeof(string)));

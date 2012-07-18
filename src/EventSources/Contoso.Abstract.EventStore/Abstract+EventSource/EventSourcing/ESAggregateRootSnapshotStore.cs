@@ -26,10 +26,17 @@ THE SOFTWARE.
 using EventStore;
 namespace System.Abstract.EventSourcing
 {
+    /// <summary>
+    /// ESAggregateRootSnapshotStore
+    /// </summary>
     public class ESAggregateRootSnapshotStore : IAggregateRootSnapshotStore
     {
         private readonly IStoreEvents _store;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ESAggregateRootSnapshotStore"/> class.
+        /// </summary>
+        /// <param name="store">The store.</param>
         public ESAggregateRootSnapshotStore(IStoreEvents store)
         {
             if (store == null)
@@ -37,6 +44,12 @@ namespace System.Abstract.EventSourcing
             _store = store;
         }
 
+        /// <summary>
+        /// Gets the latest snapshot.
+        /// </summary>
+        /// <typeparam name="TAggregateRoot">The type of the aggregate root.</typeparam>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <returns></returns>
         public AggregateRootSnapshot GetLatestSnapshot<TAggregateRoot>(object aggregateID)
             where TAggregateRoot : AggregateRoot
         {
@@ -45,12 +58,20 @@ namespace System.Abstract.EventSourcing
             return (latestSnapshot == null ? null : latestSnapshot.Payload as AggregateRootSnapshot);
         }
 
+        /// <summary>
+        /// Saves the snapshot.
+        /// </summary>
+        /// <param name="aggregateType">Type of the aggregate.</param>
+        /// <param name="snapshot">The snapshot.</param>
         public void SaveSnapshot(Type aggregateType, AggregateRootSnapshot snapshot)
         {
             var streamID = (Guid)snapshot.AggregateID;
             _store.Advanced.AddSnapshot(new Snapshot(streamID, snapshot.LastEventSequence, snapshot));
         }
 
+        /// <summary>
+        /// Gets the inline snapshot predicate.
+        /// </summary>
         public Func<IAggregateRootRepository, AggregateRoot, bool> InlineSnapshotPredicate { get; set; }
     }
 }

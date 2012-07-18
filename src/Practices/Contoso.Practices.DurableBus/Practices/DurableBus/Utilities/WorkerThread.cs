@@ -39,8 +39,15 @@ namespace Contoso.Practices.DurableBus.Utilities
 		private readonly Thread _thread;
 		private readonly object _lock = new object();
 
+        /// <summary>
+        /// Occurs when [stopped].
+        /// </summary>
 		public event EventHandler Stopped;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WorkerThread"/> class.
+        /// </summary>
+        /// <param name="action">The action.</param>
 		public WorkerThread(Action action)
 		{
 			_action = action;
@@ -52,6 +59,9 @@ namespace Contoso.Practices.DurableBus.Utilities
 			_thread.Name = string.Format("Worker.{0}", _thread.ManagedThreadId);
 		}
 
+        /// <summary>
+        /// Loops this instance.
+        /// </summary>
 		protected void Loop()
 		{
 			while (!StopRequested)
@@ -64,18 +74,30 @@ namespace Contoso.Practices.DurableBus.Utilities
 				stopped(this, null);
 		}
 
+        /// <summary>
+        /// Starts this instance.
+        /// </summary>
 		public void Start()
 		{
 			if (!_thread.IsAlive)
 				_thread.Start();
 		}
 
+        /// <summary>
+        /// Stops this instance.
+        /// </summary>
 		public void Stop()
 		{
 			lock (_lock)
 				_stopRequested = true;
 		}
 
+        /// <summary>
+        /// Gets a value indicating whether [stop requested].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [stop requested]; otherwise, <c>false</c>.
+        /// </value>
 		protected bool StopRequested
 		{
 			get

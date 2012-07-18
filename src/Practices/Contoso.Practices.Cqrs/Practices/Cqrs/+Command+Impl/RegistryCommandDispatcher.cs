@@ -25,6 +25,9 @@ THE SOFTWARE.
 #endregion
 namespace Contoso.Practices.Cqrs.Command
 {
+    /// <summary>
+    /// RegistryCommandDispatcher
+    /// </summary>
     public class RegistryCommandDispatcher : ICommandDispatcher
     {
         //public static IDictionary<Type, LocalCommandBus.CommandHandlerInvoker> CreateADictionaryOfCommandInvokers(

@@ -9,8 +9,18 @@ using MassTransit.Saga;
 using MassTransit.Saga.SubscriptionConfigurators;
 namespace Contoso.Abstract.MTServiceBus
 {
+    /// <summary>
+    /// Extensions
+    /// </summary>
     public static class Extensions
     {
+        /// <summary>
+        /// Consumers the specified configurator.
+        /// </summary>
+        /// <typeparam name="TConsumer">The type of the consumer.</typeparam>
+        /// <param name="configurator">The configurator.</param>
+        /// <param name="locator">The locator.</param>
+        /// <returns></returns>
         public static ConsumerSubscriptionConfigurator<TConsumer> Consumer<TConsumer>(this SubscriptionBusServiceConfigurator configurator, IServiceLocator locator)
             where TConsumer : class, IConsumer
         {
@@ -23,6 +33,11 @@ namespace Contoso.Abstract.MTServiceBus
             return locator.Registrar.GetRegistrationsFor(typeof(T)).Select(x => x.ServiceType).Where(filter).ToList();
         }
 
+        /// <summary>
+        /// Loads from.
+        /// </summary>
+        /// <param name="configurator">The configurator.</param>
+        /// <param name="locator">The locator.</param>
         public static void LoadFrom(this SubscriptionBusServiceConfigurator configurator, IServiceLocator locator)
         {
             var concreteTypes = FindTypes<IConsumer>(locator, x => !x.Implements<ISaga>());
@@ -41,6 +56,13 @@ namespace Contoso.Abstract.MTServiceBus
             }
         }
 
+        /// <summary>
+        /// Sagas the specified configurator.
+        /// </summary>
+        /// <typeparam name="TSaga">The type of the saga.</typeparam>
+        /// <param name="configurator">The configurator.</param>
+        /// <param name="locator">The locator.</param>
+        /// <returns></returns>
         public static SagaSubscriptionConfigurator<TSaga> Saga<TSaga>(this SubscriptionBusServiceConfigurator configurator, IServiceLocator locator)
             where TSaga : class, ISaga
         {

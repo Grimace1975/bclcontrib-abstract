@@ -35,9 +35,24 @@ namespace Contoso.Abstract
     /// </summary>
     public interface ISPEventLogServiceLog : IServiceLog
     {
+        /// <summary>
+        /// Gets the log.
+        /// </summary>
         IEventLogLogger Log { get; }
+        /// <summary>
+        /// Gets the event ID.
+        /// </summary>
         int EventID { get; }
+        /// <summary>
+        /// Gets the name of the area.
+        /// </summary>
+        /// <value>
+        /// The name of the area.
+        /// </value>
         string AreaName { get; }
+        /// <summary>
+        /// Gets the category.
+        /// </summary>
         string Category { get; }
     }
 
@@ -47,14 +62,39 @@ namespace Contoso.Abstract
     public class SPEventLogServiceLog : ISPEventLogServiceLog, ServiceLogManager.ISetupRegistration
     {
         static SPEventLogServiceLog() { ServiceLogManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SPEventLogServiceLog"/> class.
+        /// </summary>
         public SPEventLogServiceLog()
             : this(new EventLogLogger(), 0, "SharePoint Foundation", "General") { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SPEventLogServiceLog"/> class.
+        /// </summary>
+        /// <param name="areaName">Name of the area.</param>
+        /// <param name="category">The category.</param>
         public SPEventLogServiceLog(string areaName, string category)
             : this(new EventLogLogger(), 0, areaName, category) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SPEventLogServiceLog"/> class.
+        /// </summary>
+        /// <param name="eventID">The event ID.</param>
         public SPEventLogServiceLog(int eventID)
             : this(new EventLogLogger(), eventID, "SharePoint Foundation", "General") { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SPEventLogServiceLog"/> class.
+        /// </summary>
+        /// <param name="eventID">The event ID.</param>
+        /// <param name="areaName">Name of the area.</param>
+        /// <param name="category">The category.</param>
         public SPEventLogServiceLog(int eventID, string areaName, string category)
             : this(new EventLogLogger(), eventID, areaName, category) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SPEventLogServiceLog"/> class.
+        /// </summary>
+        /// <param name="log">The log.</param>
+        /// <param name="eventID">The event ID.</param>
+        /// <param name="areaName">Name of the area.</param>
+        /// <param name="category">The category.</param>
         public SPEventLogServiceLog(IEventLogLogger log, int eventID, string areaName, string category)
         {
             if (log == null)
@@ -74,13 +114,30 @@ namespace Contoso.Abstract
             get { return (locator, name) => ServiceLogManager.RegisterInstance<ISPEventLogServiceLog>(this, locator, name); }
         }
 
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType"/>.
+        /// -or-
+        /// null if there is no service object of type <paramref name="serviceType"/>.
+        /// </returns>
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         // get
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
         public string Name
         {
             get { return AreaName + "/" + Category; }
         }
+        /// <summary>
+        /// Gets the specified name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public IServiceLog Get(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -89,6 +146,13 @@ namespace Contoso.Abstract
         }
 
         // log
+        /// <summary>
+        /// Writes the specified level.
+        /// </summary>
+        /// <param name="level">The level.</param>
+        /// <param name="ex">The ex.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
         public void Write(ServiceLog.LogLevel level, Exception ex, string s, params object[] args)
         {
             if (Log == null)
@@ -109,13 +173,34 @@ namespace Contoso.Abstract
 
         #region Domain-specific
 
+        /// <summary>
+        /// Gets the log.
+        /// </summary>
         public IEventLogLogger Log { get; private set; }
+        /// <summary>
+        /// Gets the event ID.
+        /// </summary>
         public int EventID { get; private set; }
+        /// <summary>
+        /// Gets the name of the area.
+        /// </summary>
+        /// <value>
+        /// The name of the area.
+        /// </value>
         public string AreaName { get; private set; }
+        /// <summary>
+        /// Gets the category.
+        /// </summary>
         public string Category { get; private set; }
 
         #endregion
 
+        /// <summary>
+        /// Gets the exception message.
+        /// </summary>
+        /// <param name="ex">The ex.</param>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
         protected virtual string GetExceptionMessage(Exception ex, string s)
         {
             return ex.Message;

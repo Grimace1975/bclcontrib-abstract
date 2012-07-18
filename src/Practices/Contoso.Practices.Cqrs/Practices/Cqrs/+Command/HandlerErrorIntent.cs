@@ -30,7 +30,13 @@ namespace Contoso.Practices.Cqrs
 	/// </summary>
 	public enum HandlerErrorIntent
 	{
+        /// <summary>
+        /// ValidationFailure
+        /// </summary>
 		ValidationFailure,
+        /// <summary>
+        /// NullAggregate
+        /// </summary>
 		NullAggregate,
 	}
 }

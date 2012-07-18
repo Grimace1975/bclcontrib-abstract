@@ -37,6 +37,9 @@ namespace Contoso.Abstract
     /// </summary>
     public interface ICastleWindsorServiceLocator : IServiceLocator
     {
+        /// <summary>
+        /// Gets the container.
+        /// </summary>
         IWindsorContainer Container { get; }
     }
 
@@ -51,8 +54,15 @@ namespace Contoso.Abstract
         private CastleWindsorServiceRegistrar _registrar;
 
         static CastleWindsorServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CastleWindsorServiceLocator"/> class.
+        /// </summary>
         public CastleWindsorServiceLocator()
             : this(CreateContainer()) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CastleWindsorServiceLocator"/> class.
+        /// </summary>
+        /// <param name="container">The container.</param>
         public CastleWindsorServiceLocator(IWindsorContainer container)
         {
             if (container == null)
@@ -60,6 +70,9 @@ namespace Contoso.Abstract
             Container = container;
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             if (_container != null)
@@ -79,47 +92,96 @@ namespace Contoso.Abstract
             get { return (locator, name) => ServiceLocatorManager.RegisterInstance<ICastleWindsorServiceLocator>(this, locator, name); }
         }
 
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType"/>.
+        /// -or-
+        /// null if there is no service object of type <paramref name="serviceType"/>.
+        /// </returns>
         public object GetService(Type serviceType) { return Resolve(serviceType); }
 
+        /// <summary>
+        /// Gets the underlying container.
+        /// </summary>
+        /// <typeparam name="TContainer">The type of the container.</typeparam>
+        /// <returns></returns>
         public TContainer GetUnderlyingContainer<TContainer>()
             where TContainer : class { return (_container as TContainer); }
 
         // registrar
+        /// <summary>
+        /// Gets the registrar.
+        /// </summary>
         public IServiceRegistrar Registrar
         {
             get { return _registrar; }
         }
 
         // resolve
+        /// <summary>
+        /// Resolves this instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <returns></returns>
         public TService Resolve<TService>()
             where TService : class
         {
             try { return (_kernel.HasComponent(typeof(TService)) ? _kernel.Resolve<TService>() : Activator.CreateInstance<TService>()); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
+        /// <summary>
+        /// Resolves the specified name.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public TService Resolve<TService>(string name)
             where TService : class
         {
             try { return _kernel.Resolve<TService>(name); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
+        /// <summary>
+        /// Resolves the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns></returns>
         public object Resolve(Type serviceType)
         {
             try { return (_kernel.HasComponent(serviceType) ? _kernel.Resolve(serviceType) : Activator.CreateInstance(serviceType)); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
+        /// <summary>
+        /// Resolves the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public object Resolve(Type serviceType, string name)
         {
             try { return _kernel.Resolve(name, serviceType); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
         //
+        /// <summary>
+        /// Resolves all.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <returns></returns>
         public IEnumerable<TService> ResolveAll<TService>()
             where TService : class
         {
             try { return new List<TService>(_kernel.ResolveAll<TService>()); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
+        /// <summary>
+        /// Resolves all.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns></returns>
         public IEnumerable<object> ResolveAll(Type serviceType)
         {
             try { return new List<object>(_kernel.ResolveAll(serviceType).Cast<object>()); }
@@ -127,6 +189,12 @@ namespace Contoso.Abstract
         }
 
         // inject
+        /// <summary>
+        /// Injects the specified instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <returns></returns>
         public TService Inject<TService>(TService instance)
             where TService : class
         {
@@ -138,11 +206,20 @@ namespace Contoso.Abstract
         }
 
         // release and teardown
+        /// <summary>
+        /// Releases the specified instance.
+        /// </summary>
+        /// <param name="instance">The instance.</param>
         public void Release(object instance)
         {
             if (instance != null)
                 _container.Release(instance);
         }
+        /// <summary>
+        /// Tears down.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="instance">The instance.</param>
         public void TearDown<TService>(TService instance)
             where TService : class
         {
@@ -153,6 +230,9 @@ namespace Contoso.Abstract
 
         #region Domain specific
 
+        /// <summary>
+        /// Gets the container.
+        /// </summary>
         public IWindsorContainer Container
         {
             get { return _container; }

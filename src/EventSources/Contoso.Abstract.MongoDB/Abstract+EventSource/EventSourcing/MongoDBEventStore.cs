@@ -43,12 +43,32 @@ namespace Contoso.Abstract.EventSourcing
         private readonly string _tableName;
         private readonly Func<object, BsonValue> _makeAggregateID;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MongoDBEventStore"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
         public MongoDBEventStore(string connectionString)
             : this(connectionString, "AggregateEvent", BsonValue.Create) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MongoDBEventStore"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="tableName">Name of the table.</param>
         public MongoDBEventStore(string connectionString, string tableName)
             : this(connectionString, tableName, BsonValue.Create) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MongoDBEventStore"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="makeAggregateID">The make aggregate ID.</param>
         public MongoDBEventStore(string connectionString, Func<object, BsonValue> makeAggregateID)
             : this(connectionString, "AggregateEvent", makeAggregateID) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MongoDBEventStore"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="makeAggregateID">The make aggregate ID.</param>
         public MongoDBEventStore(string connectionString, string tableName, Func<object, BsonValue> makeAggregateID)
         {
             if (string.IsNullOrEmpty(connectionString))
@@ -62,6 +82,12 @@ namespace Contoso.Abstract.EventSourcing
             _makeAggregateID = makeAggregateID;
         }
 
+        /// <summary>
+        /// Gets the events by ID.
+        /// </summary>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <param name="startSequence">The start sequence.</param>
+        /// <returns></returns>
         public IEnumerable<Event> GetEventsByID(object aggregateID, int startSequence)
         {
             var connectionStringBuilder = new MongoConnectionStringBuilder(_connectionString);
@@ -72,6 +98,11 @@ namespace Contoso.Abstract.EventSourcing
             return database.GetCollection<Event>(_tableName).Find(query);
         }
 
+        /// <summary>
+        /// Saves the events.
+        /// </summary>
+        /// <param name="aggregateID">The aggregate ID.</param>
+        /// <param name="events">The events.</param>
         public void SaveEvents(object aggregateID, IEnumerable<Event> events)
         {
             var connectionStringBuilder = new MongoConnectionStringBuilder(_connectionString);

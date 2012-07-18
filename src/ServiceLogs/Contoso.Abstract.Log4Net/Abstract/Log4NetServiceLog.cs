@@ -34,6 +34,9 @@ namespace Contoso.Abstract
     /// </summary>
     public interface ILog4NetServiceLog : IServiceLog
     {
+        /// <summary>
+        /// Gets the log.
+        /// </summary>
         ILog Log { get; }
     }
 
@@ -43,8 +46,16 @@ namespace Contoso.Abstract
     public class Log4NetServiceLog : ILog4NetServiceLog, ServiceLogManager.ISetupRegistration
     {
         static Log4NetServiceLog() { ServiceLogManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Log4NetServiceLog"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
         public Log4NetServiceLog(string name)
             : this(LogManager.GetLogger(name)) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Log4NetServiceLog"/> class.
+        /// </summary>
+        /// <param name="log">The log.</param>
         public Log4NetServiceLog(ILog log)
         {
             if (log == null)
@@ -58,10 +69,27 @@ namespace Contoso.Abstract
             get { return (locator, name) => ServiceLogManager.RegisterInstance<ILog4NetServiceLog>(this, locator, name); }
         }
 
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType"/>.
+        /// -or-
+        /// null if there is no service object of type <paramref name="serviceType"/>.
+        /// </returns>
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
         // get
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
         public string Name { get; private set; }
+        /// <summary>
+        /// Gets the specified name.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public IServiceLog Get(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -70,6 +98,13 @@ namespace Contoso.Abstract
         }
 
         // log
+        /// <summary>
+        /// Writes the specified level.
+        /// </summary>
+        /// <param name="level">The level.</param>
+        /// <param name="ex">The ex.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
         public void Write(ServiceLog.LogLevel level, Exception ex, string s, params object[] args)
         {
             if (Log == null)
@@ -88,6 +123,9 @@ namespace Contoso.Abstract
 
         #region Domain-specific
 
+        /// <summary>
+        /// Gets the log.
+        /// </summary>
         public ILog Log { get; private set; }
 
         #endregion

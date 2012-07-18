@@ -31,16 +31,55 @@ namespace Contoso.Practices.DurableBus.Transport
     /// </summary>
     public interface ITransport : IDisposable
     {
+        /// <summary>
+        /// Occurs when [message received].
+        /// </summary>
         event EventHandler<MessageReceivedEventArgs> MessageReceived;
+        /// <summary>
+        /// Occurs when [message processing].
+        /// </summary>
         event EventHandler MessageProcessing;
+        /// <summary>
+        /// Occurs when [message processing failed].
+        /// </summary>
         event EventHandler MessageProcessingFailed;
+        /// <summary>
+        /// Occurs when [message processed].
+        /// </summary>
         event EventHandler MessageProcessed;
+        /// <summary>
+        /// Aborts the current message.
+        /// </summary>
         void AbortCurrentMessage();
+        /// <summary>
+        /// Gets the pending messages.
+        /// </summary>
         int PendingMessages { get; }
+        /// <summary>
+        /// Receives the message later.
+        /// </summary>
+        /// <param name="m">The m.</param>
         void ReceiveMessageLater(TransportMessage m);
+        /// <summary>
+        /// Sends the specified m.
+        /// </summary>
+        /// <param name="m">The m.</param>
+        /// <param name="destination">The destination.</param>
         void Send(TransportMessage m, string destination);
+        /// <summary>
+        /// Starts this instance.
+        /// </summary>
         void Start();
+        /// <summary>
+        /// Gets the address.
+        /// </summary>
         string Address { get; }
+        /// <summary>
+        /// Gets or sets the worker threads.
+        /// </summary>
+        /// <value>
+        /// The worker threads.
+        /// </value>
         int WorkerThreads { get; set; }
     }
 }

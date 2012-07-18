@@ -46,12 +46,23 @@ namespace Contoso.Abstract
         private ContainerBuilder _builder;
         private IContainer _container;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutofacServiceRegistrar"/> class.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="container">The container.</param>
         public AutofacServiceRegistrar(AutofacServiceLocator parent, IContainer container)
         {
             _parent = parent;
             _container = container;
             LifetimeForRegisters = ServiceRegistrarLifetime.Transient;
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AutofacServiceRegistrar"/> class.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="builder">The builder.</param>
+        /// <param name="containerBuilder">The container builder.</param>
         public AutofacServiceRegistrar(AutofacServiceLocator parent, ContainerBuilder builder, out Func<IContainer> containerBuilder)
             : this(parent, null)
         {
@@ -59,18 +70,43 @@ namespace Contoso.Abstract
             containerBuilder = (() => _container = _builder.Build());
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose() { }
         object ICloneable.Clone() { return MemberwiseClone(); }
 
         // locator
+        /// <summary>
+        /// Gets the locator.
+        /// </summary>
         public IServiceLocator Locator
         {
             get { return _parent; }
         }
 
         // enumerate
+        /// <summary>
+        /// Determines whether this instance has registered.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <returns>
+        ///   <c>true</c> if this instance has registered; otherwise, <c>false</c>.
+        /// </returns>
         public bool HasRegistered<TService>() { return _parent.Container.IsRegistered<TService>(); }
+        /// <summary>
+        /// Determines whether the specified service type has registered.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified service type has registered; otherwise, <c>false</c>.
+        /// </returns>
         public bool HasRegistered(Type serviceType) { return _parent.Container.IsRegistered(serviceType); }
+        /// <summary>
+        /// Gets the registrations for.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns></returns>
         public IEnumerable<ServiceRegistration> GetRegistrationsFor(Type serviceType)
         {
             return _parent.Container.ComponentRegistry.Registrations
@@ -78,6 +114,9 @@ namespace Contoso.Abstract
                 .Where(x => serviceType.IsAssignableFrom(x.ServiceType))
                 .Select(x => new ServiceRegistration { ServiceType = serviceType, ImplementationType = x.ServiceType, Name = x.Description });
         }
+        /// <summary>
+        /// Gets the registrations.
+        /// </summary>
         public IEnumerable<ServiceRegistration> Registrations
         {
             get
@@ -89,13 +128,25 @@ namespace Contoso.Abstract
         }
 
         // register type
+        /// <summary>
+        /// Gets the lifetime for registers.
+        /// </summary>
         public ServiceRegistrarLifetime LifetimeForRegisters { get; private set; }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
         public void Register(Type serviceType)
         {
             SetLifestyle(_builder.RegisterType(serviceType));
             if (_container != null)
                 UpdateAndClearBuilder();
         }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="name">The name.</param>
         public void Register(Type serviceType, string name)
         {
             SetLifestyle(_builder.RegisterType(serviceType).Named(name, serviceType));
@@ -104,6 +155,11 @@ namespace Contoso.Abstract
         }
 
         // register implementation
+        /// <summary>
+        /// Registers this instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
         public void Register<TService, TImplementation>()
             where TService : class
             where TImplementation : class, TService
@@ -114,6 +170,12 @@ namespace Contoso.Abstract
                 _container.ComponentRegistry.Register(SetLifestyle(RegistrationBuilder.ForType<TImplementation>().As<TService>()).CreateRegistration());
         }
 
+        /// <summary>
+        /// Registers the specified name.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
+        /// <param name="name">The name.</param>
         public void Register<TService, TImplementation>(string name)
             where TService : class
             where TImplementation : class, TService
@@ -124,6 +186,11 @@ namespace Contoso.Abstract
             else
                 _container.ComponentRegistry.Register(SetLifestyle(RegistrationBuilder.ForType<TImplementation>().Named<TService>(name)).CreateRegistration());
         }
+        /// <summary>
+        /// Registers the specified implementation type.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="implementationType">Type of the implementation.</param>
         public void Register<TService>(Type implementationType)
              where TService : class
         {
@@ -132,6 +199,12 @@ namespace Contoso.Abstract
             else
                 _container.ComponentRegistry.Register(SetLifestyle(RegistrationBuilder.ForType(implementationType).As<TService>()).CreateRegistration());
         }
+        /// <summary>
+        /// Registers the specified implementation type.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="implementationType">Type of the implementation.</param>
+        /// <param name="name">The name.</param>
         public void Register<TService>(Type implementationType, string name)
              where TService : class
         {
@@ -141,6 +214,11 @@ namespace Contoso.Abstract
             else
                 _container.ComponentRegistry.Register(SetLifestyle(RegistrationBuilder.ForType(implementationType).Named<TService>(name)).CreateRegistration());
         }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="implementationType">Type of the implementation.</param>
         public void Register(Type serviceType, Type implementationType)
         {
             if (_container == null)
@@ -148,6 +226,12 @@ namespace Contoso.Abstract
             else
                 _container.ComponentRegistry.Register(SetLifestyle(RegistrationBuilder.ForType(implementationType).As(serviceType)).CreateRegistration());
         }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="implementationType">Type of the implementation.</param>
+        /// <param name="name">The name.</param>
         public void Register(Type serviceType, Type implementationType, string name)
         {
             Register(serviceType, implementationType);
@@ -158,6 +242,11 @@ namespace Contoso.Abstract
         }
 
         // register instance
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="instance">The instance.</param>
         public void RegisterInstance<TService>(TService instance)
             where TService : class
         {
@@ -166,6 +255,12 @@ namespace Contoso.Abstract
             if (_container != null)
                 UpdateAndClearBuilder();
         }
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <param name="name">The name.</param>
         public void RegisterInstance<TService>(TService instance, string name)
             where TService : class
         {
@@ -174,6 +269,11 @@ namespace Contoso.Abstract
             if (_container != null)
                 UpdateAndClearBuilder();
         }
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="instance">The instance.</param>
         public void RegisterInstance(Type serviceType, object instance)
         {
             EnsureTransientLifestyle();
@@ -181,6 +281,12 @@ namespace Contoso.Abstract
             if (_container != null)
                 UpdateAndClearBuilder();
         }
+        /// <summary>
+        /// Registers the instance.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="instance">The instance.</param>
+        /// <param name="name">The name.</param>
         public void RegisterInstance(Type serviceType, object instance, string name)
         {
             EnsureTransientLifestyle();
@@ -190,6 +296,11 @@ namespace Contoso.Abstract
         }
 
         // register method
+        /// <summary>
+        /// Registers the specified factory method.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="factoryMethod">The factory method.</param>
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod)
             where TService : class
         {
@@ -197,6 +308,12 @@ namespace Contoso.Abstract
             if (_container != null)
                 UpdateAndClearBuilder();
         }
+        /// <summary>
+        /// Registers the specified factory method.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="factoryMethod">The factory method.</param>
+        /// <param name="name">The name.</param>
         public void Register<TService>(Func<IServiceLocator, TService> factoryMethod, string name)
             where TService : class
         {
@@ -205,12 +322,23 @@ namespace Contoso.Abstract
                 UpdateAndClearBuilder();
 
         }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="factoryMethod">The factory method.</param>
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod)
         {
             SetLifestyle(_builder.Register(x => factoryMethod(_parent)).As(serviceType));
             if (_container != null)
                 UpdateAndClearBuilder();
         }
+        /// <summary>
+        /// Registers the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="factoryMethod">The factory method.</param>
+        /// <param name="name">The name.</param>
         public void Register(Type serviceType, Func<IServiceLocator, object> factoryMethod, string name)
         {
             SetLifestyle(_builder.Register(x => factoryMethod(_parent)).Named(name, serviceType));
@@ -219,6 +347,10 @@ namespace Contoso.Abstract
         }
 
         // interceptor
+        /// <summary>
+        /// Registers the interceptor.
+        /// </summary>
+        /// <param name="interceptor">The interceptor.</param>
         public void RegisterInterceptor(IServiceLocatorInterceptor interceptor)
         {
             EnsureTransientLifestyle();

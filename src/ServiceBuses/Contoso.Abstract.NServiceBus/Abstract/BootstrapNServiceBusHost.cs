@@ -32,14 +32,31 @@ namespace Contoso.Abstract
     /// </summary>
     public abstract class BootstrapNServiceBusHost : IServiceBusHostBootstrap, IConfigureThisEndpoint, AsA_Publisher, IWantToRunAtStartup, IWantCustomLogging
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BootstrapNServiceBusHost"/> class.
+        /// </summary>
         protected BootstrapNServiceBusHost() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BootstrapNServiceBusHost"/> class.
+        /// </summary>
+        /// <param name="locator">The locator.</param>
         protected BootstrapNServiceBusHost(IServiceLocator locator)
         {
             ServiceBusManager.SetProvider(() => new NServiceBusAbstractor(locator));
         }
 
+        /// <summary>
+        /// Initializes this instance.
+        /// </summary>
         public virtual void Initialize() { }
+        /// <summary>
+        /// Opens the specified bus.
+        /// </summary>
+        /// <param name="bus">The bus.</param>
         public virtual void Open(IServiceBus bus) { }
+        /// <summary>
+        /// Closes this instance.
+        /// </summary>
         public virtual void Close() { }
 
         void IWantToRunAtStartup.Run() { Open(ServiceBusManager.Current); }

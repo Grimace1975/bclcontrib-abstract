@@ -40,8 +40,15 @@ namespace Contoso.Abstract.Mvc
         private static readonly object _lock = new object();
         private static IEnumerable<IInjectableModelBinder> _modelBinders;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceLocatorModelBinder"/> class.
+        /// </summary>
         public ServiceLocatorModelBinder()
             : this(ServiceLocatorManager.Current) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceLocatorModelBinder"/> class.
+        /// </summary>
+        /// <param name="serviceLocator">The service locator.</param>
         public ServiceLocatorModelBinder(IServiceLocator serviceLocator)
         {
             if (serviceLocator == null)
@@ -49,6 +56,15 @@ namespace Contoso.Abstract.Mvc
             ServiceLocator = serviceLocator;
         }
 
+        /// <summary>
+        /// Binds the model by using the specified controller context and binding context.
+        /// </summary>
+        /// <param name="controllerContext">The context within which the controller operates. The context information includes the controller, HTTP content, request context, and route data.</param>
+        /// <param name="bindingContext">The context within which the model is bound. The context includes information such as the model object, model name, model type, property filter, and value provider.</param>
+        /// <returns>
+        /// The bound object.
+        /// </returns>
+        /// <exception cref="T:System.ArgumentNullException">The <paramref name="bindingContext "/>parameter is null.</exception>
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
             var controllerType = controllerContext.Controller.GetType();
@@ -59,6 +75,10 @@ namespace Contoso.Abstract.Mvc
             return base.BindModel(controllerContext, bindingContext);
         }
 
+        /// <summary>
+        /// Gets the model binders.
+        /// </summary>
+        /// <returns></returns>
         protected virtual IEnumerable<IInjectableModelBinder> GetModelBinders()
         {
             if (_modelBinders == null)
@@ -68,6 +88,9 @@ namespace Contoso.Abstract.Mvc
             return _modelBinders;
         }
 
+        /// <summary>
+        /// Gets the service locator.
+        /// </summary>
         public IServiceLocator ServiceLocator { get; private set; }
     }
 }

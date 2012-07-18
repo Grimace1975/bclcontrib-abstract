@@ -31,6 +31,12 @@ namespace System.Patterns.ReleaseManagement
     /// </summary>
 	public partial class ReleaseManagementConfiguration
     {
+        /// <summary>
+        /// Gets or sets the deployment environment.
+        /// </summary>
+        /// <value>
+        /// The deployment environment.
+        /// </value>
         [ConfigurationProperty("deploymentEnvironment", DefaultValue = DeploymentEnvironment.Production)]
         public DeploymentEnvironment DeploymentEnvironment
         {
@@ -38,6 +44,12 @@ namespace System.Patterns.ReleaseManagement
             set { this["deploymentEnvironment"] = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the development stage.
+        /// </summary>
+        /// <value>
+        /// The development stage.
+        /// </value>
         [ConfigurationProperty("developmentStage", DefaultValue = DevelopmentStage.Release)]
         public DevelopmentStage DevelopmentStage
         {

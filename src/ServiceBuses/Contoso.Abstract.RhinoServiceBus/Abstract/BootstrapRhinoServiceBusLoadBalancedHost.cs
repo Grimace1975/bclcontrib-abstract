@@ -34,12 +34,28 @@ namespace Contoso.Abstract
     /// </summary>
     public abstract class BootstrapRhinoServiceBusLoadBalancedHost : BootstrapRhinoServiceBusHost
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BootstrapRhinoServiceBusLoadBalancedHost"/> class.
+        /// </summary>
         protected BootstrapRhinoServiceBusLoadBalancedHost() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BootstrapRhinoServiceBusLoadBalancedHost"/> class.
+        /// </summary>
+        /// <param name="locator">The locator.</param>
         protected BootstrapRhinoServiceBusLoadBalancedHost(IServiceLocator locator)
             : base(locator) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BootstrapRhinoServiceBusLoadBalancedHost"/> class.
+        /// </summary>
+        /// <param name="locator">The locator.</param>
+        /// <param name="name">The name.</param>
         protected BootstrapRhinoServiceBusLoadBalancedHost(IServiceLocator locator, string name)
             : base(locator, name) { }
 
+        /// <summary>
+        /// Creates the configuration.
+        /// </summary>
+        /// <returns></returns>
         protected override AbstractRhinoServiceBusConfiguration CreateConfiguration()
         {
             return new LoadBalancerConfiguration();

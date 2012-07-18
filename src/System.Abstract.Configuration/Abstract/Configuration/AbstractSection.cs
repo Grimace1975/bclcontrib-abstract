@@ -31,30 +31,45 @@ namespace System.Abstract.Configuration
     /// </summary>
     public partial class AbstractSection
     {
+        /// <summary>
+        /// Gets the event source.
+        /// </summary>
         [ConfigurationProperty("eventSource", DefaultValue = null)]
         public EventSourceConfiguration EventSource
         {
             get { return (EventSourceConfiguration)base["eventSource"]; }
         }
 
+        /// <summary>
+        /// Gets the service bus.
+        /// </summary>
         [ConfigurationProperty("serviceBus", DefaultValue = null)]
         public ServiceBusConfiguration ServiceBus
         {
             get { return (ServiceBusConfiguration)base["serviceBus"]; }
         }
 
+        /// <summary>
+        /// Gets the service cache.
+        /// </summary>
         [ConfigurationProperty("serviceCache", DefaultValue = null)]
         public ServiceCacheConfiguration ServiceCache
         {
             get { return (ServiceCacheConfiguration)base["serviceCache"]; }
         }
 
+        /// <summary>
+        /// Gets the service locator.
+        /// </summary>
         [ConfigurationProperty("serviceLocator", DefaultValue = null)]
         public ServiceLocatorConfiguration ServiceLocator
         {
             get { return (ServiceLocatorConfiguration)base["serviceLocator"]; }
         }
 
+        /// <summary>
+        /// Gets the service log.
+        /// </summary>
         [ConfigurationProperty("serviceLog", DefaultValue = null)]
         public ServiceLogConfiguration ServiceLog
         {

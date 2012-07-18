@@ -33,6 +33,11 @@ namespace Contoso.Abstract.Mvc
     /// </summary>
     public interface IInjectableModelBinder : IModelBinder
     {
+        /// <summary>
+        /// Injects the type of for model.
+        /// </summary>
+        /// <param name="modelType">Type of the model.</param>
+        /// <returns></returns>
         bool InjectForModelType(Type modelType);
     }
 }

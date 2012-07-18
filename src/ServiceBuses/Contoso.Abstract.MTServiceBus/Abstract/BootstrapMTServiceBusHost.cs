@@ -32,7 +32,14 @@ namespace Contoso.Abstract
     /// </summary>
     public abstract class BootstrapMTServiceBusHost : IServiceBusHostBootstrap
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BootstrapMTServiceBusHost"/> class.
+        /// </summary>
         protected BootstrapMTServiceBusHost() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BootstrapMTServiceBusHost"/> class.
+        /// </summary>
+        /// <param name="locator">The locator.</param>
         protected BootstrapMTServiceBusHost(IServiceLocator locator)
         {
             ServiceBusManager.SetProvider(() => new MTServiceBusAbstractor(locator));
@@ -45,10 +52,26 @@ namespace Contoso.Abstract
         //    if (Bus != null) { Bus.Dispose(); Bus = null; }
         //}
 
+        /// <summary>
+        /// Gets or sets the bus.
+        /// </summary>
+        /// <value>
+        /// The bus.
+        /// </value>
         public MassTransit.IServiceBus Bus { get; set; }
 
+        /// <summary>
+        /// Initializes this instance.
+        /// </summary>
         public virtual void Initialize() { }
+        /// <summary>
+        /// Opens the specified bus.
+        /// </summary>
+        /// <param name="bus">The bus.</param>
         public virtual void Open(IServiceBus bus) { }
+        /// <summary>
+        /// Closes this instance.
+        /// </summary>
         public virtual void Close() { }
     }
 }

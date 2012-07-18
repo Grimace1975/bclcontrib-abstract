@@ -37,6 +37,9 @@ namespace Contoso.Abstract
     /// </summary>
     public interface IOnewayRhinoServiceBus : System.Abstract.IServiceBus
     {
+        /// <summary>
+        /// Gets the bus.
+        /// </summary>
         IOnewayBus Bus { get; }
     }
 
@@ -48,14 +51,35 @@ namespace Contoso.Abstract
         private IServiceLocator _serviceLocator;
 
         static OnewayRhinoServiceBusAbstractor() { ServiceBusManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OnewayRhinoServiceBusAbstractor"/> class.
+        /// </summary>
         public OnewayRhinoServiceBusAbstractor()
             : this(ServiceLocatorManager.Current, DefaultBusCreator(null, null, null)) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OnewayRhinoServiceBusAbstractor"/> class.
+        /// </summary>
+        /// <param name="serviceLocator">The service locator.</param>
         public OnewayRhinoServiceBusAbstractor(IServiceLocator serviceLocator)
             : this(serviceLocator, DefaultBusCreator(serviceLocator, null, null)) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OnewayRhinoServiceBusAbstractor"/> class.
+        /// </summary>
+        /// <param name="busConfiguration">The bus configuration.</param>
         public OnewayRhinoServiceBusAbstractor(BusConfigurationSection busConfiguration)
             : this(ServiceLocatorManager.Current, DefaultBusCreator(null, busConfiguration, null)) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OnewayRhinoServiceBusAbstractor"/> class.
+        /// </summary>
+        /// <param name="serviceLocator">The service locator.</param>
+        /// <param name="busConfiguration">The bus configuration.</param>
         public OnewayRhinoServiceBusAbstractor(IServiceLocator serviceLocator, BusConfigurationSection busConfiguration)
             : this(serviceLocator, DefaultBusCreator(serviceLocator, busConfiguration, null)) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OnewayRhinoServiceBusAbstractor"/> class.
+        /// </summary>
+        /// <param name="serviceLocator">The service locator.</param>
+        /// <param name="bus">The bus.</param>
         public OnewayRhinoServiceBusAbstractor(IServiceLocator serviceLocator, IOnewayBus bus)
         {
             if (serviceLocator == null)
@@ -71,8 +95,23 @@ namespace Contoso.Abstract
             get { return (locator, name) => ServiceBusManager.RegisterInstance<IOnewayRhinoServiceBus>(this, locator, name); }
         }
 
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType"/>.
+        /// -or-
+        /// null if there is no service object of type <paramref name="serviceType"/>.
+        /// </returns>
         public object GetService(Type serviceType) { throw new NotImplementedException(); }
 
+        /// <summary>
+        /// Creates the message.
+        /// </summary>
+        /// <typeparam name="TMessage">The type of the message.</typeparam>
+        /// <param name="messageBuilder">The message builder.</param>
+        /// <returns></returns>
         public TMessage CreateMessage<TMessage>(Action<TMessage> messageBuilder)
             where TMessage : class
         {
@@ -82,6 +121,12 @@ namespace Contoso.Abstract
             return message;
         }
 
+        /// <summary>
+        /// Sends the specified endpoint.
+        /// </summary>
+        /// <param name="endpoint">The endpoint.</param>
+        /// <param name="messages">The messages.</param>
+        /// <returns></returns>
         public virtual IServiceBusCallback Send(IServiceBusEndpoint endpoint, params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
@@ -97,14 +142,28 @@ namespace Contoso.Abstract
             return null;
         }
 
+        /// <summary>
+        /// Replies the specified messages.
+        /// </summary>
+        /// <param name="messages">The messages.</param>
         public virtual void Reply(params object[] messages) { throw new NotSupportedException(); }
 
         #region Domain-specific
 
+        /// <summary>
+        /// Gets the bus.
+        /// </summary>
         public IOnewayBus Bus { get; private set; }
 
         #endregion
 
+        /// <summary>
+        /// Defaults the bus creator.
+        /// </summary>
+        /// <param name="serviceLocator">The service locator.</param>
+        /// <param name="busConfiguration">The bus configuration.</param>
+        /// <param name="configurator">The configurator.</param>
+        /// <returns></returns>
         public static IOnewayBus DefaultBusCreator(IServiceLocator serviceLocator, BusConfigurationSection busConfiguration, Action<AbstractRhinoServiceBusConfiguration> configurator)
         {
             if (serviceLocator == null)

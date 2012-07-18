@@ -31,35 +31,56 @@ using System.Web.Mvc;
 namespace Contoso.Abstract.Mvc
 {
     /// <summary>
-    /// IFilterFinder
+    /// MergeableFilterInfo
     /// </summary>
     [Serializable]
     public class MergeableFilterInfo : FilterInfo
     {
+        /// <summary>
+        /// Adds the action filter.
+        /// </summary>
+        /// <param name="filter">The filter.</param>
         protected virtual void AddActionFilter(IActionFilter filter)
         {
             if (!ActionFilters.Contains(filter))
                 ActionFilters.Add(filter);
         }
 
+        /// <summary>
+        /// Adds the authorization filter.
+        /// </summary>
+        /// <param name="filter">The filter.</param>
         protected virtual void AddAuthorizationFilter(IAuthorizationFilter filter)
         {
             if (!AuthorizationFilters.Contains(filter))
                 AuthorizationFilters.Add(filter);
         }
 
+        /// <summary>
+        /// Adds the exception filter.
+        /// </summary>
+        /// <param name="filter">The filter.</param>
         protected virtual void AddExceptionFilter(IExceptionFilter filter)
         {
             if (!ExceptionFilters.Contains(filter))
                 ExceptionFilters.Add(filter);
         }
 
+        /// <summary>
+        /// Adds the result filter.
+        /// </summary>
+        /// <param name="filter">The filter.</param>
         protected virtual void AddResultFilter(IResultFilter filter)
         {
             if (!ResultFilters.Contains(filter))
                 ResultFilters.Add(filter);
         }
 
+        /// <summary>
+        /// Merges the specified filter.
+        /// </summary>
+        /// <param name="filter">The filter.</param>
+        /// <returns></returns>
         public virtual MergeableFilterInfo Merge(FilterInfo filter)
         {
             if (filter != null)
@@ -76,6 +97,14 @@ namespace Contoso.Abstract.Mvc
             return this;
         }
 
+        /// <summary>
+        /// Merges the specified action filters.
+        /// </summary>
+        /// <param name="actionFilters">The action filters.</param>
+        /// <param name="authorizationFilters">The authorization filters.</param>
+        /// <param name="exceptionFilters">The exception filters.</param>
+        /// <param name="resultFilters">The result filters.</param>
+        /// <returns></returns>
         public virtual MergeableFilterInfo Merge(IEnumerable<IActionFilter> actionFilters, IEnumerable<IAuthorizationFilter> authorizationFilters, IEnumerable<IExceptionFilter> exceptionFilters, IEnumerable<IResultFilter> resultFilters)
         {
             foreach (var f in actionFilters)

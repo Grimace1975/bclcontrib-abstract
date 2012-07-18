@@ -34,14 +34,50 @@ namespace System.Abstract
     {
         #region Lazy Setup
 
+        /// <summary>
+        /// Loads from configuration.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <returns></returns>
         public static Lazy<IEventSource> LoadFromConfiguration(this Lazy<IEventSource> service, EventSourceConfiguration configuration) { EventSourceManager.GetSetupDescriptor(service).LoadFromConfiguration(service, configuration); return service; }
+        /// <summary>
+        /// Loads from configuration.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <returns></returns>
         public static Lazy<IServiceBus> LoadFromConfiguration(this Lazy<IServiceBus> service, ServiceBusConfiguration configuration) { ServiceBusManager.GetSetupDescriptor(service).LoadFromConfiguration(service, configuration); return service; }
+        /// <summary>
+        /// Loads from configuration.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <returns></returns>
         public static Lazy<IServiceCache> LoadFromConfiguration(this Lazy<IServiceCache> service, ServiceCacheConfiguration configuration) { ServiceCacheManager.GetSetupDescriptor(service).LoadFromConfiguration(service, configuration); return service; }
+        /// <summary>
+        /// Loads from configuration.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <returns></returns>
         public static Lazy<IServiceLocator> LoadFromConfiguration(this Lazy<IServiceLocator> service, ServiceLocatorConfiguration configuration) { ServiceLocatorManager.GetSetupDescriptor(service).LoadFromConfiguration(service, configuration); return service; }
+        /// <summary>
+        /// Loads from configuration.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="configuration">The configuration.</param>
+        /// <returns></returns>
         public static Lazy<IServiceLog> LoadFromConfiguration(this Lazy<IServiceLog> service, ServiceLogConfiguration configuration) { ServiceLogManager.GetSetupDescriptor(service).LoadFromConfiguration(service, configuration); return service; }
 
         #endregion
 
+        /// <summary>
+        /// Loads from configuration.
+        /// </summary>
+        /// <param name="descriptor">The descriptor.</param>
+        /// <param name="service">The service.</param>
+        /// <param name="configuration">The configuration.</param>
         public static void LoadFromConfiguration(this EventSourceManager.ISetupDescriptor descriptor, Lazy<IEventSource> service, EventSourceConfiguration configuration)
         {
             if (service == null)
@@ -50,6 +86,12 @@ namespace System.Abstract
                 throw new ArgumentNullException("configuration");
         }
 
+        /// <summary>
+        /// Loads from configuration.
+        /// </summary>
+        /// <param name="descriptor">The descriptor.</param>
+        /// <param name="service">The service.</param>
+        /// <param name="configuration">The configuration.</param>
         public static void LoadFromConfiguration(this ServiceBusManager.ISetupDescriptor descriptor, Lazy<IServiceBus> service, ServiceBusConfiguration configuration)
         {
             if (service == null)
@@ -61,6 +103,12 @@ namespace System.Abstract
                 service.AddEndpoint(endpoint.Endpoint);
         }
 
+        /// <summary>
+        /// Loads from configuration.
+        /// </summary>
+        /// <param name="descriptor">The descriptor.</param>
+        /// <param name="service">The service.</param>
+        /// <param name="configuration">The configuration.</param>
         public static void LoadFromConfiguration(this ServiceCacheManager.ISetupDescriptor descriptor, Lazy<IServiceCache> service, ServiceCacheConfiguration configuration)
         {
             if (service == null)
@@ -69,6 +117,12 @@ namespace System.Abstract
                 throw new ArgumentNullException("configuration");
         }
 
+        /// <summary>
+        /// Loads from configuration.
+        /// </summary>
+        /// <param name="descriptor">The descriptor.</param>
+        /// <param name="service">The service.</param>
+        /// <param name="configuration">The configuration.</param>
         public static void LoadFromConfiguration(this ServiceLocatorManager.ISetupDescriptor descriptor, Lazy<IServiceLocator> service, ServiceLocatorConfiguration configuration)
         {
             if (service == null)
@@ -77,6 +131,12 @@ namespace System.Abstract
                 throw new ArgumentNullException("configuration");
         }
 
+        /// <summary>
+        /// Loads from configuration.
+        /// </summary>
+        /// <param name="descriptor">The descriptor.</param>
+        /// <param name="service">The service.</param>
+        /// <param name="configuration">The configuration.</param>
         public static void LoadFromConfiguration(this ServiceLogManager.ISetupDescriptor descriptor, Lazy<IServiceLog> service, ServiceLogConfiguration configuration)
         {
             if (service == null)

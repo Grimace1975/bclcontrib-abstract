@@ -34,8 +34,18 @@ namespace Contoso.Practices.DurableBus.Utilities
 	/// </summary>
 	public class TransactionWrapper
 	{
+        /// <summary>
+        /// Runs the in transaction.
+        /// </summary>
+        /// <param name="callback">The callback.</param>
 		public void RunInTransaction(Action callback) { RunInTransaction(callback, IsolationLevel.Serializable, TimeSpan.FromSeconds(30.0)); }
 
+        /// <summary>
+        /// Runs the in transaction.
+        /// </summary>
+        /// <param name="callback">The callback.</param>
+        /// <param name="isolationLevel">The isolation level.</param>
+        /// <param name="transactionTimeout">The transaction timeout.</param>
 		[DebuggerNonUserCode]
 		public void RunInTransaction(Action callback, IsolationLevel isolationLevel, TimeSpan transactionTimeout)
 		{

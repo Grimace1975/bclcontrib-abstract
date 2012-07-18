@@ -36,7 +36,13 @@ namespace Contoso.Abstract
     /// </summary>
     public interface IHiroServiceLocator : IServiceLocator
     {
+        /// <summary>
+        /// Gets the builder.
+        /// </summary>
         DependencyMap Builder { get; }
+        /// <summary>
+        /// Gets the container.
+        /// </summary>
         IMicroContainer Container { get; }
     }
 
@@ -51,8 +57,15 @@ namespace Contoso.Abstract
         private Func<IMicroContainer> _containerBuilder;
 
         static HiroServiceLocator() { ServiceLocatorManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HiroServiceLocator"/> class.
+        /// </summary>
         public HiroServiceLocator()
             : this(new DependencyMap()) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HiroServiceLocator"/> class.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
         public HiroServiceLocator(DependencyMap builder)
         {
             if (builder == null)
@@ -67,6 +80,9 @@ namespace Contoso.Abstract
         //    Container = container;
         //}
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             if (_container != null)
@@ -82,24 +98,50 @@ namespace Contoso.Abstract
             get { return (locator, name) => ServiceLocatorManager.RegisterInstance<IHiroServiceLocator>(this, locator, name); }
         }
 
+        /// <summary>
+        /// Gets the service object of the specified type.
+        /// </summary>
+        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
+        /// <returns>
+        /// A service object of type <paramref name="serviceType"/>.-or- null if there is no service object of type <paramref name="serviceType"/>.
+        /// </returns>
         public object GetService(Type serviceType) { return Resolve(serviceType); }
 
+        /// <summary>
+        /// Gets the underlying container.
+        /// </summary>
+        /// <typeparam name="TContainer">The type of the container.</typeparam>
+        /// <returns></returns>
         public TContainer GetUnderlyingContainer<TContainer>()
             where TContainer : class { return (_container as TContainer); }
 
         // registrar
+        /// <summary>
+        /// Gets the registrar.
+        /// </summary>
         public IServiceRegistrar Registrar
         {
             get { return _registrar; }
         }
 
         // resolve
+        /// <summary>
+        /// Resolves this instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <returns></returns>
         public TService Resolve<TService>()
             where TService : class
         {
             try { return (Builder.Contains(typeof(TService)) ? Container.GetInstance<TService>() : Activator.CreateInstance<TService>()); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
+        /// <summary>
+        /// Resolves the specified name.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public TService Resolve<TService>(string name)
             where TService : class
         {
@@ -108,11 +150,22 @@ namespace Contoso.Abstract
             try { return Container.GetInstance<TService>(name); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
+        /// <summary>
+        /// Resolves the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns></returns>
         public object Resolve(Type serviceType)
         {
             try { return (Builder.Contains(serviceType) ? Container.GetInstance(serviceType, null) : Activator.CreateInstance(serviceType)); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
+        /// <summary>
+        /// Resolves the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="name">The name.</param>
+        /// <returns></returns>
         public object Resolve(Type serviceType, string name)
         {
             if (!Builder.Contains(serviceType, name))
@@ -121,12 +174,22 @@ namespace Contoso.Abstract
             catch (Exception ex) { throw new ServiceLocatorResolutionException(serviceType, ex); }
         }
         //
+        /// <summary>
+        /// Resolves all.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <returns></returns>
         public IEnumerable<TService> ResolveAll<TService>()
             where TService : class
         {
             try { return new List<TService>(Container.GetAllInstances(typeof(TService)).Cast<TService>()); }
             catch (Exception ex) { throw new ServiceLocatorResolutionException(typeof(TService), ex); }
         }
+        /// <summary>
+        /// Resolves all.
+        /// </summary>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <returns></returns>
         public IEnumerable<object> ResolveAll(Type serviceType)
         {
             try { return new List<object>(Container.GetAllInstances(serviceType)); }
@@ -134,18 +197,39 @@ namespace Contoso.Abstract
         }
 
         // inject
+        /// <summary>
+        /// Injects the specified instance.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="instance">The instance.</param>
+        /// <returns></returns>
         public TService Inject<TService>(TService instance)
             where TService : class { return null; }
 
         // release and teardown
+        /// <summary>
+        /// Releases the specified instance.
+        /// </summary>
+        /// <param name="instance">The instance.</param>
         public void Release(object instance) { throw new NotSupportedException(); }
+        /// <summary>
+        /// Tears down.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="instance">The instance.</param>
         public void TearDown<TService>(TService instance)
             where TService : class { throw new NotSupportedException(); }
 
         #region Domain specific
 
+        /// <summary>
+        /// Gets the builder.
+        /// </summary>
         public DependencyMap Builder { get; private set; }
 
+        /// <summary>
+        /// Gets the container.
+        /// </summary>
         public IMicroContainer Container
         {
             get

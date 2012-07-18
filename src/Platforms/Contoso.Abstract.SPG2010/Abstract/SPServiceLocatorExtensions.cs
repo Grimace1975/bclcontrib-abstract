@@ -34,6 +34,12 @@ namespace System.Abstract
     {
         #region BehaveAs
 
+        /// <summary>
+        /// Behaves as.
+        /// </summary>
+        /// <param name="locator">The locator.</param>
+        /// <param name="site">The site.</param>
+        /// <returns></returns>
         public static IServiceLocator BehaveAs(this IServiceLocator locator, SPSite site)
         {
             if (locator == null)
@@ -48,6 +54,12 @@ namespace System.Abstract
             newLocatorAsAccessor.SetContainer(site);
             return newLocator;
         }
+        /// <summary>
+        /// Behaves as.
+        /// </summary>
+        /// <param name="locator">The locator.</param>
+        /// <param name="farm">The farm.</param>
+        /// <returns></returns>
         public static IServiceLocator BehaveAs(this IServiceLocator locator, SPFarm farm)
         {
             if (locator == null)
@@ -63,6 +75,12 @@ namespace System.Abstract
             return newLocator;
         }
 
+        /// <summary>
+        /// Behaves as.
+        /// </summary>
+        /// <param name="registrar">The registrar.</param>
+        /// <param name="site">The site.</param>
+        /// <returns></returns>
         public static IServiceRegistrar BehaveAs(this IServiceRegistrar registrar, SPSite site)
         {
             if (registrar == null)
@@ -77,6 +95,12 @@ namespace System.Abstract
             newRegistrarAsAccessor.SetContainer(site);
             return newRegistrar;
         }
+        /// <summary>
+        /// Behaves as.
+        /// </summary>
+        /// <param name="registrar">The registrar.</param>
+        /// <param name="farm">The farm.</param>
+        /// <returns></returns>
         public static IServiceRegistrar BehaveAs(this IServiceRegistrar registrar, SPFarm farm)
         {
             if (registrar == null)

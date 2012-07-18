@@ -88,10 +88,6 @@
       <Project>{3CD3880F-DDEB-453D-895B-5E90AC66FE4A}</Project>
       <Name>Contoso.Abstract.RhinoServiceBus.4</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Contoso.Abstract.ZeroMQx64.4\Contoso.Abstract.ZeroMQx64.4.csproj">
-      <Project>{81D588A7-E841-4DA5-80FA-6CE53001F180}</Project>
-      <Name>Contoso.Abstract.ZeroMQx64.4</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

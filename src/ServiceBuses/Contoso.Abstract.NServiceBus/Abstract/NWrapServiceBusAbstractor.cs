@@ -35,15 +35,40 @@ namespace Contoso.Abstract
     public class NWrapServiceBusAbstractor : NServiceBusAbstractor
     {
         static NWrapServiceBusAbstractor() { ServiceBusManager.EnsureRegistration(); }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NWrapServiceBusAbstractor"/> class.
+        /// </summary>
+        /// <param name="assemblies">The assemblies.</param>
         public NWrapServiceBusAbstractor(params Assembly[] assemblies)
             : base(assemblies) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NWrapServiceBusAbstractor"/> class.
+        /// </summary>
+        /// <param name="serviceLocator">The service locator.</param>
+        /// <param name="assemblies">The assemblies.</param>
         public NWrapServiceBusAbstractor(IServiceLocator serviceLocator, params Assembly[] assemblies)
             : base(serviceLocator, assemblies) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NWrapServiceBusAbstractor"/> class.
+        /// </summary>
+        /// <param name="serviceLocator">The service locator.</param>
+        /// <param name="startableBus">The startable bus.</param>
         public NWrapServiceBusAbstractor(IServiceLocator serviceLocator, IStartableBus startableBus)
             : base(serviceLocator, startableBus) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NWrapServiceBusAbstractor"/> class.
+        /// </summary>
+        /// <param name="serviceLocator">The service locator.</param>
+        /// <param name="bus">The bus.</param>
         public NWrapServiceBusAbstractor(IServiceLocator serviceLocator, IBus bus)
             : base(serviceLocator, bus) { }
 
+        /// <summary>
+        /// Sends the specified endpoint.
+        /// </summary>
+        /// <param name="endpoint">The endpoint.</param>
+        /// <param name="messages">The messages.</param>
+        /// <returns></returns>
         public override IServiceBusCallback Send(IServiceBusEndpoint endpoint, params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
@@ -58,6 +83,10 @@ namespace Contoso.Abstract
             return null;
         }
 
+        /// <summary>
+        /// Replies the specified messages.
+        /// </summary>
+        /// <param name="messages">The messages.</param>
         public override void Reply(params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
@@ -68,6 +97,10 @@ namespace Contoso.Abstract
 
         #region Publishing ServiceBus
 
+        /// <summary>
+        /// Publishes the specified messages.
+        /// </summary>
+        /// <param name="messages">The messages.</param>
         public override void Publish(params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)
@@ -76,6 +109,11 @@ namespace Contoso.Abstract
             catch (Exception ex) { throw new ServiceBusMessageException(messages[0].GetType(), ex); }
         }
 
+        /// <summary>
+        /// Subscribes the specified message type.
+        /// </summary>
+        /// <param name="messageType">Type of the message.</param>
+        /// <param name="predicate">The predicate.</param>
         public override void Subscribe(Type messageType, Predicate<object> predicate)
         {
             if (messageType == null)
@@ -88,6 +126,10 @@ namespace Contoso.Abstract
             catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
         }
 
+        /// <summary>
+        /// Unsubscribes the specified message type.
+        /// </summary>
+        /// <param name="messageType">Type of the message.</param>
         public override void Unsubscribe(Type messageType)
         {
             if (messageType == null)
@@ -100,6 +142,13 @@ namespace Contoso.Abstract
 
         #region Domain-specific
 
+        /// <summary>
+        /// Sends the with return.
+        /// </summary>
+        /// <param name="executeTimeout">The execute timeout.</param>
+        /// <param name="endpoint">The endpoint.</param>
+        /// <param name="messages">The messages.</param>
+        /// <returns></returns>
         public override int SendWithReturn(int executeTimeout, IServiceBusEndpoint endpoint, params object[] messages)
         {
             if (messages == null || messages.Length == 0 || messages[0] == null)

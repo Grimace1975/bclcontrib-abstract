@@ -31,6 +31,10 @@ namespace System.Patterns.ReleaseManagement
     /// </summary>
     public static partial class ReleaseManagementManager
     {
+        /// <summary>
+        /// Loads from configuration.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
         public static void LoadFromConfiguration(ReleaseManagementConfiguration configuration)
         {
             if (configuration == null)

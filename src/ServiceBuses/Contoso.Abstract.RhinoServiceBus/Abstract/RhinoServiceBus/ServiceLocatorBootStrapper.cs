@@ -33,16 +33,30 @@ using Rhino.ServiceBus.Impl;
 using Rhino.ServiceBus.Internal;
 namespace Contoso.Abstract.RhinoServiceBus
 {
+    /// <summary>
+    /// ServiceLocatorBootStrapper
+    /// </summary>
     public abstract class ServiceLocatorBootStrapper : AbstractBootStrapper
     {
         internal System.Abstract.IServiceLocator _locator;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceLocatorBootStrapper"/> class.
+        /// </summary>
         protected ServiceLocatorBootStrapper() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceLocatorBootStrapper"/> class.
+        /// </summary>
+        /// <param name="locator">The locator.</param>
         protected ServiceLocatorBootStrapper(System.Abstract.IServiceLocator locator)
         {
             _locator = locator;
         }
 
+        /// <summary>
+        /// Configures the bus facility.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
         protected override void ConfigureBusFacility(AbstractRhinoServiceBusConfiguration configuration)
         {
             configuration
@@ -62,11 +76,19 @@ namespace Contoso.Abstract.RhinoServiceBus
                 ConfigureConsumer(r, type);
         }
 
+        /// <summary>
+        /// Configures the consumer.
+        /// </summary>
+        /// <param name="r">The r.</param>
+        /// <param name="type">The type.</param>
         protected virtual void ConfigureConsumer(IServiceRegistrar r, Type type)
         {
             r.Register<IMessageConsumer>(type, type.FullName);
         }
 
+        /// <summary>
+        /// Configures the container.
+        /// </summary>
         protected virtual void ConfigureContainer()
         {
             var registrar = _locator.Registrar;
@@ -76,6 +98,9 @@ namespace Contoso.Abstract.RhinoServiceBus
             ConfigureConsumers(Assembly);
         }
 
+        /// <summary>
+        /// Creates the container.
+        /// </summary>
         public override void CreateContainer()
         {
             if (_locator == null)
@@ -83,6 +108,9 @@ namespace Contoso.Abstract.RhinoServiceBus
             ConfigureContainer();
         }
 
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
         public override void Dispose()
         {
             var disposable = (_locator as IDisposable);
@@ -90,23 +118,38 @@ namespace Contoso.Abstract.RhinoServiceBus
                 disposable.Dispose();
         }
 
+        /// <summary>
+        /// Executes the deployment actions.
+        /// </summary>
+        /// <param name="user">The user.</param>
         public override void ExecuteDeploymentActions(string user)
         {
             foreach (var action in _locator.ResolveAll<IDeploymentAction>())
                 action.Execute(user);
         }
 
+        /// <summary>
+        /// Executes the environment validation actions.
+        /// </summary>
         public override void ExecuteEnvironmentValidationActions()
         {
             foreach (var action in _locator.ResolveAll<IEnvironmentValidationAction>())
                 action.Execute();
         }
 
+        /// <summary>
+        /// Gets the instance.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public override T GetInstance<T>()
         {
             return (T)_locator.Resolve(typeof(T));
         }
 
+        /// <summary>
+        /// Gets the container.
+        /// </summary>
         protected System.Abstract.IServiceLocator Container
         {
             get { return _locator; }

@@ -38,29 +38,95 @@ namespace Contoso.Practices.DurableBus.Transport
 	{
 		private object[] _body;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TransportMessage"/> class.
+        /// </summary>
 		public TransportMessage()
 		{
 			Lifetime = TimeSpan.MaxValue;
 		}
 
+        /// <summary>
+        /// Gets or sets the headers.
+        /// </summary>
+        /// <value>
+        /// The headers.
+        /// </value>
 		public List<KeyValuePair<string, string>> Headers { get; set; }
+        /// <summary>
+        /// Gets or sets the id.
+        /// </summary>
+        /// <value>
+        /// The id.
+        /// </value>
 		public string Id { get; set; }
+        /// <summary>
+        /// Gets or sets the message intent.
+        /// </summary>
+        /// <value>
+        /// The message intent.
+        /// </value>
 		public MessageIntent MessageIntent { get; set; }
+        /// <summary>
+        /// Gets or sets the messages.
+        /// </summary>
+        /// <value>
+        /// The messages.
+        /// </value>
 		public List<object> Messages { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="TransportMessage"/> is recoverable.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if recoverable; otherwise, <c>false</c>.
+        /// </value>
 		public bool Recoverable { get; set; }
+        /// <summary>
+        /// Gets or sets the return info.
+        /// </summary>
+        /// <value>
+        /// The return info.
+        /// </value>
 		public string ReturnInfo { get; set; }
+        /// <summary>
+        /// Gets or sets the time sent.
+        /// </summary>
+        /// <value>
+        /// The time sent.
+        /// </value>
 		public DateTime TimeSent { get; set; }
+        /// <summary>
+        /// Gets or sets the lifetime.
+        /// </summary>
+        /// <value>
+        /// The lifetime.
+        /// </value>
 		public TimeSpan Lifetime { get; set; }
+        /// <summary>
+        /// Gets or sets the identity.
+        /// </summary>
+        /// <value>
+        /// The identity.
+        /// </value>
 		public IIdentity Identity { get; set; }
 
 		#region Body
 
+        /// <summary>
+        /// Copies the messages to body.
+        /// </summary>
 		public void CopyMessagesToBody()
 		{
             _body = new object[Messages.Count];
 			Messages.CopyTo(_body);
 		}
 
+        /// <summary>
+        /// Gets or sets the body.
+        /// </summary>
+        /// <value>
+        /// The body.
+        /// </value>
         public object[] Body
 		{
 			get { return _body; }
@@ -71,6 +137,12 @@ namespace Contoso.Practices.DurableBus.Transport
 			}
 		}
 
+        /// <summary>
+        /// Gets or sets the body stream.
+        /// </summary>
+        /// <value>
+        /// The body stream.
+        /// </value>
 		public Stream BodyStream { get; set; }
 
 		#endregion

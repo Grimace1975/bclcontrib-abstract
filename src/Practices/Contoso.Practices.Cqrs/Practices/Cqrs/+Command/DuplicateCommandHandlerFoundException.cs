@@ -32,13 +32,40 @@ namespace Contoso.Practices.Cqrs.Command
     /// </summary>
     public class DuplicateCommandHandlerFoundException : Exception
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DuplicateCommandHandlerFoundException"/> class.
+        /// </summary>
+        /// <param name="commandType">Type of the command.</param>
         public DuplicateCommandHandlerFoundException(Type commandType)
             : base(string.Format(Local.DuplicateCommandHandlerA, commandType)) { CommandType = commandType; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DuplicateCommandHandlerFoundException"/> class.
+        /// </summary>
+        /// <param name="commandType">Type of the command.</param>
+        /// <param name="innerException">The inner exception.</param>
         public DuplicateCommandHandlerFoundException(Type commandType, Exception innerException)
             : base(string.Format(Local.DuplicateCommandHandlerA, commandType), innerException) { CommandType = commandType; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DuplicateCommandHandlerFoundException"/> class.
+        /// </summary>
+        /// <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+        /// <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+        /// <exception cref="T:System.ArgumentNullException">
+        /// The <paramref name="info"/> parameter is null.
+        ///   </exception>
+        ///   
+        /// <exception cref="T:System.Runtime.Serialization.SerializationException">
+        /// The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0).
+        ///   </exception>
         protected DuplicateCommandHandlerFoundException(SerializationInfo info, StreamingContext context)
             : base(info, context) { }
 
+        /// <summary>
+        /// Gets or sets the type of the command.
+        /// </summary>
+        /// <value>
+        /// The type of the command.
+        /// </value>
         public Type CommandType { get; set; }
     }
 }

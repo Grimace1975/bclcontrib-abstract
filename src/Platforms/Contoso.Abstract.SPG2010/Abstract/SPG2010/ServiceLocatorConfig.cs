@@ -36,47 +36,107 @@ using Microsoft.SharePoint.Security;
 using System.Diagnostics.CodeAnalysis;
 namespace Contoso.Abstract.SPG2010
 {
+    /// <summary>
+    /// IServiceLocatorConfig
+    /// </summary>
     public interface IServiceLocatorConfig
     {
+        /// <summary>
+        /// Registers the type mapping.
+        /// </summary>
+        /// <typeparam name="TFrom">The type of from.</typeparam>
+        /// <typeparam name="TTo">The type of to.</typeparam>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
         void RegisterTypeMapping<TFrom, TTo>() where TTo : TFrom;
+        /// <summary>
+        /// Registers the type mapping.
+        /// </summary>
+        /// <typeparam name="TFrom">The type of from.</typeparam>
+        /// <typeparam name="TTo">The type of to.</typeparam>
+        /// <param name="key">The key.</param>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
         void RegisterTypeMapping<TFrom, TTo>(string key) where TTo : TFrom;
+        /// <summary>
+        /// Removes the type mappings.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
         void RemoveTypeMappings<T>();
+        /// <summary>
+        /// Removes the type mapping.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key">The key.</param>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
         void RemoveTypeMapping<T>(string key);
+        /// <summary>
+        /// Gets the type mappings.
+        /// </summary>
+        /// <returns></returns>
         List<TypeMapping> GetTypeMappings();
+        /// <summary>
+        /// Gets the last update.
+        /// </summary>
         DateTime? LastUpdate { get; }
+        /// <summary>
+        /// Gets or sets the site.
+        /// </summary>
+        /// <value>
+        /// The site.
+        /// </value>
         SPSite Site { get; set; }
+        /// <summary>
+        /// Gets the site cache interval.
+        /// </summary>
+        /// <returns></returns>
         int GetSiteCacheInterval();
+        /// <summary>
+        /// Sets the site cache interval.
+        /// </summary>
+        /// <param name="interval">The interval.</param>
         void SetSiteCacheInterval(int interval);
     }
 
+    /// <summary>
+    /// ServiceLocatorConfig
+    /// </summary>
     public class ServiceLocatorConfig : IServiceLocatorConfig
     {
         private IConfigManager _manager;
         private SPSite _site = null;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceLocatorConfig"/> class.
+        /// </summary>
         public ServiceLocatorConfig()
         {
             _manager = new ConfigManager();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceLocatorConfig"/> class.
+        /// </summary>
+        /// <param name="manager">The manager.</param>
         public ServiceLocatorConfig(IConfigManager manager)
         {
             Validation.ArgumentNotNull(manager, "manager");
             _manager = manager;
         }
 
+        /// <summary>
+        /// Gets or sets the site.
+        /// </summary>
+        /// <value>
+        /// The site.
+        /// </value>
         public SPSite Site
         {
             get { return _site; }
@@ -100,7 +160,9 @@ namespace Contoso.Abstract.SPG2010
         /// <summary>
         /// Gets the interval to cache a site locator for
         /// </summary>
-        /// <returns>the interval value, -1 if not configured</returns>
+        /// <returns>
+        /// the interval value, -1 if not configured
+        /// </returns>
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
         public int GetSiteCacheInterval()
@@ -115,6 +177,10 @@ namespace Contoso.Abstract.SPG2010
             return interval;
         }
 
+        /// <summary>
+        /// Sets the site cache interval.
+        /// </summary>
+        /// <param name="interval">The interval.</param>
         public void SetSiteCacheInterval(int interval)
         {
             if (interval < 0)
@@ -124,18 +190,36 @@ namespace Contoso.Abstract.SPG2010
                 Manager.SetInPropertyBag(GetSiteCacheIntervalConfigKey(), interval, bag);
         }
 
+        /// <summary>
+        /// Registers the type mapping.
+        /// </summary>
+        /// <typeparam name="TFrom">The type of from.</typeparam>
+        /// <typeparam name="TTo">The type of to.</typeparam>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
         public void RegisterTypeMapping<TFrom, TTo>()
             where TTo : TFrom { RegisterTypeMapping<TFrom, TTo>(null, InstantiationType.NewInstanceForEachRequest); }
 
+        /// <summary>
+        /// Registers the type mapping.
+        /// </summary>
+        /// <typeparam name="TFrom">The type of from.</typeparam>
+        /// <typeparam name="TTo">The type of to.</typeparam>
+        /// <param name="key">The key.</param>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
         public void RegisterTypeMapping<TFrom, TTo>(string key)
             where TTo : TFrom { RegisterTypeMapping<TFrom, TTo>(key, InstantiationType.NewInstanceForEachRequest); }
 
+        /// <summary>
+        /// Registers the type mapping.
+        /// </summary>
+        /// <typeparam name="TFrom">The type of from.</typeparam>
+        /// <typeparam name="TTo">The type of to.</typeparam>
+        /// <param name="key">The key.</param>
+        /// <param name="instantiationType">Type of the instantiation.</param>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
@@ -149,6 +233,10 @@ namespace Contoso.Abstract.SPG2010
             SetTypeMappingsList(typeMappings);
         }
 
+        /// <summary>
+        /// Removes the type mappings.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
@@ -161,6 +249,11 @@ namespace Contoso.Abstract.SPG2010
             SetTypeMappingsList(typeMappings);
         }
 
+        /// <summary>
+        /// Removes the type mapping.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key">The key.</param>
         [SuppressMessage("Microsoft.Design", "CA1004:GenericMethodsShouldProvideTypeParameter")]
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
@@ -173,6 +266,10 @@ namespace Contoso.Abstract.SPG2010
             SetTypeMappingsList(typeMappings);
         }
 
+        /// <summary>
+        /// Removes the type mapping.
+        /// </summary>
+        /// <param name="mapping">The mapping.</param>
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
         public virtual void RemoveTypeMapping(TypeMapping mapping)
@@ -184,6 +281,10 @@ namespace Contoso.Abstract.SPG2010
             SetTypeMappingsList(typeMappings);
         }
 
+        /// <summary>
+        /// Gets the type mappings.
+        /// </summary>
+        /// <returns></returns>
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate")]
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
@@ -230,6 +331,10 @@ namespace Contoso.Abstract.SPG2010
             return configData;
         }
 
+        /// <summary>
+        /// Gets the property bag.
+        /// </summary>
+        /// <returns></returns>
         [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
         [SharePointPermission(SecurityAction.LinkDemand, ObjectModel = true)]
         protected virtual IPropertyBag GetPropertyBag()
@@ -248,6 +353,9 @@ namespace Contoso.Abstract.SPG2010
             return bag;
         }
 
+        /// <summary>
+        /// Gets the last update.
+        /// </summary>
         public DateTime? LastUpdate
         {
             [SharePointPermission(SecurityAction.InheritanceDemand, ObjectModel = true)]
@@ -255,9 +363,17 @@ namespace Contoso.Abstract.SPG2010
             get { return GetConfigData().LastUpdate; }
         }
 
+        /// <summary>
+        /// Gets the config key.
+        /// </summary>
+        /// <returns></returns>
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate"), SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         protected virtual string GetConfigKey() { return "Microsoft.Practices.SharePoint.Common.TypeMappings"; }
 
+        /// <summary>
+        /// Gets the site cache interval config key.
+        /// </summary>
+        /// <returns></returns>
         protected virtual string GetSiteCacheIntervalConfigKey() { return "Microsoft.Practices.SharePoint.Common.SiteLocatorCacheInterval"; }
     }
 }
