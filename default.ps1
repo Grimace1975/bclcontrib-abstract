@@ -1,10 +1,10 @@
 properties { 
   $base_dir = resolve-path .
-  $build_dir = "$base_dir\build"
   $packageinfo_dir = "$base_dir\packaging"
   $build_dir = "$build_dir\"
   $release_dir = "$base_dir\Release"
   $sln_file = "$base_dir\BCLEX-ABSTRACT.sln"
+  $sln_test_file = "$base_dir\BCLEX-ABSTRACT.tests.sln"
   $tools_dir = "$base_dir\tools"
   $config = "Release"
   $run_tests = $true
@@ -17,17 +17,15 @@ $framework = '4.0'
 task default -depends Release
 
 task Clean {
-	remove-item -force -recurse $build_dir -ErrorAction SilentlyContinue
 	remove-item -force -recurse $release_dir -ErrorAction SilentlyContinue
 }
 
 task Init -depends Clean {
 	new-item $release_dir -itemType directory 
-	new-item $build_dir -itemType directory 
 }
 
 task Compile -depends Init {
-	msbuild $sln_file /target:Rebuild /p:"OutDir=$build_dir;Configuration=$config"
+	msbuild $sln_file /target:Rebuild /p:"Configuration=$config"
 }
 
 task Test -depends Compile -precondition { return $run_tests }{
