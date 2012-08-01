@@ -1,0 +1,159 @@
+using System;
+using System.Collections;
+using System.ComponentModel;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
+
+namespace Rhino.ServiceBus.FileMessaging
+{
+    public class XmlMessageFormatter : IMessageFormatter, ICloneable
+    {
+        private Hashtable targetSerializerTable;
+        private string[] targetTypeNames;
+        private Type[] targetTypes;
+        private bool typeNamesAdded;
+        private bool typesAdded;
+
+        public XmlMessageFormatter()
+        {
+            this.targetSerializerTable = new Hashtable();
+            this.TargetTypes = new Type[0];
+            this.TargetTypeNames = new string[0];
+        }
+
+        public XmlMessageFormatter(string[] targetTypeNames)
+        {
+            this.targetSerializerTable = new Hashtable();
+            this.TargetTypeNames = targetTypeNames;
+            this.TargetTypes = new Type[0];
+        }
+
+        public XmlMessageFormatter(Type[] targetTypes)
+        {
+            this.targetSerializerTable = new Hashtable();
+            this.TargetTypes = targetTypes;
+            this.TargetTypeNames = new string[0];
+        }
+
+        public bool CanRead(Message message)
+        {
+            if (message == null)
+                throw new ArgumentNullException("message");
+            this.CreateTargetSerializerTable();
+            var xmlReader = new XmlTextReader(message.BodyStream)
+            {
+                WhitespaceHandling = WhitespaceHandling.Significant,
+                ProhibitDtd = true
+            };
+            bool flag = false;
+            foreach (XmlSerializer serializer in this.targetSerializerTable.Values)
+                if (serializer.CanDeserialize(xmlReader))
+                {
+                    flag = true;
+                    break;
+                }
+            message.BodyStream.Position = 0L;
+            return flag;
+        }
+
+        public object Clone()
+        {
+            var formatter = new XmlMessageFormatter
+            {
+                targetTypes = this.targetTypes,
+                targetTypeNames = this.targetTypeNames,
+                typesAdded = this.typesAdded,
+                typeNamesAdded = this.typeNamesAdded
+            };
+            foreach (Type type in this.targetSerializerTable.Keys)
+                formatter.targetSerializerTable[type] = new XmlSerializer(type);
+            return formatter;
+        }
+
+        private void CreateTargetSerializerTable()
+        {
+            if (!this.typeNamesAdded)
+            {
+                for (int i = 0; i < this.targetTypeNames.Length; i++)
+                {
+                    var type = Type.GetType(this.targetTypeNames[i], true);
+                    if (type != null)
+                        this.targetSerializerTable[type] = new XmlSerializer(type);
+                }
+                this.typeNamesAdded = true;
+            }
+            if (!this.typesAdded)
+            {
+                for (int j = 0; j < this.targetTypes.Length; j++)
+                    this.targetSerializerTable[this.targetTypes[j]] = new XmlSerializer(this.targetTypes[j]);
+                this.typesAdded = true;
+            }
+            if (this.targetSerializerTable.Count == 0)
+                throw new InvalidOperationException("#TypeListMissing");
+        }
+
+        public object Read(Message message)
+        {
+            if (message == null)
+                throw new ArgumentNullException("message");
+            this.CreateTargetSerializerTable();
+            var xmlReader = new XmlTextReader(message.BodyStream)
+            {
+                WhitespaceHandling = WhitespaceHandling.Significant,
+                ProhibitDtd = true
+            };
+            foreach (XmlSerializer serializer in this.targetSerializerTable.Values)
+                if (serializer.CanDeserialize(xmlReader))
+                    return serializer.Deserialize(xmlReader);
+            throw new InvalidOperationException("#InvalidTypeDeserialization");
+        }
+
+        public void Write(Message message, object obj)
+        {
+            if (message == null)
+                throw new ArgumentNullException("message");
+            if (obj == null)
+                throw new ArgumentNullException("obj");
+            var stream = new MemoryStream();
+            var key = obj.GetType();
+            XmlSerializer serializer = null;
+            if (this.targetSerializerTable.ContainsKey(key))
+                serializer = (XmlSerializer)this.targetSerializerTable[key];
+            else
+            {
+                serializer = new XmlSerializer(key);
+                this.targetSerializerTable[key] = serializer;
+            }
+            serializer.Serialize(stream, obj);
+            message.BodyStream = stream;
+            message.BodyType = 0;
+        }
+
+        [MessagingDescription("XmlMsgTargetTypeNames")]
+        public string[] TargetTypeNames
+        {
+            get { return this.targetTypeNames; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                this.typeNamesAdded = false;
+                this.targetTypeNames = value;
+            }
+        }
+
+        [Browsable(false), MessagingDescription("XmlMsgTargetTypes"), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public Type[] TargetTypes
+        {
+            get { return this.targetTypes; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                this.typesAdded = false;
+                this.targetTypes = value;
+            }
+        }
+    }
+}
