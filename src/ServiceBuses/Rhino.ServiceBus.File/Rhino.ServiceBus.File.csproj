@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2DC236C1-D903-4BAD-8BA2-FA2965B01139}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Rhino.ServiceBus.Eml</RootNamespace>
+    <AssemblyName>Rhino.ServiceBus.Eml</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\..\..\packages\log4net.1.2.11\lib\net35-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.Queues, Version=1.4.2.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Rhino.ServiceBus\net35\Rhino.Queues.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.ServiceBus, Version=2.3.0.0, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\Rhino.ServiceBus\net35\Rhino.ServiceBus.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FileMessaging\AccessControlEntryType.cs" />
+    <Compile Include="FileMessaging\BinaryMessageFormatter.cs" />
+    <Compile Include="FileMessaging\XmlMessageFormatter.cs" />
+    <Compile Include="FileMessaging\NativeMethods.cs" />
+    <Compile Include="FileMessaging\MessageQueueTransactionStatus.cs" />
+    <Compile Include="FileMessaging\MessageQueueTransaction.cs" />
+    <Compile Include="FileMessaging\MessageQueueTransactionType.cs" />
+    <Compile Include="FileMessaging\MessageEnumerator.cs" />
+    <Compile Include="FileMessaging\MessagingDescriptionAttribute.cs" />
+    <Compile Include="FileMessaging\Design\MessageFormatterConverter.cs" />
+    <Compile Include="FileMessaging\IMessageFormatter.cs" />
+    <Compile Include="FileMessaging\Message.cs" />
+    <Compile Include="FileMessaging\MessageQueue.cs" />
+    <Compile Include="FileMessaging\MessageQueueAccessRights.cs" />
+    <Compile Include="FileMessaging\MessageQueueErrorCode.cs" />
+    <Compile Include="FileMessaging\MessageQueueException.cs" />
+    <Compile Include="FileMessaging\QueueAccessMode.cs" />
+    <Compile Include="File\AbstractFileListener.cs" />
+    <Compile Include="File\FileCurrentMessageInformation.cs" />
+    <Compile Include="File\FileExtensions.cs" />
+    <Compile Include="File\FileTransport.cs" />
+    <Compile Include="File\FileUtil.cs" />
+    <Compile Include="File\EndpointExtensions.cs" />
+    <Compile Include="File\IQueueStrategy.cs" />
+    <Compile Include="File\OpenedQueue.cs" />
+    <Compile Include="File\QueueCreationModule.cs" />
+    <Compile Include="File\QueueInfo.cs" />
+    <Compile Include="File\QueueState.cs" />
+    <Compile Include="File\QueueType.cs" />
+    <Compile Include="File\SmtpQueueStrategy.cs" />
+    <Compile Include="File\TimeoutInfo.cs" />
+    <Compile Include="File\TransactionalOptions.cs" />
+    <Compile Include="File\TransportActions\AbstractTransportAction.cs" />
+    <Compile Include="File\TransportActions\AdministrativeAction.cs" />
+    <Compile Include="File\TransportActions\ErrorAction.cs" />
+    <Compile Include="File\TransportActions\IFileTransportAction.cs" />
+    <Compile Include="File\TransportActions\ShutDownAction.cs" />
+    <Compile Include="File\TransportActions\TimeoutAction.cs" />
+    <Compile Include="File\TransportState.cs" />
+    <Compile Include="Internal\IFileTransport.cs" />
+    <Compile Include="Internal\ITransaction.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
