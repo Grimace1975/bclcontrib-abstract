@@ -137,6 +137,17 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("name");
             throw new NotSupportedException("A StreamServiceLog does not support child loggers");
         }
+        /// <summary>
+        /// Gets the specified name.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public IServiceLog Get(Type type)
+        {
+            if (type == null)
+                throw new ArgumentNullException("type");
+            throw new NotSupportedException("A StreamServiceLog does not support child loggers");
+        }
 
         // log
         /// <summary>
@@ -145,12 +156,10 @@ namespace Contoso.Abstract
         /// <param name="level">The level.</param>
         /// <param name="ex">The ex.</param>
         /// <param name="s">The s.</param>
-        /// <param name="args">The args.</param>
-        public void Write(ServiceLog.LogLevel level, Exception ex, string s, params object[] args)
+        public void Write(ServiceLog.LogLevel level, Exception ex, string s)
         {
             if (Log == null)
                 throw new NullReferenceException("Log");
-            s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
             Log.WriteLine("[{0}] '{1}' {2} {3}", level, Name, s);
             if (ex != null)
                 Log.WriteLine("{0}: {1} {2}", ex.GetType().FullName, ex.Message, ex.StackTrace);

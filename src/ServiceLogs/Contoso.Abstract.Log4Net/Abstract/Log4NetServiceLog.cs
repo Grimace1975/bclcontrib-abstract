@@ -94,7 +94,18 @@ namespace Contoso.Abstract
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
-            return new Log4NetServiceLog(LogManager.GetLogger(Name + "." + name));
+            return new Log4NetServiceLog(LogManager.GetLogger(name));
+        }
+        /// <summary>
+        /// Gets the specified name.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public IServiceLog Get(Type type)
+        {
+            if (type == null)
+                throw new ArgumentNullException("type");
+            return new Log4NetServiceLog(LogManager.GetLogger(type));
         }
 
         // log
@@ -104,12 +115,10 @@ namespace Contoso.Abstract
         /// <param name="level">The level.</param>
         /// <param name="ex">The ex.</param>
         /// <param name="s">The s.</param>
-        /// <param name="args">The args.</param>
-        public void Write(ServiceLog.LogLevel level, Exception ex, string s, params object[] args)
+        public void Write(ServiceLog.LogLevel level, Exception ex, string s)
         {
             if (Log == null)
                 throw new NullReferenceException("Log");
-            s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
             switch (level)
             {
                 case ServiceLog.LogLevel.Fatal: Log.Fatal(s, ex); return;

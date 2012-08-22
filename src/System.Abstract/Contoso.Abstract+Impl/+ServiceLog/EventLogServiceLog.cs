@@ -130,7 +130,18 @@ namespace Contoso.Abstract
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
-            return new EventLogServiceLog(Log.Log, Log.MachineName, Log.Source);
+            return new EventLogServiceLog(name);
+        }
+        /// <summary>
+        /// Gets the specified name.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public IServiceLog Get(Type type)
+        {
+            if (type == null)
+                throw new ArgumentNullException("type");
+            return new EventLogServiceLog(type.Name);
         }
 
         // log
@@ -140,12 +151,10 @@ namespace Contoso.Abstract
         /// <param name="level">The level.</param>
         /// <param name="ex">The ex.</param>
         /// <param name="s">The s.</param>
-        /// <param name="args">The args.</param>
-        public void Write(ServiceLog.LogLevel level, Exception ex, string s, params object[] args)
+        public void Write(ServiceLog.LogLevel level, Exception ex, string s)
         {
             if (Log == null)
                 throw new NullReferenceException("Log");
-            s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
             string message;
             if (ex == null)
                 message = string.Format(CultureInfo.CurrentCulture, "[{0}] '{1}' message: {2}", level.ToString(), Name, s);

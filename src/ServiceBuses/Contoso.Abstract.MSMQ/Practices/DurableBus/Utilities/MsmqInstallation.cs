@@ -80,12 +80,12 @@ namespace Contoso.Practices.DurableBus.Utilities
 			{
 				if (UndesirableMsmqComponentsXp.Contains(installedComponent))
 				{
-					ServiceLog.Warning("Undesirable MSMQ component installed: " + installedComponent);
+					ServiceLog.WarningFormat("Undesirable MSMQ component installed: " + installedComponent);
 					return false;
 				}
 				if (UndesirableMsmqComponentsV4.Contains(installedComponent))
 				{
-					ServiceLog.Warning("Undesirable MSMQ component installed: " + installedComponent);
+					ServiceLog.WarningFormat("Undesirable MSMQ component installed: " + installedComponent);
 					return false;
 				}
 				needed.Remove(installedComponent);
@@ -95,33 +95,33 @@ namespace Contoso.Practices.DurableBus.Utilities
 
 		private static void InstallMsmqIfNecessary()
 		{
-			ServiceLog.Debug("Checking if MSMQ is installed.");
+			ServiceLog.DebugFormat("Checking if MSMQ is installed.");
 			if (IsMsmqInstalled())
 			{
-				ServiceLog.Debug("MSMQ is installed.");
-				ServiceLog.Debug("Checking that only needed components are active.");
+				ServiceLog.DebugFormat("MSMQ is installed.");
+				ServiceLog.DebugFormat("Checking that only needed components are active.");
 				if (IsInstallationGood())
-					ServiceLog.Debug("Installation is good.");
+					ServiceLog.DebugFormat("Installation is good.");
 				else
 				{
-					ServiceLog.Debug("Installation isn't good.");
-					ServiceLog.Debug("Going to re-install MSMQ. A reboot may be required.");
+					ServiceLog.DebugFormat("Installation isn't good.");
+					ServiceLog.DebugFormat("Going to re-install MSMQ. A reboot may be required.");
 					PerformFunctionDependingOnOS(() => Process.Start("OCSETUP", "MSMQ-Container;MSMQ-Server /passive /uninstall"), () => Process.Start("OCSETUP", "MSMQ-Server /passive /uninstall"), new Func<Process>(MsmqInstallation.InstallMsmqOnXpOrServer2003));
-					ServiceLog.Debug("Installation of MSMQ successful.");
+					ServiceLog.DebugFormat("Installation of MSMQ successful.");
 				}
 			}
 			else
 			{
-				ServiceLog.Debug("MSMQ is not installed. Going to install.");
+				ServiceLog.DebugFormat("MSMQ is not installed. Going to install.");
 				PerformFunctionDependingOnOS(() => Process.Start("OCSETUP", "MSMQ-Container;MSMQ-Server /passive"), () => Process.Start("OCSETUP", "MSMQ-Server /passive"), new Func<Process>(MsmqInstallation.InstallMsmqOnXpOrServer2003));
-				ServiceLog.Debug("Installation of MSMQ successful.");
+				ServiceLog.DebugFormat("Installation of MSMQ successful.");
 			}
 		}
 
 		private static Process InstallMsmqOnXpOrServer2003()
 		{
 			var path = Path.GetTempFileName();
-			ServiceLog.Debug("Creating installation instruction file.");
+			ServiceLog.DebugFormat("Creating installation instruction file.");
 			using (var sw = File.CreateText(path))
 			{
 				sw.WriteLine("[Version]");
@@ -139,8 +139,8 @@ namespace Contoso.Practices.DurableBus.Utilities
 					sw.WriteLine(s + " = OFF");
 				sw.Flush();
 			}
-			ServiceLog.Debug("Installation instruction file created.");
-			ServiceLog.Debug("Invoking MSMQ installation.");
+			ServiceLog.DebugFormat("Installation instruction file created.");
+			ServiceLog.DebugFormat("Invoking MSMQ installation.");
 			return Process.Start("sysocmgr", @"/i:sysoc.inf /x /q /w /u:%temp%\" + Path.GetFileName(path));
 		}
 
@@ -183,12 +183,12 @@ namespace Contoso.Practices.DurableBus.Utilities
 					process = server2008Func();
 					break;
 				default:
-					ServiceLog.Warning("OS not supported.");
+					ServiceLog.WarningFormat("OS not supported.");
 					break;
 			}
 			if (process != null)
 			{
-				ServiceLog.Debug("Waiting for process to complete.");
+				ServiceLog.DebugFormat("Waiting for process to complete.");
 				process.WaitForExit();
 			}
 		}

@@ -144,6 +144,17 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("name");
             return new SPServiceLog(Log, EventID, AreaName, name);
         }
+        /// <summary>
+        /// Gets the specified name.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public IServiceLog Get(Type type)
+        {
+            if (type == null)
+                throw new ArgumentNullException("type");
+            return new SPServiceLog(Log, EventID, AreaName, type.Name);
+        }
 
         // log
         /// <summary>
@@ -152,12 +163,10 @@ namespace Contoso.Abstract
         /// <param name="level">The level.</param>
         /// <param name="ex">The ex.</param>
         /// <param name="s">The s.</param>
-        /// <param name="args">The args.</param>
-        public void Write(ServiceLog.LogLevel level, Exception ex, string s, params object[] args)
+        public void Write(ServiceLog.LogLevel level, Exception ex, string s)
         {
             if (Log == null)
                 throw new NullReferenceException("Log");
-            s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
             if (ex == null)
                 switch (level)
                 {

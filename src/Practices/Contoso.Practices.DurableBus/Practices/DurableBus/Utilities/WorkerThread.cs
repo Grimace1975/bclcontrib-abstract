@@ -67,7 +67,7 @@ namespace Contoso.Practices.DurableBus.Utilities
 			while (!StopRequested)
 			{
 				try { _action(); continue; }
-				catch (Exception ex) { ServiceLog.Error("Exception reached top level.", ex); continue; }
+				catch (Exception ex) { ServiceLog.ErrorFormat("Exception reached top level.", ex); continue; }
 			}
 			var stopped = Stopped;
 			if (stopped != null)

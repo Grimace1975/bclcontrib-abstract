@@ -23,6 +23,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System.Globalization;
 namespace System.Abstract
 {
     /// <summary>
@@ -37,19 +38,7 @@ namespace System.Abstract
         /// <typeparam name="T"></typeparam>
         /// <param name="service">The service.</param>
         /// <returns></returns>
-        public static IServiceLog Get<T>(this IServiceLog service) { return service.Get(typeof(T).Name); }
-        /// <summary>
-        /// Gets the specified service.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        /// <param name="type">The type.</param>
-        /// <returns></returns>
-        public static IServiceLog Get(this IServiceLog service, Type type)
-        {
-            if (type == null)
-                throw new ArgumentNullException("type");
-            return service.Get(type.Name);
-        }
+        public static IServiceLog Get<T>(this IServiceLog service) { return service.Get(typeof(T)); }
 
         // log
         /// <summary>
@@ -57,14 +46,24 @@ namespace System.Abstract
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="s">The s.</param>
-        /// <param name="args">The args.</param>
-        public static void Fatal(this IServiceLog service, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Fatal, null, s, args); }
+        public static void Fatal(this IServiceLog service, string s) { service.Write(ServiceLog.LogLevel.Fatal, null, s); }
         /// <summary>
         /// Fatals the specified service.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="ex">The ex.</param>
-        public static void Fatal(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Fatal, ex, null, null); }
+        public static void Fatal(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Fatal, ex, null); }
+        /// <summary>
+        /// Fatals the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
+        public static void FatalFormat(this IServiceLog service, string s, params object[] args)
+        {
+            s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
+            service.Write(ServiceLog.LogLevel.Fatal, null, s);
+        }
         /// <summary>
         /// Fatals the specified service.
         /// </summary>
@@ -72,83 +71,139 @@ namespace System.Abstract
         /// <param name="ex">The ex.</param>
         /// <param name="s">The s.</param>
         /// <param name="args">The args.</param>
-        public static void Fatal(this IServiceLog service, Exception ex, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Fatal, ex, s, args); }
+        public static void FatalFormat(this IServiceLog service, Exception ex, string s, params object[] args)
+        {
+            s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
+            service.Write(ServiceLog.LogLevel.Fatal, ex, s);
+        }
+        /// <summary>
+        /// Errors the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="s">The s.</param>
+        public static void Error(this IServiceLog service, string s) { service.Write(ServiceLog.LogLevel.Error, null, s); }
+        /// <summary>
+        /// Errors the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="ex">The ex.</param>
+        public static void Error(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Error, ex, null); }
         /// <summary>
         /// Errors the specified service.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="s">The s.</param>
         /// <param name="args">The args.</param>
-        public static void Error(this IServiceLog service, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Error, null, s, args); }
+        public static void ErrorFormat(this IServiceLog service, string s, params object[] args)
+        {
+            s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
+            service.Write(ServiceLog.LogLevel.Error, null, s);
+        }
         /// <summary>
         /// Errors the specified service.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="ex">The ex.</param>
-        public static void Error(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Error, ex, null, null); }
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
+        public static void ErrorFormat(this IServiceLog service, Exception ex, string s, params object[] args)
+        {
+            s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
+            service.Write(ServiceLog.LogLevel.Error, ex, s);
+        }
         /// <summary>
-        /// Errors the specified service.
+        /// Warnings the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="s">The s.</param>
+        public static void Warning(this IServiceLog service, string s) { service.Write(ServiceLog.LogLevel.Warning, null, s); }
+        /// <summary>
+        /// Warnings the specified service.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="ex">The ex.</param>
-        /// <param name="s">The s.</param>
-        /// <param name="args">The args.</param>
-        public static void Error(this IServiceLog service, Exception ex, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Error, ex, s, args); }
+        public static void Warning(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Warning, ex, null); }
         /// <summary>
         /// Warnings the specified service.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="s">The s.</param>
         /// <param name="args">The args.</param>
-        public static void Warning(this IServiceLog service, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Warning, null, s, args); }
+        public static void WarningFormat(this IServiceLog service, string s, params object[] args)
+        {
+            s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
+            service.Write(ServiceLog.LogLevel.Warning, null, s);
+        }
         /// <summary>
         /// Warnings the specified service.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="ex">The ex.</param>
-        public static void Warning(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Warning, ex, null, null); }
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
+        public static void WarningFormat(this IServiceLog service, Exception ex, string s, params object[] args)
+        {
+            s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
+            service.Write(ServiceLog.LogLevel.Warning, ex, s);
+        }
         /// <summary>
-        /// Warnings the specified service.
+        /// Informations the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="s">The s.</param>
+        public static void Information(this IServiceLog service, string s) { service.Write(ServiceLog.LogLevel.Information, null, s); }
+        /// <summary>
+        /// Informations the specified service.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="ex">The ex.</param>
-        /// <param name="s">The s.</param>
-        /// <param name="args">The args.</param>
-        public static void Warning(this IServiceLog service, Exception ex, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Warning, ex, s, args); }
+        public static void Information(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Information, ex, null); }
         /// <summary>
         /// Informations the specified service.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="s">The s.</param>
         /// <param name="args">The args.</param>
-        public static void Information(this IServiceLog service, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Information, null, s, args); }
+        public static void InformationFormat(this IServiceLog service, string s, params object[] args)
+        {
+            s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
+            service.Write(ServiceLog.LogLevel.Information, null, s);
+        }
         /// <summary>
         /// Informations the specified service.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="ex">The ex.</param>
-        public static void Information(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Information, ex, null, null); }
+        /// <param name="s">The s.</param>
+        /// <param name="args">The args.</param>
+        public static void InformationFormat(this IServiceLog service, Exception ex, string s, params object[] args)
+        {
+            s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
+            service.Write(ServiceLog.LogLevel.Information, ex, s);
+        }
         /// <summary>
-        /// Informations the specified service.
+        /// Debugs the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="s">The s.</param>
+        public static void Debug(this IServiceLog service, string s) { service.Write(ServiceLog.LogLevel.Debug, null, s); }
+        /// <summary>
+        /// Debugs the specified service.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="ex">The ex.</param>
-        /// <param name="s">The s.</param>
-        /// <param name="args">The args.</param>
-        public static void Information(this IServiceLog service, Exception ex, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Information, ex, s, args); }
+        public static void Debug(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Debug, ex, null); }
         /// <summary>
         /// Debugs the specified service.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="s">The s.</param>
         /// <param name="args">The args.</param>
-        public static void Debug(this IServiceLog service, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Debug, null, s, args); }
-        /// <summary>
-        /// Debugs the specified service.
-        /// </summary>
-        /// <param name="service">The service.</param>
-        /// <param name="ex">The ex.</param>
-        public static void Debug(this IServiceLog service, Exception ex) { service.Write(ServiceLog.LogLevel.Debug, ex, null, null); }
+        public static void DebugFormat(this IServiceLog service, string s, params object[] args)
+        {
+            s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
+            service.Write(ServiceLog.LogLevel.Debug, null, s);
+        }
         /// <summary>
         /// Debugs the specified service.
         /// </summary>
@@ -156,7 +211,11 @@ namespace System.Abstract
         /// <param name="ex">The ex.</param>
         /// <param name="s">The s.</param>
         /// <param name="args">The args.</param>
-        public static void Debug(this IServiceLog service, Exception ex, string s, params object[] args) { service.Write(ServiceLog.LogLevel.Debug, ex, s, args); }
+        public static void DebugFormat(this IServiceLog service, Exception ex, string s, params object[] args)
+        {
+            s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
+            service.Write(ServiceLog.LogLevel.Debug, ex, s);
+        }
 
         #region Lazy Setup
 

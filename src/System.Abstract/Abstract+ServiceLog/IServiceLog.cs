@@ -41,6 +41,12 @@ namespace System.Abstract
         /// <param name="name">The name.</param>
         /// <returns></returns>
         IServiceLog Get(string name);
+        /// <summary>
+        /// Gets the specified name.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <returns></returns>
+        IServiceLog Get(Type type);
 
         // log
         /// <summary>
@@ -49,7 +55,6 @@ namespace System.Abstract
         /// <param name="level">The level.</param>
         /// <param name="ex">The ex.</param>
         /// <param name="s">The s.</param>
-        /// <param name="args">The args.</param>
-        void Write(ServiceLog.LogLevel level, Exception ex, string s, params object[] args);
+        void Write(ServiceLog.LogLevel level, Exception ex, string s);
     }
 }
