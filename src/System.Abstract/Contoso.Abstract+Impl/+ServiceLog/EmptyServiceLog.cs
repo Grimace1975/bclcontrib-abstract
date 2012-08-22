@@ -57,6 +57,12 @@ namespace Contoso.Abstract
         /// <param name="name">The name.</param>
         /// <returns></returns>
         public IServiceLog Get(string name) { return this; }
+        /// <summary>
+        /// Gets the specified name.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public IServiceLog Get(Type type) { return this; }
 
         // log
         /// <summary>
@@ -65,7 +71,6 @@ namespace Contoso.Abstract
         /// <param name="level">The level.</param>
         /// <param name="ex">The ex.</param>
         /// <param name="s">The s.</param>
-        /// <param name="args">The args.</param>
-        public void Write(ServiceLog.LogLevel level, Exception ex, string s, params object[] args) { }
+        public void Write(ServiceLog.LogLevel level, Exception ex, string s) { }
     }
 }

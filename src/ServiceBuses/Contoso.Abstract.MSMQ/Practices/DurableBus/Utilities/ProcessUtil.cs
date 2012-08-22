@@ -44,16 +44,16 @@ namespace Contoso.Practices.DurableBus.Utilities
 		public static void ChangeServiceStatus(ServiceController controller, ServiceControllerStatus status, Action changeStatus)
 		{
 			if (controller.Status == status)
-				ServiceLog.Debug(controller.ServiceName + " status is good: " + Enum.GetName(typeof(ServiceControllerStatus), status));
+				ServiceLog.DebugFormat(controller.ServiceName + " status is good: " + Enum.GetName(typeof(ServiceControllerStatus), status));
 			else
 			{
-				ServiceLog.Debug(controller.ServiceName + " status is NOT " + Enum.GetName(typeof(ServiceControllerStatus), status) + ". Changing status...");
+				ServiceLog.DebugFormat(controller.ServiceName + " status is NOT " + Enum.GetName(typeof(ServiceControllerStatus), status) + ". Changing status...");
 				changeStatus();
 				var timeout = TimeSpan.FromSeconds(3.0);
 				controller.WaitForStatus(status, timeout);
 				if (controller.Status != status)
 					throw new InvalidOperationException("Unable to change " + controller.ServiceName + " status to " + Enum.GetName(typeof(ServiceControllerStatus), status));
-				ServiceLog.Debug(controller.ServiceName + " status changed successfully.");
+				ServiceLog.DebugFormat(controller.ServiceName + " status changed successfully.");
 			}
 		}
 	}

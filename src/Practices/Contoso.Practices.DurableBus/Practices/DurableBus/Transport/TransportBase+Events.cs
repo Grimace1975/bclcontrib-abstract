@@ -59,7 +59,7 @@ namespace Contoso.Practices.DurableBus.Transport
                 if (messageReceived != null)
                     messageReceived(this, new MessageReceivedEventArgs(m));
             }
-            catch (Exception ex) { ServiceLog.Warning("Failed raising 'transport message received' event for message with ID=" + m.Id, ex); return false; }
+            catch (Exception ex) { ServiceLog.WarningFormat("Failed raising 'transport message received' event for message with ID=" + m.Id, ex); return false; }
             return true;
         }
 
@@ -75,7 +75,7 @@ namespace Contoso.Practices.DurableBus.Transport
                 if (messageProcessing != null)
                     messageProcessing(this, null);
             }
-            catch (Exception ex) { ServiceLog.Error("Failed raising 'finished message processing' event.", ex); return false; }
+            catch (Exception ex) { ServiceLog.ErrorFormat("Failed raising 'finished message processing' event.", ex); return false; }
             return true;
         }
 
@@ -91,7 +91,7 @@ namespace Contoso.Practices.DurableBus.Transport
                 if (messageProcessingFailed != null)
                     messageProcessingFailed(this, null);
             }
-            catch (Exception ex) { ServiceLog.Warning("Failed raising 'failed message processing' event.", ex); return false; }
+            catch (Exception ex) { ServiceLog.WarningFormat("Failed raising 'failed message processing' event.", ex); return false; }
             return true;
         }
 
@@ -107,7 +107,7 @@ namespace Contoso.Practices.DurableBus.Transport
                 if (messageProcessed != null)
                     messageProcessed(this, null);
             }
-            catch (Exception ex) { ServiceLog.Error("Failed raising 'finished message processing' event.", ex); return false; }
+            catch (Exception ex) { ServiceLog.ErrorFormat("Failed raising 'finished message processing' event.", ex); return false; }
             return true;
         }
     }
