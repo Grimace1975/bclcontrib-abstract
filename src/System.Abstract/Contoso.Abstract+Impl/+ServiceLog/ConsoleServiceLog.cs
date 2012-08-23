@@ -56,7 +56,7 @@ namespace Contoso.Abstract
             Log = Console.Out;
         }
 
-        Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.DefaultServiceRegistrar
         {
             get { return (locator, name) => ServiceLogManager.RegisterInstance<IConsoleServiceLog>(this, locator, name); }
         }
@@ -111,7 +111,7 @@ namespace Contoso.Abstract
         {
             if (Log == null)
                 throw new NullReferenceException("Log");
-            Log.WriteLine("[{0}] '{1}' {2} {3}", level, Name, s);
+            Log.WriteLine("[{0}] '{1}' {2}", level, Name, s);
             if (ex != null)
                 Log.WriteLine("{0}: {1} {2}", ex.GetType().FullName, ex.Message, ex.StackTrace);
         }

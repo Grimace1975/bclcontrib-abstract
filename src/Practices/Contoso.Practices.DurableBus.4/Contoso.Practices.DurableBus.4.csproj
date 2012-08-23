@@ -57,11 +57,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Contoso.Practices.DurableBus\Changelog.txt">
-      <Link>Changelog.txt</Link>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="..\Contoso.Practices.DurableBus\Local.resx">
       <Link>Local.resx</Link>
     </EmbeddedResource>

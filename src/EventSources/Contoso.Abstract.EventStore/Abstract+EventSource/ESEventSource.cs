@@ -53,7 +53,7 @@ namespace Contoso.Abstract
             _store = store;
         }
 
-        Action<IServiceLocator, string> EventSourceManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> EventSourceManager.ISetupRegistration.DefaultServiceRegistrar
         {
             get { return (locator, name) => EventSourceManager.RegisterInstance<IESEventSource>(this, locator, name); }
         }

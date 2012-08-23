@@ -87,7 +87,7 @@ namespace Contoso.Abstract
             }
         }
 
-        Action<IServiceLocator, string> ServiceLocatorManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> ServiceLocatorManager.ISetupRegistration.DefaultServiceRegistrar
         {
             get { return (locator, name) => ServiceLocatorManager.RegisterInstance<ICastleWindsorServiceLocator>(this, locator, name); }
         }

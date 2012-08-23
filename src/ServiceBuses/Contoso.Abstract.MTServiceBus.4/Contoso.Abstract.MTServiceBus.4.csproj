@@ -85,11 +85,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Contoso.Abstract.MTServiceBus\Changelog.txt">
-      <Link>Changelog.txt</Link>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\System.Abstract.4\System.Abstract.4.csproj">
       <Project>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</Project>
       <Name>System.Abstract.4</Name>

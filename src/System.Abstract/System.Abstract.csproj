@@ -90,6 +90,7 @@
       <Link>+FromCoreEx\Reflection\AssemblyExtensions.cs</Link>
     </Compile>
     <Compile Include="+Nparams+Impl\NparamsManager.cs" />
+    <Compile Include="Abstract+EventSource\EventSourceManagerDebugger.cs" />
     <Compile Include="Abstract+EventSource\EventSourceManager.cs" />
     <Compile Include="Abstract+EventSource\EventSourcing\EventSourcingExtensions.cs" />
     <Compile Include="Abstract+EventSource\IEventSource.cs" />
@@ -97,8 +98,10 @@
     <Compile Include="Abstract+Event\IEvent.cs" />
     <Compile Include="Abstract+Event\EventBus.cs" />
     <Compile Include="Abstract+Event\IEventHandler.cs" />
+    <Compile Include="Abstract+ServiceBus+Impl\ServiceBusManagerDebugger.cs" />
     <Compile Include="Abstract+ServiceBus\IServiceBusHostBootstrap.cs" />
     <Compile Include="Abstract+ServiceBus\ServiceBusExtensions.cs" />
+    <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheManagerDebugger.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCache+Primitives.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemDependency.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheByDispatcher.cs" />
@@ -115,6 +118,7 @@
     <Compile Include="Abstract+ServiceCache\CacheItemBuilder.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheRegistration.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemPolicy.cs" />
+    <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocatorManagerDebugger.cs" />
     <Compile Include="Abstract+ServiceLocator\IgnoreServiceLocatorAttribute.cs" />
     <Compile Include="Abstract+ServiceLocator\IServiceRegistrarBehaviorAccessor.cs" />
     <Compile Include="Abstract+ServiceLocator\ServiceRegistrarLifetime.cs" />
@@ -124,7 +128,9 @@
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceRegistrarNamespaceBehaviorWrapper.cs" />
     <Compile Include="Abstract+ServiceLocator\IIgnoreServiceLocator.cs" />
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocatorNamespaceBehaviorWrapper.cs" />
+    <Compile Include="Abstract+ServiceLog+Impl\ServiceLogManagerDebugger.cs" />
     <Compile Include="Abstract+ServiceLog\ServiceLogExtensions.cs" />
+    <Compile Include="Abstract\Parts\ServiceManagerDebuggerBase.cs" />
     <Compile Include="Abstract\ServiceInjectionConstructorAttribute.cs" />
     <Compile Include="Abstract\ServiceInjectionMethodAttribute.cs" />
     <Compile Include="Abstract\Parts+TypeGrapher\ITypeCacheSerializer.cs" />
@@ -262,9 +268,6 @@
   <ItemGroup>
     <None Include="BclEx-Abstract.nuspec" />
     <None Include="BclEx.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Changelog.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

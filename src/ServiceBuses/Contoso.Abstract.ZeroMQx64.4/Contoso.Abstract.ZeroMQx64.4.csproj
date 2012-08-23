@@ -55,9 +55,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Contoso.Abstract.ZeroMQx64\Changelog.txt">
-      <Link>Changelog.txt</Link>
-    </Content>
     <None Include="libzmq.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

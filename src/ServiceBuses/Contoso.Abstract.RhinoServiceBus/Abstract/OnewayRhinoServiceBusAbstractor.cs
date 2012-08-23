@@ -90,7 +90,7 @@ namespace Contoso.Abstract
             Bus = bus;
         }
 
-        Action<IServiceLocator, string> ServiceBusManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> ServiceBusManager.ISetupRegistration.DefaultServiceRegistrar
         {
             get { return (locator, name) => ServiceBusManager.RegisterInstance<IOnewayRhinoServiceBus>(this, locator, name); }
         }

@@ -109,7 +109,7 @@ namespace Contoso.Abstract
             Category = category;
         }
 
-        Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.DefaultServiceRegistrar
         {
             get { return (locator, name) => ServiceLogManager.RegisterInstance<ISPEventLogServiceLog>(this, locator, name); }
         }

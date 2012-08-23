@@ -66,7 +66,7 @@ namespace Contoso.Abstract
             Log = GetAndCache(name, defaultLevel);
         }
 
-        Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.DefaultServiceRegistrar
         {
             get { return (locator, name) => ServiceLogManager.RegisterInstance<ITraceSourceServiceLog>(this, locator, name); }
         }

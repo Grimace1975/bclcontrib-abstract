@@ -195,7 +195,7 @@ namespace Contoso.Abstract
             throw new ArgumentOutOfRangeException("opvalue");
         }
 
-        Action<IServiceLocator, string> ServiceCacheManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> ServiceCacheManager.ISetupRegistration.DefaultServiceRegistrar
         {
             get { return (locator, name) => ServiceCacheManager.RegisterInstance<IMemcachedServiceCache>(this, locator, name); }
         }

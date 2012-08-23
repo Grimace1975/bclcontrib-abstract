@@ -30,7 +30,7 @@ namespace System.Abstract
     /// <summary>
     /// ServiceCacheManager
     /// </summary>
-    public class ServiceCacheManager : ServiceManagerBase<IServiceCache, Action<IServiceCache>>
+    public class ServiceCacheManager : ServiceManagerBase<IServiceCache, Action<IServiceCache>, ServiceCacheManagerDebugger>
     {
         static ServiceCacheManager()
         {
@@ -50,7 +50,7 @@ namespace System.Abstract
                         foreach (var action in descriptor.Actions)
                             action(service);
                 },
-                OnServiceRegistrar = (service, locator, name) =>
+                DefaultServiceRegistrar = (service, locator, name) =>
                 {
                     RegisterInstance(service, locator, name);
                     var distributedServiceCache = (service as IDistributedServiceCache);
@@ -59,7 +59,7 @@ namespace System.Abstract
                     // specific registration
                     var setupRegistration = (service as ISetupRegistration);
                     if (setupRegistration != null)
-                        setupRegistration.OnServiceRegistrar(locator, name);
+                        setupRegistration.DefaultServiceRegistrar(locator, name);
                 },
             };
             // default provider

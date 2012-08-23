@@ -95,7 +95,7 @@ namespace System.Abstract
             _factory = factory;
         }
 
-        Action<IServiceLocator, string> EventSourceManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> EventSourceManager.ISetupRegistration.DefaultServiceRegistrar
         {
             get { return (locator, name) => EventSourceManager.RegisterInstance<IEventSource>(this, locator, name); }
         }

@@ -100,7 +100,7 @@ namespace Contoso.Abstract
             }
         }
 
-        Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.DefaultServiceRegistrar
         {
             get { return (locator, name) => ServiceLogManager.RegisterInstance<IEventLogServiceLog>(this, locator, name); }
         }

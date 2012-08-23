@@ -54,9 +54,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Changelog.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="Microsoft.ApplicationServer.Caching.Client">
       <HintPath>..\..\..\packages\ServerAppFabric.Client.1.1.2106\lib\Microsoft.ApplicationServer.Caching.Client.dll</HintPath>
     </Reference>

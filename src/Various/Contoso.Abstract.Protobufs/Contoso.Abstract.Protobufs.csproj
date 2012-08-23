@@ -45,9 +45,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Changelog.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Abstract\" />
   </ItemGroup>
   <ItemGroup>

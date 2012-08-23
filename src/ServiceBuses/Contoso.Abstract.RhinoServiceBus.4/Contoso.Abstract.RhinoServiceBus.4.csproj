@@ -120,11 +120,6 @@
     <None Include="BclEx.4.snk" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\Contoso.Abstract.RhinoServiceBus\Changelog.txt">
-      <Link>Changelog.txt</Link>
-    </Content>
-  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
