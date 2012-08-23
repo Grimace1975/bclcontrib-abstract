@@ -64,9 +64,6 @@
     <None Include="BclEx.snk" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Changelog.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\System.Abstract\System.Abstract.csproj">
       <Project>{A44E9D89-BFF2-41A4-AADC-3C2BDFDAEEB1}</Project>
       <Name>System.Abstract</Name>

@@ -30,7 +30,7 @@ namespace System.Abstract
     /// <summary>
     /// ServiceLogManager
     /// </summary>
-    public class ServiceLogManager : ServiceManagerBase<IServiceLog, Action<IServiceLog>>
+    public class ServiceLogManager : ServiceManagerBase<IServiceLog, Action<IServiceLog>, ServiceLogManagerDebugger>
     {
         /// <summary>
         /// 

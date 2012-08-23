@@ -55,6 +55,7 @@
     <Folder Include="Abstract\Mvc\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="BclEx-Abstract.Web.Mvc3.nuspec" />
     <None Include="BclEx.4.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

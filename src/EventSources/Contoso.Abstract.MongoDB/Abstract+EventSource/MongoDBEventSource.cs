@@ -52,7 +52,7 @@ namespace Contoso.Abstract
             _connectionString = connectionString;
         }
 
-        Action<IServiceLocator, string> EventSourceManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> EventSourceManager.ISetupRegistration.DefaultServiceRegistrar
         {
             get { return (locator, name) => EventSourceManager.RegisterInstance<IMongoDBEventSource>(this, locator, name); }
         }

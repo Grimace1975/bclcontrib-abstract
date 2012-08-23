@@ -32,7 +32,7 @@ namespace System.Abstract
     /// <summary>
     /// ServiceLocatorManager
     /// </summary>
-    public class ServiceLocatorManager : ServiceManagerBase<IServiceLocator, Action<IServiceLocator>>
+    public class ServiceLocatorManager : ServiceManagerBase<IServiceLocator, Action<IServiceLocator>, ServiceLocatorManagerDebugger>
     {
         private static readonly Type _ignoreServiceLocatorType = typeof(IIgnoreServiceLocator);
 

@@ -61,7 +61,7 @@ namespace Contoso.Abstract
             Settings = new ServiceCacheSettings(new DefaultFileTouchableCacheItem(this, new DefaultTouchableCacheItem(this, null)));
         }
 
-        Action<IServiceLocator, string> ServiceCacheManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> ServiceCacheManager.ISetupRegistration.DefaultServiceRegistrar
         {
             get { return (locator, name) => ServiceCacheManager.RegisterInstance<IWebServiceCache>(this, locator, name); }
         }

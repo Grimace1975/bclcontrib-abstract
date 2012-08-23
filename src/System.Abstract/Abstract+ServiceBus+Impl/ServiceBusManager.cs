@@ -30,7 +30,7 @@ namespace System.Abstract
     /// <summary>
     /// ServiceBusManager
     /// </summary>
-    public class ServiceBusManager : ServiceManagerBase<IServiceBus, Action<IServiceBus>>
+    public class ServiceBusManager : ServiceManagerBase<IServiceBus, Action<IServiceBus>, ServiceBusManagerDebugger>
     {
         static ServiceBusManager()
         {
@@ -50,7 +50,7 @@ namespace System.Abstract
                         foreach (var action in descriptor.Actions)
                             action(service);
                 },
-                OnServiceRegistrar = (service, locator, name) =>
+                DefaultServiceRegistrar = (service, locator, name) =>
                 {
                     RegisterInstance(service, locator, name);
                     var publishingServiceBus = (service as IPublishingServiceBus);
@@ -59,7 +59,7 @@ namespace System.Abstract
                     // specific registration
                     var setupRegistration = (service as ISetupRegistration);
                     if (setupRegistration != null)
-                        setupRegistration.OnServiceRegistrar(locator, name);
+                        setupRegistration.DefaultServiceRegistrar(locator, name);
                 },
             };
             // default provider

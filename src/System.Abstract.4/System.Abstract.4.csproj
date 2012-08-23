@@ -137,6 +137,9 @@
     <Compile Include="..\System.Abstract\Abstract+EventSource\EventSourceManager.cs">
       <Link>Abstract+EventSource\EventSourceManager.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+EventSource\EventSourceManagerDebugger.cs">
+      <Link>Abstract+EventSource\EventSourceManagerDebugger.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+EventSource\EventSourcing+Impl\RegistryEventDispatcher.cs">
       <Link>Abstract+EventSource\EventSourcing+Impl\RegistryEventDispatcher.cs</Link>
     </Compile>
@@ -209,6 +212,9 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceBus+Impl\ServiceBusManager.cs">
       <Link>Abstract+ServiceBus+Impl\ServiceBusManager.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceBus+Impl\ServiceBusManagerDebugger.cs">
+      <Link>Abstract+ServiceBus+Impl\ServiceBusManagerDebugger.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus\AggregateServiceMessage.cs">
       <Link>Abstract+ServiceBus\AggregateServiceMessage.cs</Link>
     </Compile>
@@ -256,6 +262,9 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\ServiceCacheManager.cs">
       <Link>Abstract+ServiceCache+Impl\ServiceCacheManager.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\ServiceCacheManagerDebugger.cs">
+      <Link>Abstract+ServiceCache+Impl\ServiceCacheManagerDebugger.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache+Impl\ServiceCacheNamespaceBehaviorWrapper.cs">
       <Link>Abstract+ServiceCache+Impl\ServiceCacheNamespaceBehaviorWrapper.cs</Link>
@@ -314,6 +323,9 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceLocatorManager.cs">
       <Link>Abstract+ServiceLocator+Impl\ServiceLocatorManager.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceLocatorManagerDebugger.cs">
+      <Link>Abstract+ServiceLocator+Impl\ServiceLocatorManagerDebugger.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLocator+Impl\ServiceLocatorNamespaceBehaviorWrapper.cs">
       <Link>Abstract+ServiceLocator+Impl\ServiceLocatorNamespaceBehaviorWrapper.cs</Link>
     </Compile>
@@ -358,6 +370,9 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLog+Impl\ServiceLogManager.cs">
       <Link>Abstract+ServiceLog+Impl\ServiceLogManager.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceLog+Impl\ServiceLogManagerDebugger.cs">
+      <Link>Abstract+ServiceLog+Impl\ServiceLogManagerDebugger.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceLog\IServiceLog.cs">
       <Link>Abstract+ServiceLog\IServiceLog.cs</Link>
@@ -409,6 +424,9 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract\Parts\ServiceManagerBase.cs">
       <Link>Abstract\Parts\ServiceManagerBase.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract\Parts\ServiceManagerDebuggerBase.cs">
+      <Link>Abstract\Parts\ServiceManagerDebuggerBase.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract\ServiceDependencyAttribute.cs">
       <Link>Abstract\ServiceDependencyAttribute.cs</Link>
@@ -555,11 +573,6 @@
       <Link>Local.Designer.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\System.Abstract\Changelog.txt">
-      <Link>Changelog.txt</Link>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\System.Abstract\Local.resx">

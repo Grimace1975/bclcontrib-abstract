@@ -29,7 +29,7 @@ namespace System.Abstract
     /// <summary>
     /// EventSourceManager
     /// </summary>
-    public class EventSourceManager : ServiceManagerBase<IEventSource, Action<IEventSource>>
+    public class EventSourceManager : ServiceManagerBase<IEventSource, Action<IEventSource>, EventSourceManagerDebugger>
     {
         static EventSourceManager()
         {

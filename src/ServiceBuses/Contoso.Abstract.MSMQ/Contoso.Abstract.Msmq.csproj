@@ -60,9 +60,6 @@
     <None Include="BclEx.snk" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Changelog.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Practices\Contoso.Practices.DurableBus\Contoso.Practices.DurableBus.csproj">
       <Project>{1AE81111-2088-4963-BBFC-27C7D098FD80}</Project>
       <Name>Contoso.Practices.DurableBus</Name>

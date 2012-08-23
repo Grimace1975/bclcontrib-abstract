@@ -64,7 +64,7 @@ namespace Contoso.Abstract
             Log = log;
         }
 
-        Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.OnServiceRegistrar
+        Action<IServiceLocator, string> ServiceLogManager.ISetupRegistration.DefaultServiceRegistrar
         {
             get { return (locator, name) => ServiceLogManager.RegisterInstance<ILog4NetServiceLog>(this, locator, name); }
         }
