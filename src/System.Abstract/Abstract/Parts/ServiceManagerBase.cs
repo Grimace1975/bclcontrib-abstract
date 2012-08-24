@@ -343,14 +343,14 @@ namespace System.Abstract.Parts
                     var descriptor = ServiceLocatorManager.GetSetupDescriptor(locator);
                     if (descriptor == null)
                         throw new NullReferenceException();
-                    //descriptor.Do(l => RegisterInstance<T>(service.Value, l, name));
+                    descriptor.Do(l => RegisterInstance<T>((T)service.Value, l, name));
                 }
                 else
                 {
                     var descriptor = GetSetupDescriptorProtected(service, null);
                     if (descriptor == null)
                         throw new NullReferenceException();
-                    //descriptor.Do(l => RegisterInstance<T>(service.Value, locator.Value, name));
+                    descriptor.Do(l => RegisterInstance<T>((T)service.Value, locator.Value, name));
                 }
             }
             void ISetupDescriptor.RegisterWithServiceLocator(Lazy<TIService> service, Lazy<IServiceLocator> locator, string name)
@@ -385,7 +385,7 @@ namespace System.Abstract.Parts
                     throw new ArgumentNullException("service");
                 if (locator == null)
                     throw new ArgumentNullException("locator", "Unable to locate ServiceLocator, please ensure this is defined first.");
-                //RegisterInstance<T>(service.Value, locator, name);
+                RegisterInstance<T>((T)service.Value, locator, name);
             }
             void ISetupDescriptor.RegisterWithServiceLocator(Lazy<TIService> service, IServiceLocator locator, string name)
             {
