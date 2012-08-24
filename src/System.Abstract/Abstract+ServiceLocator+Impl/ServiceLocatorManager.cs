@@ -38,7 +38,7 @@ namespace System.Abstract
 
         static ServiceLocatorManager()
         {
-            Registration = new SetupRegistration
+            Registration = new ServiceRegistration
             {
                 MakeAction = a => x => a(x),
                 OnSetup = (service, descriptor) =>

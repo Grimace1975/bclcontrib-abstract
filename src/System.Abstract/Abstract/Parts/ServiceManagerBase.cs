@@ -30,17 +30,20 @@ using System.Reflection;
 namespace System.Abstract.Parts
 {
     /// <summary>
+    /// IServiceManager
+    /// </summary>
+    public interface IServiceManager
+    {
+    }
+
+    /// <summary>
     /// ServiceManagerBase
     /// </summary>
-    public abstract partial class ServiceManagerBase<TIService, TServiceSetupAction, TServiceManagerDebugger>
+    public abstract partial class ServiceManagerBase<TIService, TServiceSetupAction, TServiceManagerDebugger> : IServiceManager
         where TIService : class
     {
         private static readonly ConditionalWeakTable<Lazy<TIService>, ISetupDescriptor> _setupDescriptors = new ConditionalWeakTable<Lazy<TIService>, ISetupDescriptor>();
         private static readonly object _lock = new object();
-        /// <summary>
-        /// 
-        /// </summary>
-        protected static TIService LazyValue;
 
         // Force "precise" initialization
         static ServiceManagerBase() { }
@@ -69,6 +72,11 @@ namespace System.Abstract.Parts
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        protected static TIService LazyValue;
+
+        /// <summary>
         /// Gets or sets the debugger.
         /// </summary>
         /// <value>
@@ -82,7 +90,7 @@ namespace System.Abstract.Parts
         /// <value>
         /// The registration.
         /// </value>
-        protected static SetupRegistration Registration { get; set; }
+        protected static ServiceRegistration Registration { get; set; }
 
         #region Setup
 
@@ -98,14 +106,14 @@ namespace System.Abstract.Parts
         }
 
         /// <summary>
-        /// SetupRegistration
+        /// ServiceRegistration
         /// </summary>
-        protected class SetupRegistration
+        protected class ServiceRegistration
         {
             /// <summary>
-            /// Initializes a new instance of the <see cref="ServiceManagerBase&lt;TIService, TServiceSetupAction, TDebuggerFlags&gt;.SetupRegistration"/> class.
+            /// Initializes a new instance of the <see cref="ServiceManagerBase&lt;TIService, TServiceSetupAction, TServiceManagerDebugger&gt;.ServiceRegistration"/> class.
             /// </summary>
-            public SetupRegistration()
+            public ServiceRegistration()
             {
                 DefaultServiceRegistrar = (service, locator, name) =>
                 {
@@ -255,7 +263,8 @@ namespace System.Abstract.Parts
             /// <param name="service">The service.</param>
             /// <param name="locator">The locator.</param>
             /// <param name="name">The name.</param>
-            void RegisterWithServiceLocator<T>(Lazy<TIService> service, Lazy<IServiceLocator> locator, string name);
+            void RegisterWithServiceLocator<T>(Lazy<TIService> service, Lazy<IServiceLocator> locator, string name)
+                where T : class, TIService;
             /// <summary>
             /// Registers the with service locator.
             /// </summary>
@@ -270,7 +279,8 @@ namespace System.Abstract.Parts
             /// <param name="service">The service.</param>
             /// <param name="locator">The locator.</param>
             /// <param name="name">The name.</param>
-            void RegisterWithServiceLocator<T>(Lazy<TIService> service, IServiceLocator locator, string name);
+            void RegisterWithServiceLocator<T>(Lazy<TIService> service, IServiceLocator locator, string name)
+                where T : class, TIService;
             /// <summary>
             /// Registers the with service locator.
             /// </summary>
@@ -290,7 +300,7 @@ namespace System.Abstract.Parts
         protected class SetupDescriptor : ISetupDescriptor
         {
             private List<TServiceSetupAction> _actions = new List<TServiceSetupAction>();
-            private SetupRegistration _registration;
+            private ServiceRegistration _registration;
             private Action<ISetupDescriptor> _postAction;
 
             /// <summary>
@@ -298,7 +308,7 @@ namespace System.Abstract.Parts
             /// </summary>
             /// <param name="registration">The registration.</param>
             /// <param name="postAction">The post action.</param>
-            public SetupDescriptor(SetupRegistration registration, Action<ISetupDescriptor> postAction)
+            public SetupDescriptor(ServiceRegistration registration, Action<ISetupDescriptor> postAction)
             {
                 if (registration == null)
                     throw new ArgumentNullException("registration", "Please ensure EnsureRegistration() has been called");
@@ -333,14 +343,14 @@ namespace System.Abstract.Parts
                     var descriptor = ServiceLocatorManager.GetSetupDescriptor(locator);
                     if (descriptor == null)
                         throw new NullReferenceException();
-                    descriptor.Do(l => {});
+                    //descriptor.Do(l => RegisterInstance<T>(service.Value, l, name));
                 }
                 else
                 {
                     var descriptor = GetSetupDescriptorProtected(service, null);
                     if (descriptor == null)
                         throw new NullReferenceException();
-                    descriptor.Do(l => { });
+                    //descriptor.Do(l => RegisterInstance<T>(service.Value, locator.Value, name));
                 }
             }
             void ISetupDescriptor.RegisterWithServiceLocator(Lazy<TIService> service, Lazy<IServiceLocator> locator, string name)
@@ -375,6 +385,7 @@ namespace System.Abstract.Parts
                     throw new ArgumentNullException("service");
                 if (locator == null)
                     throw new ArgumentNullException("locator", "Unable to locate ServiceLocator, please ensure this is defined first.");
+                //RegisterInstance<T>(service.Value, locator, name);
             }
             void ISetupDescriptor.RegisterWithServiceLocator(Lazy<TIService> service, IServiceLocator locator, string name)
             {

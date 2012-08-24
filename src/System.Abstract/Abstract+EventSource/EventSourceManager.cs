@@ -33,7 +33,7 @@ namespace System.Abstract
     {
         static EventSourceManager()
         {
-            Registration = new SetupRegistration
+            Registration = new ServiceRegistration
             {
                 MakeAction = a => x => a(x),
                 OnSetup = (service, descriptor) =>

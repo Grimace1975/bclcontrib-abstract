@@ -34,7 +34,7 @@ namespace System.Abstract
     {
         static ServiceCacheManager()
         {
-            Registration = new SetupRegistration
+            Registration = new ServiceRegistration
             {
                 MakeAction = a => x => a(x),
                 OnSetup = (service, descriptor) =>

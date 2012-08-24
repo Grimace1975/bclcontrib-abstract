@@ -38,5 +38,16 @@ namespace System.Abstract
         public enum DebuggerFlags
         {
         }
+
+        /// <summary>
+        /// Debugs the started.
+        /// </summary>
+        protected override void DebugStarted()
+        {
+            if (Log != null)
+                Log.Information(@"
+Debugger set for ServiceCacheManagerDebugger. please set the following Flags to get greater detail:
+");
+        }
     }
 }

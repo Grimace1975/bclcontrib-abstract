@@ -224,21 +224,24 @@ namespace System.Abstract
         /// </summary>
         /// <param name="service">The service.</param>
         /// <returns></returns>
-        public static Lazy<IServiceLog> RegisterWithServiceLocator<T>(this Lazy<IServiceLog> service) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, ServiceLocatorManager.Lazy, null); return service; }
+        public static Lazy<IServiceLog> RegisterWithServiceLocator<T>(this Lazy<IServiceLog> service)
+            where T : class, IServiceLog { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, ServiceLocatorManager.Lazy, null); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        public static Lazy<IServiceLog> RegisterWithServiceLocator<T>(this Lazy<IServiceLog> service, string name) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, ServiceLocatorManager.Lazy, name); return service; }
+        public static Lazy<IServiceLog> RegisterWithServiceLocator<T>(this Lazy<IServiceLog> service, string name)
+            where T : class, IServiceLog { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, ServiceLocatorManager.Lazy, name); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="locator">The locator.</param>
         /// <returns></returns>
-        public static Lazy<IServiceLog> RegisterWithServiceLocator<T>(this Lazy<IServiceLog> service, Lazy<IServiceLocator> locator) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, null); return service; }
+        public static Lazy<IServiceLog> RegisterWithServiceLocator<T>(this Lazy<IServiceLog> service, Lazy<IServiceLocator> locator)
+            where T : class, IServiceLog { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, null); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
@@ -246,7 +249,8 @@ namespace System.Abstract
         /// <param name="locator">The locator.</param>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        public static Lazy<IServiceLog> RegisterWithServiceLocator<T>(this Lazy<IServiceLog> service, Lazy<IServiceLocator> locator, string name) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, name); return service; }
+        public static Lazy<IServiceLog> RegisterWithServiceLocator<T>(this Lazy<IServiceLog> service, Lazy<IServiceLocator> locator, string name)
+            where T : class, IServiceLog { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, name); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
@@ -283,7 +287,8 @@ namespace System.Abstract
         /// <param name="service">The service.</param>
         /// <param name="locator">The locator.</param>
         /// <returns></returns>
-        public static Lazy<IServiceLog> RegisterWithServiceLocator<T>(this Lazy<IServiceLog> service, IServiceLocator locator) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, null); return service; }
+        public static Lazy<IServiceLog> RegisterWithServiceLocator<T>(this Lazy<IServiceLog> service, IServiceLocator locator)
+            where T : class, IServiceLog { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, null); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
@@ -292,7 +297,8 @@ namespace System.Abstract
         /// <param name="locator">The locator.</param>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        public static Lazy<IServiceLog> RegisterWithServiceLocator<T>(this Lazy<IServiceLog> service, IServiceLocator locator, string name) { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, name); return service; }
+        public static Lazy<IServiceLog> RegisterWithServiceLocator<T>(this Lazy<IServiceLog> service, IServiceLocator locator, string name)
+            where T : class, IServiceLog { ServiceLogManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, name); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>

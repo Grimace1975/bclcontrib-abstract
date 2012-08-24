@@ -34,7 +34,7 @@ namespace System.Abstract
     {
         static ServiceBusManager()
         {
-            Registration = new SetupRegistration
+            Registration = new ServiceRegistration
             {
                 MakeAction = a => x => a(x),
                 OnSetup = (service, descriptor) =>

@@ -152,21 +152,24 @@ namespace System.Abstract
         /// </summary>
         /// <param name="service">The service.</param>
         /// <returns></returns>
-        public static Lazy<IServiceLocator> RegisterWithServiceLocator<T>(this Lazy<IServiceLocator> service) { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, ServiceLocatorManager.Lazy, null); return service; }
+        public static Lazy<IServiceLocator> RegisterWithServiceLocator<T>(this Lazy<IServiceLocator> service)
+            where T : class, IServiceLocator { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, ServiceLocatorManager.Lazy, null); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        public static Lazy<IServiceLocator> RegisterWithServiceLocator<T>(this Lazy<IServiceLocator> service, string name) { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, ServiceLocatorManager.Lazy, name); return service; }
+        public static Lazy<IServiceLocator> RegisterWithServiceLocator<T>(this Lazy<IServiceLocator> service, string name)
+            where T : class, IServiceLocator { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, ServiceLocatorManager.Lazy, name); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
         /// <param name="service">The service.</param>
         /// <param name="locator">The locator.</param>
         /// <returns></returns>
-        public static Lazy<IServiceLocator> RegisterWithServiceLocator<T>(this Lazy<IServiceLocator> service, Lazy<IServiceLocator> locator) { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, null); return service; }
+        public static Lazy<IServiceLocator> RegisterWithServiceLocator<T>(this Lazy<IServiceLocator> service, Lazy<IServiceLocator> locator)
+            where T : class, IServiceLocator { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, null); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
@@ -174,7 +177,8 @@ namespace System.Abstract
         /// <param name="locator">The locator.</param>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        public static Lazy<IServiceLocator> RegisterWithServiceLocator<T>(this Lazy<IServiceLocator> service, Lazy<IServiceLocator> locator, string name) { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, name); return service; }
+        public static Lazy<IServiceLocator> RegisterWithServiceLocator<T>(this Lazy<IServiceLocator> service, Lazy<IServiceLocator> locator, string name)
+            where T : class, IServiceLocator { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, name); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
@@ -211,7 +215,8 @@ namespace System.Abstract
         /// <param name="service">The service.</param>
         /// <param name="locator">The locator.</param>
         /// <returns></returns>
-        public static Lazy<IServiceLocator> RegisterWithServiceLocator<T>(this Lazy<IServiceLocator> service, IServiceLocator locator) { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, null); return service; }
+        public static Lazy<IServiceLocator> RegisterWithServiceLocator<T>(this Lazy<IServiceLocator> service, IServiceLocator locator)
+            where T : class, IServiceLocator { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, null); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
@@ -220,7 +225,8 @@ namespace System.Abstract
         /// <param name="locator">The locator.</param>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        public static Lazy<IServiceLocator> RegisterWithServiceLocator<T>(this Lazy<IServiceLocator> service, IServiceLocator locator, string name) { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, name); return service; }
+        public static Lazy<IServiceLocator> RegisterWithServiceLocator<T>(this Lazy<IServiceLocator> service, IServiceLocator locator, string name)
+            where T : class, IServiceLocator { ServiceLocatorManager.GetSetupDescriptor(service).RegisterWithServiceLocator<T>(service, locator, name); return service; }
         /// <summary>
         /// Registers the with service locator.
         /// </summary>
@@ -242,7 +248,6 @@ namespace System.Abstract
         /// </summary>
         /// <param name="service">The service.</param>
         /// <returns></returns>
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public static Lazy<IServiceLocator> RegisterByIServiceRegistration(this Lazy<IServiceLocator> service) { var assembiles = new[] { GetPreviousCallingMethodAssembly() }; ServiceLocatorManager.GetSetupDescriptor(service).Do(l => RegisterByIServiceRegistration(l.Registrar, null, assembiles)); return service; }
         /// <summary>
         /// Registers the by I service registration.
@@ -257,7 +262,6 @@ namespace System.Abstract
         /// <param name="service">The service.</param>
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public static Lazy<IServiceLocator> RegisterByIServiceRegistration(this Lazy<IServiceLocator> service, Predicate<Type> predicate) { var assembiles = new[] { GetPreviousCallingMethodAssembly() }; ServiceLocatorManager.GetSetupDescriptor(service).Do(l => RegisterByIServiceRegistration(l.Registrar, predicate, assembiles)); return service; }
         /// <summary>
         /// Registers the by I service registration.
@@ -273,7 +277,6 @@ namespace System.Abstract
         /// </summary>
         /// <param name="service">The service.</param>
         /// <returns></returns>
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public static Lazy<IServiceLocator> RegisterByNamingConvention(this Lazy<IServiceLocator> service) { var assembiles = new[] { GetPreviousCallingMethodAssembly() }; ServiceLocatorManager.GetSetupDescriptor(service).Do(l => RegisterByNamingConvention(l.Registrar, null, assembiles)); return service; }
         /// <summary>
         /// Registers the by naming convention.
@@ -288,7 +291,6 @@ namespace System.Abstract
         /// <param name="service">The service.</param>
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public static Lazy<IServiceLocator> RegisterByNamingConvention(this Lazy<IServiceLocator> service, Predicate<Type> predicate) { var assembiles = new[] { GetPreviousCallingMethodAssembly() }; ServiceLocatorManager.GetSetupDescriptor(service).Do(l => RegisterByNamingConvention(l.Registrar, predicate, assembiles)); return service; }
         /// <summary>
         /// Registers the by naming convention.
@@ -305,7 +307,6 @@ namespace System.Abstract
         /// <typeparam name="TBasedOn">The type of the based on.</typeparam>
         /// <param name="service">The service.</param>
         /// <returns></returns>
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public static Lazy<IServiceLocator> RegisterByTypeMatch<TBasedOn>(this Lazy<IServiceLocator> service) { var assembiles = new[] { GetPreviousCallingMethodAssembly() }; ServiceLocatorManager.GetSetupDescriptor(service).Do(l => RegisterByTypeMatch(l.Registrar, typeof(TBasedOn), null, assembiles)); return service; }
         /// <summary>
         /// Registers the by type match.
@@ -322,7 +323,6 @@ namespace System.Abstract
         /// <param name="service">The service.</param>
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public static Lazy<IServiceLocator> RegisterByTypeMatch<TBasedOn>(this Lazy<IServiceLocator> service, Predicate<Type> predicate) { var assembiles = new[] { GetPreviousCallingMethodAssembly() }; ServiceLocatorManager.GetSetupDescriptor(service).Do(l => RegisterByTypeMatch(l.Registrar, typeof(TBasedOn), predicate, assembiles)); return service; }
         /// <summary>
         /// Registers the by type match.
@@ -339,7 +339,6 @@ namespace System.Abstract
         /// <param name="service">The service.</param>
         /// <param name="basedOnType">Type of the based on.</param>
         /// <returns></returns>
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public static Lazy<IServiceLocator> RegisterByTypeMatch(this Lazy<IServiceLocator> service, Type basedOnType) { var assembiles = new[] { GetPreviousCallingMethodAssembly() }; ServiceLocatorManager.GetSetupDescriptor(service).Do(l => RegisterByTypeMatch(l.Registrar, basedOnType, null, assembiles)); return service; }
         /// <summary>
         /// Registers the by type match.
@@ -356,7 +355,6 @@ namespace System.Abstract
         /// <param name="basedOnType">Type of the based on.</param>
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public static Lazy<IServiceLocator> RegisterByTypeMatch(this Lazy<IServiceLocator> service, Type basedOnType, Predicate<Type> predicate) { var assembiles = new[] { GetPreviousCallingMethodAssembly() }; ServiceLocatorManager.GetSetupDescriptor(service).Do(l => RegisterByTypeMatch(l.Registrar, basedOnType, predicate, assembiles)); return service; }
         /// <summary>
         /// Registers the by type match.
@@ -371,8 +369,16 @@ namespace System.Abstract
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static Assembly GetPreviousCallingMethodAssembly()
         {
-            var method = new StackTrace().GetFrame(2).GetMethod();
-            return (method != null ? method.ReflectedType.Assembly : null);
+            var thisAssembly = typeof(ServiceLocatorExtensions).Assembly;
+            var stackTrace = new StackTrace();
+            for (var i = 1; i < 4; i++)
+            {
+                Assembly assembly;
+                var method = stackTrace.GetFrame(i).GetMethod();
+                if (method != null && (assembly = method.ReflectedType.Assembly) != thisAssembly)
+                    return assembly;
+            }
+            return null;
         }
 
         #endregion
@@ -407,7 +413,6 @@ namespace System.Abstract
             var debugger = ServiceLocatorManager.Debugger;
             if (debugger == null || (debugger.Flags & ServiceLocatorManagerDebugger.DebuggerFlags.ByIServiceRegistration) != ServiceLocatorManagerDebugger.DebuggerFlags.ByIServiceRegistration)
             {
-
                 if (assemblies == null || assemblies.Count() == 0)
                     return;
                 var locator = registrar.Locator;
