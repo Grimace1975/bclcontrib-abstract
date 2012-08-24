@@ -43,7 +43,14 @@ namespace System.Abstract.Parts
         /// </value>
         public IServiceLog Log
         {
-            get { return (_log != null ? _log : _log = ServiceLogManager.Current); }
+            get
+            {
+                if (_log != null)
+                    return _log;
+                _log = ServiceLogManager.Current;
+                DebugStarted();
+                return _log;
+            }
             set { _log = value; }
         }
 
@@ -54,5 +61,10 @@ namespace System.Abstract.Parts
         /// The flags.
         /// </value>
         public TDebuggerFlags Flags { get; set; }
+
+        /// <summary>
+        /// Debugs the started.
+        /// </summary>
+        protected abstract void DebugStarted();
     }
 }

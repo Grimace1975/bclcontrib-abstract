@@ -50,5 +50,19 @@ namespace System.Abstract
             /// </summary>
             ByTypeMatch = 0x4,
         }
+
+        /// <summary>
+        /// Debugs the started.
+        /// </summary>
+        protected override void DebugStarted()
+        {
+            if (Log != null)
+                Log.Information(@"
+Debugger set for ServiceLocatorManager. please set the following Flags to get greater detail:
+ * ByIServiceRegistration - Verbose IServiceRegistration scan
+ * ByNamingConvention - Verbose NamingConvention scan
+ * ByTypeMatch - Verbose TypeMatch scan
+");
+        }
     }
 }

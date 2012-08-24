@@ -39,7 +39,7 @@ namespace System.Abstract
 
         static ServiceLogManager()
         {
-            Registration = new SetupRegistration
+            Registration = new ServiceRegistration
             {
                 MakeAction = a => x => a(x),
                 OnSetup = (service, descriptor) =>
