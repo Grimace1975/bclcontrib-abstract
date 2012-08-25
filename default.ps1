@@ -43,7 +43,7 @@ task Dependency {
 	}
 }
 
-task Release -depends Compile, Test {
+task Release -depends Dependency, Compile, Test {
 	cd $build_dir
 	& $tools_dir\7za.exe a $release_dir\BclEx.zip `
 		*\Castle.Core.dll `

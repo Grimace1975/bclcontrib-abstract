@@ -8,6 +8,7 @@ using Rhino.ServiceBus.Internal;
 using Rhino.ServiceBus.Transport;
 using Rhino.ServiceBus.Util;
 using MessageType = Rhino.ServiceBus.Transport.MessageType;
+using System.Diagnostics;
 
 namespace Rhino.ServiceBus.File
 {
