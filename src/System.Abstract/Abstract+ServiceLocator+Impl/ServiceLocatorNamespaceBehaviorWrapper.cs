@@ -48,6 +48,8 @@ namespace System.Abstract
 
         public object GetService(Type serviceType) { return _parent.GetService(serviceType); }
 
+        public IServiceLocator CreateChild(object tag) { return _parent.CreateChild(tag); }
+
         public TContainer GetUnderlyingContainer<TContainer>()
             where TContainer : class { return _parent.GetUnderlyingContainer<TContainer>(); }
 

@@ -102,6 +102,16 @@ namespace Contoso.Abstract
         public object GetService(Type serviceType) { return Resolve(serviceType); }
 
         /// <summary>
+        /// Creates the child.
+        /// </summary>
+        /// <returns></returns>
+        public IServiceLocator CreateChild(object tag)
+        {
+            //http://stackoverflow.com/questions/5992493/ninject-parent-child-container-heirarchy-like-inheritance
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
         /// Gets the underlying container.
         /// </summary>
         /// <typeparam name="TContainer">The type of the container.</typeparam>

@@ -1,7 +1,7 @@
 properties { 
   $base_dir = resolve-path .
   $packageinfo_dir = "$base_dir\packaging"
-  $build_dir = "$build_dir\"
+  $build_dir = "$base_dir\build\"
   $release_dir = "$base_dir\Release"
   $sln_file = "$base_dir\BCLEX-ABSTRACT.sln"
   $sln_test_file = "$base_dir\BCLEX-ABSTRACT.tests.sln"
@@ -31,7 +31,7 @@ task Compile -depends Init {
 task Test -depends Compile -precondition { return $run_tests }{
 	$old = pwd
 	cd $build_dir
-	& $tools_dir\xUnit\xunit.console.clr4.exe "$build_dir\3.5\BclEx.Tests.dll" /noshadow
+	& $tools_dir\xUnit\xunit.console.clr4.exe "$build_dir\BclEx.Tests.dll" /noshadow
 	cd $old		
 }
 
@@ -39,6 +39,7 @@ task Dependency {
 	$package_files = @(Get-ChildItem src -include *packages.config -recurse)
 	foreach ($package in $package_files)
 	{
+		Write-Host $package.FullName
 		& $tools_dir\NuGet.exe install $package.FullName -o packages
 	}
 }
