@@ -78,6 +78,13 @@ namespace Contoso.Abstract
             _registrar = new AutofacServiceRegistrar(this, containerBuilder, out _containerBuilder);
         }
 
+        private AutofacServiceLocator(IComponentContext container)
+        {
+            if (container == null)
+                throw new ArgumentNullException("container");
+            //_registrar = new AutofacServiceRegistrar(this, containerBuilder, out _containerBuilder);
+        }
+
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -110,6 +117,16 @@ namespace Contoso.Abstract
         /// null if there is no service object of type <paramref name="serviceType"/>.
         /// </returns>
         public object GetService(Type serviceType) { return Resolve(serviceType); }
+
+        /// <summary>
+        /// Creates the child.
+        /// </summary>
+        /// <returns></returns>
+        public IServiceLocator CreateChild(object tag)
+        {
+            //http://nblumhardt.com/2011/01/an-autofac-lifetime-primer/
+            return new AutofacServiceLocator(_container.BeginLifetimeScope(tag));
+        }
 
         /// <summary>
         /// Gets the underlying container.
