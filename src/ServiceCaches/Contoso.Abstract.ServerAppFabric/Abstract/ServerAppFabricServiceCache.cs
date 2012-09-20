@@ -80,12 +80,23 @@ namespace Contoso.Abstract
     /// </summary>
     public class ServerAppFabricServiceCache : IServerAppFabricServiceCache, ServiceCacheManager.ISetupRegistration
     {
+        /// <summary>
+        /// DefaultDataCacheFactory
+        /// </summary>
+        public static readonly DataCacheFactory DefaultCacheFactory = new DataCacheFactory();
+
         static ServerAppFabricServiceCache() { ServiceCacheManager.EnsureRegistration(); }
         /// <summary>
         /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache"/> class.
         /// </summary>
         public ServerAppFabricServiceCache()
-            : this(new DataCacheFactory()) { }
+            : this(DefaultCacheFactory) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache"/> class.
+        /// </summary>
+        /// <param name="cacheName">Name of the cache.</param>
+        public ServerAppFabricServiceCache(string cacheName)
+            : this(DefaultCacheFactory, cacheName) { }
         /// <summary>
         /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache"/> class.
         /// </summary>
@@ -188,6 +199,22 @@ namespace Contoso.Abstract
         }
 
         /// <summary>
+        /// Adds the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="itemPolicy">The item policy.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="header">The header.</param>
+        /// <param name="dispatch">The dispatch.</param>
+        /// <returns></returns>
+        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, object header, ServiceCacheByDispatcher dispatch)
+        {
+            Add(tag, name + "#", CacheItemPolicy.Default, header, ServiceCacheByDispatcher.Empty);
+            return Add(tag, name, itemPolicy, value, dispatch);
+        }
+
+        /// <summary>
         /// Gets the item from cache associated with the key provided.
         /// </summary>
         /// <param name="tag">The tag.</param>
@@ -203,7 +230,25 @@ namespace Contoso.Abstract
                 return (!Settings.TryGetRegion(ref name, out regionName) ? Cache.Get(name) : Cache.Get(name, regionName));
             return (!Settings.TryGetRegion(ref name, out regionName) ? Cache.GetIfNewer(name, ref version) : Cache.GetIfNewer(name, ref version, regionName));
         }
-
+        /// <summary>
+        /// Gets the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="header">The header.</param>
+        /// <returns></returns>
+        public object Get(object tag, string name, out object header)
+        {
+            var version = (tag as DataCacheItemVersion);
+            string regionName;
+            if (version == null)
+                header = (!Settings.TryGetRegion(ref name, out regionName) ? Cache.Get(name + "#") : Cache.Get(name + "#", regionName));
+            else
+                header = (!Settings.TryGetRegion(ref name, out regionName) ? Cache.GetIfNewer(name + "#", ref version) : Cache.GetIfNewer(name + "#", ref version, regionName));
+            if (version == null)
+                return (!Settings.TryGetRegion(ref name, out regionName) ? Cache.Get(name) : Cache.Get(name, regionName));
+            return (!Settings.TryGetRegion(ref name, out regionName) ? Cache.GetIfNewer(name, ref version) : Cache.GetIfNewer(name, ref version, regionName));
+        }
         /// <summary>
         /// Gets the specified tag.
         /// </summary>
@@ -324,15 +369,34 @@ namespace Contoso.Abstract
         }
 
         /// <summary>
+        /// Sets the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="itemPolicy">The item policy.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="header">The header.</param>
+        /// <param name="dispatch">The dispatch.</param>
+        /// <returns></returns>
+        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, object header, ServiceCacheByDispatcher dispatch)
+        {
+            Set(tag, name + "#", CacheItemPolicy.Default, header, ServiceCacheByDispatcher.Empty);
+            return Set(tag, name, itemPolicy, value, dispatch);
+        }
+
+        /// <summary>
         /// Removes from cache the item associated with the key provided.
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
+        /// <param name="includeHeader">if set to <c>true</c> [include header].</param>
         /// <returns>
         /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
         /// </returns>
-        public object Remove(object tag, string name)
+        public object Remove(object tag, string name, bool includeHeader)
         {
+            if (includeHeader)
+                Remove(tag, name + "#", false);
             string regionName;
             var value = ((Settings.Options & ServiceCacheOptions.ReturnsCachedValueOnRemove) == 0 ? null : (!Settings.TryGetRegion(ref name, out regionName) ? Cache.Get(name) : Cache.Get(name, regionName)));
             //
@@ -411,7 +475,7 @@ namespace Contoso.Abstract
         /// <summary>
         /// Gets the cache factory.
         /// </summary>
-        public static DataCacheFactory CacheFactory { get; private set; }
+        public DataCacheFactory CacheFactory { get; private set; }
         /// <summary>
         /// Gets the cache.
         /// </summary>
@@ -480,6 +544,16 @@ namespace Contoso.Abstract
             return ((touchable != null && names != null ? touchable.MakeDependency(tag, names) : value) as IEnumerable<DataCacheTag>);
         }
 
-        private static TimeSpan GetTimeout(DateTime absoluteExpiration) { return (absoluteExpiration == ServiceCache.InfiniteAbsoluteExpiration ? TimeSpan.Zero : DateTime.Now - absoluteExpiration); }
+        private static TimeSpan GetTimeout(DateTime absoluteExpiration) { return (absoluteExpiration == ServiceCache.InfiniteAbsoluteExpiration ? TimeSpan.Zero : absoluteExpiration - DateTime.Now ); }
+
+        /// <summary>
+        /// Gets the headers.
+        /// </summary>
+        /// <param name="registration">The registration.</param>
+        /// <returns></returns>
+        public IEnumerable<object> GetHeaders(ServiceCacheRegistration registration)
+        {
+            return null;
+        }
     }
 }

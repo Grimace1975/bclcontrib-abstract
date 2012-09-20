@@ -24,6 +24,7 @@ THE SOFTWARE.
 */
 #endregion
 using System.Collections.Generic;
+using System.Abstract.Parts;
 namespace System.Abstract.EventSourcing
 {
     /// <summary>
@@ -72,5 +73,29 @@ namespace System.Abstract.EventSourcing
         /// <param name="repository">The repository.</param>
         /// <param name="aggregate">The aggregate.</param>
         public static void MakeSnapshot(this IAggregateRootRepository repository, AggregateRoot aggregate) { repository.MakeSnapshot(aggregate, null); }
+
+
+        #region BehaveAs
+
+        /// <summary>
+        /// Behaves as.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="service">The service.</param>
+        /// <returns></returns>
+        public static T BehaveAs<T>(this IAggregateRootRepository service)
+            where T : class, IAggregateRootRepository
+        {
+            IServiceWrapper<IAggregateRootRepository> serviceWrapper;
+            do
+            {
+                serviceWrapper = (service as IServiceWrapper<IAggregateRootRepository>);
+                if (serviceWrapper != null)
+                    service = serviceWrapper.Parent;
+            } while (serviceWrapper == null);
+            return (service as T);
+        }
+
+        #endregion
     }
 }

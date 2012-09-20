@@ -57,8 +57,7 @@ namespace System.Abstract
         /// </summary>
         /// <typeparam name="TAnchor">The type of the anchor.</typeparam>
         /// <returns></returns>
-        public static ServiceCacheRegistrar Get<TAnchor>()
-            where TAnchor : IServiceRegistrar { return Get(typeof(TAnchor)); }
+        public static ServiceCacheRegistrar Get<TAnchor>() { return Get(typeof(TAnchor)); }
         /// <summary>
         /// Gets the specified anchor type.
         /// </summary>
@@ -218,10 +217,18 @@ namespace System.Abstract
             finally { _setRwLock.ExitWriteLock(); }
         }
 
-        internal IEnumerable<ServiceCacheRegistration> GetAll()
+        internal IEnumerable<ServiceCacheRegistration> All
         {
-            return _set;
+            get { return _set; }
         }
+
+        ///// <summary>
+        ///// Sends the specified messages.
+        ///// </summary>
+        ///// <param name="messages">The messages.</param>
+        //public void Send(params object[] messages)
+        //{
+        //}
 
         /// <summary>
         /// Tries the get.

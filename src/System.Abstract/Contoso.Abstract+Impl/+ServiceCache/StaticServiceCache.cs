@@ -41,12 +41,15 @@ namespace Contoso.Abstract
     }
 
     //: might need to make thread safe
+    /// <summary>
+    /// 
+    /// </summary>
     /// <remark>
     /// Provides a static dictionary adapter for the service cache sub-system.
-    /// </remark>
-    /// <example>
-    /// ServiceCacheManager.SetProvider(() => new StaticServiceCache())
-    /// </example>
+    ///   </remark>
+    ///   <example>
+    /// ServiceCacheManager.SetProvider(() =&gt; new StaticServiceCache())
+    ///   </example>
     public class StaticServiceCache : IStaticServiceCache, ServiceCacheManager.ISetupRegistration
     {
         private static readonly Dictionary<string, object> _cache = new Dictionary<string, object>();
@@ -107,6 +110,29 @@ namespace Contoso.Abstract
         }
 
         /// <summary>
+        /// Adds the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="itemPolicy">The item policy.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="header">The header.</param>
+        /// <param name="dispatch">The dispatch.</param>
+        /// <returns></returns>
+        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, object header, ServiceCacheByDispatcher dispatch)
+        {
+            // TODO: Throw on dependency or other stuff not supported by this simple system
+            object lastValue;
+            if (!_cache.TryGetValue(name, out lastValue))
+            {
+                _cache[name + "#"] = header;
+                _cache[name] = value;
+                return null;
+            }
+            return lastValue;
+        }
+
+        /// <summary>
         /// Gets the item from cache associated with the key provided.
         /// </summary>
         /// <param name="tag">The tag.</param>
@@ -119,6 +145,21 @@ namespace Contoso.Abstract
             object value;
             return (_cache.TryGetValue(name, out value) ? value : null);
         }
+
+        /// <summary>
+        /// Gets the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="header">The header.</param>
+        /// <returns></returns>
+        public object Get(object tag, string name, out object header)
+        {
+            object value;
+            _cache.TryGetValue(name + "#", out header);
+            return (_cache.TryGetValue(name, out value) ? value : null);
+        }
+
 
         /// <summary>
         /// Gets the specified tag.
@@ -157,18 +198,37 @@ namespace Contoso.Abstract
         }
 
         /// <summary>
+        /// Sets the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="itemPolicy">The item policy.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="header">The header.</param>
+        /// <param name="dispatch">The dispatch.</param>
+        /// <returns></returns>
+        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, object header, ServiceCacheByDispatcher dispatch)
+        {
+            _cache[name + "#"] = header;
+            return (_cache[name] = value);
+        }
+
+        /// <summary>
         /// Removes from cache the item associated with the key provided.
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The key.</param>
+        /// <param name="includeHeader">if set to <c>true</c> [include header].</param>
         /// <returns>
         /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
         /// </returns>
-        public object Remove(object tag, string name)
+        public object Remove(object tag, string name, bool includeHeader)
         {
             object value;
             if (_cache.TryGetValue(name, out value))
             {
+                if (includeHeader)
+                    _cache.Remove(name + "#");
                 _cache.Remove(name);
                 return value;
             }

@@ -130,6 +130,7 @@
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocatorNamespaceBehaviorWrapper.cs" />
     <Compile Include="Abstract+ServiceLog+Impl\ServiceLogManagerDebugger.cs" />
     <Compile Include="Abstract+ServiceLog\ServiceLogExtensions.cs" />
+    <Compile Include="Abstract\Parts\IServiceWrapper.cs" />
     <Compile Include="Abstract\Parts\ServiceManagerDebuggerBase.cs" />
     <Compile Include="Abstract\ServiceInjectionConstructorAttribute.cs" />
     <Compile Include="Abstract\ServiceInjectionMethodAttribute.cs" />

@@ -419,6 +419,9 @@
     <Compile Include="..\System.Abstract\Abstract\Parts+TypeSerializer\XmlTypeSerializer.cs">
       <Link>Abstract\Parts+TypeSerializer\XmlTypeSerializer.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract\Parts\IServiceWrapper.cs">
+      <Link>Abstract\Parts\IServiceWrapper.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract\Parts\PartsExtensions.cs">
       <Link>Abstract\Parts\PartsExtensions.cs</Link>
     </Compile>
