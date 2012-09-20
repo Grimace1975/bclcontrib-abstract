@@ -24,6 +24,7 @@ THE SOFTWARE.
 */
 #endregion
 using System.Collections.Generic;
+using System.Reflection;
 namespace System.Abstract
 {
     /// <summary>
@@ -31,7 +32,19 @@ namespace System.Abstract
     /// </summary>
     public class ServiceCacheRegistration
     {
-        private string _absoluteName;
+        private Dictionary<Type, List<ConsumerInfo>> _consumers = new Dictionary<Type, List<ConsumerInfo>>();
+
+        private struct ConsumerInfo
+        {
+            public MethodInfo Method;
+            public object Target;
+
+            public ConsumerInfo(MethodInfo method, object target)
+            {
+                Method = method;
+                Target = target;
+            }
+        }
 
         /// <summary>
         /// IDispatcher
@@ -48,6 +61,14 @@ namespace System.Abstract
             /// <param name="values">The values.</param>
             /// <returns></returns>
             T Get<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values);
+            /// <summary>
+            /// Sends the specified cache.
+            /// </summary>
+            /// <param name="cache">The cache.</param>
+            /// <param name="registration">The registration.</param>
+            /// <param name="tag">The tag.</param>
+            /// <param name="messages">The messages.</param>
+            void Send(IServiceCache cache, ServiceCacheRegistration registration, object tag, params object[] messages);
             /// <summary>
             /// Removes the specified cache.
             /// </summary>
@@ -140,8 +161,6 @@ namespace System.Abstract
             Name = name;
             Builder = builder;
             ItemPolicy = itemPolicy;
-            // tacks all namespaces created
-            Namespaces = new List<string>();
         }
         /// <summary>
         /// Adds the data source.
@@ -180,6 +199,14 @@ namespace System.Abstract
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [use headers].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [use headers]; otherwise, <c>false</c>.
+        /// </value>
+        public bool UseHeaders { get; set; }
+
+        /// <summary>
         /// Gets or sets the cache command.
         /// </summary>
         /// <value>
@@ -201,21 +228,71 @@ namespace System.Abstract
         /// <value>
         /// The name of the absolute.
         /// </value>
-        public string AbsoluteName
-        {
-            get { return _absoluteName; }
-        }
+        public string AbsoluteName { get; private set; }
 
-        internal List<string> Namespaces;
+        /// <summary>
+        /// Consumeses the specified action.
+        /// </summary>
+        /// <typeparam name="TMessage">The type of the message.</typeparam>
+        /// <param name="action">The action.</param>
+        /// <returns></returns>
+        public ServiceCacheRegistration ConsumerOf<TMessage>(Func<TMessage, object, object[], Func<object>, object> action) { return ConsumerOf<object, TMessage>(action); }
+        /// <summary>
+        /// Consumeses the specified action.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TMessage">The type of the message.</typeparam>
+        /// <param name="action">The action.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public ServiceCacheRegistration ConsumerOf<T, TMessage>(Func<TMessage, object, object[], Func<T>, object> action)
+        {
+            if (action == null)
+                throw new ArgumentNullException("action");
+            UseHeaders = true;
+            List<ConsumerInfo> consumerInfos;
+            if (!_consumers.TryGetValue(typeof(TMessage), out consumerInfos))
+                _consumers.Add(typeof(TMessage), consumerInfos = new List<ConsumerInfo>());
+            consumerInfos.Add(new ConsumerInfo(action.Method, action.Target));
+            return this;
+        }
 
         #region Registrar
 
         internal ServiceCacheRegistrar Registrar;
 
+        /// <summary>
+        /// Gets the namespaces.
+        /// </summary>
+        /// <value>
+        /// The namespaces.
+        /// </value>
+        public List<string> Namespaces { get; private set; }
+
+        /// <summary>
+        /// Gets the names.
+        /// </summary>
+        /// <value>
+        /// The names.
+        /// </value>
+        public IEnumerable<string> Names
+        {
+            get
+            {
+                var name = AbsoluteName;
+                if (name != null)
+                    yield return name;
+                if (Namespaces != null)
+                    foreach (var n in Namespaces)
+                        yield return n + name;
+            }
+        }
+
         internal void SetRegistrar(ServiceCacheRegistrar registrar, string absoluteName)
         {
             Registrar = registrar;
-            _absoluteName = absoluteName;
+            AbsoluteName = absoluteName;
+            Namespaces = new List<string>();
         }
 
         #endregion

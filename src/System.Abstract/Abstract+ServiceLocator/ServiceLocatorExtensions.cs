@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Abstract.Parts;
 namespace System.Abstract
 {
     /// <summary>
@@ -99,6 +100,25 @@ namespace System.Abstract
         }
 
         #region BehaveAs
+
+        /// <summary>
+        /// Behaves as.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="service">The service.</param>
+        /// <returns></returns>
+        public static T BehaveAs<T>(this IServiceLocator service)
+            where T : class, IServiceLocator
+        {
+            IServiceWrapper<IServiceLocator> serviceWrapper;
+            do
+            {
+                serviceWrapper = (service as IServiceWrapper<IServiceLocator>);
+                if (serviceWrapper != null)
+                    service = serviceWrapper.Parent;
+            } while (serviceWrapper == null);
+            return (service as T);
+        }
 
         /// <summary>
         /// Behaves as.

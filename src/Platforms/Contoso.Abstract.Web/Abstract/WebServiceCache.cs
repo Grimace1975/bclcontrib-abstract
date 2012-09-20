@@ -104,29 +104,51 @@ namespace Contoso.Abstract
             WebCacheItemPriority itemPriority;
             switch (itemPolicy.Priority)
             {
-                case CacheItemPriority.AboveNormal:
-                    itemPriority = WebCacheItemPriority.AboveNormal;
-                    break;
-                case CacheItemPriority.BelowNormal:
-                    itemPriority = WebCacheItemPriority.BelowNormal;
-                    break;
-                case CacheItemPriority.High:
-                    itemPriority = WebCacheItemPriority.High;
-                    break;
-                case CacheItemPriority.Low:
-                    itemPriority = WebCacheItemPriority.Low;
-                    break;
-                case CacheItemPriority.Normal:
-                    itemPriority = WebCacheItemPriority.Normal;
-                    break;
-                case CacheItemPriority.NotRemovable:
-                    itemPriority = WebCacheItemPriority.NotRemovable;
-                    break;
-                default:
-                    itemPriority = WebCacheItemPriority.Default;
-                    break;
+                case CacheItemPriority.AboveNormal: itemPriority = WebCacheItemPriority.AboveNormal; break;
+                case CacheItemPriority.BelowNormal: itemPriority = WebCacheItemPriority.BelowNormal; break;
+                case CacheItemPriority.High: itemPriority = WebCacheItemPriority.High; break;
+                case CacheItemPriority.Low: itemPriority = WebCacheItemPriority.Low; break;
+                case CacheItemPriority.Normal: itemPriority = WebCacheItemPriority.Normal; break;
+                case CacheItemPriority.NotRemovable: itemPriority = WebCacheItemPriority.NotRemovable; break;
+                default: itemPriority = WebCacheItemPriority.Default; break;
             }
             // item removed callback
+            var removedCallback = (itemPolicy.RemovedCallback == null ? null : new WebCacheItemRemovedCallback((n, v, c) => { itemPolicy.RemovedCallback(n, v); }));
+            return Cache.Add(name, value, GetCacheDependency(tag, itemPolicy.Dependency, dispatch), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, itemPriority, removedCallback);
+        }
+        /// <summary>
+        /// Adds the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="itemPolicy">The item policy.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="header">The header.</param>
+        /// <param name="dispatch">The dispatch.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, object header, ServiceCacheByDispatcher dispatch)
+        {
+            if (itemPolicy == null)
+                throw new ArgumentNullException("itemPolicy");
+            var updateCallback = itemPolicy.UpdateCallback;
+            if (updateCallback != null)
+                updateCallback(name, value);
+            // item priority
+            WebCacheItemPriority itemPriority;
+            switch (itemPolicy.Priority)
+            {
+                case CacheItemPriority.AboveNormal: itemPriority = WebCacheItemPriority.AboveNormal; break;
+                case CacheItemPriority.BelowNormal: itemPriority = WebCacheItemPriority.BelowNormal; break;
+                case CacheItemPriority.High: itemPriority = WebCacheItemPriority.High; break;
+                case CacheItemPriority.Low: itemPriority = WebCacheItemPriority.Low; break;
+                case CacheItemPriority.Normal: itemPriority = WebCacheItemPriority.Normal; break;
+                case CacheItemPriority.NotRemovable: itemPriority = WebCacheItemPriority.NotRemovable; break;
+                default: itemPriority = WebCacheItemPriority.Default; break;
+            }
+            // item removed callback
+            var headerPolicy = new WebCacheDependency(null, new[] { name + "#" });
+            Cache.Add(name + "#", header, headerPolicy, itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, itemPriority, null);
             var removedCallback = (itemPolicy.RemovedCallback == null ? null : new WebCacheItemRemovedCallback((n, v, c) => { itemPolicy.RemovedCallback(n, v); }));
             return Cache.Add(name, value, GetCacheDependency(tag, itemPolicy.Dependency, dispatch), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, itemPriority, removedCallback);
         }
@@ -140,6 +162,14 @@ namespace Contoso.Abstract
         /// The cached item.
         /// </returns>
         public object Get(object tag, string name) { return Cache.Get(name); }
+        /// <summary>
+        /// Gets the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="header">The header.</param>
+        /// <returns></returns>
+        public object Get(object tag, string name, out object header) { header = Cache.Get(name + "#"); return Cache.Get(name); }
         /// <summary>
         /// Gets the specified tag.
         /// </summary>
@@ -184,29 +214,52 @@ namespace Contoso.Abstract
             WebCacheItemPriority cacheItemPriority;
             switch (itemPolicy.Priority)
             {
-                case CacheItemPriority.AboveNormal:
-                    cacheItemPriority = WebCacheItemPriority.AboveNormal;
-                    break;
-                case CacheItemPriority.BelowNormal:
-                    cacheItemPriority = WebCacheItemPriority.BelowNormal;
-                    break;
-                case CacheItemPriority.High:
-                    cacheItemPriority = WebCacheItemPriority.High;
-                    break;
-                case CacheItemPriority.Low:
-                    cacheItemPriority = WebCacheItemPriority.Low;
-                    break;
-                case CacheItemPriority.Normal:
-                    cacheItemPriority = WebCacheItemPriority.Normal;
-                    break;
-                case CacheItemPriority.NotRemovable:
-                    cacheItemPriority = WebCacheItemPriority.NotRemovable;
-                    break;
-                default:
-                    cacheItemPriority = WebCacheItemPriority.Default;
-                    break;
+                case CacheItemPriority.AboveNormal: cacheItemPriority = WebCacheItemPriority.AboveNormal; break;
+                case CacheItemPriority.BelowNormal: cacheItemPriority = WebCacheItemPriority.BelowNormal; break;
+                case CacheItemPriority.High: cacheItemPriority = WebCacheItemPriority.High; break;
+                case CacheItemPriority.Low: cacheItemPriority = WebCacheItemPriority.Low; break;
+                case CacheItemPriority.Normal: cacheItemPriority = WebCacheItemPriority.Normal; break;
+                case CacheItemPriority.NotRemovable: cacheItemPriority = WebCacheItemPriority.NotRemovable; break;
+                default: cacheItemPriority = WebCacheItemPriority.Default; break;
             }
             // item removed callback
+            var removedCallback = (itemPolicy.RemovedCallback == null ? null : new WebCacheItemRemovedCallback((n, v, c) => { itemPolicy.RemovedCallback(n, v); }));
+            Cache.Insert(name, value, GetCacheDependency(tag, itemPolicy.Dependency, dispatch), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, removedCallback);
+            return value;
+        }
+        /// <summary>
+        /// Sets the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="itemPolicy">The item policy.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="header">The header.</param>
+        /// <param name="dispatch">The dispatch.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, object header, ServiceCacheByDispatcher dispatch)
+        {
+            if (itemPolicy == null)
+                throw new ArgumentNullException("itemPolicy");
+            var updateCallback = itemPolicy.UpdateCallback;
+            if (updateCallback != null)
+                updateCallback(name, value);
+            // item priority
+            WebCacheItemPriority cacheItemPriority;
+            switch (itemPolicy.Priority)
+            {
+                case CacheItemPriority.AboveNormal: cacheItemPriority = WebCacheItemPriority.AboveNormal; break;
+                case CacheItemPriority.BelowNormal: cacheItemPriority = WebCacheItemPriority.BelowNormal; break;
+                case CacheItemPriority.High: cacheItemPriority = WebCacheItemPriority.High; break;
+                case CacheItemPriority.Low: cacheItemPriority = WebCacheItemPriority.Low; break;
+                case CacheItemPriority.Normal: cacheItemPriority = WebCacheItemPriority.Normal; break;
+                case CacheItemPriority.NotRemovable: cacheItemPriority = WebCacheItemPriority.NotRemovable; break;
+                default: cacheItemPriority = WebCacheItemPriority.Default; break;
+            }
+            // item removed callback
+            var headerPolicy = new WebCacheDependency(null, new[] { name + "#" });
+            Cache.Insert(name + "#", header, headerPolicy, itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, null);
             var removedCallback = (itemPolicy.RemovedCallback == null ? null : new WebCacheItemRemovedCallback((n, v, c) => { itemPolicy.RemovedCallback(n, v); }));
             Cache.Insert(name, value, GetCacheDependency(tag, itemPolicy.Dependency, dispatch), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, removedCallback);
             return value;
@@ -217,10 +270,11 @@ namespace Contoso.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
+        /// <param name="includeHeader">if set to <c>true</c> [include header].</param>
         /// <returns>
         /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
         /// </returns>
-        public object Remove(object tag, string name) { return Cache.Remove(name); }
+        public object Remove(object tag, string name, bool includeHeader) { if (includeHeader) Cache.Remove(name + "#"); return Cache.Remove(name); }
 
         /// <summary>
         /// Settings

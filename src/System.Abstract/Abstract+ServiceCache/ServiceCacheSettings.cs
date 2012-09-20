@@ -74,7 +74,7 @@ namespace System.Abstract
 		public bool TryGetRegion(ref string name, out string regionName)
 		{
 			var index = name.IndexOf(RegionMarker);
-			if (index != -1)
+			if (index == -1)
 			{
 				regionName = null;
 				return false;

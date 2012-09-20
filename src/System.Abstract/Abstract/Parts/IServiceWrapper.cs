@@ -23,19 +23,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Collections.Generic;
-namespace System.Abstract
+namespace System.Abstract.Parts
 {
     /// <summary>
-    /// IDistributedServiceCache
+    /// IServiceWrapper
     /// </summary>
-    public interface IDistributedServiceCache : IServiceCache
+    public interface IServiceWrapper<T>
     {
         /// <summary>
-        /// Gets the headers.
+        /// Gets the parent.
         /// </summary>
-        /// <param name="registration">The registration.</param>
-        /// <returns></returns>
-        IEnumerable<object> GetHeaders(ServiceCacheRegistration registration);
+        /// <value>
+        /// The parent.
+        /// </value>
+        T Parent { get; }
     }
 }
