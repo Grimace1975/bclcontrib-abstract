@@ -47,17 +47,6 @@ namespace System.Abstract
         /// <param name="dispatch">The dispatch.</param>
         /// <returns></returns>
         object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch);
-        /// <summary>
-        /// Adds the specified tag.
-        /// </summary>
-        /// <param name="tag">The tag.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="itemPolicy">The item policy.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="header">The header.</param>
-        /// <param name="dispatch">The dispatch.</param>
-        /// <returns></returns>
-        object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, object header, ServiceCacheByDispatcher dispatch);
 
         /// <summary>
         /// Gets the item from cache associated with the key provided.
@@ -73,9 +62,10 @@ namespace System.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
+        /// <param name="registration">The registration.</param>
         /// <param name="header">The header.</param>
         /// <returns></returns>
-        object Get(object tag, string name, out object header);
+        object Get(object tag, string name, ServiceCacheRegistration registration, out CacheItemHeader header);
 
         /// <summary>
         /// Gets the specified tag.
@@ -98,11 +88,11 @@ namespace System.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
-        /// <param name="includeHeader">if set to <c>true</c> [include header].</param>
+        /// <param name="registration">The registration.</param>
         /// <returns>
         /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
         /// </returns>
-		object Remove(object tag, string name, bool includeHeader);
+        object Remove(object tag, string name, ServiceCacheRegistration registration);
 
         /// <summary>
         /// Adds an object into cache based on the parameters provided.
@@ -114,17 +104,6 @@ namespace System.Abstract
         /// <param name="dispatch">The dispatch.</param>
         /// <returns></returns>
         object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch);
-        /// <summary>
-        /// Sets the specified tag.
-        /// </summary>
-        /// <param name="tag">The tag.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="itemPolicy">The item policy.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="header">The header.</param>
-        /// <param name="dispatch">The dispatch.</param>
-        /// <returns></returns>
-        object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, object header, ServiceCacheByDispatcher dispatch);
 
 		/// <summary>
 		/// Settings

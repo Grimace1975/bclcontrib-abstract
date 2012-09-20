@@ -117,36 +117,16 @@ namespace Contoso.Abstract
             var updateCallback = itemPolicy.UpdateCallback;
             if (updateCallback != null)
                 updateCallback(name, value);
-            // item removed callback
             string regionName;
             Settings.TryGetRegion(ref name, out regionName);
-            return Cache.Add(name, value, GetCacheDependency(tag, itemPolicy, dispatch), regionName);
-        }
-
-        /// <summary>
-        /// Adds the specified tag.
-        /// </summary>
-        /// <param name="tag">The tag.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="itemPolicy">The item policy.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="header">The header.</param>
-        /// <param name="dispatch">The dispatch.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"></exception>
-        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, object header, ServiceCacheByDispatcher dispatch)
-        {
-            if (itemPolicy == null)
-                throw new ArgumentNullException("itemPolicy");
-            var updateCallback = itemPolicy.UpdateCallback;
-            if (updateCallback != null)
-                updateCallback(name, value);
-            // item removed callback
-            string regionName;
-            Settings.TryGetRegion(ref name, out regionName);
-            var headerPolicy = new SystemCaching.CacheItemPolicy();
-            headerPolicy.ChangeMonitors.Add(Cache.CreateCacheEntryChangeMonitor(new[] { name + "#" }, regionName));
-            Cache.Add(name + "#", header, headerPolicy, regionName);
+            //
+            var registration = dispatch.Registration;
+            if (registration != null && registration.UseHeaders)
+            {
+                var headerPolicy = new SystemCaching.CacheItemPolicy();
+                headerPolicy.ChangeMonitors.Add(Cache.CreateCacheEntryChangeMonitor(new[] { name + "#" }, regionName));
+                Cache.Add(name + "#", dispatch.Header, headerPolicy, regionName);
+            }
             return Cache.Add(name, value, GetCacheDependency(tag, itemPolicy, dispatch), regionName);
         }
 
@@ -169,13 +149,17 @@ namespace Contoso.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
+        /// <param name="registration">The registration.</param>
         /// <param name="header">The header.</param>
         /// <returns></returns>
-        public object Get(object tag, string name, out object header)
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public object Get(object tag, string name, ServiceCacheRegistration registration, out CacheItemHeader header)
         {
+            if (registration == null)
+                throw new ArgumentNullException("registration");
             string regionName;
             Settings.TryGetRegion(ref name, out regionName);
-            header = Cache.Get(name + "#", regionName);
+            header = (registration.UseHeaders ? (CacheItemHeader)Cache.Get(name + "#", regionName) : null);
             return Cache.Get(name, regionName);
         }
         /// <summary>
@@ -230,37 +214,16 @@ namespace Contoso.Abstract
             var updateCallback = itemPolicy.UpdateCallback;
             if (updateCallback != null)
                 updateCallback(name, value);
-            // item removed callback
             string regionName;
             Settings.TryGetRegion(ref name, out regionName);
-            Cache.Set(name, value, GetCacheDependency(tag, itemPolicy, dispatch), regionName);
-            return value;
-        }
-
-        /// <summary>
-        /// Sets the specified tag.
-        /// </summary>
-        /// <param name="tag">The tag.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="itemPolicy">The item policy.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="header">The header.</param>
-        /// <param name="dispatch">The dispatch.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException"></exception>
-        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, object header, ServiceCacheByDispatcher dispatch)
-        {
-            if (itemPolicy == null)
-                throw new ArgumentNullException("itemPolicy");
-            var updateCallback = itemPolicy.UpdateCallback;
-            if (updateCallback != null)
-                updateCallback(name, value);
-            // item removed callback
-            string regionName;
-            Settings.TryGetRegion(ref name, out regionName);
-            var headerPolicy = new SystemCaching.CacheItemPolicy();
-            headerPolicy.ChangeMonitors.Add(Cache.CreateCacheEntryChangeMonitor(new[] { name + "#" }, regionName));
-            Cache.Set(name + "#", header, headerPolicy, regionName);
+            //
+            var registration = dispatch.Registration;
+            if (registration != null && registration.UseHeaders)
+            {
+                var headerPolicy = new SystemCaching.CacheItemPolicy();
+                headerPolicy.ChangeMonitors.Add(Cache.CreateCacheEntryChangeMonitor(new[] { name + "#" }, regionName));
+                Cache.Set(name + "#", dispatch.Header, headerPolicy, regionName);
+            }
             Cache.Set(name, value, GetCacheDependency(tag, itemPolicy, dispatch), regionName);
             return value;
         }
@@ -270,15 +233,15 @@ namespace Contoso.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
-        /// <param name="includeHeader">if set to <c>true</c> [include header].</param>
+        /// <param name="registration">The registration.</param>
         /// <returns>
         /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
         /// </returns>
-        public object Remove(object tag, string name, bool includeHeader)
+        public object Remove(object tag, string name, ServiceCacheRegistration registration)
         {
             string regionName;
             Settings.TryGetRegion(ref name, out regionName);
-            if (includeHeader)
+            if (registration != null && registration.UseHeaders)
                 Cache.Remove(name + "#", regionName);
             return Cache.Remove(name, regionName);
         }
