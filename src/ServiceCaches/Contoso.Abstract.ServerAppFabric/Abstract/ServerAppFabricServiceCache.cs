@@ -235,16 +235,22 @@ namespace Contoso.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
+        /// <param name="registration">The registration.</param>
         /// <param name="header">The header.</param>
         /// <returns></returns>
-        public object Get(object tag, string name, out object header)
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public object Get(object tag, string name, ServiceCacheRegistration registration, out CacheItemHeader header)
         {
+            if (registration == null)
+                throw new ArgumentNullException("registration");
             var version = (tag as DataCacheItemVersion);
             string regionName;
-            if (version == null)
-                header = (!Settings.TryGetRegion(ref name, out regionName) ? Cache.Get(name + "#") : Cache.Get(name + "#", regionName));
+            if (!registration.UseHeaders)
+                header = null;
+            else if (version == null)
+                header = (CacheItemHeader)(!Settings.TryGetRegion(ref name, out regionName) ? Cache.Get(name + "#") : Cache.Get(name + "#", regionName));
             else
-                header = (!Settings.TryGetRegion(ref name, out regionName) ? Cache.GetIfNewer(name + "#", ref version) : Cache.GetIfNewer(name + "#", ref version, regionName));
+                header = (CacheItemHeader)(!Settings.TryGetRegion(ref name, out regionName) ? Cache.GetIfNewer(name + "#", ref version) : Cache.GetIfNewer(name + "#", ref version, regionName));
             if (version == null)
                 return (!Settings.TryGetRegion(ref name, out regionName) ? Cache.Get(name) : Cache.Get(name, regionName));
             return (!Settings.TryGetRegion(ref name, out regionName) ? Cache.GetIfNewer(name, ref version) : Cache.GetIfNewer(name, ref version, regionName));
@@ -389,14 +395,14 @@ namespace Contoso.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
-        /// <param name="includeHeader">if set to <c>true</c> [include header].</param>
+        /// <param name="registration">The registration.</param>
         /// <returns>
         /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
         /// </returns>
-        public object Remove(object tag, string name, bool includeHeader)
+        public object Remove(object tag, string name, ServiceCacheRegistration registration)
         {
-            if (includeHeader)
-                Remove(tag, name + "#", false);
+            if (registration != null && registration.UseHeaders)
+                Remove(tag, name + "#", null);
             string regionName;
             var value = ((Settings.Options & ServiceCacheOptions.ReturnsCachedValueOnRemove) == 0 ? null : (!Settings.TryGetRegion(ref name, out regionName) ? Cache.Get(name) : Cache.Get(name, regionName)));
             //

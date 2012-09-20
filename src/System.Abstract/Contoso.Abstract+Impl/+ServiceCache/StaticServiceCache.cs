@@ -103,29 +103,9 @@ namespace Contoso.Abstract
             object lastValue;
             if (!_cache.TryGetValue(name, out lastValue))
             {
-                _cache[name] = value;
-                return null;
-            }
-            return lastValue;
-        }
-
-        /// <summary>
-        /// Adds the specified tag.
-        /// </summary>
-        /// <param name="tag">The tag.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="itemPolicy">The item policy.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="header">The header.</param>
-        /// <param name="dispatch">The dispatch.</param>
-        /// <returns></returns>
-        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, object header, ServiceCacheByDispatcher dispatch)
-        {
-            // TODO: Throw on dependency or other stuff not supported by this simple system
-            object lastValue;
-            if (!_cache.TryGetValue(name, out lastValue))
-            {
-                _cache[name + "#"] = header;
+                var registration = dispatch.Registration;
+                if (registration != null && registration.UseHeaders)
+                    _cache[name + "#"] = dispatch.Header;
                 _cache[name] = value;
                 return null;
             }
@@ -151,12 +131,16 @@ namespace Contoso.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
+        /// <param name="registration">The registration.</param>
         /// <param name="header">The header.</param>
         /// <returns></returns>
-        public object Get(object tag, string name, out object header)
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public object Get(object tag, string name, ServiceCacheRegistration registration, out CacheItemHeader header)
         {
+            if (registration == null)
+                throw new ArgumentNullException("registration");
             object value;
-            _cache.TryGetValue(name + "#", out header);
+            header = (registration.UseHeaders && _cache.TryGetValue(name + "#", out value) ? (CacheItemHeader)value : null);
             return (_cache.TryGetValue(name, out value) ? value : null);
         }
 
@@ -194,22 +178,9 @@ namespace Contoso.Abstract
         /// <returns></returns>
         public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
-            return (_cache[name] = value);
-        }
-
-        /// <summary>
-        /// Sets the specified tag.
-        /// </summary>
-        /// <param name="tag">The tag.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="itemPolicy">The item policy.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="header">The header.</param>
-        /// <param name="dispatch">The dispatch.</param>
-        /// <returns></returns>
-        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, object header, ServiceCacheByDispatcher dispatch)
-        {
-            _cache[name + "#"] = header;
+            var registration = dispatch.Registration;
+            if (registration != null && registration.UseHeaders)
+                _cache[name + "#"] = dispatch.Header;
             return (_cache[name] = value);
         }
 
@@ -218,16 +189,16 @@ namespace Contoso.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The key.</param>
-        /// <param name="includeHeader">if set to <c>true</c> [include header].</param>
+        /// <param name="registration">The registration.</param>
         /// <returns>
         /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
         /// </returns>
-        public object Remove(object tag, string name, bool includeHeader)
+        public object Remove(object tag, string name, ServiceCacheRegistration registration)
         {
             object value;
             if (_cache.TryGetValue(name, out value))
             {
-                if (includeHeader)
+                if (registration != null && registration.UseHeaders)
                     _cache.Remove(name + "#");
                 _cache.Remove(name);
                 return value;

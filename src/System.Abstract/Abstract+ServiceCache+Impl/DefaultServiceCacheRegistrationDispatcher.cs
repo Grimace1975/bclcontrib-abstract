@@ -59,64 +59,63 @@ namespace System.Abstract
             else
                 @namespace = null;
             var useDBNull = ((cache.Settings.Options & ServiceCacheOptions.UseDBNullWithRegistrations) == ServiceCacheOptions.UseDBNullWithRegistrations);
-            var useHeaders = registration.UseHeaders;
             var distributedServiceCache = cache.BehaveAs<IDistributedServiceCache>();
             if (distributedServiceCache == null)
-                return GetUsingLock<T>(cache, registration, tag, values, itemPolicy, name, @namespace, useDBNull, useHeaders);
-            return GetUsingCas<T>(distributedServiceCache, registration, tag, values, itemPolicy, name, @namespace, useDBNull, useHeaders);
+                return GetUsingLock<T>(cache, registration, tag, values, itemPolicy, name, @namespace, useDBNull);
+            return GetUsingCas<T>(distributedServiceCache, registration, tag, values, itemPolicy, name, @namespace, useDBNull);
         }
 
         private static T GetUsingNoLock<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace, bool useDBNull, bool useHeaders)
         {
-            object header;
-            var valueAsCache = (useHeaders ? cache.Get(tag, name) : cache.Get(tag, name, out header));
+            CacheItemHeader header;
+            var valueAsCache = cache.Get(tag, name, registration, out header);
             if (valueAsCache != null)
                 return (!useDBNull || !(valueAsCache is DBNull) ? (T)valueAsCache : default(T));
             // create
             var value = CreateData<T>(@namespace, registration, tag, values, out header);
             valueAsCache = (!useDBNull || value != null ? (object)value : DBNull.Value);
-            cache.Add(tag, name, itemPolicy, valueAsCache, header, new ServiceCacheByDispatcher(registration, values));
+            cache.Add(tag, name, itemPolicy, valueAsCache, new ServiceCacheByDispatcher(registration, values, header));
             return value;
         }
 
-        private static T GetUsingLock<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace, bool useDBNull, bool useHeaders)
+        private static T GetUsingLock<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace, bool useDBNull)
         {
-            object header;
-            var valueAsCache = (useHeaders ? cache.Get(tag, name) : cache.Get(tag, name, out header));
+            CacheItemHeader header;
+            var valueAsCache = cache.Get(tag, name, registration, out header);
             if (valueAsCache != null)
                 return (!useDBNull || !(valueAsCache is DBNull) ? (T)valueAsCache : default(T));
             lock (_rwLock)
             {
-                valueAsCache = (useHeaders ? cache.Get(tag, name) : cache.Get(tag, name, out header));
+                valueAsCache = cache.Get(tag, name, registration, out header);
                 if (valueAsCache != null)
                     return (!useDBNull || !(valueAsCache is DBNull) ? (T)valueAsCache : default(T));
                 // create
                 var value = CreateData<T>(@namespace, registration, tag, values, out header);
                 valueAsCache = (!useDBNull || value != null ? (object)value : DBNull.Value);
-                cache.Add(tag, name, itemPolicy, valueAsCache, header, new ServiceCacheByDispatcher(registration, values));
+                cache.Add(tag, name, itemPolicy, valueAsCache, new ServiceCacheByDispatcher(registration, values, header));
                 return value;
             }
         }
 
-        private static T GetUsingRwLock<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace, bool useDBNull, bool useHeaders)
+        private static T GetUsingRwLock<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace, bool useDBNull)
         {
             _rwLock.EnterUpgradeableReadLock();
             try
             {
-                object header;
-                var valueAsCache = (useHeaders ? cache.Get(tag, name) : cache.Get(tag, name, out header));
+                CacheItemHeader header;
+                var valueAsCache = cache.Get(tag, name, registration, out header);
                 if (valueAsCache != null)
                     return (!useDBNull || !(valueAsCache is DBNull) ? (T)valueAsCache : default(T));
                 _rwLock.EnterWriteLock();
                 try
                 {
-                    valueAsCache = (useHeaders ? cache.Get(tag, name) : cache.Get(tag, name, out header));
+                    valueAsCache = cache.Get(tag, name, registration, out header);
                     if (valueAsCache != null)
                         return (!useDBNull || !(valueAsCache is DBNull) ? (T)valueAsCache : default(T));
                     // create
                     var value = CreateData<T>(@namespace, registration, tag, values, out header);
                     valueAsCache = (!useDBNull || value != null ? (object)value : DBNull.Value);
-                    cache.Add(tag, name, itemPolicy, valueAsCache, header, new ServiceCacheByDispatcher(registration, values));
+                    cache.Add(tag, name, itemPolicy, valueAsCache, new ServiceCacheByDispatcher(registration, values, header));
                     return value;
                 }
                 finally { _rwLock.ExitWriteLock(); }
@@ -124,16 +123,16 @@ namespace System.Abstract
             finally { _rwLock.ExitUpgradeableReadLock(); }
         }
 
-        private static T GetUsingCas<T>(IDistributedServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace, bool useDBNull, bool useHeaders)
+        private static T GetUsingCas<T>(IDistributedServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values, CacheItemPolicy itemPolicy, string name, string @namespace, bool useDBNull)
         {
-            object header;
-            var valueAsCache = (useHeaders ? cache.Get(tag, name) : cache.Get(tag, name, out header));
+            CacheItemHeader header;
+            var valueAsCache = cache.Get(tag, name, registration, out header);
             if (valueAsCache != null)
                 return (!useDBNull || !(valueAsCache is DBNull) ? (T)valueAsCache : default(T));
             // create
             var value = CreateData<T>(@namespace, registration, tag, values, out header);
             valueAsCache = (!useDBNull || value != null ? (object)value : DBNull.Value);
-            cache.Add(tag, name, itemPolicy, valueAsCache, header, new ServiceCacheByDispatcher(registration, values));
+            cache.Add(tag, name, itemPolicy, valueAsCache, new ServiceCacheByDispatcher(registration, values, header));
             return value;
         }
 
@@ -171,10 +170,10 @@ namespace System.Abstract
                 throw new ArgumentNullException("registration");
             var useHeaders = registration.UseHeaders;
             foreach (var name in registration.Names)
-                cache.Remove(null, name, useHeaders);
+                cache.Remove(null, name, registration);
         }
 
-        private static T CreateData<T>(string @namespace, ServiceCacheRegistration registration, object tag, object[] values, out object header)
+        private static T CreateData<T>(string @namespace, ServiceCacheRegistration registration, object tag, object[] values, out CacheItemHeader header)
         {
             if (@namespace != null)
             {
@@ -182,7 +181,10 @@ namespace System.Abstract
                 if (!namespaces.Contains(@namespace))
                     namespaces.Add(@namespace);
             }
-            header = null;
+            header = new CacheItemHeader
+            {
+                Values = values,
+            };
             return (T)registration.Builder(tag, values);
         }
     }

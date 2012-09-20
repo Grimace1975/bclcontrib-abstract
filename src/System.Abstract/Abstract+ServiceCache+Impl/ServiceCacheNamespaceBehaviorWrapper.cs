@@ -59,14 +59,12 @@ namespace System.Abstract
             set { _parent[_namespace + name] = value; }
         }
         public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch) { return _parent.Add(tag, _namespace + name, itemPolicy, value, dispatch); }
-        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, object header, ServiceCacheByDispatcher dispatch) { return _parent.Add(tag, _namespace + name, itemPolicy, value, header, dispatch); }
         public object Get(object tag, string name) { return _parent.Get(tag, _namespace + name); }
-        public object Get(object tag, string name, out object header) { return _parent.Get(tag, _namespace + name, out header); }
+        public object Get(object tag, string name, ServiceCacheRegistration registration, out CacheItemHeader header) { return _parent.Get(tag, _namespace + name, registration, out header); }
         public object Get(object tag, IEnumerable<string> names) { return _parent.Get(tag, names); }
         public bool TryGet(object tag, string name, out object value) { return _parent.TryGet(tag, name, out value); }
-        public object Remove(object tag, string name, bool useHeader) { return _parent.Remove(tag, _namespace + name, useHeader); }
+        public object Remove(object tag, string name, ServiceCacheRegistration registration) { return _parent.Remove(tag, _namespace + name, registration); }
         public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch) { return _parent.Add(tag, _namespace + name, itemPolicy, value, dispatch); }
-        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, object header, ServiceCacheByDispatcher dispatch) { return _parent.Add(tag, _namespace + name, itemPolicy, value, header, dispatch); }
         public void Touch(object tag, params string[] names) { _parent.Touch(tag, names); }
 
         public string Namespace

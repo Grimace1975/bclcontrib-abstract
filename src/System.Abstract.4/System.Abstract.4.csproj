@@ -284,6 +284,9 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\CacheItemDependency.cs">
       <Link>Abstract+ServiceCache\CacheItemDependency.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache\CacheItemHeader.cs">
+      <Link>Abstract+ServiceCache\CacheItemHeader.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\CacheItemPolicy.cs">
       <Link>Abstract+ServiceCache\CacheItemPolicy.cs</Link>
     </Compile>

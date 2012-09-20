@@ -237,6 +237,10 @@ namespace Contoso.Abstract
             if (updateCallback != null)
                 updateCallback(name, value);
             //
+            var registration = dispatch.Registration;
+            if (registration != null && registration.UseHeaders)
+                Add(tag, name + "#", CacheItemPolicy.Default, dispatch.Header, ServiceCacheByDispatcher.Empty);
+            //
             var absoluteExpiration = itemPolicy.AbsoluteExpiration;
             var slidingExpiration = itemPolicy.SlidingExpiration;
             ulong cas;
@@ -272,21 +276,6 @@ namespace Contoso.Abstract
                 }
             throw new InvalidOperationException("absoluteExpiration && slidingExpiration");
         }
-        /// <summary>
-        /// Adds the specified tag.
-        /// </summary>
-        /// <param name="tag">The tag.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="itemPolicy">The item policy.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="header">The header.</param>
-        /// <param name="dispatch">The dispatch.</param>
-        /// <returns></returns>
-        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, object header, ServiceCacheByDispatcher dispatch)
-        {
-            Add(tag, name + "#", CacheItemPolicy.Default, header, ServiceCacheByDispatcher.Empty);
-            return Add(tag, name, itemPolicy, value, dispatch);
-        }
 
         /// <summary>
         /// Gets the item from cache associated with the key provided.
@@ -302,9 +291,17 @@ namespace Contoso.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
+        /// <param name="registration">The registration.</param>
         /// <param name="header">The header.</param>
         /// <returns></returns>
-        public object Get(object tag, string name, out object header) { header = Cache.Get(name + "#"); return Cache.Get(name); }
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public object Get(object tag, string name, ServiceCacheRegistration registration, out CacheItemHeader header)
+        {
+            if (registration == null)
+                throw new ArgumentNullException("registration");
+            header = (registration.UseHeaders ? (CacheItemHeader)Cache.Get(name + "#") : null);
+            return Cache.Get(name);
+        }
         /// <summary>
         /// Gets the specified tag.
         /// </summary>
@@ -341,11 +338,11 @@ namespace Contoso.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
-        /// <param name="includeHeader">if set to <c>true</c> [include header].</param>
+        /// <param name="registration">The registration.</param>
         /// <returns>
         /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
         /// </returns>
-        public object Remove(object tag, string name, bool includeHeader) { if (includeHeader) Cache.Remove(name + "#"); return Cache.Remove(name); }
+        public object Remove(object tag, string name, ServiceCacheRegistration registration) { if (registration != null && registration.UseHeaders) Cache.Remove(name + "#"); return Cache.Remove(name); }
 
         /// <summary>
         /// Adds an object into cache based on the parameters provided.
@@ -363,6 +360,10 @@ namespace Contoso.Abstract
             var updateCallback = itemPolicy.UpdateCallback;
             if (updateCallback != null)
                 updateCallback(name, value);
+            //
+            var registration = dispatch.Registration;
+            if (registration != null && registration.UseHeaders)
+                Add(tag, name + "#", CacheItemPolicy.Default, dispatch.Header, ServiceCacheByDispatcher.Empty);
             //
             var absoluteExpiration = itemPolicy.AbsoluteExpiration;
             var slidingExpiration = itemPolicy.SlidingExpiration;
@@ -414,21 +415,6 @@ namespace Contoso.Abstract
                     default: throw new InvalidOperationException();
                 }
             throw new InvalidOperationException("absoluteExpiration && slidingExpiration");
-        }
-        /// <summary>
-        /// Sets the specified tag.
-        /// </summary>
-        /// <param name="tag">The tag.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="itemPolicy">The item policy.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="header">The header.</param>
-        /// <param name="dispatch">The dispatch.</param>
-        /// <returns></returns>
-        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, object header, ServiceCacheByDispatcher dispatch)
-        {
-            Set(tag, name + "#", CacheItemPolicy.Default, header, ServiceCacheByDispatcher.Empty);
-            return Set(tag, name, itemPolicy, value, dispatch);
         }
 
         /// <summary>

@@ -99,7 +99,7 @@ namespace System.Abstract
         /// <param name="service">The cache.</param>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        public static object Remove(this IServiceCache service, string name) { return service.Remove(null, name, false); }
+        public static object Remove(this IServiceCache service, string name) { return service.Remove(null, name, null); }
         /// <summary>
         /// Removes the specified service.
         /// </summary>
@@ -107,7 +107,7 @@ namespace System.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
         /// <returns></returns>
-        public static object Remove(this IServiceCache service, object tag, string name) { return service.Remove(tag, name, false); }
+        public static object Remove(this IServiceCache service, object tag, string name) { return service.Remove(tag, name, null); }
 
         /// <summary>
         /// Sets the specified cache.
