@@ -31,11 +31,5 @@ namespace System.Abstract
     /// </summary>
     public interface IDistributedServiceCache : IServiceCache
     {
-        /// <summary>
-        /// Gets the headers.
-        /// </summary>
-        /// <param name="registration">The registration.</param>
-        /// <returns></returns>
-        IEnumerable<object> GetHeaders(ServiceCacheRegistration registration);
     }
 }

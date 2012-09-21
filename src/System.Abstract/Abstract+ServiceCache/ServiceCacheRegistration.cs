@@ -32,18 +32,50 @@ namespace System.Abstract
     /// </summary>
     public class ServiceCacheRegistration
     {
-        private Dictionary<Type, List<ConsumerInfo>> _consumers = new Dictionary<Type, List<ConsumerInfo>>();
+        private Dictionary<Type, List<ConsumerAction>> _consumers = new Dictionary<Type, List<ConsumerAction>>();
 
-        private struct ConsumerInfo
+        internal struct ConsumerAction
         {
+            public Type TType; 
             public MethodInfo Method;
             public object Target;
 
-            public ConsumerInfo(MethodInfo method, object target)
+            public ConsumerAction(Type tType, MethodInfo method, object target)
             {
+                TType = tType;
                 Method = method;
                 Target = target;
             }
+        }
+
+        /// <summary>
+        /// ConsumerInfo
+        /// </summary>
+        public struct ConsumerInfo
+        {
+            private static MethodInfo _invokeInternalInfo = typeof(ConsumerInfo).GetMethod("InvokeInternal", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+
+            internal ConsumerAction Action { get; set; }
+            /// <summary>
+            /// Gets the message.
+            /// </summary>
+            /// <value>
+            /// The message.
+            /// </value>
+            public object Message { get; internal set; }
+            /// <summary>
+            /// Invokes this instance.
+            /// </summary>
+            public object ActionInvoke<T>(object message, object tag, object[] values, Func<T> get) { return Action.Method.Invoke(Action.Target, new object[] { message, tag, values, get }); }
+            private object InvokeInternal<T>(IServiceCache cache, object tag, CacheItemHeader header) { return ActionInvoke<T>(Message, tag, header.Values, () => (T)cache.Get(null, header.Item)); }
+            /// <summary>
+            /// Invokes the specified cache.
+            /// </summary>
+            /// <param name="cache">The cache.</param>
+            /// <param name="tag">The tag.</param>
+            /// <param name="header">The header.</param>
+            /// <returns></returns>
+            public object Invoke(IServiceCache cache, object tag, CacheItemHeader header) { return _invokeInternalInfo.MakeGenericMethod(Action.TType).Invoke(this, null); }
         }
 
         /// <summary>
@@ -250,11 +282,28 @@ namespace System.Abstract
             if (action == null)
                 throw new ArgumentNullException("action");
             UseHeaders = true;
-            List<ConsumerInfo> consumerInfos;
-            if (!_consumers.TryGetValue(typeof(TMessage), out consumerInfos))
-                _consumers.Add(typeof(TMessage), consumerInfos = new List<ConsumerInfo>());
-            consumerInfos.Add(new ConsumerInfo(action.Method, action.Target));
+            List<ConsumerAction> consumerActions;
+            if (!_consumers.TryGetValue(typeof(TMessage), out consumerActions))
+                _consumers.Add(typeof(TMessage), consumerActions = new List<ConsumerAction>());
+            consumerActions.Add(new ConsumerAction(typeof(T), action.Method, action.Target));
             return this;
+        }
+
+        /// <summary>
+        /// Gets the consumers for.
+        /// </summary>
+        /// <param name="messages">The messages.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public IEnumerable<ConsumerInfo> GetConsumersFor(object[] messages)
+        {
+            if (messages == null)
+                throw new ArgumentNullException("messages");
+            List<ConsumerAction> consumerActions;
+            foreach (var message in messages)
+                if (_consumers.TryGetValue(message.GetType(), out consumerActions))
+                    foreach (var consumerAction in consumerActions)
+                        yield return new ConsumerInfo { Message = message, Action = consumerAction };
         }
 
         #region Registrar

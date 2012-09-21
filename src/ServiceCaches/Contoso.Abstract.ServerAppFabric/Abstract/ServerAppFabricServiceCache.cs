@@ -195,23 +195,15 @@ namespace Contoso.Abstract
                 if (!Settings.TryGetRegion(ref name, out regionName)) Cache.Add(name, value, timeout, dataCacheTags);
                 else Cache.Add(name, value, timeout, dataCacheTags, regionName);
             }
+            //
+            var registration = dispatch.Registration;
+            if (registration != null && registration.UseHeaders)
+            {
+                var header = dispatch.Header;
+                header.Item = name;
+                Add(tag, name + "#", CacheItemPolicy.Default, header, ServiceCacheByDispatcher.Empty);
+            }
             return value;
-        }
-
-        /// <summary>
-        /// Adds the specified tag.
-        /// </summary>
-        /// <param name="tag">The tag.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="itemPolicy">The item policy.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="header">The header.</param>
-        /// <param name="dispatch">The dispatch.</param>
-        /// <returns></returns>
-        public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, object header, ServiceCacheByDispatcher dispatch)
-        {
-            Add(tag, name + "#", CacheItemPolicy.Default, header, ServiceCacheByDispatcher.Empty);
-            return Add(tag, name, itemPolicy, value, dispatch);
         }
 
         /// <summary>
@@ -266,6 +258,17 @@ namespace Contoso.Abstract
             if (names == null)
                 throw new ArgumentNullException("names");
             return names.Select(name => new { name, value = Get(null, name) }).ToDictionary(x => x.name, x => x.value);
+        }
+        /// <summary>
+        /// Gets the specified registration.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="registration">The registration.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public IEnumerable<CacheItemHeader> Get(object tag, ServiceCacheRegistration registration)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -371,23 +374,15 @@ namespace Contoso.Abstract
                     if (!Settings.TryGetRegion(ref name, out regionName)) Cache.PutAndUnlock(name, value, lockHandle, timeout, dataCacheTags);
                     else Cache.PutAndUnlock(name, value, lockHandle, timeout, dataCacheTags, regionName);
                 }
+            //
+            var registration = dispatch.Registration;
+            if (registration != null && registration.UseHeaders)
+            {
+                var header = dispatch.Header;
+                header.Item = name;
+                Add(tag, name + "#", CacheItemPolicy.Default, header, ServiceCacheByDispatcher.Empty);
+            }
             return value;
-        }
-
-        /// <summary>
-        /// Sets the specified tag.
-        /// </summary>
-        /// <param name="tag">The tag.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="itemPolicy">The item policy.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="header">The header.</param>
-        /// <param name="dispatch">The dispatch.</param>
-        /// <returns></returns>
-        public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, object header, ServiceCacheByDispatcher dispatch)
-        {
-            Set(tag, name + "#", CacheItemPolicy.Default, header, ServiceCacheByDispatcher.Empty);
-            return Set(tag, name, itemPolicy, value, dispatch);
         }
 
         /// <summary>

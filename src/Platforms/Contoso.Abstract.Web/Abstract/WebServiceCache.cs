@@ -113,14 +113,17 @@ namespace Contoso.Abstract
                 default: cacheItemPriority = WebCacheItemPriority.Default; break;
             }
             //
+            var removedCallback = (itemPolicy.RemovedCallback == null ? null : new WebCacheItemRemovedCallback((n, v, c) => { itemPolicy.RemovedCallback(n, v); }));
+            value = Cache.Add(name, value, GetCacheDependency(tag, itemPolicy.Dependency, dispatch), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, removedCallback);
             var registration = dispatch.Registration;
             if (registration != null && registration.UseHeaders)
             {
-                var headerPolicy = new WebCacheDependency(null, new[] { name + "#" });
-                Cache.Add(name + "#", dispatch.Header, headerPolicy, itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, null);
+                var headerPolicy = new WebCacheDependency(null, new[] { name });
+                var header = dispatch.Header;
+                header.Item = name;
+                Cache.Add(name + "#", header, headerPolicy, itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, null);
             }
-            var removedCallback = (itemPolicy.RemovedCallback == null ? null : new WebCacheItemRemovedCallback((n, v, c) => { itemPolicy.RemovedCallback(n, v); }));
-            return Cache.Add(name, value, GetCacheDependency(tag, itemPolicy.Dependency, dispatch), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, removedCallback);
+            return value;
         }
 
         /// <summary>
@@ -160,6 +163,28 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("names");
             return names.Select(name => new { name, value = Cache.Get(name) }).ToDictionary(x => x.name, x => x.value);
         }
+        /// <summary>
+        /// Gets the specified registration.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="registration">The registration.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public IEnumerable<CacheItemHeader> Get(object tag, ServiceCacheRegistration registration)
+        {
+            if (registration == null)
+                throw new ArgumentNullException("registration");
+            var registrationName = registration.AbsoluteName + "#";
+            var e = Cache.GetEnumerator();
+            while (e.MoveNext())
+            {
+                var key = (e.Key as string);
+                if (key == null && !key.EndsWith(registrationName))
+                    continue;
+                yield return (CacheItemHeader)e.Current;
+            }
+        }
+
         /// <summary>
         /// Tries the get.
         /// </summary>
@@ -201,14 +226,16 @@ namespace Contoso.Abstract
                 default: cacheItemPriority = WebCacheItemPriority.Default; break;
             }
             //
+            var removedCallback = (itemPolicy.RemovedCallback == null ? null : new WebCacheItemRemovedCallback((n, v, c) => { itemPolicy.RemovedCallback(n, v); }));
+            Cache.Insert(name, value, GetCacheDependency(tag, itemPolicy.Dependency, dispatch), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, removedCallback);
             var registration = dispatch.Registration;
             if (registration != null && registration.UseHeaders)
             {
-                var headerPolicy = new WebCacheDependency(null, new[] { name + "#" });
-                Cache.Insert(name + "#", dispatch.Header, headerPolicy, itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, null);
+                var headerPolicy = new WebCacheDependency(null, new[] { name });
+                var header = dispatch.Header;
+                header.Item = name;
+                Cache.Insert(name + "#", header, headerPolicy, itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, null);
             }
-            var removedCallback = (itemPolicy.RemovedCallback == null ? null : new WebCacheItemRemovedCallback((n, v, c) => { itemPolicy.RemovedCallback(n, v); }));
-            Cache.Insert(name, value, GetCacheDependency(tag, itemPolicy.Dependency, dispatch), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, removedCallback);
             return value;
         }
 

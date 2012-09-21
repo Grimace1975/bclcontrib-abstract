@@ -120,14 +120,17 @@ namespace Contoso.Abstract
             string regionName;
             Settings.TryGetRegion(ref name, out regionName);
             //
+            value = Cache.Add(name, value, GetCacheDependency(tag, itemPolicy, dispatch), regionName);
             var registration = dispatch.Registration;
             if (registration != null && registration.UseHeaders)
             {
                 var headerPolicy = new SystemCaching.CacheItemPolicy();
-                headerPolicy.ChangeMonitors.Add(Cache.CreateCacheEntryChangeMonitor(new[] { name + "#" }, regionName));
-                Cache.Add(name + "#", dispatch.Header, headerPolicy, regionName);
+                headerPolicy.ChangeMonitors.Add(Cache.CreateCacheEntryChangeMonitor(new[] { name }, regionName));
+                var header = dispatch.Header;
+                header.Item = name;
+                Cache.Add(name + "#", header, headerPolicy, regionName);
             }
-            return Cache.Add(name, value, GetCacheDependency(tag, itemPolicy, dispatch), regionName);
+            return value;
         }
 
         /// <summary>
@@ -178,6 +181,20 @@ namespace Contoso.Abstract
         /// <returns></returns>
         public object Get(object tag, string regionName, IEnumerable<string> names) { return Cache.GetValues(regionName, names.ToArray()); }
         /// <summary>
+        /// Gets the specified registration.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="registration">The registration.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public IEnumerable<CacheItemHeader> Get(object tag, ServiceCacheRegistration registration)
+        {
+            if (registration == null)
+                throw new ArgumentNullException("registration");
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Tries the get.
         /// </summary>
         /// <param name="tag">The tag.</param>
@@ -217,14 +234,16 @@ namespace Contoso.Abstract
             string regionName;
             Settings.TryGetRegion(ref name, out regionName);
             //
+            Cache.Set(name, value, GetCacheDependency(tag, itemPolicy, dispatch), regionName);
             var registration = dispatch.Registration;
             if (registration != null && registration.UseHeaders)
             {
                 var headerPolicy = new SystemCaching.CacheItemPolicy();
-                headerPolicy.ChangeMonitors.Add(Cache.CreateCacheEntryChangeMonitor(new[] { name + "#" }, regionName));
-                Cache.Set(name + "#", dispatch.Header, headerPolicy, regionName);
+                headerPolicy.ChangeMonitors.Add(Cache.CreateCacheEntryChangeMonitor(new[] { name }, regionName));
+                var header = dispatch.Header;
+                header.Item = name;
+                Cache.Set(name + "#", header, headerPolicy, regionName);
             }
-            Cache.Set(name, value, GetCacheDependency(tag, itemPolicy, dispatch), regionName);
             return value;
         }
 

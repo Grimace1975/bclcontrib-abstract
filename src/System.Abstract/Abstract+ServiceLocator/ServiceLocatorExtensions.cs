@@ -116,7 +116,7 @@ namespace System.Abstract
                 serviceWrapper = (service as IServiceWrapper<IServiceLocator>);
                 if (serviceWrapper != null)
                     service = serviceWrapper.Parent;
-            } while (serviceWrapper == null);
+            } while (serviceWrapper != null);
             return (service as T);
         }
 

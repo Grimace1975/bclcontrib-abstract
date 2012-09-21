@@ -32,6 +32,11 @@ namespace System.Abstract
     /// <summary>
     /// ServiceCacheRegistrar
     /// </summary>
+    /// <remarks>
+    /// [Wrap]SC\\{Anchor.FullName}::{Registration.Name}[#]
+    /// ServiceCacheRegistrar._namePrefix - SC\\{Anchor.FullName}::
+    /// Registration.AbsoluteName = SC\\{Anchor.FullName}::{Registration.Name}
+    /// </remarks>
     public class ServiceCacheRegistrar
     {
         private static ReaderWriterLockSlim _rwLock = new ReaderWriterLockSlim();

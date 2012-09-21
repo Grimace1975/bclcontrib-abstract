@@ -180,14 +180,14 @@ namespace System.Abstract
         /// </summary>
         /// <param name="service">The cache.</param>
         /// <param name="names">The names.</param>
-        public static void Touch(this IServiceCache service, params string[] names) { Touch(service, null, names); }
+        public static void Touch(this IServiceCache service, string[] names) { Touch(service, null, names); }
         /// <summary>
         /// Touches the specified cache.
         /// </summary>
         /// <param name="service">The cache.</param>
         /// <param name="tag">The tag.</param>
         /// <param name="names">The names.</param>
-        public static void Touch(this IServiceCache service, object tag, params string[] names)
+        public static void Touch(this IServiceCache service, object tag, string[] names)
         {
             if (service == null)
                 throw new ArgumentNullException("service");
@@ -230,7 +230,7 @@ namespace System.Abstract
                 serviceWrapper = (service as IServiceWrapper<IServiceCache>);
                 if (serviceWrapper != null)
                     service = serviceWrapper.Parent;
-            } while (serviceWrapper == null);
+            } while (serviceWrapper != null);
             return (service as T);
         }
 
@@ -465,22 +465,32 @@ namespace System.Abstract
             return registrationDispatcher.Get<T>(service, foundRegistration, tag, values);
         }
 
+
+        /// <summary>
+        /// Sends the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="registration">The registration.</param>
+        /// <param name="messages">The messages.</param>
+        public static void Send(this IServiceCache service, ServiceCacheRegistration registration, object[] messages) { Send(service, registration, null, messages); }
         /// <summary>
         /// Sends the specified cache.
         /// </summary>
-        /// <param name="cache">The cache.</param>
+        /// <param name="service">The cache.</param>
         /// <param name="registration">The registration.</param>
         /// <param name="tag">The tag.</param>
         /// <param name="messages">The messages.</param>
         /// <exception cref="System.ArgumentNullException"></exception>
         /// <exception cref="System.InvalidOperationException"></exception>
-        public static void Send(this IServiceCache cache, ServiceCacheRegistration registration, object tag, params object[] messages)
+        public static void Send(this IServiceCache service, ServiceCacheRegistration registration, object tag, object[] messages)
         {
+            if (service == null)
+                throw new ArgumentNullException("service");
             if (registration == null)
                 throw new ArgumentNullException("registration");
             if (messages == null)
                 throw new ArgumentNullException("messages");
-            var registrationDispatcher = GetRegistrationDispatcher(cache);
+            var registrationDispatcher = GetRegistrationDispatcher(service);
             // fetch registration
             var recurses = 0;
             ServiceCacheRegistration foundRegistration;
@@ -488,7 +498,7 @@ namespace System.Abstract
                 throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationAB, (registration.Registrar != null ? registration.Registrar.AnchorType.ToString() : "{unregistered}"), registration.Name));
             if (foundRegistration is ServiceCacheForeignRegistration)
                 throw new InvalidOperationException(Local.InvalidDataSource);
-            registrationDispatcher.Send(cache, foundRegistration, tag, messages);
+            registrationDispatcher.Send(service, foundRegistration, tag, messages);
         }
 
         /// <summary>
@@ -708,24 +718,34 @@ namespace System.Abstract
         }
 
         /// <summary>
+        /// Sends the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="anchorType">Type of the anchor.</param>
+        /// <param name="registrationName">Name of the registration.</param>
+        /// <param name="messages">The messages.</param>
+        public static void Send(this IServiceCache service, Type anchorType, string registrationName, object[] messages) { Send(service, anchorType, registrationName, null, messages); }
+        /// <summary>
         /// Sends the specified cache.
         /// </summary>
-        /// <param name="cache">The cache.</param>
+        /// <param name="service">The service.</param>
         /// <param name="anchorType">Type of the anchor.</param>
         /// <param name="registrationName">Name of the registration.</param>
         /// <param name="tag">The tag.</param>
         /// <param name="messages">The messages.</param>
         /// <exception cref="System.ArgumentNullException"></exception>
         /// <exception cref="System.InvalidOperationException"></exception>
-        public static void Send(this IServiceCache cache, Type anchorType, string registrationName, object tag, params object[] messages)
+        public static void Send(this IServiceCache service, Type anchorType, string registrationName, object tag, object[] messages)
         {
+            if (service == null)
+                throw new ArgumentNullException("service");
             if (anchorType == null)
                 throw new ArgumentNullException("anchorType");
             if (string.IsNullOrEmpty(registrationName))
                 throw new ArgumentNullException("registrationName");
             if (messages == null)
                 throw new ArgumentNullException("messages");
-            var registrationDispatcher = GetRegistrationDispatcher(cache);
+            var registrationDispatcher = GetRegistrationDispatcher(service);
             // fetch registration
             var recurses = 0;
             ServiceCacheRegistration foundRegistration;
@@ -733,33 +753,49 @@ namespace System.Abstract
                 throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationAB, anchorType.ToString(), registrationName));
             if (foundRegistration is ServiceCacheForeignRegistration)
                 throw new InvalidOperationException(Local.InvalidDataSource);
-            registrationDispatcher.Send(cache, foundRegistration, tag, messages);
+            registrationDispatcher.Send(service, foundRegistration, tag, messages);
         }
 
+        /// <summary>
+        /// Sends the specified service.
+        /// </summary>
+        /// <typeparam name="TAnchor">The type of the anchor.</typeparam>
+        /// <param name="service">The service.</param>
+        /// <param name="messages">The messages.</param>
+        public static void SendAll<TAnchor>(this IServiceCache service, object[] messages) { SendAll(service, typeof(TAnchor), null, messages); }
         /// <summary>
         /// Sends the specified cache.
         /// </summary>
         /// <typeparam name="TAnchor">The type of the anchor.</typeparam>
-        /// <param name="cache">The cache.</param>
+        /// <param name="service">The cache.</param>
         /// <param name="tag">The tag.</param>
         /// <param name="messages">The messages.</param>
-        public static void Send<TAnchor>(this IServiceCache cache, object tag, params object[] messages) { Send(cache, typeof(TAnchor), tag, messages); }
+        public static void SendAll<TAnchor>(this IServiceCache service, object tag, object[] messages) { SendAll(service, typeof(TAnchor), tag, messages); }
+        /// <summary>
+        /// Sends the specified service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        /// <param name="anchorType">Type of the anchor.</param>
+        /// <param name="messages">The messages.</param>
+        public static void SendAll(this IServiceCache service, Type anchorType, object[] messages) { SendAll(service, anchorType, null, messages); }
         /// <summary>
         /// Sends the specified cache.
         /// </summary>
-        /// <param name="cache">The cache.</param>
+        /// <param name="service">The cache.</param>
         /// <param name="anchorType">Type of the anchor.</param>
         /// <param name="tag">The tag.</param>
         /// <param name="messages">The messages.</param>
         /// <exception cref="System.ArgumentNullException"></exception>
         /// <exception cref="System.InvalidOperationException"></exception>
-        public static void Send(this IServiceCache cache, Type anchorType, object tag, params object[] messages)
+        public static void SendAll(this IServiceCache service, Type anchorType, object tag, object[] messages)
         {
+            if (service == null)
+                throw new ArgumentNullException("service");
             if (anchorType == null)
                 throw new ArgumentNullException("anchorType");
             if (messages == null)
                 throw new ArgumentNullException("messages");
-            var registrationDispatcher = GetRegistrationDispatcher(cache);
+            var registrationDispatcher = GetRegistrationDispatcher(service);
             // fetch all registrations
             ServiceCacheRegistrar registrar;
             ServiceCacheRegistrar.TryGet(anchorType, out registrar, false);
@@ -773,7 +809,7 @@ namespace System.Abstract
                         throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationAB, (registration.Registrar != null ? registration.Registrar.AnchorType.ToString() : "{unregistered}"), registration.Name));
                     if (foundRegistration is ServiceCacheForeignRegistration)
                         throw new InvalidOperationException(Local.InvalidDataSource);
-                    registrationDispatcher.Send(cache, foundRegistration, tag, messages);
+                    registrationDispatcher.Send(service, foundRegistration, tag, messages);
                 }
         }
 
