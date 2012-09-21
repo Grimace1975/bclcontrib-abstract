@@ -34,5 +34,12 @@ namespace System.Abstract
         /// Values
         /// </summary>
         public object[] Values;
+        /// <summary>
+        /// Gets or sets the item.
+        /// </summary>
+        /// <value>
+        /// The item.
+        /// </value>
+        public string Item;
     }
 }

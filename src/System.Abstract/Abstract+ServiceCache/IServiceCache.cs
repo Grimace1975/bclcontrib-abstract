@@ -75,6 +75,13 @@ namespace System.Abstract
         /// <returns></returns>
 		object Get(object tag, IEnumerable<string> names);
         /// <summary>
+        /// Gets the specified registration.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="registration">The registration.</param>
+        /// <returns></returns>
+        IEnumerable<CacheItemHeader> Get(object tag, ServiceCacheRegistration registration);
+        /// <summary>
         /// Tries the get.
         /// </summary>
         /// <param name="tag">The tag.</param>

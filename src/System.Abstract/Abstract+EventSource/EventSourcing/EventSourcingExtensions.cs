@@ -92,7 +92,7 @@ namespace System.Abstract.EventSourcing
                 serviceWrapper = (service as IServiceWrapper<IAggregateRootRepository>);
                 if (serviceWrapper != null)
                     service = serviceWrapper.Parent;
-            } while (serviceWrapper == null);
+            } while (serviceWrapper != null);
             return (service as T);
         }
 

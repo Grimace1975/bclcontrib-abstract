@@ -103,10 +103,14 @@ namespace Contoso.Abstract
             object lastValue;
             if (!_cache.TryGetValue(name, out lastValue))
             {
+                _cache[name] = value;
                 var registration = dispatch.Registration;
                 if (registration != null && registration.UseHeaders)
-                    _cache[name + "#"] = dispatch.Header;
-                _cache[name] = value;
+                {
+                    var header = dispatch.Header;
+                    header.Item = name;
+                    _cache[name + "#"] = header;
+                }
                 return null;
             }
             return lastValue;
@@ -125,7 +129,6 @@ namespace Contoso.Abstract
             object value;
             return (_cache.TryGetValue(name, out value) ? value : null);
         }
-
         /// <summary>
         /// Gets the specified tag.
         /// </summary>
@@ -143,8 +146,6 @@ namespace Contoso.Abstract
             header = (registration.UseHeaders && _cache.TryGetValue(name + "#", out value) ? (CacheItemHeader)value : null);
             return (_cache.TryGetValue(name, out value) ? value : null);
         }
-
-
         /// <summary>
         /// Gets the specified tag.
         /// </summary>
@@ -156,6 +157,28 @@ namespace Contoso.Abstract
             if (names == null)
                 throw new ArgumentNullException("names");
             return names.Select(name => new { name, value = Get(null, name) }).ToDictionary(x => x.name, x => x.value);
+        }
+        /// <summary>
+        /// Gets the specified registration.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="registration">The registration.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public IEnumerable<CacheItemHeader> Get(object tag, ServiceCacheRegistration registration)
+        {
+            if (registration == null)
+                throw new ArgumentNullException("registration");
+            var registrationName = registration.AbsoluteName + "#";
+            var e = _cache.GetEnumerator();
+            while (e.MoveNext())
+            {
+                var current = e.Current;
+                var key = current.Key;
+                if (key == null && !key.EndsWith(registrationName))
+                    continue;
+                yield return (CacheItemHeader)current.Value;
+            }
         }
 
         /// <summary>
@@ -178,10 +201,15 @@ namespace Contoso.Abstract
         /// <returns></returns>
         public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
+            _cache[name] = value;
             var registration = dispatch.Registration;
             if (registration != null && registration.UseHeaders)
-                _cache[name + "#"] = dispatch.Header;
-            return (_cache[name] = value);
+            {
+                var header = dispatch.Header;
+                header.Item = name;
+                _cache[name + "#"] = header;
+            }
+            return value;
         }
 
         /// <summary>
