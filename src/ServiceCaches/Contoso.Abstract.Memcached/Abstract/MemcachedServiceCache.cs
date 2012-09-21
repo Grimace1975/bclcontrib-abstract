@@ -335,9 +335,12 @@ namespace Contoso.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="registration">The registration.</param>
         /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException"></exception>
         /// <exception cref="System.NotImplementedException"></exception>
         public IEnumerable<CacheItemHeader> Get(object tag, ServiceCacheRegistration registration)
         {
+            if (registration == null)
+                throw new ArgumentNullException("registration");
             throw new NotImplementedException();
         }
 

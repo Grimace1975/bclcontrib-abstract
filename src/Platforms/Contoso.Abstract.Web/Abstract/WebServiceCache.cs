@@ -175,13 +175,14 @@ namespace Contoso.Abstract
             if (registration == null)
                 throw new ArgumentNullException("registration");
             var registrationName = registration.AbsoluteName + "#";
+            CacheItemHeader value;
             var e = Cache.GetEnumerator();
             while (e.MoveNext())
             {
                 var key = (e.Key as string);
-                if (key == null && !key.EndsWith(registrationName))
+                if (key == null || !key.EndsWith(registrationName) || (value = (e.Value as CacheItemHeader)) == null)
                     continue;
-                yield return (CacheItemHeader)e.Current;
+                yield return value;
             }
         }
 

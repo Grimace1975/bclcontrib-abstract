@@ -265,9 +265,12 @@ namespace Contoso.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="registration">The registration.</param>
         /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException"></exception>
         /// <exception cref="System.NotImplementedException"></exception>
         public IEnumerable<CacheItemHeader> Get(object tag, ServiceCacheRegistration registration)
         {
+            if (registration == null)
+                throw new ArgumentNullException("registration");
             throw new NotImplementedException();
         }
 
@@ -545,7 +548,7 @@ namespace Contoso.Abstract
             return ((touchable != null && names != null ? touchable.MakeDependency(tag, names) : value) as IEnumerable<DataCacheTag>);
         }
 
-        private static TimeSpan GetTimeout(DateTime absoluteExpiration) { return (absoluteExpiration == ServiceCache.InfiniteAbsoluteExpiration ? TimeSpan.Zero : absoluteExpiration - DateTime.Now ); }
+        private static TimeSpan GetTimeout(DateTime absoluteExpiration) { return (absoluteExpiration == ServiceCache.InfiniteAbsoluteExpiration ? TimeSpan.Zero : absoluteExpiration - DateTime.Now); }
 
         /// <summary>
         /// Gets the headers.
