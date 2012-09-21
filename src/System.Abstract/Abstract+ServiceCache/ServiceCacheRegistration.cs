@@ -36,7 +36,7 @@ namespace System.Abstract
 
         internal struct ConsumerAction
         {
-            public Type TType; 
+            public Type TType;
             public MethodInfo Method;
             public object Target;
 
@@ -64,10 +64,15 @@ namespace System.Abstract
             /// </value>
             public object Message { get; internal set; }
             /// <summary>
-            /// Invokes this instance.
+            /// Actions the invoke.
             /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="message">The message.</param>
+            /// <param name="tag">The tag.</param>
+            /// <param name="values">The values.</param>
+            /// <param name="get">The get.</param>
+            /// <returns></returns>
             public object ActionInvoke<T>(object message, object tag, object[] values, Func<T> get) { return Action.Method.Invoke(Action.Target, new object[] { message, tag, values, get }); }
-            private object InvokeInternal<T>(IServiceCache cache, object tag, CacheItemHeader header) { return ActionInvoke<T>(Message, tag, header.Values, () => (T)cache.Get(null, header.Item)); }
             /// <summary>
             /// Invokes the specified cache.
             /// </summary>
@@ -75,7 +80,8 @@ namespace System.Abstract
             /// <param name="tag">The tag.</param>
             /// <param name="header">The header.</param>
             /// <returns></returns>
-            public object Invoke(IServiceCache cache, object tag, CacheItemHeader header) { return _invokeInternalInfo.MakeGenericMethod(Action.TType).Invoke(this, null); }
+            public object Invoke(IServiceCache cache, object tag, CacheItemHeader header) { return _invokeInternalInfo.MakeGenericMethod(Action.TType).Invoke(this, new[] { cache, tag, header }); }
+            private object InvokeInternal<T>(IServiceCache cache, object tag, CacheItemHeader header) { return ActionInvoke<T>(Message, tag, header.Values, () => (T)cache.Get(null, header.Item)); }
         }
 
         /// <summary>
