@@ -104,6 +104,17 @@ namespace Contoso.Abstract
         public object GetService(Type serviceType) { return Resolve(serviceType); }
 
         /// <summary>
+        /// Creates the child.
+        /// </summary>
+        /// <returns></returns>
+        public IServiceLocator CreateChild(object tag)
+        {
+            var childContainer = CreateContainer();
+            _container.AddChildContainer(childContainer);
+            return new CastleWindsorServiceLocator(childContainer);
+        }
+
+        /// <summary>
         /// Gets the underlying container.
         /// </summary>
         /// <typeparam name="TContainer">The type of the container.</typeparam>

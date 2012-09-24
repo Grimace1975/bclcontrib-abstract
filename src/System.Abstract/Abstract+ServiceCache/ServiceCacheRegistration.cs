@@ -24,14 +24,106 @@ THE SOFTWARE.
 */
 #endregion
 using System.Collections.Generic;
+using System.Reflection;
 namespace System.Abstract
 {
     /// <summary>
+    /// IServiceCacheRegistration
+    /// </summary>
+    public interface IServiceCacheRegistration
+    {
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        string Name { get; }
+        /// <summary>
+        /// Gets the name of the absolute.
+        /// </summary>
+        /// <value>
+        /// The name of the absolute.
+        /// </value>
+        string AbsoluteName { get; }
+        /// <summary>
+        /// Gets the use headers.
+        /// </summary>
+        /// <value>
+        /// The use headers.
+        /// </value>
+        bool UseHeaders { get; }
+        /// <summary>
+        /// Gets the registrar.
+        /// </summary>
+        /// <value>
+        /// The registrar.
+        /// </value>
+        ServiceCacheRegistrar Registrar { get; }
+        /// <summary>
+        /// Attaches the registrar.
+        /// </summary>
+        /// <param name="registrar">The registrar.</param>
+        /// <param name="absoluteName">Name of the absolute.</param>
+        void AttachRegistrar(ServiceCacheRegistrar registrar, string absoluteName);
+    }
+
+    /// <summary>
     /// ServiceCacheRegistration
     /// </summary>
-    public class ServiceCacheRegistration
+    public class ServiceCacheRegistration : IServiceCacheRegistration
     {
-        private string _absoluteName;
+        private Dictionary<Type, List<ConsumerAction>> _consumers = new Dictionary<Type, List<ConsumerAction>>();
+
+        internal struct ConsumerAction
+        {
+            public Type TType;
+            public MethodInfo Method;
+            public object Target;
+
+            public ConsumerAction(Type tType, MethodInfo method, object target)
+            {
+                TType = tType;
+                Method = method;
+                Target = target;
+            }
+        }
+
+        /// <summary>
+        /// ConsumerInfo
+        /// </summary>
+        public struct ConsumerInfo
+        {
+            private static MethodInfo _invokeInternalInfo = typeof(ConsumerInfo).GetMethod("InvokeInternal", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+
+            internal ConsumerAction Action { get; set; }
+            /// <summary>
+            /// Gets the message.
+            /// </summary>
+            /// <value>
+            /// The message.
+            /// </value>
+            public object Message { get; internal set; }
+            /// <summary>
+            /// Actions the invoke.
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="message">The message.</param>
+            /// <param name="tag">The tag.</param>
+            /// <param name="values">The values.</param>
+            /// <param name="get">The get.</param>
+            /// <returns></returns>
+            public object ActionInvoke<T>(object message, object tag, object[] values, Func<T> get) { return Action.Method.Invoke(Action.Target, new object[] { message, tag, values, get }); }
+            /// <summary>
+            /// Invokes the specified cache.
+            /// </summary>
+            /// <param name="cache">The cache.</param>
+            /// <param name="tag">The tag.</param>
+            /// <param name="header">The header.</param>
+            /// <returns></returns>
+            public object Invoke(IServiceCache cache, object tag, CacheItemHeader header) { return _invokeInternalInfo.MakeGenericMethod(Action.TType).Invoke(this, new[] { cache, tag, header }); }
+            private object InvokeInternal<T>(IServiceCache cache, object tag, CacheItemHeader header) { return ActionInvoke<T>(Message, tag, header.Values, () => (T)cache.Get(null, header.Item)); }
+        }
 
         /// <summary>
         /// IDispatcher
@@ -47,13 +139,21 @@ namespace System.Abstract
             /// <param name="tag">The tag.</param>
             /// <param name="values">The values.</param>
             /// <returns></returns>
-            T Get<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values);
+            T Get<T>(IServiceCache cache, IServiceCacheRegistration registration, object tag, object[] values);
+            /// <summary>
+            /// Sends the specified cache.
+            /// </summary>
+            /// <param name="cache">The cache.</param>
+            /// <param name="registration">The registration.</param>
+            /// <param name="tag">The tag.</param>
+            /// <param name="messages">The messages.</param>
+            void Send(IServiceCache cache, IServiceCacheRegistration registration, object tag, params object[] messages);
             /// <summary>
             /// Removes the specified cache.
             /// </summary>
             /// <param name="cache">The cache.</param>
             /// <param name="registration">The registration.</param>
-            void Remove(IServiceCache cache, ServiceCacheRegistration registration);
+            void Remove(IServiceCache cache, IServiceCacheRegistration registration);
         }
 
         internal ServiceCacheRegistration(string name)
@@ -140,7 +240,6 @@ namespace System.Abstract
             Name = name;
             Builder = builder;
             ItemPolicy = itemPolicy;
-            // tacks all namespaces created
             Namespaces = new List<string>();
         }
         /// <summary>
@@ -180,6 +279,14 @@ namespace System.Abstract
         public string Name { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether [use headers].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [use headers]; otherwise, <c>false</c>.
+        /// </value>
+        public bool UseHeaders { get; set; }
+
+        /// <summary>
         /// Gets or sets the cache command.
         /// </summary>
         /// <value>
@@ -201,21 +308,98 @@ namespace System.Abstract
         /// <value>
         /// The name of the absolute.
         /// </value>
-        public string AbsoluteName
+        public string AbsoluteName { get; private set; }
+
+        /// <summary>
+        /// Consumeses the specified action.
+        /// </summary>
+        /// <typeparam name="TMessage">The type of the message.</typeparam>
+        /// <param name="action">The action.</param>
+        /// <returns></returns>
+        public ServiceCacheRegistration ConsumerOf<TMessage>(Func<TMessage, object, object[], Func<object>, object> action) { return ConsumerOf<object, TMessage>(action); }
+        /// <summary>
+        /// Consumeses the specified action.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TMessage">The type of the message.</typeparam>
+        /// <param name="action">The action.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public ServiceCacheRegistration ConsumerOf<T, TMessage>(Func<TMessage, object, object[], Func<T>, object> action)
         {
-            get { return _absoluteName; }
+            if (action == null)
+                throw new ArgumentNullException("action");
+            UseHeaders = true;
+            List<ConsumerAction> consumerActions;
+            if (!_consumers.TryGetValue(typeof(TMessage), out consumerActions))
+                _consumers.Add(typeof(TMessage), consumerActions = new List<ConsumerAction>());
+            consumerActions.Add(new ConsumerAction(typeof(T), action.Method, action.Target));
+            return this;
         }
 
-        internal List<string> Namespaces;
+        /// <summary>
+        /// Gets the consumers for.
+        /// </summary>
+        /// <param name="messages">The messages.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public IEnumerable<ConsumerInfo> GetConsumersFor(object[] messages)
+        {
+            if (messages == null)
+                throw new ArgumentNullException("messages");
+            List<ConsumerAction> consumerActions;
+            foreach (var message in messages)
+                if (_consumers.TryGetValue(message.GetType(), out consumerActions))
+                    foreach (var consumerAction in consumerActions)
+                        yield return new ConsumerInfo { Message = message, Action = consumerAction };
+        }
 
         #region Registrar
 
-        internal ServiceCacheRegistrar Registrar;
+        /// <summary>
+        /// Gets the registrar.
+        /// </summary>
+        /// <value>
+        /// The registrar.
+        /// </value>
+        public ServiceCacheRegistrar Registrar { get; internal set; }
 
-        internal void SetRegistrar(ServiceCacheRegistrar registrar, string absoluteName)
+        /// <summary>
+        /// Gets the namespaces.
+        /// </summary>
+        /// <value>
+        /// The namespaces.
+        /// </value>
+        internal List<string> Namespaces { get; private set; }
+
+        /// <summary>
+        /// Gets the names.
+        /// </summary>
+        /// <value>
+        /// The names.
+        /// </value>
+        public IEnumerable<string> Keys
+        {
+            get
+            {
+                var name = AbsoluteName;
+                if (name != null)
+                    yield return name;
+                if (Namespaces != null)
+                    foreach (var n in Namespaces)
+                        yield return n + name;
+            }
+        }
+
+        /// <summary>
+        /// Attaches the registrar.
+        /// </summary>
+        /// <param name="registrar">The registrar.</param>
+        /// <param name="absoluteName">Name of the absolute.</param>
+        public void AttachRegistrar(ServiceCacheRegistrar registrar, string absoluteName)
         {
             Registrar = registrar;
-            _absoluteName = absoluteName;
+            AbsoluteName = absoluteName;
         }
 
         #endregion

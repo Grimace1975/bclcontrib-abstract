@@ -28,5 +28,5 @@ namespace System.Abstract
 	/// <summary>
 	/// CacheItemDependency
 	/// </summary>
-    public delegate object CacheItemDependency(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values);
+    public delegate object CacheItemDependency(IServiceCache cache, IServiceCacheRegistration registration, object tag, object[] values);
 }

@@ -121,7 +121,13 @@ namespace Contoso.Abstract
             try
             {
                 if (predicate == null) Bus.Subscribe(NServiceBusTransport.Wrap(messageType));
-                else Bus.Subscribe(NServiceBusTransport.Wrap(messageType), NServiceBusTransport.Cast(predicate));
+                else Bus.Subscribe(NServiceBusTransport.Wrap(messageType),
+#if !CLR4
+ NServiceBusTransport.Cast(predicate)
+#else
+ predicate
+#endif
+);
             }
             catch (Exception ex) { throw new ServiceBusMessageException(messageType, ex); }
         }

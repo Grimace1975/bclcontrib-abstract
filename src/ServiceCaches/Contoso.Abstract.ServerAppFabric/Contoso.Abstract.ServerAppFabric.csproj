@@ -51,6 +51,7 @@
   <ItemGroup>
     <None Include="BclEx-Abstract.ServerAppFabric.nuspec" />
     <None Include="BclEx.snk" />
+    <Content Include="app.config.transform" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

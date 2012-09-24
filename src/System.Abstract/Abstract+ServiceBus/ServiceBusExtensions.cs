@@ -26,6 +26,7 @@ THE SOFTWARE.
 using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Abstract.Parts;
 namespace System.Abstract
 {
     /// <summary>
@@ -128,6 +129,29 @@ namespace System.Abstract
         /// <param name="serviceBus">The service bus.</param>
         public static void Unsubscribe<TMessage>(this IPublishingServiceBus serviceBus)
             where TMessage : class { serviceBus.Subscribe(typeof(TMessage)); }
+
+        #region BehaveAs
+
+        /// <summary>
+        /// Behaves as.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="service">The service.</param>
+        /// <returns></returns>
+        public static T BehaveAs<T>(this IServiceBus service)
+            where T : class, IServiceBus
+        {
+            IServiceWrapper<IServiceBus> serviceWrapper;
+            do
+            {
+                serviceWrapper = (service as IServiceWrapper<IServiceBus>);
+                if (serviceWrapper != null)
+                    service = serviceWrapper.Parent;
+            } while (serviceWrapper != null);
+            return (service as T);
+        }
+
+        #endregion
 
         #region Lazy Setup
 

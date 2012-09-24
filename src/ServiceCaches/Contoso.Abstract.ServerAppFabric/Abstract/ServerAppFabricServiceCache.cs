@@ -80,12 +80,23 @@ namespace Contoso.Abstract
     /// </summary>
     public class ServerAppFabricServiceCache : IServerAppFabricServiceCache, ServiceCacheManager.ISetupRegistration
     {
+        /// <summary>
+        /// DefaultDataCacheFactory
+        /// </summary>
+        public static readonly DataCacheFactory DefaultCacheFactory = new DataCacheFactory();
+
         static ServerAppFabricServiceCache() { ServiceCacheManager.EnsureRegistration(); }
         /// <summary>
         /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache"/> class.
         /// </summary>
         public ServerAppFabricServiceCache()
-            : this(new DataCacheFactory()) { }
+            : this(DefaultCacheFactory) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache"/> class.
+        /// </summary>
+        /// <param name="cacheName">Name of the cache.</param>
+        public ServerAppFabricServiceCache(string cacheName)
+            : this(DefaultCacheFactory, cacheName) { }
         /// <summary>
         /// Initializes a new instance of the <see cref="ServerAppFabricServiceCache"/> class.
         /// </summary>
@@ -184,6 +195,14 @@ namespace Contoso.Abstract
                 if (!Settings.TryGetRegion(ref name, out regionName)) Cache.Add(name, value, timeout, dataCacheTags);
                 else Cache.Add(name, value, timeout, dataCacheTags, regionName);
             }
+            //
+            var registration = dispatch.Registration;
+            if (registration != null && registration.UseHeaders)
+            {
+                var header = dispatch.Header;
+                header.Item = name;
+                Add(tag, name + "#", CacheItemPolicy.Default, header, ServiceCacheByDispatcher.Empty);
+            }
             return value;
         }
 
@@ -203,7 +222,31 @@ namespace Contoso.Abstract
                 return (!Settings.TryGetRegion(ref name, out regionName) ? Cache.Get(name) : Cache.Get(name, regionName));
             return (!Settings.TryGetRegion(ref name, out regionName) ? Cache.GetIfNewer(name, ref version) : Cache.GetIfNewer(name, ref version, regionName));
         }
-
+        /// <summary>
+        /// Gets the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="registration">The registration.</param>
+        /// <param name="header">The header.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public object Get(object tag, string name, IServiceCacheRegistration registration, out CacheItemHeader header)
+        {
+            if (registration == null)
+                throw new ArgumentNullException("registration");
+            var version = (tag as DataCacheItemVersion);
+            string regionName;
+            if (!registration.UseHeaders)
+                header = null;
+            else if (version == null)
+                header = (CacheItemHeader)(!Settings.TryGetRegion(ref name, out regionName) ? Cache.Get(name + "#") : Cache.Get(name + "#", regionName));
+            else
+                header = (CacheItemHeader)(!Settings.TryGetRegion(ref name, out regionName) ? Cache.GetIfNewer(name + "#", ref version) : Cache.GetIfNewer(name + "#", ref version, regionName));
+            if (version == null)
+                return (!Settings.TryGetRegion(ref name, out regionName) ? Cache.Get(name) : Cache.Get(name, regionName));
+            return (!Settings.TryGetRegion(ref name, out regionName) ? Cache.GetIfNewer(name, ref version) : Cache.GetIfNewer(name, ref version, regionName));
+        }
         /// <summary>
         /// Gets the specified tag.
         /// </summary>
@@ -215,6 +258,20 @@ namespace Contoso.Abstract
             if (names == null)
                 throw new ArgumentNullException("names");
             return names.Select(name => new { name, value = Get(null, name) }).ToDictionary(x => x.name, x => x.value);
+        }
+        /// <summary>
+        /// Gets the specified registration.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="registration">The registration.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public IEnumerable<CacheItemHeader> Get(object tag, IServiceCacheRegistration registration)
+        {
+            if (registration == null)
+                throw new ArgumentNullException("registration");
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -320,6 +377,14 @@ namespace Contoso.Abstract
                     if (!Settings.TryGetRegion(ref name, out regionName)) Cache.PutAndUnlock(name, value, lockHandle, timeout, dataCacheTags);
                     else Cache.PutAndUnlock(name, value, lockHandle, timeout, dataCacheTags, regionName);
                 }
+            //
+            var registration = dispatch.Registration;
+            if (registration != null && registration.UseHeaders)
+            {
+                var header = dispatch.Header;
+                header.Item = name;
+                Add(tag, name + "#", CacheItemPolicy.Default, header, ServiceCacheByDispatcher.Empty);
+            }
             return value;
         }
 
@@ -328,11 +393,14 @@ namespace Contoso.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
+        /// <param name="registration">The registration.</param>
         /// <returns>
         /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
         /// </returns>
-        public object Remove(object tag, string name)
+        public object Remove(object tag, string name, IServiceCacheRegistration registration)
         {
+            if (registration != null && registration.UseHeaders)
+                Remove(tag, name + "#", null);
             string regionName;
             var value = ((Settings.Options & ServiceCacheOptions.ReturnsCachedValueOnRemove) == 0 ? null : (!Settings.TryGetRegion(ref name, out regionName) ? Cache.Get(name) : Cache.Get(name, regionName)));
             //
@@ -411,7 +479,7 @@ namespace Contoso.Abstract
         /// <summary>
         /// Gets the cache factory.
         /// </summary>
-        public static DataCacheFactory CacheFactory { get; private set; }
+        public DataCacheFactory CacheFactory { get; private set; }
         /// <summary>
         /// Gets the cache.
         /// </summary>
@@ -480,6 +548,16 @@ namespace Contoso.Abstract
             return ((touchable != null && names != null ? touchable.MakeDependency(tag, names) : value) as IEnumerable<DataCacheTag>);
         }
 
-        private static TimeSpan GetTimeout(DateTime absoluteExpiration) { return (absoluteExpiration == ServiceCache.InfiniteAbsoluteExpiration ? TimeSpan.Zero : DateTime.Now - absoluteExpiration); }
+        private static TimeSpan GetTimeout(DateTime absoluteExpiration) { return (absoluteExpiration == ServiceCache.InfiniteAbsoluteExpiration ? TimeSpan.Zero : absoluteExpiration - DateTime.Now); }
+
+        /// <summary>
+        /// Gets the headers.
+        /// </summary>
+        /// <param name="registration">The registration.</param>
+        /// <returns></returns>
+        public IEnumerable<object> GetHeaders(ServiceCacheRegistration registration)
+        {
+            return null;
+        }
     }
 }

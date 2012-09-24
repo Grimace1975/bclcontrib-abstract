@@ -104,6 +104,7 @@
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCacheManagerDebugger.cs" />
     <Compile Include="Abstract+ServiceCache+Impl\ServiceCache+Primitives.cs" />
     <Compile Include="Abstract+ServiceCache\CacheItemDependency.cs" />
+    <Compile Include="Abstract+ServiceCache\CacheItemHeader.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheByDispatcher.cs" />
     <Compile Include="Abstract+ServiceCache\ServiceCacheExtensions.cs" />
     <Compile Include="Abstract+ServiceCache\IDistributedServiceCache.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="Abstract+ServiceLocator+Impl\ServiceLocatorNamespaceBehaviorWrapper.cs" />
     <Compile Include="Abstract+ServiceLog+Impl\ServiceLogManagerDebugger.cs" />
     <Compile Include="Abstract+ServiceLog\ServiceLogExtensions.cs" />
+    <Compile Include="Abstract\Parts\IServiceWrapper.cs" />
     <Compile Include="Abstract\Parts\ServiceManagerDebuggerBase.cs" />
     <Compile Include="Abstract\ServiceInjectionConstructorAttribute.cs" />
     <Compile Include="Abstract\ServiceInjectionMethodAttribute.cs" />
