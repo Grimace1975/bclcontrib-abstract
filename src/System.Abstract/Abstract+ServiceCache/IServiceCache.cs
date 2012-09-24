@@ -65,7 +65,7 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="header">The header.</param>
         /// <returns></returns>
-        object Get(object tag, string name, ServiceCacheRegistration registration, out CacheItemHeader header);
+        object Get(object tag, string name, IServiceCacheRegistration registration, out CacheItemHeader header);
 
         /// <summary>
         /// Gets the specified tag.
@@ -80,7 +80,7 @@ namespace System.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="registration">The registration.</param>
         /// <returns></returns>
-        IEnumerable<CacheItemHeader> Get(object tag, ServiceCacheRegistration registration);
+        IEnumerable<CacheItemHeader> Get(object tag, IServiceCacheRegistration registration);
         /// <summary>
         /// Tries the get.
         /// </summary>
@@ -99,7 +99,7 @@ namespace System.Abstract
         /// <returns>
         /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
         /// </returns>
-        object Remove(object tag, string name, ServiceCacheRegistration registration);
+        object Remove(object tag, string name, IServiceCacheRegistration registration);
 
         /// <summary>
         /// Adds an object into cache based on the parameters provided.

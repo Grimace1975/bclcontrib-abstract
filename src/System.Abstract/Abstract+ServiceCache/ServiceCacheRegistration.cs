@@ -28,9 +28,50 @@ using System.Reflection;
 namespace System.Abstract
 {
     /// <summary>
+    /// IServiceCacheRegistration
+    /// </summary>
+    public interface IServiceCacheRegistration
+    {
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        string Name { get; }
+        /// <summary>
+        /// Gets the name of the absolute.
+        /// </summary>
+        /// <value>
+        /// The name of the absolute.
+        /// </value>
+        string AbsoluteName { get; }
+        /// <summary>
+        /// Gets the use headers.
+        /// </summary>
+        /// <value>
+        /// The use headers.
+        /// </value>
+        bool UseHeaders { get; }
+        /// <summary>
+        /// Gets the registrar.
+        /// </summary>
+        /// <value>
+        /// The registrar.
+        /// </value>
+        ServiceCacheRegistrar Registrar { get; }
+        /// <summary>
+        /// Attaches the registrar.
+        /// </summary>
+        /// <param name="registrar">The registrar.</param>
+        /// <param name="absoluteName">Name of the absolute.</param>
+        void AttachRegistrar(ServiceCacheRegistrar registrar, string absoluteName);
+    }
+
+    /// <summary>
     /// ServiceCacheRegistration
     /// </summary>
-    public class ServiceCacheRegistration
+    public class ServiceCacheRegistration : IServiceCacheRegistration
     {
         private Dictionary<Type, List<ConsumerAction>> _consumers = new Dictionary<Type, List<ConsumerAction>>();
 
@@ -98,7 +139,7 @@ namespace System.Abstract
             /// <param name="tag">The tag.</param>
             /// <param name="values">The values.</param>
             /// <returns></returns>
-            T Get<T>(IServiceCache cache, ServiceCacheRegistration registration, object tag, object[] values);
+            T Get<T>(IServiceCache cache, IServiceCacheRegistration registration, object tag, object[] values);
             /// <summary>
             /// Sends the specified cache.
             /// </summary>
@@ -106,13 +147,13 @@ namespace System.Abstract
             /// <param name="registration">The registration.</param>
             /// <param name="tag">The tag.</param>
             /// <param name="messages">The messages.</param>
-            void Send(IServiceCache cache, ServiceCacheRegistration registration, object tag, params object[] messages);
+            void Send(IServiceCache cache, IServiceCacheRegistration registration, object tag, params object[] messages);
             /// <summary>
             /// Removes the specified cache.
             /// </summary>
             /// <param name="cache">The cache.</param>
             /// <param name="registration">The registration.</param>
-            void Remove(IServiceCache cache, ServiceCacheRegistration registration);
+            void Remove(IServiceCache cache, IServiceCacheRegistration registration);
         }
 
         internal ServiceCacheRegistration(string name)
@@ -199,6 +240,7 @@ namespace System.Abstract
             Name = name;
             Builder = builder;
             ItemPolicy = itemPolicy;
+            Namespaces = new List<string>();
         }
         /// <summary>
         /// Adds the data source.
@@ -314,7 +356,13 @@ namespace System.Abstract
 
         #region Registrar
 
-        internal ServiceCacheRegistrar Registrar;
+        /// <summary>
+        /// Gets the registrar.
+        /// </summary>
+        /// <value>
+        /// The registrar.
+        /// </value>
+        public ServiceCacheRegistrar Registrar { get; internal set; }
 
         /// <summary>
         /// Gets the namespaces.
@@ -322,7 +370,7 @@ namespace System.Abstract
         /// <value>
         /// The namespaces.
         /// </value>
-        public List<string> Namespaces { get; private set; }
+        internal List<string> Namespaces { get; private set; }
 
         /// <summary>
         /// Gets the names.
@@ -330,7 +378,7 @@ namespace System.Abstract
         /// <value>
         /// The names.
         /// </value>
-        public IEnumerable<string> Names
+        public IEnumerable<string> Keys
         {
             get
             {
@@ -343,11 +391,15 @@ namespace System.Abstract
             }
         }
 
-        internal void SetRegistrar(ServiceCacheRegistrar registrar, string absoluteName)
+        /// <summary>
+        /// Attaches the registrar.
+        /// </summary>
+        /// <param name="registrar">The registrar.</param>
+        /// <param name="absoluteName">Name of the absolute.</param>
+        public void AttachRegistrar(ServiceCacheRegistrar registrar, string absoluteName)
         {
             Registrar = registrar;
             AbsoluteName = absoluteName;
-            Namespaces = new List<string>();
         }
 
         #endregion

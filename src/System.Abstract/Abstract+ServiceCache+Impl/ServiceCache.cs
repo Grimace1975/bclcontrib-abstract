@@ -83,35 +83,35 @@ namespace System.Abstract
         /// </summary>
         /// <param name="registration">The registration.</param>
         /// <returns></returns>
-        public static object Get(ServiceCacheRegistration registration) { return ServiceCacheManager.Current.Get<object>(registration, null, null); }
+        public static object Get(IServiceCacheRegistration registration) { return ServiceCacheManager.Current.Get<object>(registration, null, null); }
         /// <summary>
         /// Gets the specified registration.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="registration">The registration.</param>
         /// <returns></returns>
-        public static T Get<T>(ServiceCacheRegistration registration) { return ServiceCacheManager.Current.Get<T>(registration, null, null); }
+        public static T Get<T>(IServiceCacheRegistration registration) { return ServiceCacheManager.Current.Get<T>(registration, null, null); }
         /// <summary>
         /// Gets the many.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="registration">The registration.</param>
         /// <returns></returns>
-        public static IEnumerable<T> GetMany<T>(ServiceCacheRegistration registration) { return ServiceCacheManager.Current.Get<IEnumerable<T>>(registration, null, null); }
+        public static IEnumerable<T> GetMany<T>(IServiceCacheRegistration registration) { return ServiceCacheManager.Current.Get<IEnumerable<T>>(registration, null, null); }
         /// <summary>
         /// Gets the query.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="registration">The registration.</param>
         /// <returns></returns>
-        public static IQueryable<T> GetQuery<T>(ServiceCacheRegistration registration) { return ServiceCacheManager.Current.Get<IQueryable<T>>(registration, null, null); }
+        public static IQueryable<T> GetQuery<T>(IServiceCacheRegistration registration) { return ServiceCacheManager.Current.Get<IQueryable<T>>(registration, null, null); }
         /// <summary>
         /// Gets the specified cached item.
         /// </summary>
         /// <param name="registration">The registration.</param>
         /// <param name="values">The values.</param>
         /// <returns></returns>
-        public static object Get(ServiceCacheRegistration registration, object[] values) { return ServiceCacheManager.Current.Get<object>(registration, null, values); }
+        public static object Get(IServiceCacheRegistration registration, object[] values) { return ServiceCacheManager.Current.Get<object>(registration, null, values); }
         /// <summary>
         /// Gets the specified registration.
         /// </summary>
@@ -119,7 +119,7 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="values">The values.</param>
         /// <returns></returns>
-        public static T Get<T>(ServiceCacheRegistration registration, object[] values) { return ServiceCacheManager.Current.Get<T>(registration, null, values); }
+        public static T Get<T>(IServiceCacheRegistration registration, object[] values) { return ServiceCacheManager.Current.Get<T>(registration, null, values); }
         /// <summary>
         /// Gets the many.
         /// </summary>
@@ -127,7 +127,7 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="values">The values.</param>
         /// <returns></returns>
-        public static IEnumerable<T> GetMany<T>(ServiceCacheRegistration registration, object[] values) { return ServiceCacheManager.Current.Get<IEnumerable<T>>(registration, null, values); }
+        public static IEnumerable<T> GetMany<T>(IServiceCacheRegistration registration, object[] values) { return ServiceCacheManager.Current.Get<IEnumerable<T>>(registration, null, values); }
         /// <summary>
         /// Gets the query.
         /// </summary>
@@ -135,14 +135,14 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="values">The values.</param>
         /// <returns></returns>
-        public static IQueryable<T> GetQuery<T>(ServiceCacheRegistration registration, object[] values) { return ServiceCacheManager.Current.Get<IQueryable<T>>(registration, null, values); }
+        public static IQueryable<T> GetQuery<T>(IServiceCacheRegistration registration, object[] values) { return ServiceCacheManager.Current.Get<IQueryable<T>>(registration, null, values); }
         /// <summary>
         /// Gets the specified cached item.
         /// </summary>
         /// <param name="registration">The registration.</param>
         /// <param name="tag">The tag.</param>
         /// <returns></returns>
-        public static object Get(ServiceCacheRegistration registration, object tag) { return ServiceCacheManager.Current.Get<object>(registration, tag, null); }
+        public static object Get(IServiceCacheRegistration registration, object tag) { return ServiceCacheManager.Current.Get<object>(registration, tag, null); }
         /// <summary>
         /// Gets the specified registration.
         /// </summary>
@@ -150,7 +150,7 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="tag">The tag.</param>
         /// <returns></returns>
-        public static T Get<T>(ServiceCacheRegistration registration, object tag) { return ServiceCacheManager.Current.Get<T>(registration, tag, null); }
+        public static T Get<T>(IServiceCacheRegistration registration, object tag) { return ServiceCacheManager.Current.Get<T>(registration, tag, null); }
         /// <summary>
         /// Gets the many.
         /// </summary>
@@ -158,7 +158,7 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="tag">The tag.</param>
         /// <returns></returns>
-        public static IEnumerable<T> GetMany<T>(ServiceCacheRegistration registration, object tag) { return ServiceCacheManager.Current.Get<IEnumerable<T>>(registration, tag, null); }
+        public static IEnumerable<T> GetMany<T>(IServiceCacheRegistration registration, object tag) { return ServiceCacheManager.Current.Get<IEnumerable<T>>(registration, tag, null); }
         /// <summary>
         /// Gets the query.
         /// </summary>
@@ -166,7 +166,7 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="tag">The tag.</param>
         /// <returns></returns>
-        public static IQueryable<T> GetQuery<T>(ServiceCacheRegistration registration, object tag) { return ServiceCacheManager.Current.Get<IQueryable<T>>(registration, tag, null); }
+        public static IQueryable<T> GetQuery<T>(IServiceCacheRegistration registration, object tag) { return ServiceCacheManager.Current.Get<IQueryable<T>>(registration, tag, null); }
         /// <summary>
         /// Gets the specified cached item.
         /// </summary>
@@ -174,7 +174,7 @@ namespace System.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="values">The values.</param>
         /// <returns></returns>
-        public static object Get(ServiceCacheRegistration registration, object tag, object[] values) { return ServiceCacheManager.Current.Get<object>(registration, tag, values); }
+        public static object Get(IServiceCacheRegistration registration, object tag, object[] values) { return ServiceCacheManager.Current.Get<object>(registration, tag, values); }
         /// <summary>
         /// Gets the specified registration.
         /// </summary>
@@ -183,7 +183,7 @@ namespace System.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="values">The values.</param>
         /// <returns></returns>
-        public static T Get<T>(ServiceCacheRegistration registration, object tag, object[] values) { return ServiceCacheManager.Current.Get<T>(registration, tag, values); }
+        public static T Get<T>(IServiceCacheRegistration registration, object tag, object[] values) { return ServiceCacheManager.Current.Get<T>(registration, tag, values); }
         /// <summary>
         /// Gets the many.
         /// </summary>
@@ -192,7 +192,7 @@ namespace System.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="values">The values.</param>
         /// <returns></returns>
-        public static IEnumerable<T> GetMany<T>(ServiceCacheRegistration registration, object tag, object[] values) { return ServiceCacheManager.Current.Get<IEnumerable<T>>(registration, tag, values); }
+        public static IEnumerable<T> GetMany<T>(IServiceCacheRegistration registration, object tag, object[] values) { return ServiceCacheManager.Current.Get<IEnumerable<T>>(registration, tag, values); }
         /// <summary>
         /// Gets the query.
         /// </summary>

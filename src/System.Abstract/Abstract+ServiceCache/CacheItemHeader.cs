@@ -25,21 +25,21 @@ THE SOFTWARE.
 #endregion
 namespace System.Abstract
 {
-	/// <summary>
+    /// <summary>
     /// CacheItemHeader
-	/// </summary>
+    /// </summary>
     public class CacheItemHeader
     {
-        /// <summary>
-        /// Values
-        /// </summary>
-        public object[] Values;
         /// <summary>
         /// Gets or sets the item.
         /// </summary>
         /// <value>
         /// The item.
         /// </value>
-        public string Item;
+        public string Item { get; set; }
+        /// <summary>
+        /// Values
+        /// </summary>
+        public object[] Values { get; set; }
     }
 }

@@ -40,7 +40,7 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="values">The values.</param>
         /// <param name="header">The header.</param>
-        public ServiceCacheByDispatcher(ServiceCacheRegistration registration, object[] values, CacheItemHeader header)
+        public ServiceCacheByDispatcher(IServiceCacheRegistration registration, object[] values, CacheItemHeader header)
         {
             Registration = registration;
             Values = values;
@@ -50,7 +50,7 @@ namespace System.Abstract
         /// <summary>
         /// Registration
         /// </summary>
-        public ServiceCacheRegistration Registration;
+        public IServiceCacheRegistration Registration;
         /// <summary>
         /// Values
         /// </summary>

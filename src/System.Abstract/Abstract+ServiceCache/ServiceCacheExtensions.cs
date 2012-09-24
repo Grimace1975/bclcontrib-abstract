@@ -275,7 +275,7 @@ namespace System.Abstract
         /// <param name="service">The cache.</param>
         /// <param name="registration">The registration.</param>
         /// <returns></returns>
-        public static object Get(this IServiceCache service, ServiceCacheRegistration registration) { return Get<object>(service, registration, null, null); }
+        public static object Get(this IServiceCache service, IServiceCacheRegistration registration) { return Get<object>(service, registration, null, null); }
         /// <summary>
         /// Gets the specified cache.
         /// </summary>
@@ -283,7 +283,7 @@ namespace System.Abstract
         /// <param name="service">The cache.</param>
         /// <param name="registration">The registration.</param>
         /// <returns></returns>
-        public static T Get<T>(this IServiceCache service, ServiceCacheRegistration registration) { return Get<T>(service, registration, null, null); }
+        public static T Get<T>(this IServiceCache service, IServiceCacheRegistration registration) { return Get<T>(service, registration, null, null); }
         /// <summary>
         /// Gets the many.
         /// </summary>
@@ -291,7 +291,7 @@ namespace System.Abstract
         /// <param name="service">The cache.</param>
         /// <param name="registration">The registration.</param>
         /// <returns></returns>
-        public static IEnumerable<T> GetMany<T>(this IServiceCache service, ServiceCacheRegistration registration) { return Get<IEnumerable<T>>(service, registration, null, null); }
+        public static IEnumerable<T> GetMany<T>(this IServiceCache service, IServiceCacheRegistration registration) { return Get<IEnumerable<T>>(service, registration, null, null); }
         /// <summary>
         /// Gets the dictionary.
         /// </summary>
@@ -300,7 +300,7 @@ namespace System.Abstract
         /// <param name="service">The cache.</param>
         /// <param name="registration">The registration.</param>
         /// <returns></returns>
-        public static IDictionary<TKey, TValue> GetMany<TKey, TValue>(this IServiceCache service, ServiceCacheRegistration registration) { return Get<IDictionary<TKey, TValue>>(service, registration, null, null); }
+        public static IDictionary<TKey, TValue> GetMany<TKey, TValue>(this IServiceCache service, IServiceCacheRegistration registration) { return Get<IDictionary<TKey, TValue>>(service, registration, null, null); }
         /// <summary>
         /// Gets the query.
         /// </summary>
@@ -308,7 +308,7 @@ namespace System.Abstract
         /// <param name="service">The cache.</param>
         /// <param name="registration">The registration.</param>
         /// <returns></returns>
-        public static IQueryable<T> GetQuery<T>(this IServiceCache service, ServiceCacheRegistration registration) { return Get<IQueryable<T>>(service, registration, null, null); }
+        public static IQueryable<T> GetQuery<T>(this IServiceCache service, IServiceCacheRegistration registration) { return Get<IQueryable<T>>(service, registration, null, null); }
         /// <summary>
         /// Gets the specified cached item.
         /// </summary>
@@ -316,7 +316,7 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="values">The values.</param>
         /// <returns></returns>
-        public static object Get(this IServiceCache service, ServiceCacheRegistration registration, object[] values) { return Get<object>(service, registration, null, values); }
+        public static object Get(this IServiceCache service, IServiceCacheRegistration registration, object[] values) { return Get<object>(service, registration, null, values); }
         /// <summary>
         /// Gets the specified cache.
         /// </summary>
@@ -325,7 +325,7 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="values">The values.</param>
         /// <returns></returns>
-        public static T Get<T>(this IServiceCache service, ServiceCacheRegistration registration, object[] values) { return Get<T>(service, registration, null, values); }
+        public static T Get<T>(this IServiceCache service, IServiceCacheRegistration registration, object[] values) { return Get<T>(service, registration, null, values); }
         /// <summary>
         /// Gets the many.
         /// </summary>
@@ -334,7 +334,7 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="values">The values.</param>
         /// <returns></returns>
-        public static IEnumerable<T> GetMany<T>(this IServiceCache service, ServiceCacheRegistration registration, object[] values) { return Get<IEnumerable<T>>(service, registration, null, values); }
+        public static IEnumerable<T> GetMany<T>(this IServiceCache service, IServiceCacheRegistration registration, object[] values) { return Get<IEnumerable<T>>(service, registration, null, values); }
         /// <summary>
         /// Gets the dictionary.
         /// </summary>
@@ -344,7 +344,7 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="values">The values.</param>
         /// <returns></returns>
-        public static IDictionary<TKey, TValue> GetMany<TKey, TValue>(this IServiceCache service, ServiceCacheRegistration registration, object[] values) { return Get<IDictionary<TKey, TValue>>(service, registration, null, values); }
+        public static IDictionary<TKey, TValue> GetMany<TKey, TValue>(this IServiceCache service, IServiceCacheRegistration registration, object[] values) { return Get<IDictionary<TKey, TValue>>(service, registration, null, values); }
         /// <summary>
         /// Gets the query.
         /// </summary>
@@ -353,7 +353,7 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="values">The values.</param>
         /// <returns></returns>
-        public static IQueryable<T> GetQuery<T>(this IServiceCache service, ServiceCacheRegistration registration, object[] values) { return Get<IQueryable<T>>(service, registration, null, values); }
+        public static IQueryable<T> GetQuery<T>(this IServiceCache service, IServiceCacheRegistration registration, object[] values) { return Get<IQueryable<T>>(service, registration, null, values); }
         /// <summary>
         /// Gets the specified cached item.
         /// </summary>
@@ -361,7 +361,7 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="tag">The tag.</param>
         /// <returns></returns>
-        public static object Get(this IServiceCache service, ServiceCacheRegistration registration, object tag) { return Get<object>(service, registration, tag, null); }
+        public static object Get(this IServiceCache service, IServiceCacheRegistration registration, object tag) { return Get<object>(service, registration, tag, null); }
         /// <summary>
         /// Gets the specified cache.
         /// </summary>
@@ -370,7 +370,7 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="tag">The tag.</param>
         /// <returns></returns>
-        public static T Get<T>(this IServiceCache service, ServiceCacheRegistration registration, object tag) { return Get<T>(service, registration, tag, null); }
+        public static T Get<T>(this IServiceCache service, IServiceCacheRegistration registration, object tag) { return Get<T>(service, registration, tag, null); }
         /// <summary>
         /// Gets the many.
         /// </summary>
@@ -379,7 +379,7 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="tag">The tag.</param>
         /// <returns></returns>
-        public static IEnumerable<T> GetMany<T>(this IServiceCache service, ServiceCacheRegistration registration, object tag) { return Get<IEnumerable<T>>(service, registration, tag, null); }
+        public static IEnumerable<T> GetMany<T>(this IServiceCache service, IServiceCacheRegistration registration, object tag) { return Get<IEnumerable<T>>(service, registration, tag, null); }
         /// <summary>
         /// Gets the dictionary.
         /// </summary>
@@ -389,7 +389,7 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="tag">The tag.</param>
         /// <returns></returns>
-        public static IDictionary<TKey, TValue> GetMany<TKey, TValue>(this IServiceCache service, ServiceCacheRegistration registration, object tag) { return Get<IDictionary<TKey, TValue>>(service, registration, tag, null); }
+        public static IDictionary<TKey, TValue> GetMany<TKey, TValue>(this IServiceCache service, IServiceCacheRegistration registration, object tag) { return Get<IDictionary<TKey, TValue>>(service, registration, tag, null); }
         /// <summary>
         /// Gets the query.
         /// </summary>
@@ -398,7 +398,7 @@ namespace System.Abstract
         /// <param name="registration">The registration.</param>
         /// <param name="tag">The tag.</param>
         /// <returns></returns>
-        public static IQueryable<T> GetQuery<T>(this IServiceCache service, ServiceCacheRegistration registration, object tag) { return Get<IQueryable<T>>(service, registration, tag, null); }
+        public static IQueryable<T> GetQuery<T>(this IServiceCache service, IServiceCacheRegistration registration, object tag) { return Get<IQueryable<T>>(service, registration, tag, null); }
         /// <summary>
         /// Gets the specified cached item.
         /// </summary>
@@ -407,7 +407,7 @@ namespace System.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="values">The values.</param>
         /// <returns></returns>
-        public static object Get(this IServiceCache service, ServiceCacheRegistration registration, object tag, object[] values) { return Get<object>(service, registration, tag, values); }
+        public static object Get(this IServiceCache service, IServiceCacheRegistration registration, object tag, object[] values) { return Get<object>(service, registration, tag, values); }
         /// <summary>
         /// Gets the many.
         /// </summary>
@@ -417,7 +417,7 @@ namespace System.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="values">The values.</param>
         /// <returns></returns>
-        public static IEnumerable<T> GetMany<T>(this IServiceCache service, ServiceCacheRegistration registration, object tag, object[] values) { return Get<IEnumerable<T>>(service, registration, tag, values); }
+        public static IEnumerable<T> GetMany<T>(this IServiceCache service, IServiceCacheRegistration registration, object tag, object[] values) { return Get<IEnumerable<T>>(service, registration, tag, values); }
         /// <summary>
         /// Gets the dictionary.
         /// </summary>
@@ -428,7 +428,7 @@ namespace System.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="values">The values.</param>
         /// <returns></returns>
-        public static IDictionary<TKey, TValue> GetMany<TKey, TValue>(this IServiceCache service, ServiceCacheRegistration registration, object tag, object[] values) { return Get<IDictionary<TKey, TValue>>(service, registration, tag, values); }
+        public static IDictionary<TKey, TValue> GetMany<TKey, TValue>(this IServiceCache service, IServiceCacheRegistration registration, object tag, object[] values) { return Get<IDictionary<TKey, TValue>>(service, registration, tag, values); }
         /// <summary>
         /// Gets the query.
         /// </summary>
@@ -448,7 +448,7 @@ namespace System.Abstract
         /// <param name="tag">The tag.</param>
         /// <param name="values">The values.</param>
         /// <returns></returns>
-        public static T Get<T>(this IServiceCache service, ServiceCacheRegistration registration, object tag, object[] values)
+        public static T Get<T>(this IServiceCache service, IServiceCacheRegistration registration, object tag, object[] values)
         {
             if (service == null)
                 throw new ArgumentNullException("service");
@@ -457,7 +457,7 @@ namespace System.Abstract
             var registrationDispatcher = GetRegistrationDispatcher(service);
             // fetch registration
             var recurses = 0;
-            ServiceCacheRegistration foundRegistration;
+            IServiceCacheRegistration foundRegistration;
             if (!ServiceCacheRegistrar.TryGetValue(registration, ref recurses, out foundRegistration))
                 throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationAB, (registration.Registrar != null ? registration.Registrar.AnchorType.ToString() : "{unregistered}"), registration.Name));
             if (foundRegistration is ServiceCacheForeignRegistration)
@@ -472,7 +472,7 @@ namespace System.Abstract
         /// <param name="service">The service.</param>
         /// <param name="registration">The registration.</param>
         /// <param name="messages">The messages.</param>
-        public static void Send(this IServiceCache service, ServiceCacheRegistration registration, object[] messages) { Send(service, registration, null, messages); }
+        public static void Send(this IServiceCache service, IServiceCacheRegistration registration, object[] messages) { Send(service, registration, null, messages); }
         /// <summary>
         /// Sends the specified cache.
         /// </summary>
@@ -482,7 +482,7 @@ namespace System.Abstract
         /// <param name="messages">The messages.</param>
         /// <exception cref="System.ArgumentNullException"></exception>
         /// <exception cref="System.InvalidOperationException"></exception>
-        public static void Send(this IServiceCache service, ServiceCacheRegistration registration, object tag, object[] messages)
+        public static void Send(this IServiceCache service, IServiceCacheRegistration registration, object tag, object[] messages)
         {
             if (service == null)
                 throw new ArgumentNullException("service");
@@ -493,7 +493,7 @@ namespace System.Abstract
             var registrationDispatcher = GetRegistrationDispatcher(service);
             // fetch registration
             var recurses = 0;
-            ServiceCacheRegistration foundRegistration;
+            IServiceCacheRegistration foundRegistration;
             if (!ServiceCacheRegistrar.TryGetValue(registration, ref recurses, out foundRegistration))
                 throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationAB, (registration.Registrar != null ? registration.Registrar.AnchorType.ToString() : "{unregistered}"), registration.Name));
             if (foundRegistration is ServiceCacheForeignRegistration)
@@ -709,7 +709,7 @@ namespace System.Abstract
             var registrationDispatcher = GetRegistrationDispatcher(cache);
             // fetch registration
             var recurses = 0;
-            ServiceCacheRegistration foundRegistration;
+            IServiceCacheRegistration foundRegistration;
             if (!ServiceCacheRegistrar.TryGetValue(anchorType, registrationName, ref recurses, out foundRegistration))
                 throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationAB, anchorType.ToString(), registrationName));
             if (foundRegistration is ServiceCacheForeignRegistration)
@@ -748,7 +748,7 @@ namespace System.Abstract
             var registrationDispatcher = GetRegistrationDispatcher(service);
             // fetch registration
             var recurses = 0;
-            ServiceCacheRegistration foundRegistration;
+            IServiceCacheRegistration foundRegistration;
             if (!ServiceCacheRegistrar.TryGetValue(anchorType, registrationName, ref recurses, out foundRegistration))
                 throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationAB, anchorType.ToString(), registrationName));
             if (foundRegistration is ServiceCacheForeignRegistration)
@@ -804,7 +804,7 @@ namespace System.Abstract
                 {
                     // fetch registration
                     var recurses = 0;
-                    ServiceCacheRegistration foundRegistration;
+                    IServiceCacheRegistration foundRegistration;
                     if (!ServiceCacheRegistrar.TryGetValue(registration, ref recurses, out foundRegistration))
                         throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationAB, (registration.Registrar != null ? registration.Registrar.AnchorType.ToString() : "{unregistered}"), registration.Name));
                     if (foundRegistration is ServiceCacheForeignRegistration)
@@ -843,7 +843,7 @@ namespace System.Abstract
             var registrationDispatcher = GetRegistrationDispatcher(cache);
             // fetch registration
             var recurses = 0;
-            ServiceCacheRegistration foundRegistration;
+            IServiceCacheRegistration foundRegistration;
             if (!ServiceCacheRegistrar.TryGetValue(registration, ref recurses, out foundRegistration))
                 throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationA, registration.ToString()));
             if (foundRegistration is ServiceCacheForeignRegistration)
@@ -866,7 +866,7 @@ namespace System.Abstract
             var registrationDispatcher = GetRegistrationDispatcher(cache);
             // fetch registration
             var recurses = 0;
-            ServiceCacheRegistration foundRegistration;
+            IServiceCacheRegistration foundRegistration;
             if (!ServiceCacheRegistrar.TryGetValue(anchorType, registrationName, ref recurses, out foundRegistration))
                 throw new InvalidOperationException(string.Format(Local.UndefinedServiceCacheRegistrationAB, anchorType.ToString(), registrationName));
             if (foundRegistration is ServiceCacheForeignRegistration)
