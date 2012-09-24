@@ -284,6 +284,9 @@
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\CacheItemDependency.cs">
       <Link>Abstract+ServiceCache\CacheItemDependency.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+ServiceCache\CacheItemHeader.cs">
+      <Link>Abstract+ServiceCache\CacheItemHeader.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceCache\CacheItemPolicy.cs">
       <Link>Abstract+ServiceCache\CacheItemPolicy.cs</Link>
     </Compile>
@@ -418,6 +421,9 @@
     </Compile>
     <Compile Include="..\System.Abstract\Abstract\Parts+TypeSerializer\XmlTypeSerializer.cs">
       <Link>Abstract\Parts+TypeSerializer\XmlTypeSerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract\Parts\IServiceWrapper.cs">
+      <Link>Abstract\Parts\IServiceWrapper.cs</Link>
     </Compile>
     <Compile Include="..\System.Abstract\Abstract\Parts\PartsExtensions.cs">
       <Link>Abstract\Parts\PartsExtensions.cs</Link>

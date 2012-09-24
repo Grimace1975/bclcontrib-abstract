@@ -39,7 +39,7 @@
     <AssemblyOriginatorKeyFile>BclEx.4.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Munq.IocContainer, Version=3.0.4501.20364, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Munq.IocContainer, Version=3.0.4403.17721, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Munq.IocContainer.3.1.6\Lib\Munq.IocContainer.dll</HintPath>
     </Reference>
@@ -53,7 +53,9 @@
   <ItemGroup>
     <None Include="BclEx-Abstract.Munq.nuspec" />
     <None Include="BclEx.4.snk" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

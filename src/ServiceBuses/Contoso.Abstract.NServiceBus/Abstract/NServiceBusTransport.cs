@@ -75,7 +75,9 @@ namespace Contoso.Abstract
 
         public static IMessage[] Cast(object[] messages) { return messages.Cast<IMessage>().ToArray(); }
 
+#if !CLR4
         public static Predicate<IMessage> Cast(Predicate<object> predicate) { return (c => predicate(c)); }
+#endif
 
         public static string Cast(IServiceBusEndpoint endpoint)
         {

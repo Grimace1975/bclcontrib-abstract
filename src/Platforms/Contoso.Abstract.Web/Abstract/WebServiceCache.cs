@@ -101,34 +101,29 @@ namespace Contoso.Abstract
             if (updateCallback != null)
                 updateCallback(name, value);
             // item priority
-            WebCacheItemPriority itemPriority;
+            WebCacheItemPriority cacheItemPriority;
             switch (itemPolicy.Priority)
             {
-                case CacheItemPriority.AboveNormal:
-                    itemPriority = WebCacheItemPriority.AboveNormal;
-                    break;
-                case CacheItemPriority.BelowNormal:
-                    itemPriority = WebCacheItemPriority.BelowNormal;
-                    break;
-                case CacheItemPriority.High:
-                    itemPriority = WebCacheItemPriority.High;
-                    break;
-                case CacheItemPriority.Low:
-                    itemPriority = WebCacheItemPriority.Low;
-                    break;
-                case CacheItemPriority.Normal:
-                    itemPriority = WebCacheItemPriority.Normal;
-                    break;
-                case CacheItemPriority.NotRemovable:
-                    itemPriority = WebCacheItemPriority.NotRemovable;
-                    break;
-                default:
-                    itemPriority = WebCacheItemPriority.Default;
-                    break;
+                case CacheItemPriority.AboveNormal: cacheItemPriority = WebCacheItemPriority.AboveNormal; break;
+                case CacheItemPriority.BelowNormal: cacheItemPriority = WebCacheItemPriority.BelowNormal; break;
+                case CacheItemPriority.High: cacheItemPriority = WebCacheItemPriority.High; break;
+                case CacheItemPriority.Low: cacheItemPriority = WebCacheItemPriority.Low; break;
+                case CacheItemPriority.Normal: cacheItemPriority = WebCacheItemPriority.Normal; break;
+                case CacheItemPriority.NotRemovable: cacheItemPriority = WebCacheItemPriority.NotRemovable; break;
+                default: cacheItemPriority = WebCacheItemPriority.Default; break;
             }
-            // item removed callback
+            //
             var removedCallback = (itemPolicy.RemovedCallback == null ? null : new WebCacheItemRemovedCallback((n, v, c) => { itemPolicy.RemovedCallback(n, v); }));
-            return Cache.Add(name, value, GetCacheDependency(tag, itemPolicy.Dependency, dispatch), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, itemPriority, removedCallback);
+            value = Cache.Add(name, value, GetCacheDependency(tag, itemPolicy.Dependency, dispatch), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, removedCallback);
+            var registration = dispatch.Registration;
+            if (registration != null && registration.UseHeaders)
+            {
+                var headerPolicy = new WebCacheDependency(null, new[] { name });
+                var header = dispatch.Header;
+                header.Item = name;
+                Cache.Add(name + "#", header, headerPolicy, itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, null);
+            }
+            return value;
         }
 
         /// <summary>
@@ -144,6 +139,22 @@ namespace Contoso.Abstract
         /// Gets the specified tag.
         /// </summary>
         /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="registration">The registration.</param>
+        /// <param name="header">The header.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public object Get(object tag, string name, IServiceCacheRegistration registration, out CacheItemHeader header)
+        {
+            if (registration == null)
+                throw new ArgumentNullException("registration");
+            header = (registration.UseHeaders ? (CacheItemHeader)Cache.Get(name + "#") : null);
+            return Cache.Get(name);
+        }
+        /// <summary>
+        /// Gets the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
         /// <param name="names">The names.</param>
         /// <returns></returns>
         public object Get(object tag, IEnumerable<string> names)
@@ -152,6 +163,29 @@ namespace Contoso.Abstract
                 throw new ArgumentNullException("names");
             return names.Select(name => new { name, value = Cache.Get(name) }).ToDictionary(x => x.name, x => x.value);
         }
+        /// <summary>
+        /// Gets the specified registration.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="registration">The registration.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public IEnumerable<CacheItemHeader> Get(object tag, IServiceCacheRegistration registration)
+        {
+            if (registration == null)
+                throw new ArgumentNullException("registration");
+            var registrationName = registration.AbsoluteName + "#";
+            CacheItemHeader value;
+            var e = Cache.GetEnumerator();
+            while (e.MoveNext())
+            {
+                var key = (e.Key as string);
+                if (key == null || !key.EndsWith(registrationName) || (value = (e.Value as CacheItemHeader)) == null)
+                    continue;
+                yield return value;
+            }
+        }
+
         /// <summary>
         /// Tries the get.
         /// </summary>
@@ -184,31 +218,25 @@ namespace Contoso.Abstract
             WebCacheItemPriority cacheItemPriority;
             switch (itemPolicy.Priority)
             {
-                case CacheItemPriority.AboveNormal:
-                    cacheItemPriority = WebCacheItemPriority.AboveNormal;
-                    break;
-                case CacheItemPriority.BelowNormal:
-                    cacheItemPriority = WebCacheItemPriority.BelowNormal;
-                    break;
-                case CacheItemPriority.High:
-                    cacheItemPriority = WebCacheItemPriority.High;
-                    break;
-                case CacheItemPriority.Low:
-                    cacheItemPriority = WebCacheItemPriority.Low;
-                    break;
-                case CacheItemPriority.Normal:
-                    cacheItemPriority = WebCacheItemPriority.Normal;
-                    break;
-                case CacheItemPriority.NotRemovable:
-                    cacheItemPriority = WebCacheItemPriority.NotRemovable;
-                    break;
-                default:
-                    cacheItemPriority = WebCacheItemPriority.Default;
-                    break;
+                case CacheItemPriority.AboveNormal: cacheItemPriority = WebCacheItemPriority.AboveNormal; break;
+                case CacheItemPriority.BelowNormal: cacheItemPriority = WebCacheItemPriority.BelowNormal; break;
+                case CacheItemPriority.High: cacheItemPriority = WebCacheItemPriority.High; break;
+                case CacheItemPriority.Low: cacheItemPriority = WebCacheItemPriority.Low; break;
+                case CacheItemPriority.Normal: cacheItemPriority = WebCacheItemPriority.Normal; break;
+                case CacheItemPriority.NotRemovable: cacheItemPriority = WebCacheItemPriority.NotRemovable; break;
+                default: cacheItemPriority = WebCacheItemPriority.Default; break;
             }
-            // item removed callback
+            //
             var removedCallback = (itemPolicy.RemovedCallback == null ? null : new WebCacheItemRemovedCallback((n, v, c) => { itemPolicy.RemovedCallback(n, v); }));
             Cache.Insert(name, value, GetCacheDependency(tag, itemPolicy.Dependency, dispatch), itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, removedCallback);
+            var registration = dispatch.Registration;
+            if (registration != null && registration.UseHeaders)
+            {
+                var headerPolicy = new WebCacheDependency(null, new[] { name });
+                var header = dispatch.Header;
+                header.Item = name;
+                Cache.Insert(name + "#", header, headerPolicy, itemPolicy.AbsoluteExpiration, itemPolicy.SlidingExpiration, cacheItemPriority, null);
+            }
             return value;
         }
 
@@ -217,10 +245,11 @@ namespace Contoso.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The name.</param>
+        /// <param name="registration">The registration.</param>
         /// <returns>
         /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
         /// </returns>
-        public object Remove(object tag, string name) { return Cache.Remove(name); }
+        public object Remove(object tag, string name, IServiceCacheRegistration registration) { if (registration != null && registration.UseHeaders) Cache.Remove(name + "#"); return Cache.Remove(name); }
 
         /// <summary>
         /// Settings

@@ -23,41 +23,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-namespace System.Abstract
+namespace System.Abstract.Parts
 {
     /// <summary>
-    /// ServiceCacheByDispatcher
+    /// IServiceWrapper
     /// </summary>
-    public struct ServiceCacheByDispatcher
+    public interface IServiceWrapper<T>
     {
         /// <summary>
-        /// Empty
+        /// Gets the parent.
         /// </summary>
-        public static readonly ServiceCacheByDispatcher Empty = new ServiceCacheByDispatcher(null, null, null);
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceCacheByDispatcher" /> struct.
-        /// </summary>
-        /// <param name="registration">The registration.</param>
-        /// <param name="values">The values.</param>
-        /// <param name="header">The header.</param>
-        public ServiceCacheByDispatcher(IServiceCacheRegistration registration, object[] values, CacheItemHeader header)
-        {
-            Registration = registration;
-            Values = values;
-            Header = header;
-        }
-
-        /// <summary>
-        /// Registration
-        /// </summary>
-        public IServiceCacheRegistration Registration;
-        /// <summary>
-        /// Values
-        /// </summary>
-        public object[] Values;
-        /// <summary>
-        /// Header
-        /// </summary>
-        public CacheItemHeader Header;
+        /// <value>
+        /// The parent.
+        /// </value>
+        T Parent { get; }
     }
 }

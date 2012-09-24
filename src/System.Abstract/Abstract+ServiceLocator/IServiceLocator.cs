@@ -39,6 +39,12 @@ namespace System.Abstract
         TContainer GetUnderlyingContainer<TContainer>()
             where TContainer : class;
 
+        /// <summary>
+        /// Creates the child.
+        /// </summary>
+        /// <returns></returns>
+        IServiceLocator CreateChild(object tag);
+
         // registrar
         /// <summary>
         /// Gets the registrar.

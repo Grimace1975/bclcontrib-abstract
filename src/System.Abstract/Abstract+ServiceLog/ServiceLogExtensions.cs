@@ -24,6 +24,7 @@ THE SOFTWARE.
 */
 #endregion
 using System.Globalization;
+using System.Abstract.Parts;
 namespace System.Abstract
 {
     /// <summary>
@@ -216,6 +217,29 @@ namespace System.Abstract
             s = (!string.IsNullOrEmpty(s) ? string.Format(CultureInfo.CurrentCulture, s, args) : string.Empty);
             service.Write(ServiceLog.LogLevel.Debug, ex, s);
         }
+
+        #region BehaveAs
+
+        /// <summary>
+        /// Behaves as.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="service">The service.</param>
+        /// <returns></returns>
+        public static T BehaveAs<T>(this IServiceLog service)
+            where T : class, IServiceLog
+        {
+            IServiceWrapper<IServiceLog> serviceWrapper;
+            do
+            {
+                serviceWrapper = (service as IServiceWrapper<IServiceLog>);
+                if (serviceWrapper != null)
+                    service = serviceWrapper.Parent;
+            } while (serviceWrapper != null);
+            return (service as T);
+        }
+
+        #endregion
 
         #region Lazy Setup
 

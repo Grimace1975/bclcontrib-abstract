@@ -41,12 +41,15 @@ namespace Contoso.Abstract
     }
 
     //: might need to make thread safe
+    /// <summary>
+    /// 
+    /// </summary>
     /// <remark>
     /// Provides a static dictionary adapter for the service cache sub-system.
-    /// </remark>
-    /// <example>
-    /// ServiceCacheManager.SetProvider(() => new StaticServiceCache())
-    /// </example>
+    ///   </remark>
+    ///   <example>
+    /// ServiceCacheManager.SetProvider(() =&gt; new StaticServiceCache())
+    ///   </example>
     public class StaticServiceCache : IStaticServiceCache, ServiceCacheManager.ISetupRegistration
     {
         private static readonly Dictionary<string, object> _cache = new Dictionary<string, object>();
@@ -101,6 +104,13 @@ namespace Contoso.Abstract
             if (!_cache.TryGetValue(name, out lastValue))
             {
                 _cache[name] = value;
+                var registration = dispatch.Registration;
+                if (registration != null && registration.UseHeaders)
+                {
+                    var header = dispatch.Header;
+                    header.Item = name;
+                    _cache[name + "#"] = header;
+                }
                 return null;
             }
             return lastValue;
@@ -119,7 +129,23 @@ namespace Contoso.Abstract
             object value;
             return (_cache.TryGetValue(name, out value) ? value : null);
         }
-
+        /// <summary>
+        /// Gets the specified tag.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="registration">The registration.</param>
+        /// <param name="header">The header.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException"></exception>
+        public object Get(object tag, string name, IServiceCacheRegistration registration, out CacheItemHeader header)
+        {
+            if (registration == null)
+                throw new ArgumentNullException("registration");
+            object value;
+            header = (registration.UseHeaders && _cache.TryGetValue(name + "#", out value) ? (CacheItemHeader)value : null);
+            return (_cache.TryGetValue(name, out value) ? value : null);
+        }
         /// <summary>
         /// Gets the specified tag.
         /// </summary>
@@ -131,6 +157,29 @@ namespace Contoso.Abstract
             if (names == null)
                 throw new ArgumentNullException("names");
             return names.Select(name => new { name, value = Get(null, name) }).ToDictionary(x => x.name, x => x.value);
+        }
+        /// <summary>
+        /// Gets the specified registration.
+        /// </summary>
+        /// <param name="tag">The tag.</param>
+        /// <param name="registration">The registration.</param>
+        /// <returns></returns>
+        /// <exception cref="System.NotImplementedException"></exception>
+        public IEnumerable<CacheItemHeader> Get(object tag, IServiceCacheRegistration registration)
+        {
+            if (registration == null)
+                throw new ArgumentNullException("registration");
+            var registrationName = registration.AbsoluteName + "#";
+            CacheItemHeader value;
+            var e = _cache.GetEnumerator();
+            while (e.MoveNext())
+            {
+                var current = e.Current;
+                var key = current.Key;
+                if (key == null || !key.EndsWith(registrationName) || (value = (current.Value as CacheItemHeader)) == null)
+                    continue;
+                yield return value;
+            }
         }
 
         /// <summary>
@@ -153,7 +202,15 @@ namespace Contoso.Abstract
         /// <returns></returns>
         public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch)
         {
-            return (_cache[name] = value);
+            _cache[name] = value;
+            var registration = dispatch.Registration;
+            if (registration != null && registration.UseHeaders)
+            {
+                var header = dispatch.Header;
+                header.Item = name;
+                _cache[name + "#"] = header;
+            }
+            return value;
         }
 
         /// <summary>
@@ -161,14 +218,17 @@ namespace Contoso.Abstract
         /// </summary>
         /// <param name="tag">The tag.</param>
         /// <param name="name">The key.</param>
+        /// <param name="registration">The registration.</param>
         /// <returns>
         /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
         /// </returns>
-        public object Remove(object tag, string name)
+        public object Remove(object tag, string name, IServiceCacheRegistration registration)
         {
             object value;
             if (_cache.TryGetValue(name, out value))
             {
+                if (registration != null && registration.UseHeaders)
+                    _cache.Remove(name + "#");
                 _cache.Remove(name);
                 return value;
             }

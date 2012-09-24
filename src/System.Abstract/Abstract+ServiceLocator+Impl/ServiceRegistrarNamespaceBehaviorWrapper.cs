@@ -24,12 +24,13 @@ THE SOFTWARE.
 */
 #endregion
 using System.Collections.Generic;
+using System.Abstract.Parts;
 namespace System.Abstract
 {
     /// <summary>
     /// ServiceRegistrarNamespaceBehaviorWrapper
     /// </summary>
-    internal struct ServiceRegistrarNamespaceBehaviorWrapper : IServiceRegistrar
+    internal struct ServiceRegistrarNamespaceBehaviorWrapper : IServiceWrapper<IServiceRegistrar>, IServiceRegistrar
     {
         private IServiceLocator _parent;
         private IServiceRegistrar _registrar;
@@ -44,6 +45,12 @@ namespace System.Abstract
             _parent = parent;
             _registrar = registrar;
             _namespace = @namespace;
+        }
+
+        // wrapper
+        public IServiceRegistrar Parent
+        {
+            get { return _registrar; }
         }
 
         // locator

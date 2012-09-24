@@ -46,6 +46,9 @@ namespace System.Abstract
             RegisterForTests();
         }
 
+        //Test if child works
+
+
         [TestMethod]
         public void Resolve_Should_Return_Valid_Instance()
         {

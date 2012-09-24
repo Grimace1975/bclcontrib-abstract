@@ -12,4 +12,6 @@ syntax: glob
 .nupkg/*
 Packages/*
 packages/*
+build/*
+Release/*
 */docs/*

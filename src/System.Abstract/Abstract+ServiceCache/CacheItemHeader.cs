@@ -26,38 +26,20 @@ THE SOFTWARE.
 namespace System.Abstract
 {
     /// <summary>
-    /// ServiceCacheByDispatcher
+    /// CacheItemHeader
     /// </summary>
-    public struct ServiceCacheByDispatcher
+    public class CacheItemHeader
     {
         /// <summary>
-        /// Empty
+        /// Gets or sets the item.
         /// </summary>
-        public static readonly ServiceCacheByDispatcher Empty = new ServiceCacheByDispatcher(null, null, null);
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceCacheByDispatcher" /> struct.
-        /// </summary>
-        /// <param name="registration">The registration.</param>
-        /// <param name="values">The values.</param>
-        /// <param name="header">The header.</param>
-        public ServiceCacheByDispatcher(IServiceCacheRegistration registration, object[] values, CacheItemHeader header)
-        {
-            Registration = registration;
-            Values = values;
-            Header = header;
-        }
-
-        /// <summary>
-        /// Registration
-        /// </summary>
-        public IServiceCacheRegistration Registration;
+        /// <value>
+        /// The item.
+        /// </value>
+        public string Item { get; set; }
         /// <summary>
         /// Values
         /// </summary>
-        public object[] Values;
-        /// <summary>
-        /// Header
-        /// </summary>
-        public CacheItemHeader Header;
+        public object[] Values { get; set; }
     }
 }

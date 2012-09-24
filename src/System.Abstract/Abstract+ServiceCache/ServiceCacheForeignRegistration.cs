@@ -28,14 +28,16 @@ namespace System.Abstract
     /// <summary>
     /// ServiceCacheForeignRegistration
     /// </summary>
-    public class ServiceCacheForeignRegistration : ServiceCacheRegistration
+    public class ServiceCacheForeignRegistration : IServiceCacheRegistration
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceCacheForeignRegistration"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
         public ServiceCacheForeignRegistration(string name)
-            : base(name) { }
+        {
+            Name = name;
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceCacheForeignRegistration"/> class.
         /// </summary>
@@ -43,11 +45,41 @@ namespace System.Abstract
         /// <param name="foreignType">Type of the foreign.</param>
         /// <param name="foreignName">Name of the foreign.</param>
         public ServiceCacheForeignRegistration(string name, Type foreignType, string foreignName)
-            : base(name)
         {
+            Name = name;
             ForeignName = foreignName;
             ForeignType = foreignType;
         }
+
+        /// <summary>
+        /// Gets the name of the absolute.
+        /// </summary>
+        /// <value>
+        /// The name of the absolute.
+        /// </value>
+        public string AbsoluteName { get; internal set; }
+        /// <summary>
+        /// Gets the use headers.
+        /// </summary>
+        /// <value>
+        /// The use headers.
+        /// </value>
+        public bool UseHeaders { get { return false; } }
+        /// <summary>
+        /// Gets the registrar.
+        /// </summary>
+        /// <value>
+        /// The registrar.
+        /// </value>
+        public ServiceCacheRegistrar Registrar { get; internal set; }
+
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the foreign type.
@@ -64,5 +96,16 @@ namespace System.Abstract
         /// The name of the foreign.
         /// </value>
         public string ForeignName { get; set; }
+
+        /// <summary>
+        /// Attaches the registrar.
+        /// </summary>
+        /// <param name="registrar">The registrar.</param>
+        /// <param name="absoluteName">Name of the absolute.</param>
+        public void AttachRegistrar(ServiceCacheRegistrar registrar, string absoluteName)
+        {
+            Registrar = registrar;
+            AbsoluteName = absoluteName;
+        }
     }
 }
