@@ -62,6 +62,7 @@ namespace System.Abstract.Parts
         /// <param name="provider">The provider.</param>
         /// <param name="setupDescriptor">The setup descriptor.</param>
         /// <returns></returns>
+        [DebuggerStepThroughAttribute]
         public static Lazy<TIService> MakeByProviderProtected(Func<TIService> provider, ISetupDescriptor setupDescriptor)
         {
             if (provider == null)
@@ -218,6 +219,7 @@ namespace System.Abstract.Parts
         /// <summary>
         /// GetSetupDescriptorProtected
         /// </summary>
+        [DebuggerStepThroughAttribute]
         protected static ISetupDescriptor GetSetupDescriptorProtected(Lazy<TIService> service, ISetupDescriptor firstDescriptor)
         {
             if (service == null)
@@ -316,6 +318,7 @@ namespace System.Abstract.Parts
                 _postAction = postAction;
             }
 
+            [DebuggerStepThroughAttribute]
             void ISetupDescriptor.Do(Action<TIService> action)
             {
                 _actions.Add(_registration.MakeAction(action));
@@ -323,6 +326,7 @@ namespace System.Abstract.Parts
                     _postAction(this);
             }
 
+            [DebuggerStepThroughAttribute]
             void ISetupDescriptor.Do(TServiceSetupAction action)
             {
                 if (action == null)
@@ -332,6 +336,7 @@ namespace System.Abstract.Parts
                     _postAction(this);
             }
 
+            [DebuggerStepThroughAttribute]
             void ISetupDescriptor.RegisterWithServiceLocator<T>(Lazy<TIService> service, Lazy<IServiceLocator> locator, string name)
             {
                 if (service == null)
@@ -353,6 +358,7 @@ namespace System.Abstract.Parts
                     descriptor.Do(l => RegisterInstance<T>((T)service.Value, locator.Value, name));
                 }
             }
+            [DebuggerStepThroughAttribute]
             void ISetupDescriptor.RegisterWithServiceLocator(Lazy<TIService> service, Lazy<IServiceLocator> locator, string name)
             {
                 if (service == null)
@@ -364,7 +370,6 @@ namespace System.Abstract.Parts
                     throw new NullReferenceException("registration.ServiceLocatorRegistrar");
                 if (!locator.IsValueCreated)
                 {
-
                     // question: should this use RegisterWithServiceLocator below?
                     var descriptor = ServiceLocatorManager.GetSetupDescriptor(locator);
                     if (descriptor == null)
@@ -379,6 +384,7 @@ namespace System.Abstract.Parts
                     descriptor.Do(s => serviceRegistrar(s, locator.Value, name));
                 }
             }
+            [DebuggerStepThroughAttribute]
             void ISetupDescriptor.RegisterWithServiceLocator<T>(Lazy<TIService> service, IServiceLocator locator, string name)
             {
                 if (service == null)
@@ -387,6 +393,7 @@ namespace System.Abstract.Parts
                     throw new ArgumentNullException("locator", "Unable to locate ServiceLocator, please ensure this is defined first.");
                 RegisterInstance<T>((T)service.Value, locator, name);
             }
+            [DebuggerStepThroughAttribute]
             void ISetupDescriptor.RegisterWithServiceLocator(Lazy<TIService> service, IServiceLocator locator, string name)
             {
                 if (service == null)
@@ -401,6 +408,7 @@ namespace System.Abstract.Parts
 
             IEnumerable<TServiceSetupAction> ISetupDescriptor.Actions
             {
+                [DebuggerStepThroughAttribute]
                 get { return _actions; }
             }
         }

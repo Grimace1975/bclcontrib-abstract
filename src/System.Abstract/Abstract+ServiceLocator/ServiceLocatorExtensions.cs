@@ -291,6 +291,7 @@ namespace System.Abstract
         /// <param name="service">The service.</param>
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public static Lazy<IServiceLocator> RegisterByNamingConvention(this Lazy<IServiceLocator> service, Predicate<Type> predicate) { var assembiles = new[] { GetPreviousCallingMethodAssembly() }; ServiceLocatorManager.GetSetupDescriptor(service).Do(l => RegisterByNamingConvention(l.Registrar, predicate, assembiles)); return service; }
         /// <summary>
         /// Registers the by naming convention.
@@ -323,6 +324,7 @@ namespace System.Abstract
         /// <param name="service">The service.</param>
         /// <param name="predicate">The predicate.</param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.NoInlining)]
         public static Lazy<IServiceLocator> RegisterByTypeMatch<TBasedOn>(this Lazy<IServiceLocator> service, Predicate<Type> predicate) { var assembiles = new[] { GetPreviousCallingMethodAssembly() }; ServiceLocatorManager.GetSetupDescriptor(service).Do(l => RegisterByTypeMatch(l.Registrar, typeof(TBasedOn), predicate, assembiles)); return service; }
         /// <summary>
         /// Registers the by type match.
@@ -369,16 +371,19 @@ namespace System.Abstract
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static Assembly GetPreviousCallingMethodAssembly()
         {
+            var log = ServiceLogManager.Current;
             var thisAssembly = typeof(ServiceLocatorExtensions).Assembly;
             var stackTrace = new StackTrace();
-            for (var i = 1; i < 4; i++)
+            for (var i = 2; i < 10 && i < stackTrace.FrameCount; i++)
             {
                 Assembly assembly;
                 var method = stackTrace.GetFrame(i).GetMethod();
+                if (method != null)
+                    log.InformationFormat("{0}: {1} at {2}.", i, method.ToString(), method.ReflectedType.Assembly.FullName);
                 if (method != null && (assembly = method.ReflectedType.Assembly) != thisAssembly)
                     return assembly;
             }
-            return null;
+            throw new InvalidOperationException("Unable to find an assembly");
         }
 
         #endregion
@@ -458,7 +463,6 @@ namespace System.Abstract
         /// Registers the by naming convention.
         /// </summary>
         /// <param name="registrar">The registrar.</param>
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void RegisterByNamingConvention(this IServiceRegistrar registrar) { RegisterByNamingConvention((serviceType, implementationType) => registrar.Register(serviceType, implementationType), x => DefaultPredicate(registrar, x), new[] { GetPreviousCallingMethodAssembly() }); }
         /// <summary>
         /// Registers the by naming convention.
@@ -471,7 +475,6 @@ namespace System.Abstract
         /// </summary>
         /// <param name="registrar">The registrar.</param>
         /// <param name="predicate">The predicate.</param>
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void RegisterByNamingConvention(this IServiceRegistrar registrar, Predicate<Type> predicate) { RegisterByNamingConvention((serviceType, implementationType) => registrar.Register(serviceType, implementationType), predicate, new[] { GetPreviousCallingMethodAssembly() }); }
         /// <summary>
         /// Registers the by naming convention.
@@ -553,7 +556,6 @@ namespace System.Abstract
         /// </summary>
         /// <typeparam name="TBasedOn">The type of the based on.</typeparam>
         /// <param name="registrar">The registrar.</param>
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void RegisterByTypeMatch<TBasedOn>(this IServiceRegistrar registrar) { RegisterByTypeMatch((serviceType, implementationType, name) => registrar.Register(serviceType, implementationType, name), typeof(TBasedOn), x => DefaultPredicate(registrar, x), new[] { GetPreviousCallingMethodAssembly() }); }
         /// <summary>
         /// Registers the by type match.
@@ -568,7 +570,6 @@ namespace System.Abstract
         /// <typeparam name="TBasedOn">The type of the based on.</typeparam>
         /// <param name="registrar">The registrar.</param>
         /// <param name="predicate">The predicate.</param>
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void RegisterByTypeMatch<TBasedOn>(this IServiceRegistrar registrar, Predicate<Type> predicate) { RegisterByTypeMatch((serviceType, implementationType, name) => registrar.Register(serviceType, implementationType, name), typeof(TBasedOn), predicate, new[] { GetPreviousCallingMethodAssembly() }); }
         /// <summary>
         /// Registers the by type match.
@@ -583,7 +584,6 @@ namespace System.Abstract
         /// </summary>
         /// <param name="registrar">The registrar.</param>
         /// <param name="basedOnType">Type of the based on.</param>
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void RegisterByTypeMatch(this IServiceRegistrar registrar, Type basedOnType) { RegisterByTypeMatch((serviceType, implementationType, name) => registrar.Register(serviceType, implementationType, name), basedOnType, x => DefaultPredicate(registrar, x), new[] { GetPreviousCallingMethodAssembly() }); }
         /// <summary>
         /// Registers the by type match.
@@ -598,7 +598,6 @@ namespace System.Abstract
         /// <param name="registrar">The registrar.</param>
         /// <param name="basedOnType">Type of the based on.</param>
         /// <param name="predicate">The predicate.</param>
-        [MethodImpl(MethodImplOptions.NoInlining)]
         public static void RegisterByTypeMatch(this IServiceRegistrar registrar, Type basedOnType, Predicate<Type> predicate) { RegisterByTypeMatch((serviceType, implementationType, name) => registrar.Register(serviceType, implementationType, name), basedOnType, predicate, new[] { GetPreviousCallingMethodAssembly() }); }
         /// <summary>
         /// Registers the by type match.
