@@ -51,7 +51,9 @@
   <ItemGroup>
     <None Include="BclEx-Abstract.RabbitMQ.xnuspec" />
     <None Include="BclEx.snk" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\System.Abstract\System.Abstract.csproj">
