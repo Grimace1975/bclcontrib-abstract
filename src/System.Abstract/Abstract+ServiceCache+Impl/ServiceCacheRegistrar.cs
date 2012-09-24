@@ -42,8 +42,8 @@ namespace System.Abstract
         private static ReaderWriterLockSlim _rwLock = new ReaderWriterLockSlim();
         private static Dictionary<Type, ServiceCacheRegistrar> _items = new Dictionary<Type, ServiceCacheRegistrar>();
         private ReaderWriterLockSlim _setRwLock = new ReaderWriterLockSlim();
-        private HashSet<ServiceCacheRegistration> _set = new HashSet<ServiceCacheRegistration>();
-        private Dictionary<string, ServiceCacheRegistration> _setAsName = new Dictionary<string, ServiceCacheRegistration>();
+        private HashSet<IServiceCacheRegistration> _set = new HashSet<IServiceCacheRegistration>();
+        private Dictionary<string, IServiceCacheRegistration> _setAsName = new Dictionary<string, IServiceCacheRegistration>();
         private string _namePrefix;
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace System.Abstract
         /// <param name="type">The type.</param>
         public static void RegisterAllBelow(Type type)
         {
-            var registrationType = typeof(ServiceCacheRegistration);
+            var registrationType = typeof(IServiceCacheRegistration);
             var registrar = Get(type);
             var types = type.GetFields(BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic)
                 .Where(f => f.FieldType.IsAssignableFrom(registrationType))
@@ -133,7 +133,7 @@ namespace System.Abstract
         /// Registers the specified registration.
         /// </summary>
         /// <param name="registration">The registration.</param>
-        public void Register(ServiceCacheRegistration registration)
+        public void Register(IServiceCacheRegistration registration)
         {
             if (registration == null)
                 throw new ArgumentNullException("registration");
@@ -153,7 +153,7 @@ namespace System.Abstract
                 _setAsName.Add(registrationName, registration);
                 _set.Add(registration);
                 // link-in
-                registration.SetRegistrar(this, _namePrefix + registrationName);
+                registration.AttachRegistrar(this, _namePrefix + registrationName);
             }
             finally { _setRwLock.ExitWriteLock(); }
         }
@@ -179,7 +179,7 @@ namespace System.Abstract
         /// <returns>
         ///   <c>true</c> if the specified key contains key; otherwise, <c>false</c>.
         /// </returns>
-        public bool Contains(ServiceCacheRegistration registration)
+        public bool Contains(IServiceCacheRegistration registration)
         {
             _setRwLock.EnterReadLock();
             try { return _set.Contains(registration); }
@@ -204,7 +204,7 @@ namespace System.Abstract
         /// </summary>
         /// <param name="registration">The registration.</param>
         /// <returns></returns>
-        public bool Remove(ServiceCacheRegistration registration)
+        public bool Remove(IServiceCacheRegistration registration)
         {
             _setRwLock.EnterWriteLock();
             try { _setAsName.Remove(registration.Name); return _set.Remove(registration); }
@@ -222,18 +222,10 @@ namespace System.Abstract
             finally { _setRwLock.ExitWriteLock(); }
         }
 
-        internal IEnumerable<ServiceCacheRegistration> All
+        internal IEnumerable<IServiceCacheRegistration> All
         {
             get { return _set; }
         }
-
-        ///// <summary>
-        ///// Sends the specified messages.
-        ///// </summary>
-        ///// <param name="messages">The messages.</param>
-        //public void Send(params object[] messages)
-        //{
-        //}
 
         /// <summary>
         /// Tries the get.
@@ -275,7 +267,7 @@ namespace System.Abstract
         /// <param name="recurses">The recurses.</param>
         /// <param name="foundRegistration">The found registration.</param>
         /// <returns></returns>
-        public static bool TryGetValue(ServiceCacheRegistration registration, ref int recurses, out ServiceCacheRegistration foundRegistration)
+        public static bool TryGetValue(IServiceCacheRegistration registration, ref int recurses, out IServiceCacheRegistration foundRegistration)
         {
             _rwLock.EnterReadLock();
             try
@@ -312,7 +304,7 @@ namespace System.Abstract
         /// <param name="recurses">The recurses.</param>
         /// <param name="foundRegistration">The found registration.</param>
         /// <returns></returns>
-        public static bool TryGetValue(Type anchorType, string registrationName, ref int recurses, out ServiceCacheRegistration foundRegistration)
+        public static bool TryGetValue(Type anchorType, string registrationName, ref int recurses, out IServiceCacheRegistration foundRegistration)
         {
             _rwLock.EnterReadLock();
             try
@@ -326,7 +318,7 @@ namespace System.Abstract
                     setRwLock.EnterReadLock();
                     try
                     {
-                        ServiceCacheRegistration registration;
+                        IServiceCacheRegistration registration;
                         if (setAsId.TryGetValue(registrationName, out registration))
                         {
                             // local check

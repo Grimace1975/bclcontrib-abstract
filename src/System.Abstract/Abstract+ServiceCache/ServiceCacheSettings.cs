@@ -38,7 +38,7 @@ namespace System.Abstract
 		public ServiceCacheSettings()
 		{
 			RegionMarker = "@";
-			RegistrationDispatcher = new DefaultServiceCacheRegistrationDispatcher();
+            RegistrationDispatcher = new DefaultServiceCacheRegistrationDispatcher();
             Options = ServiceCacheOptions.UseDBNullWithRegistrations;
 		}
         /// <summary>

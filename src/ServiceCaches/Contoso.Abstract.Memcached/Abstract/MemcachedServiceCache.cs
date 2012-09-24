@@ -300,7 +300,7 @@ namespace Contoso.Abstract
         /// <param name="header">The header.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException"></exception>
-        public object Get(object tag, string name, ServiceCacheRegistration registration, out CacheItemHeader header)
+        public object Get(object tag, string name, IServiceCacheRegistration registration, out CacheItemHeader header)
         {
             if (registration == null)
                 throw new ArgumentNullException("registration");
@@ -337,7 +337,7 @@ namespace Contoso.Abstract
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException"></exception>
         /// <exception cref="System.NotImplementedException"></exception>
-        public IEnumerable<CacheItemHeader> Get(object tag, ServiceCacheRegistration registration)
+        public IEnumerable<CacheItemHeader> Get(object tag, IServiceCacheRegistration registration)
         {
             if (registration == null)
                 throw new ArgumentNullException("registration");
@@ -362,7 +362,7 @@ namespace Contoso.Abstract
         /// <returns>
         /// The item removed from the Cache. If the value in the key parameter is not found, returns null.
         /// </returns>
-        public object Remove(object tag, string name, ServiceCacheRegistration registration) { if (registration != null && registration.UseHeaders) Cache.Remove(name + "#"); return Cache.Remove(name); }
+        public object Remove(object tag, string name, IServiceCacheRegistration registration) { if (registration != null && registration.UseHeaders) Cache.Remove(name + "#"); return Cache.Remove(name); }
 
         /// <summary>
         /// Adds an object into cache based on the parameters provided.

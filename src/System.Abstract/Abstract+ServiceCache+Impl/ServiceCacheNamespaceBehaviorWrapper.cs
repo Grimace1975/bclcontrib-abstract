@@ -60,11 +60,11 @@ namespace System.Abstract
         }
         public object Add(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch) { return _parent.Add(tag, _namespace + name, itemPolicy, value, dispatch); }
         public object Get(object tag, string name) { return _parent.Get(tag, _namespace + name); }
-        public object Get(object tag, string name, ServiceCacheRegistration registration, out CacheItemHeader header) { return _parent.Get(tag, _namespace + name, registration, out header); }
+        public object Get(object tag, string name, IServiceCacheRegistration registration, out CacheItemHeader header) { return _parent.Get(tag, _namespace + name, registration, out header); }
         public object Get(object tag, IEnumerable<string> names) { return _parent.Get(tag, names); }
-        public IEnumerable<CacheItemHeader> Get(object tag, ServiceCacheRegistration registration) { return _parent.Get(tag, registration); }
+        public IEnumerable<CacheItemHeader> Get(object tag, IServiceCacheRegistration registration) { return _parent.Get(tag, registration); }
         public bool TryGet(object tag, string name, out object value) { return _parent.TryGet(tag, name, out value); }
-        public object Remove(object tag, string name, ServiceCacheRegistration registration) { return _parent.Remove(tag, _namespace + name, registration); }
+        public object Remove(object tag, string name, IServiceCacheRegistration registration) { return _parent.Remove(tag, _namespace + name, registration); }
         public object Set(object tag, string name, CacheItemPolicy itemPolicy, object value, ServiceCacheByDispatcher dispatch) { return _parent.Add(tag, _namespace + name, itemPolicy, value, dispatch); }
         public void Touch(object tag, params string[] names) { _parent.Touch(tag, names); }
 
