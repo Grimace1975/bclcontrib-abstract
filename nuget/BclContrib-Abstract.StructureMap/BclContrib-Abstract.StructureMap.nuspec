@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>BclContrib-Abstract.StructureMap</id>
+    <version>2.6.3.0</version>
+    <authors>Sky Morey</authors>
+    <owners>Sky Morey</owners>
+    <description>This package contains a StructureMap implementation of the abstract ServiceLocator.</description>
+    <projectUrl>http://code.google.com/p/bclcontrib-abstract/</projectUrl>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <tags>structuremap servicelocator ioc di bclcontrib</tags>
+    <language>en-US</language>
+    <releaseNotes>NOTE: Project has moved to http://docs.bclex.org. with a new package name of BclEx-Abstract.StructureMap</releaseNotes>
+    <dependencies>
+      <dependency id="BclContrib-Abstract" version="1.0.0.0" />
+      <dependency id="structuremap" version="2.6.3" />
+    </dependencies>
+  </metadata>
+</package>
+

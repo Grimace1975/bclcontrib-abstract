@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>BclEx-Abstract.EventStore</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>http://docs.bclex.org/bclex-abstract/</projectUrl>
+    <iconUrl>http://docs.bclex.org/bclex-abstract.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2010</copyright>
+    <tags>mongodb nosql aggregateroot bclcontrib</tags>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="BclEx-Abstract" version="1.0.0.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\Contoso.Abstract.EventStore.4\bin\Release\$title$.dll" target="lib\net40" />
+    <file src="..\Contoso.Abstract.EventStore.4\bin\Release\$title$.xml" target="lib\net40" />
+  </files>
+</package>
+

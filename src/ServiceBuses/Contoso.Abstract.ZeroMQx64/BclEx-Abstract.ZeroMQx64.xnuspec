@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>BclEx-Abstract.ZeroMQx64</id>
+    <version>$version$</version>
+    <title>Contoso.Abstract.ZeroMQx64</title>
+    <authors>Sky Morey</authors>
+    <owners>Sky Morey</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>http://docs.bclex.org/bclex-abstract/</projectUrl>
+    <iconUrl>http://docs.bclex.org/bclex-abstract.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package contains a ZeroMQ implementation of the abstract ServiceBus.</description>
+    <releaseNotes></releaseNotes>
+    <tags>zeromq servicebus bclcontrib</tags>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="BclEx-Abstract" version="1.0.0.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\Contoso.Abstract.ZeroMQx64.4\bin\Release\$title$.dll" target="lib\net40" />
+    <file src="..\Contoso.Abstract.ZeroMQx64.4\bin\Release\$title$.xml" target="lib\net40" />
+  </files>
+</package>
+

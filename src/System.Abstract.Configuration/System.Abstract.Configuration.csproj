@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DB612EDF-A832-4E85-BC2A-73FFF7BB91E1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>System.Abstract</RootNamespace>
+    <AssemblyName>System.Abstract.Configuration</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;COREINTERNAL;EXPERIMENTAL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;COREINTERNAL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\System.Abstract.Configuration.XML</DocumentationFile>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Abstract\Configuration+ServiceBus\ServiceBus\EndpointElementCollection+FromCoreEx.cs" />
+    <Compile Include="Abstract\Configuration+ServiceBus\ServiceBus\EndpointElementCollection.cs" />
+    <Compile Include="Abstract\Configuration+ServiceBus\ServiceBus\EndpointElement.cs" />
+    <Compile Include="Abstract\Configuration+ServiceBus\ServiceBus\EndpointElement+FromCoreEx.cs" />
+    <Compile Include="Abstract\Configuration+EventSource\EventSourceConfiguration+FromCoreEx.cs" />
+    <Compile Include="Abstract\Configuration+EventSource\EventSourceConfiguration.cs" />
+    <Compile Include="Patterns\ReleaseManagement\ReleaseManagementManager.cs" />
+    <Compile Include="Patterns\ReleaseManagement\ReleaseManagementConfiguration.cs" />
+    <Compile Include="Patterns\ReleaseManagement\ReleaseManagementConfiguration+FromCoreEx.cs" />
+    <Compile Include="Abstract\ServiceConfigurationExtensions.cs" />
+    <Compile Include="Abstract\Configuration+ServiceBus\ServiceBusConfiguration+FromCoreEx.cs" />
+    <Compile Include="Abstract\Configuration+ServiceBus\ServiceBusConfiguration.cs" />
+    <Compile Include="Abstract\Configuration+ServiceLocator\ServiceLocatorConfiguration+FromCoreEx.cs" />
+    <Compile Include="Abstract\Configuration+ServiceLocator\ServiceLocatorConfiguration.cs" />
+    <Compile Include="Abstract\Configuration+ServiceLog\ServiceLogConfiguration+FromCoreEx.cs" />
+    <Compile Include="Abstract\Configuration+ServiceLog\ServiceLogConfiguration.cs" />
+    <Compile Include="Abstract\Configuration\AbstractSection.cs" />
+    <Compile Include="Abstract\Configuration\AbstractSection+FromCoreEx.cs" />
+    <Compile Include="Abstract\Configuration+ServiceCache\ServiceCacheConfiguration+FromCoreEx.cs" />
+    <Compile Include="Abstract\Configuration+ServiceCache\ServiceCacheConfiguration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BclEx.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.Abstract\System.Abstract.csproj">
+      <Project>{A44E9D89-BFF2-41A4-AADC-3C2BDFDAEEB1}</Project>
+      <Name>System.Abstract</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Abstract\Configuration+EventSource\EventSourcing\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

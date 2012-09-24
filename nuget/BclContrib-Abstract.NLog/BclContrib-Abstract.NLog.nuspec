@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>BclContrib-Abstract.NLog</id>
+    <version>2.0.0.2000</version>
+    <authors>Sky Morey</authors>
+    <owners>Sky Morey</owners>
+    <description>This package contains a Log4Net implementation of the abstract ServiceLog.</description>
+    <projectUrl>http://code.google.com/p/bclcontrib-abstract/</projectUrl>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <tags>nlog servicelog log logging bclcontrib</tags>
+    <language>en-US</language>
+    <releaseNotes>NOTE: Project has moved to http://docs.bclex.org. with a new package name of BclEx-Abstract.NLog</releaseNotes>
+    <dependencies>
+      <dependency id="BclContrib-Abstract" version="1.0.0.0" />
+      <dependency id="NLog" version="2.0.0.2000" />
+    </dependencies>
+  </metadata>
+</package>

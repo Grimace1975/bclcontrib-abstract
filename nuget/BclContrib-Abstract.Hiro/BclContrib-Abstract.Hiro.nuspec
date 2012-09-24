@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>BclContrib-Abstract.Hiro</id>
+    <version>1.0.3.0</version>
+    <authors>Sky Morey</authors>
+    <owners>Sky Morey</owners>
+    <description>This package contains a Hiro implementation of the abstract ServiceLocator.</description>
+    <projectUrl>http://code.google.com/p/bclcontrib-abstract/</projectUrl>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <tags>hiro servicelocator ioc di bclcontrib</tags>
+    <language>en-US</language>
+    <releaseNotes>NOTE: Project has moved to http://docs.bclex.org. with a new package name of BclEx-Abstract.Hiro</releaseNotes>
+    <dependencies>
+      <dependency id="BclContrib-Abstract" version="1.0.0.0" />
+      <dependency id="Hiro" version="1.0.3" />
+    </dependencies>
+  </metadata>
+</package>
