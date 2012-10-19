@@ -5,12 +5,12 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9061E52B-AB9F-4BCE-8840-850824B039D8}</ProjectGuid>
+    <ProjectGuid>{54F12FF1-F19B-4AE8-AC9F-E85434FF3CCA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Contoso.Abstract</RootNamespace>
-    <AssemblyName>Contoso.Abstract.Web.Mvc</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>Contoso.Practices.Jwt</RootNamespace>
+    <AssemblyName>Contoso.Practices.Jwt</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CLR4</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -26,37 +26,36 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;CLR4</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Contoso.Abstract.Web.Mvc.XML</DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>BclEx.4.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Abstract\Mvc3PlatformWeb.cs" />
-    <Compile Include="Abstract\Mvc\ServiceLocatorDependencyResolver.cs" />
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Practices\Jwt\JwtPayload.cs" />
+    <Compile Include="Practices\Jwt\JwtHeader.cs" />
+    <Compile Include="Practices\Jwt\GoogleJsonWebToken.cs" />
+    <Compile Include="Practices\Jwt\JsonWebToken.cs" />
+    <Compile Include="Practices\Jwt\JwtHashAlgorithm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\System.Abstract.4\System.Abstract.4.csproj">
-      <Project>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</Project>
-      <Name>System.Abstract.4</Name>
+    <ProjectReference Include="..\..\System.Abstract\System.Abstract.csproj">
+      <Project>{A44E9D89-BFF2-41A4-AADC-3C2BDFDAEEB1}</Project>
+      <Name>System.Abstract</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <None Include="BclEx-Abstract.Web.Mvc3.nuspec" />
-    <None Include="BclEx.4.snk" />
+    <None Include="BclEx.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

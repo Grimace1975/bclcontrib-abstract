@@ -39,7 +39,12 @@
     <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="+Kludge\Web\Mvc\DependencyResolver.cs" />
+    <Compile Include="+Kludge\Web\Mvc\DependencyResolverExtensions.cs" />
+    <Compile Include="+Kludge\Web\Mvc\IDependencyResolver.cs" />
     <Compile Include="Abstract\Mvc\InferredAction.cs" />
+    <Compile Include="Abstract\Mvc2PlatformWeb.cs" />
+    <Compile Include="Abstract\Mvc\ServiceLocatorDependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Abstract\Mvc\IFilterInfoFinder.cs" />
     <Compile Include="Abstract\Mvc\IInjectableModelBinder.cs" />

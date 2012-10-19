@@ -206,6 +206,21 @@
     <Compile Include="..\System.Abstract\Abstract+Event\IEventHandler.cs">
       <Link>Abstract+Event\IEventHandler.cs</Link>
     </Compile>
+    <Compile Include="..\System.Abstract\Abstract+PlatformWeb+Impl\PlatformWeb.cs">
+      <Link>Abstract+PlatformWeb+Impl\PlatformWeb.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+PlatformWeb+Impl\PlatformWebManager.cs">
+      <Link>Abstract+PlatformWeb+Impl\PlatformWebManager.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+PlatformWeb+Impl\PlatformWebManagerDebugger.cs">
+      <Link>Abstract+PlatformWeb+Impl\PlatformWebManagerDebugger.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+PlatformWeb\IPlatformWeb.cs">
+      <Link>Abstract+PlatformWeb\IPlatformWeb.cs</Link>
+    </Compile>
+    <Compile Include="..\System.Abstract\Abstract+PlatformWeb\PlatformWebExtensions.cs">
+      <Link>Abstract+PlatformWeb\PlatformWebExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\System.Abstract\Abstract+ServiceBus+Impl\ServiceBus.cs">
       <Link>Abstract+ServiceBus+Impl\ServiceBus.cs</Link>
     </Compile>

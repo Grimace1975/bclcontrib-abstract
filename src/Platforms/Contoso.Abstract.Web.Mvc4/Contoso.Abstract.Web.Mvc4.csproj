@@ -40,6 +40,8 @@
     <AssemblyOriginatorKeyFile>BclEx.4.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Abstract\Mvc4PlatformWeb.cs" />
+    <Compile Include="Abstract\Mvc\ServiceLocatorDependencyResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -51,9 +53,7 @@
       <Name>System.Abstract.4</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Abstract\Mvc\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="BclEx-Abstract.Web.Mvc4.nuspec" />
     <None Include="BclEx.4.snk" />
