@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4FF6400F-0C67-4156-AE24-9DC8D3A36FF8}</ProjectGuid>
+    <ProjectGuid>{6EDF8E18-35D9-4FFB-9C6A-566271BE568D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Contoso.Abstract</RootNamespace>
-    <AssemblyName>Contoso.Abstract.Web</AssemblyName>
+    <RootNamespace>Contoso.Practices.Jwt._4</RootNamespace>
+    <AssemblyName>Contoso.Practices.Jwt.4</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -18,20 +18,17 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CLR4</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;CLR4</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Contoso.Abstract.Web.XML</DocumentationFile>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup>
@@ -42,33 +39,22 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel.Web" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Contoso.Abstract.Web\Abstract\AssemblyResourceFile.cs">
-      <Link>Abstract\AssemblyResourceFile.cs</Link>
+    <Compile Include="..\Contoso.Practices.Jwt\Practices\Jwt\GoogleJsonWebToken.cs">
+      <Link>Practices\Jwt\GoogleJsonWebToken.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.Web\Abstract\AssemblyResourcePathProvider.cs">
-      <Link>Abstract\AssemblyResourcePathProvider.cs</Link>
+    <Compile Include="..\Contoso.Practices.Jwt\Practices\Jwt\JsonWebToken.cs">
+      <Link>Practices\Jwt\JsonWebToken.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.Web\Abstract\Parts\BuildManagerWrapper.cs">
-      <Link>Abstract\Parts\BuildManagerWrapper.cs</Link>
+    <Compile Include="..\Contoso.Practices.Jwt\Practices\Jwt\JwtHashAlgorithm.cs">
+      <Link>Practices\Jwt\JwtHashAlgorithm.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.Web\Abstract\Parts\Json2TypeSerializer.cs">
-      <Link>Abstract\Parts\Json2TypeSerializer.cs</Link>
+    <Compile Include="..\Contoso.Practices.Jwt\Practices\Jwt\JwtHeader.cs">
+      <Link>Practices\Jwt\JwtHeader.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.Abstract.Web\Abstract\Parts\JsonTypeSerializer.cs">
-      <Link>Abstract\Parts\JsonTypeSerializer.cs</Link>
-    </Compile>
-    <Compile Include="..\Contoso.Abstract.Web\Abstract\WebPlatformWeb.cs">
-      <Link>Abstract\WebPlatformWeb.cs</Link>
-    </Compile>
-    <Compile Include="..\Contoso.Abstract.Web\Abstract\WebServiceCache.cs">
-      <Link>Abstract\WebServiceCache.cs</Link>
+    <Compile Include="..\Contoso.Practices.Jwt\Practices\Jwt\JwtPayload.cs">
+      <Link>Practices\Jwt\JwtPayload.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -249,10 +249,10 @@ set SRC2=..\..\src\Platforms\Contoso.Abstract.Web.Mvc3
 set SRC3=..\..\src\Platforms\Contoso.Abstract.Web.Mvc4
 xcopy %SRC%\bin\Release\Contoso.Abstract.Web.Mvc.dll lib\net35\ /Y/Q
 xcopy %SRC%\bin\Release\Contoso.Abstract.Web.Mvc.xml lib\net35\ /Y/Q
-::xcopy %SRC2%.4\bin\Release\Contoso.Abstract.Web.Mvc.dll lib\net40\ /Y/Q
-::xcopy %SRC2%.4\bin\Release\Contoso.Abstract.Web.Mvc.xml lib\net40\ /Y/Q
-::xcopy %SRC3%.4\bin\Release\Contoso.Abstract.Web.Mvc.dll lib\net40\ /Y/Q
-::xcopy %SRC3%.4\bin\Release\Contoso.Abstract.Web.Mvc.xml lib\net40\ /Y/Q
+xcopy %SRC2%\bin\Release\Contoso.Abstract.Web.Mvc.dll lib\net40\ /Y/Q
+xcopy %SRC2%\bin\Release\Contoso.Abstract.Web.Mvc.xml lib\net40\ /Y/Q
+::xcopy %SRC3%\bin\Release\Contoso.Abstract.Web.Mvc.dll lib\net40\ /Y/Q
+::xcopy %SRC3%\bin\Release\Contoso.Abstract.Web.Mvc.xml lib\net40\ /Y/Q
 popd
 
 ::

@@ -47,6 +47,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\WebPlatformWeb.cs" />
     <Compile Include="Abstract\Parts\BuildManagerWrapper.cs" />
     <Compile Include="Abstract\Parts\Json2TypeSerializer.cs" />
     <Compile Include="Abstract\Parts\JsonTypeSerializer.cs" />

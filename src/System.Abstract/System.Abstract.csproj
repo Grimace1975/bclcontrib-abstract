@@ -98,6 +98,11 @@
     <Compile Include="Abstract+Event\IEvent.cs" />
     <Compile Include="Abstract+Event\EventBus.cs" />
     <Compile Include="Abstract+Event\IEventHandler.cs" />
+    <Compile Include="Abstract+PlatformWeb+Impl\PlatformWeb.cs" />
+    <Compile Include="Abstract+PlatformWeb\PlatformWebExtensions.cs" />
+    <Compile Include="Abstract+PlatformWeb\IPlatformWeb.cs" />
+    <Compile Include="Abstract+PlatformWeb+Impl\PlatformWebManager.cs" />
+    <Compile Include="Abstract+PlatformWeb+Impl\PlatformWebManagerDebugger.cs" />
     <Compile Include="Abstract+ServiceBus+Impl\ServiceBusManagerDebugger.cs" />
     <Compile Include="Abstract+ServiceBus\IServiceBusHostBootstrap.cs" />
     <Compile Include="Abstract+ServiceBus\ServiceBusExtensions.cs" />

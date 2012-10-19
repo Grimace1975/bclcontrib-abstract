@@ -89,7 +89,7 @@ namespace System.Abstract
             var registrationType = typeof(IServiceCacheRegistration);
             var registrar = Get(type);
             var types = type.GetFields(BindingFlags.Static | BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(f => f.FieldType.IsAssignableFrom(registrationType))
+                .Where(f => registrationType.IsAssignableFrom(f.FieldType))
                 .Select(f => (ServiceCacheRegistration)f.GetValue(null));
             foreach (var t in types)
                 registrar.Register(t);

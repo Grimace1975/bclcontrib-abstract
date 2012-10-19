@@ -180,14 +180,14 @@ namespace System.Abstract
         /// </summary>
         /// <param name="service">The cache.</param>
         /// <param name="names">The names.</param>
-        public static void Touch(this IServiceCache service, string[] names) { Touch(service, null, names); }
+        public static void Touch(this IServiceCache service, params string[] names) { Touch(service, null, names); }
         /// <summary>
         /// Touches the specified cache.
         /// </summary>
         /// <param name="service">The cache.</param>
         /// <param name="tag">The tag.</param>
         /// <param name="names">The names.</param>
-        public static void Touch(this IServiceCache service, object tag, string[] names)
+        public static void Touch(this IServiceCache service, object tag, params string[] names)
         {
             if (service == null)
                 throw new ArgumentNullException("service");

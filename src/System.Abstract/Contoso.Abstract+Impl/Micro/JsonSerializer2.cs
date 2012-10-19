@@ -36,7 +36,7 @@ namespace Contoso.Abstract.Micro
     /// <typeparam name="T"></typeparam>
     public class JsonSerializer<T> : JsonSerializer
     {
-        private Dictionary<String, JsonMemberSerializationInfo> _memberSerializers = new Dictionary<String, JsonMemberSerializationInfo>();
+        private readonly Dictionary<String, JsonMemberSerializationInfo> _memberSerializers = new Dictionary<String, JsonMemberSerializationInfo>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonSerializer&lt;T&gt;"/> class.

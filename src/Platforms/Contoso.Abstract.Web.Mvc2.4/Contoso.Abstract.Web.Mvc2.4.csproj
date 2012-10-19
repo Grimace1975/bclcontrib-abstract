@@ -40,13 +40,74 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Routing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Contoso.Abstract.Web.Mvc2\+Kludge\Web\Mvc\DependencyResolver.cs">
+      <Link>+Kludge\Web\Mvc\DependencyResolver.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.Web.Mvc2\+Kludge\Web\Mvc\DependencyResolverExtensions.cs">
+      <Link>+Kludge\Web\Mvc\DependencyResolverExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.Web.Mvc2\+Kludge\Web\Mvc\IDependencyResolver.cs">
+      <Link>+Kludge\Web\Mvc\IDependencyResolver.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.Web.Mvc2\Abstract\Mvc2PlatformWeb.cs">
+      <Link>Abstract\Mvc2PlatformWeb.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.Web.Mvc2\Abstract\Mvc\IFilterInfoFinder.cs">
+      <Link>Abstract\Mvc\IFilterInfoFinder.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.Web.Mvc2\Abstract\Mvc\IInjectableModelBinder.cs">
+      <Link>Abstract\Mvc\IInjectableModelBinder.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.Web.Mvc2\Abstract\Mvc\InferredAction.cs">
+      <Link>Abstract\Mvc\InferredAction.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.Web.Mvc2\Abstract\Mvc\InferredActionDescriptor.cs">
+      <Link>Abstract\Mvc\InferredActionDescriptor.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.Web.Mvc2\Abstract\Mvc\InferredParameterDescriptor.cs">
+      <Link>Abstract\Mvc\InferredParameterDescriptor.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.Web.Mvc2\Abstract\Mvc\InferredViewResult.cs">
+      <Link>Abstract\Mvc\InferredViewResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.Web.Mvc2\Abstract\Mvc\InjectableFilterAttribute.cs">
+      <Link>Abstract\Mvc\InjectableFilterAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.Web.Mvc2\Abstract\Mvc\MergedFilterInfo.cs">
+      <Link>Abstract\Mvc\MergedFilterInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.Web.Mvc2\Abstract\Mvc\ServiceLocatorActionInvoker.cs">
+      <Link>Abstract\Mvc\ServiceLocatorActionInvoker.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.Web.Mvc2\Abstract\Mvc\ServiceLocatorControllerFactory.cs">
+      <Link>Abstract\Mvc\ServiceLocatorControllerFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.Web.Mvc2\Abstract\Mvc\ServiceLocatorDependencyResolver.cs">
+      <Link>Abstract\Mvc\ServiceLocatorDependencyResolver.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.Web.Mvc2\Abstract\Mvc\ServiceLocatorFilterInfoFinder.cs">
+      <Link>Abstract\Mvc\ServiceLocatorFilterInfoFinder.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.Abstract.Web.Mvc2\Abstract\Mvc\ServiceLocatorModelBinder.cs">
+      <Link>Abstract\Mvc\ServiceLocatorModelBinder.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BclEx.4.snk" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\System.Abstract.4\System.Abstract.4.csproj">
+      <Project>{8E4B8D27-6CFB-414D-8597-6B92F13BCAAA}</Project>
+      <Name>System.Abstract.4</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
